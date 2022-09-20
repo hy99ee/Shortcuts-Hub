@@ -1,10 +1,3 @@
-//
-//  HomeView.swift
-//  Firebase User Account Management
-//
-//  Created by Tunde on 22/05/2021.
-//
-
 import SwiftUI
 
 struct HomeView: View {
@@ -13,31 +6,57 @@ struct HomeView: View {
     @EnvironmentObject var viewModel: HomeViewModel
     
     var body: some View {
+        if viewModel.items.count > 0 { mainView }
+        else { ProgressView() }
+    }
+    
+    @ViewBuilder
+    var mainView: some View {
+        VStack {
             VStack(alignment: .leading,
                    spacing: 16) {
                 
                 VStack(alignment: .leading,
                        spacing: 16) {
-                    Text("First Name: \(service.userDetails?.firstName ?? "N/A")")
-                    Text("Last Name: \(service.userDetails?.lastName ?? "N/A")")
-                    Text("Occupation: \(service.userDetails?.occupation ?? "N/A")")
+                    Text("First Name: \(service.userDetails?.firstName ?? "")")
+                    Text("Last Name: \(service.userDetails?.lastName ?? "")")
+                    Text("Occupation: \(service.userDetails?.occupation ?? "")")
                 }
-                ButtonView(title: "Set") {
+                       .padding()
+                
+                ButtonView(title: "New") {
                     viewModel.setNewItem()
                 }
-                ButtonView(title: "Logout") {
-                    service.logout()
-                }
                 
-                List(viewModel.items) { name in
-                    Text(name.title)
-                }
-                
-                .navigationTitle("Items")
-                
+                Text("Items count: \(String(viewModel.items.count))")
+                    .padding()
             }
-            .padding(.horizontal, 16)
-            .navigationTitle("Main ContentView")        
+                   .padding(.horizontal, 16)
+                   .navigationTitle("Main ContentView")
+            
+            NavigationView {
+                VStack {
+                    List {
+                        ForEach(viewModel.items) {
+                            Text($0.title)
+                        }
+                        .onMove {
+                            viewModel.items.move(fromOffsets: $0, toOffset: $1)
+                        }
+                        .onDelete {
+                            viewModel.items.remove(atOffsets: $0)
+                        }
+                    }
+                    .toolbar { EditButton() }
+                }
+            }
+            
+            ButtonView(title: "Logout") {
+                service.logout()
+            }
+            .padding()
+        }
+        .modifier(AlertShowViewModifier(provider: viewModel))
     }
 }
 

@@ -1,29 +1,12 @@
-
 import Combine
 import Firebase
-
-protocol ItemsServiceType {
-    func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsSerciveError>
-    func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsSerciveError>
-
-    func setNewItemRequest() -> AnyPublisher<UUID, ItemsSerciveError>
-}
-
-enum ItemsSerciveError: Error {
-    case invalidUserId
-    case writeNewItemFailure
-
-    case firebaseError(_ error: Error)
-    
-    case unknownError
-}
 
 final class ItemsService: ItemsServiceType {
     private let db = Firestore.firestore()
     let userId = Auth.auth().currentUser?.uid
     var idInc = 0
 
-    func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsSerciveError> {
+    func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 
@@ -58,7 +41,7 @@ final class ItemsService: ItemsServiceType {
         }.eraseToAnyPublisher()
     }
     
-    func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsSerciveError> {
+    func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 
@@ -96,7 +79,7 @@ final class ItemsService: ItemsServiceType {
         }.eraseToAnyPublisher()
     }
     
-    func setNewItemRequest() -> AnyPublisher<UUID, ItemsSerciveError> {
+    func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard
@@ -115,7 +98,7 @@ final class ItemsService: ItemsServiceType {
                     }
                 }
                 guard let documentID = UUID(uuidString: document["id"] ?? "") else { return promise(.failure(.invalidUserId)) }
-                return promise(.success(documentID))
+                return promise(.failure(.mockError))
             }
         }.eraseToAnyPublisher()
     }
