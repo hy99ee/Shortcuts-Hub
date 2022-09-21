@@ -6,15 +6,17 @@ protocol ItemsServiceType {
     func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError>
 
     func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError>
+    func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError>
 }
 
 enum ItemsServiceError: Error {
-    case invalidUserId
-    case writeNewItemFailure
     case firebaseError(_ error: Error)
+    case invalidUserId
+    
+    case writeNewItemFailure
+    case deleteItem
 
     case unknownError
-
     case mockError
 }
 extension ItemsServiceError: LocalizedError {
@@ -28,7 +30,13 @@ extension ItemsServiceError: LocalizedError {
 
         case .writeNewItemFailure:
             return NSLocalizedString(
-                "The specified item could not be found.",
+                "Write new item fail.",
+                comment: "Resource Not Found"
+            )
+
+        case .deleteItem:
+            return NSLocalizedString(
+                "Remove item fail.",
                 comment: "Resource Not Found"
             )
 
@@ -50,7 +58,5 @@ extension ItemsServiceError: LocalizedError {
                 comment: "Mock Error"
             )
         }
-        
-        
     }
 }

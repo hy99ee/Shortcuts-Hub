@@ -3,6 +3,8 @@ import Firebase
 
 final class ItemsService: ItemsServiceType {
     private let db = Firestore.firestore()
+    private static let collectionName = "Items"
+    
     let userId = Auth.auth().currentUser?.uid
     var idInc = 0
 
@@ -13,7 +15,7 @@ final class ItemsService: ItemsServiceType {
                 guard let self = self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
                 
-                let ref = self.db.collection("Items").whereField("userId", isEqualTo: userId)
+                let ref = self.db.collection(Self.collectionName).whereField("userId", isEqualTo: userId)
                 
                 ref.getDocuments { snapshot, error in
                     if let _error = error {
@@ -21,7 +23,7 @@ final class ItemsService: ItemsServiceType {
                     }
 
                     if let snapshot = snapshot {
-                        var items:[Item] = []
+                        var items: [Item] = []
                         for document in snapshot.documents {
                             let data = document.data()
 
@@ -49,7 +51,7 @@ final class ItemsService: ItemsServiceType {
                       let userId = self.userId
                 else { return promise(.failure(.unknownError))}
 
-                let ref = self.db.collection("Items")
+                let ref = self.db.collection(Self.collectionName)
                     .whereField("id", isEqualTo: id.uuidString)
                     .whereField("userId", isEqualTo: userId)
                 
@@ -92,13 +94,38 @@ final class ItemsService: ItemsServiceType {
                     "title": "title \(self.idInc)",
                     "description": "description"
                 ]
-                self.db.collection("Items").addDocument(data: document) { error in
+                self.db.collection(Self.collectionName).addDocument(data: document) { error in
                     if let error = error {
                         promise(.failure(.firebaseError(error)))
                     }
                 }
                 guard let documentID = UUID(uuidString: document["id"] ?? "") else { return promise(.failure(.invalidUserId)) }
-                return promise(.failure(.mockError))
+                return promise(.success(documentID))
+            }
+        }.eraseToAnyPublisher()
+    }
+
+    func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
+        Deferred {
+            Future {[weak self] promise in
+                guard
+                    let self = self,
+                    let userId = self.userId else { return promise(.failure(.invalidUserId)) }
+
+                let ref = self.db.collection(Self.collectionName)
+                    .whereField("id", isEqualTo: (id.uuidString))
+                    .whereField("userId", isEqualTo: userId)
+                    
+                var documentID: String?
+                ref.getDocuments { snapshot, error in
+                    documentID = snapshot?.documents.first?.documentID
+
+                    guard let documentID = documentID else { return promise(.failure(.deleteItem)) }
+
+                    self.db.collection(Self.collectionName).document(documentID).delete() {
+                        return promise($0 == nil ? .success(id) : .failure(.deleteItem))
+                    }
+                }
             }
         }.eraseToAnyPublisher()
     }

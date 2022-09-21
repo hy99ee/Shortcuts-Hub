@@ -18,20 +18,13 @@ struct Firebase_User_Account_ManagementApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            HomeView()
-//                .environmentObject(sessionService)
-//                .environmentObject(HomeViewModel())
-//            NavigationView {
                 switch sessionService.state {
                     case .loggedIn:
-                        HomeView()
-                            .environmentObject(sessionService)
+                        HomeView(service: sessionService)
                             .environmentObject(HomeViewModel(with: ItemsService()))
                     case .loggedOut:
                         LoginView()
                     }
-
-//            }
         }
     }
 }

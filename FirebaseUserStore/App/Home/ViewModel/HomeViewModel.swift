@@ -4,7 +4,6 @@ import Combine
 
 final class HomeViewModel: ObservableObject, AlertProviderType {
     @Published var items: [Item] = []
-    
     @Published var error: Error?
     
     let service: ItemsServiceType
@@ -40,6 +39,19 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
                     }
             }
             .sink {[unowned self] in items.append($0) }
+            .store(in: &subscriptions)
+    }
+    
+    func removeItem(_ indexSet: IndexSet) {
+        let idsToDelete = indexSet.map { self.items[$0].id }
+        guard let id = idsToDelete.first else { return }
+
+        service.removeItemRequest(id)
+            .catch {[unowned self] error -> AnyPublisher<UUID, Never> in
+                self.error = error
+                return Empty().eraseToAnyPublisher()
+            }
+            .sink {[unowned self] _ in self.fetchItems() }
             .store(in: &subscriptions)
     }
 }

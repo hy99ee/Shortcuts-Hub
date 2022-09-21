@@ -1,13 +1,11 @@
 import SwiftUI
 
-struct HomeView: View {
-    
-    @EnvironmentObject var service: SessionServiceImpl
+struct HomeView<Service: SessionService>: View {
+    @ObservedObject var service: Service
     @EnvironmentObject var viewModel: HomeViewModel
     
     var body: some View {
-        if viewModel.items.count > 0 { mainView }
-        else { ProgressView() }
+        mainView
     }
     
     @ViewBuilder
@@ -44,7 +42,7 @@ struct HomeView: View {
                             viewModel.items.move(fromOffsets: $0, toOffset: $1)
                         }
                         .onDelete {
-                            viewModel.items.remove(atOffsets: $0)
+                            viewModel.removeItem($0)
                         }
                     }
                     .toolbar { EditButton() }
@@ -63,8 +61,8 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView()
-                .environmentObject(SessionServiceImpl())
+            HomeView(service: SessionServiceImpl())
+                .environmentObject(HomeViewModel(with: ItemsService()))
         }
     }
 }

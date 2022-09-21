@@ -14,7 +14,7 @@ struct UserSessionDetails {
     let occupation: String
 }
 
-protocol SessionService {
+protocol SessionService: ObservableObject {
     var state: SessionState { get }
     var userDetails: UserSessionDetails? { get }
     init()
