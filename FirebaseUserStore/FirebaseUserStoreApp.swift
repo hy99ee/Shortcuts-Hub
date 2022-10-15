@@ -12,19 +12,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct Firebase_User_Account_ManagementApp: App {
-    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var sessionService = SessionServiceImpl()
     
     var body: some Scene {
         WindowGroup {
-                switch sessionService.state {
-                    case .loggedIn:
-                        HomeView(service: sessionService)
-                            .environmentObject(HomeViewModel(with: ItemsService()))
-                    case .loggedOut:
-                        LoginView()
-                    }
+            switch sessionService.state {
+            case .loggedIn:
+                HomeView(service: sessionService)
+                    .environmentObject(HomeViewModel(with: ItemsService()))
+            case .loggedOut:
+                LoginView()
+            case .loading:
+                ProgressView()
+            }
         }
     }
 }

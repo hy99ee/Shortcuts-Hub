@@ -1,6 +1,6 @@
 import Foundation
 
-struct Item: Codable, Equatable, Identifiable {
+struct Item: Codable, Equatable, Identifiable, Hashable {
     var id: UUID
     var userId: String
     var title: String

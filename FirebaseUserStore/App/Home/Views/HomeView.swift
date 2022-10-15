@@ -1,9 +1,15 @@
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct HomeView<Service: SessionService>: View {
     @ObservedObject var service: Service
     @EnvironmentObject var viewModel: HomeViewModel
     
+    @State var showAbout = false
+    let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
+    
+    @State var isRefresh = false
+
     var body: some View {
         mainView
     }
@@ -13,27 +19,21 @@ struct HomeView<Service: SessionService>: View {
         VStack {
             VStack(alignment: .leading,
                    spacing: 16) {
-                
-                VStack(alignment: .leading,
-                       spacing: 16) {
-                    Text("First Name: \(service.userDetails?.firstName ?? "")")
-                    Text("Last Name: \(service.userDetails?.lastName ?? "")")
-                    Text("Occupation: \(service.userDetails?.occupation ?? "")")
+
+                HStack {
+                    Spacer()
+                    Button {
+                        showAbout.toggle()
+                    } label: {
+                        Image(systemName: "person")
+                    }
                 }
                        .padding()
-                
-                ButtonView(title: "New") {
-                    viewModel.setNewItem()
-                }
-                
-                Text("Items count: \(String(viewModel.items.count))")
-                    .padding()
             }
                    .padding(.horizontal, 16)
-                   .navigationTitle("Main ContentView")
             
             NavigationView {
-                VStack {
+                
                     List {
                         ForEach(viewModel.items) {
                             Text($0.title)
@@ -45,23 +45,49 @@ struct HomeView<Service: SessionService>: View {
                             viewModel.removeItem($0)
                         }
                     }
-                    .toolbar { EditButton() }
-                }
+                    .refreshable {
+                        viewModel.items = await viewModel.refreshItems()
+                    }
             }
+
             
-            ButtonView(title: "Logout") {
-                service.logout()
+            
+            .disabled(isRefresh)
+            .opacity(isRefresh ? 0.5 : 1)
+
+            ButtonView(title: "New") {
+                viewModel.setNewItem()
+            }
+            .padding()
+            
+            ButtonView(title: "Update") {
+                viewModel.fetchItems()
             }
             .padding()
         }
         .modifier(AlertShowViewModifier(provider: viewModel))
+        .sheet(isPresented: $showAbout) {
+            AboutView(
+                user: service.userDetails!,
+                logout: {
+                    service.logout()
+                    showAbout = false
+                })
+            .presentationDetents([.height(200), .medium])
+        }
+        .disabled(service.userDetails == nil)
     }
+}
+
+
+extension PresentationDetent {
+    static let bar = Self.fraction(0.2)
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(service: SessionServiceImpl())
+            HomeView(service: MockSessionServiceImpl())
                 .environmentObject(HomeViewModel(with: ItemsService()))
         }
     }

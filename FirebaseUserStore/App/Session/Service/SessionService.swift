@@ -6,25 +6,35 @@ import Combine
 enum SessionState {
     case loggedIn
     case loggedOut
+    case loading
 }
 
-struct UserSessionDetails {
+struct UserDetails {
+    let storage: UserStorageDetails
+    let auth: UserAuthDetails
+}
+
+struct UserStorageDetails {
     let firstName: String
     let lastName: String
     let occupation: String
 }
 
+struct UserAuthDetails {
+    let email: (String, isVerified: Bool)
+}
+
 protocol SessionService: ObservableObject {
     var state: SessionState { get }
-    var userDetails: UserSessionDetails? { get }
+    var userDetails: UserDetails? { get }
     init()
     func logout()
 }
 
 final class SessionServiceImpl: SessionService, ObservableObject {
     
-    @Published var state: SessionState = .loggedOut
-    @Published var userDetails: UserSessionDetails?
+    @Published var state: SessionState = .loading
+    @Published var userDetails: UserDetails?
     
     private var handler: AuthStateDidChangeListenerHandle?
     private var subscriptions = Set<AnyCancellable>()
@@ -47,7 +57,6 @@ final class SessionServiceImpl: SessionService, ObservableObject {
 private extension SessionServiceImpl {
     
     func setupObservations() {
-        
         handler = Auth
             .auth()
             .addStateDidChangeListener { [weak self] _,_ in
@@ -69,17 +78,35 @@ private extension SessionServiceImpl {
                                   let value = snapshot.value as? NSDictionary,
                                   let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
                                   let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let occupation = value[RegistrationKeys.occupation.rawValue] as? String else {
+                                  let occupation = value[RegistrationKeys.occupation.rawValue] as? String,
+                                  let currentUser = currentUser else {
                                 return
                             }
 
                             DispatchQueue.main.async {
-                                self.userDetails = UserSessionDetails(firstName: firstName,
-                                                                      lastName: lastName,
-                                                                      occupation: occupation)
+                                self.userDetails = UserDetails(
+                                    storage: UserStorageDetails(
+                                        firstName: firstName,
+                                        lastName: lastName,
+                                        occupation: occupation),
+                                    auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
+                                )
                             }
                         }
                 }
             }
     }
+}
+
+final class MockSessionServiceImpl: SessionService, ObservableObject {
+    @Published var state: SessionState = .loggedOut
+    @Published var userDetails: UserDetails? = UserDetails(
+        storage: UserStorageDetails(firstName: "Name", lastName: "Surname", occupation: "Occupation"),
+        auth: UserAuthDetails(email: (mail: "string@mail.com", isVerified: false))
+        )
+    
+    private var handler: AuthStateDidChangeListenerHandle?
+    private var subscriptions = Set<AnyCancellable>()
+    
+    func logout() {}
 }

@@ -3,7 +3,7 @@ import Firebase
 import Combine
 
 final class HomeViewModel: ObservableObject, AlertProviderType {
-    @Published var items: [Item] = []
+    @Published var items: [Item] = [Item(id: UUID(), userId: "ID", title: "Need to refresh", description: "Desc", source: "Source")]
     @Published var error: Error?
     
     let service: ItemsServiceType
@@ -12,15 +12,14 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
 
     init(with service: ItemsServiceType) {
         self.service = service
-        fetchItems()
     }
     
-    func fetchItems() {
-        service.fetchDishesByUserRequest()
-            .catch { error -> AnyPublisher<[Item], Never> in
-                print(error.localizedDescription)
-                return Just([]).eraseToAnyPublisher()
-            }
+    func refreshItems() async -> [Item] {
+        try! await fetchPublisher.async()
+    }
+    
+    func fetchItems(_ complition: (() -> Void)? = nil) {
+        fetchPublisher
             .assertNoFailure()
             .assign(to: &$items)
     }
@@ -53,6 +52,16 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
             }
             .sink {[unowned self] _ in self.fetchItems() }
             .store(in: &subscriptions)
+    }
+    
+    private var fetchPublisher: AnyPublisher<[Item], Never> {
+        service.fetchDishesByUserRequest()
+            .catch { error -> AnyPublisher<[Item], Never> in
+                print(error.localizedDescription)
+                return Just([]).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+            
     }
 }
 
