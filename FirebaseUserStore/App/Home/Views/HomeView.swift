@@ -1,8 +1,15 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct HomeView<Service: SessionService>: View {
+struct HomeView<
+    Service: SessionService,
+    Store: StateStore<
+        FeedState,
+        FeedCommitter,
+        FeedDispatcher>
+>: View {
     @ObservedObject var service: Service
+    @EnvironmentObject var store: Store
     @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showAbout = false
@@ -62,6 +69,11 @@ struct HomeView<Service: SessionService>: View {
             
             ButtonView(title: "Update") {
                 viewModel.fetchItems()
+            }
+            .padding()
+            
+            ButtonView(title: "FLUX") {
+                store.dispatch(.startAction)
             }
             .padding()
         }

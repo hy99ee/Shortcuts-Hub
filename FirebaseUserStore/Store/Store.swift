@@ -1,15 +1,17 @@
 import SwiftUI
 import Combine
 
-final class RootStore<StoreState, Committer, Dispatcher>:
+final class StateStore<StoreState, Committer, Dispatcher>:
     ObservableObject where StoreState: StateType,
                            Committer: CommitterType,
                            Dispatcher: DispatcherType,
                            Committer.CommiterState == StoreState,
                            Dispatcher.MutationType == Committer.MutationType {
 
-    var state: StoreState
+    @Published var state: StoreState
     var committer: Committer
+    
+    private let lock = NSLock()
 
     init(
         state: StoreState,
@@ -19,7 +21,7 @@ final class RootStore<StoreState, Committer, Dispatcher>:
         self.committer = committer
     }
 
-    func commit<Mutation>(_ mutation: Mutation) where Mutation == Committer.MutationType {
+    private func commit<Mutation>(_ mutation: Mutation) where Mutation == Committer.MutationType {
         state = committer.commit(state: self.state, mutation: mutation)
     }
     

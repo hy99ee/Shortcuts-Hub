@@ -21,6 +21,7 @@ struct Firebase_User_Account_ManagementApp: App {
             case .loggedIn:
                 HomeView(service: sessionService)
                     .environmentObject(HomeViewModel(with: ItemsService()))
+                    .environmentObject(StateStore<FeedState, FeedCommitter, FeedDispatcher>(state: FeedState(items: ["First", "Second", "Third"]), committer: FeedCommitter()))
             case .loggedOut:
                 LoginView()
             case .loading:

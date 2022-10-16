@@ -1,5 +1,5 @@
 import Foundation
 
-enum LandmarkAction: Action {
-//  case FetchParkDescription(Landmark)
+enum FeedAction: Action {
+  case startAction
 }

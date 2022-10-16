@@ -1,18 +1,17 @@
 import Foundation
 
-struct LandmarkDispatcher: DispatcherType {
-    typealias MutationType = LandmarkMutation
+struct FeedDispatcher: DispatcherType {
+    typealias MutationType = FeedMutation
     var commit: (MutationType) -> Void
     
     init(commit: @escaping (MutationType) -> Void) {
         self.commit = commit
     }
     
-    func dispatch(action: LandmarkAction) {
-        //    switch action {
-        //    case .FetchParkDescription(let landmark):
-        //      FetchParkDescription(landmark: landmark)
-        //    }
+    func dispatch(action: FeedAction) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.commit(.startMutation)
+        }
     }
 
 //  func FetchParkDescription() {

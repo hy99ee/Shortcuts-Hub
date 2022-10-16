@@ -10,6 +10,15 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
     
     private var subscriptions: Set<AnyCancellable> = []
 
+    private var fetchPublisher: AnyPublisher<[Item], Never> {
+        service.fetchDishesByUserRequest()
+            .catch { error -> AnyPublisher<[Item], Never> in
+                print(error.localizedDescription)
+                return Just([]).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+
     init(with service: ItemsServiceType) {
         self.service = service
     }
@@ -53,16 +62,6 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
             }
             .sink {[unowned self] _ in self.fetchItems() }
             .store(in: &subscriptions)
-    }
-    
-    private var fetchPublisher: AnyPublisher<[Item], Never> {
-        service.fetchDishesByUserRequest()
-            .catch { error -> AnyPublisher<[Item], Never> in
-                print(error.localizedDescription)
-                return Just([]).eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-            
     }
 }
 
