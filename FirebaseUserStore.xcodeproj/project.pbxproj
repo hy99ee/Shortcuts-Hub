@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */; };
 		3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */; };
+		3B1F669628FC0C6C009225A4 /* Dispatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* Dispatchers.swift */; };
+		3B1F669728FC0C6C009225A4 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669128FC0C6C009225A4 /* State.swift */; };
+		3B1F669828FC0C6C009225A4 /* Mutations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* Mutations.swift */; };
+		3B1F669928FC0C6C009225A4 /* Committers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669328FC0C6C009225A4 /* Committers.swift */; };
+		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
+		3B1F669B28FC0C6C009225A4 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* Actions.swift */; };
+		3B1F669E28FC141F009225A4 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669D28FC141F009225A4 /* Entities.swift */; };
+		3B1F66A028FC1429009225A4 /* CommitterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669F28FC1429009225A4 /* CommitterType.swift */; };
+		3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F66A128FC1457009225A4 /* DispatcherType.swift */; };
 		3B410ACE289586D400BB487D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B410ACD289586D400BB487D /* GoogleService-Info.plist */; };
 		3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */; };
 		3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C6E2B288757850045BFA4 /* AuthServiceTarget.swift */; };
@@ -42,6 +51,15 @@
 /* Begin PBXFileReference section */
 		3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertShowViewModifier.swift; sourceTree = "<group>"; };
 		3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceType.swift; sourceTree = "<group>"; };
+		3B1F669028FC0C6C009225A4 /* Dispatchers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatchers.swift; sourceTree = "<group>"; };
+		3B1F669128FC0C6C009225A4 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		3B1F669228FC0C6C009225A4 /* Mutations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutations.swift; sourceTree = "<group>"; };
+		3B1F669328FC0C6C009225A4 /* Committers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Committers.swift; sourceTree = "<group>"; };
+		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		3B1F669528FC0C6C009225A4 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
+		3B1F669D28FC141F009225A4 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		3B1F669F28FC1429009225A4 /* CommitterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitterType.swift; sourceTree = "<group>"; };
+		3B1F66A128FC1457009225A4 /* DispatcherType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatcherType.swift; sourceTree = "<group>"; };
 		3B410ACD289586D400BB487D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitPublisher.swift; sourceTree = "<group>"; };
 		3B77A13528F44BDB007710E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -85,6 +103,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B1F668F28FC0C6C009225A4 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B1F669028FC0C6C009225A4 /* Dispatchers.swift */,
+				3B1F669128FC0C6C009225A4 /* State.swift */,
+				3B1F669228FC0C6C009225A4 /* Mutations.swift */,
+				3B1F669328FC0C6C009225A4 /* Committers.swift */,
+				3B1F669528FC0C6C009225A4 /* Actions.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		3B1F669C28FC1404009225A4 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B1F669428FC0C6C009225A4 /* Store.swift */,
+				3B1F669D28FC141F009225A4 /* Entities.swift */,
+				3B1F669F28FC1429009225A4 /* CommitterType.swift */,
+				3B1F66A128FC1457009225A4 /* DispatcherType.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
 		3B8C6E2A288756CC0045BFA4 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +149,7 @@
 		3BD76ECC2899AF6C001D64E2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				3B1F668F28FC0C6C009225A4 /* Store */,
 				3BFAB6CC28BBE9E7002488FF /* Service */,
 				3BD76EFB28A1AC79001D64E2 /* Model */,
 				3BD76EF628A1AB53001D64E2 /* ViewModel */,
@@ -297,6 +339,7 @@
 		3BFA9FA2288734CA00A7FF2C /* FirebaseUserStore */ = {
 			isa = PBXGroup;
 			children = (
+				3B1F669C28FC1404009225A4 /* Store */,
 				3B77A13528F44BDB007710E2 /* Info.plist */,
 				3BD76EE72899AF6C001D64E2 /* Base */,
 				3BD76ECB2899AF6C001D64E2 /* App */,
@@ -408,12 +451,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BAC260028E611CD00E9D3C1 /* ImageOverlayViewModifier.swift in Sources */,
+				3B1F66A028FC1429009225A4 /* CommitterType.swift in Sources */,
 				3BD76EEE2899AF6C001D64E2 /* ForgotPasswordViewModel.swift in Sources */,
 				3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */,
+				3B1F669E28FC141F009225A4 /* Entities.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3BD76EF828A1AB60001D64E2 /* HomeViewModel.swift in Sources */,
+				3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */,
 				3BD76EF12899AF6C001D64E2 /* LoginViewModel.swift in Sources */,
 				3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */,
 				3BFA9FA6288734CA00A7FF2C /* ContentView.swift in Sources */,
@@ -421,14 +467,20 @@
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */,
 				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
+				3B1F669828FC0C6C009225A4 /* Mutations.swift in Sources */,
+				3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */,
+				3B1F669B28FC0C6C009225A4 /* Actions.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
+				3B1F669928FC0C6C009225A4 /* Committers.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */,
+				3B1F669628FC0C6C009225A4 /* Dispatchers.swift in Sources */,
+				3B1F669728FC0C6C009225A4 /* State.swift in Sources */,
 				3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

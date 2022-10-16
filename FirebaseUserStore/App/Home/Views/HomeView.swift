@@ -46,7 +46,7 @@ struct HomeView<Service: SessionService>: View {
                         }
                     }
                     .refreshable {
-                        viewModel.items = await viewModel.refreshItems()
+                        isRefresh = await viewModel.refreshItems()
                     }
             }
 

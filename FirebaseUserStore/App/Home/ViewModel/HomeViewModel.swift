@@ -14,8 +14,9 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
         self.service = service
     }
     
-    func refreshItems() async -> [Item] {
-        try! await fetchPublisher.async()
+    func refreshItems() async -> Bool {
+        try! await items = fetchPublisher.async()
+        return true
     }
     
     func fetchItems(_ complition: (() -> Void)? = nil) {
