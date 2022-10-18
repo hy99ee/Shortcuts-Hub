@@ -8,8 +8,8 @@ struct HomeView<
         FeedCommitter,
         FeedDispatcher>
 >: View {
-    @ObservedObject var service: Service
-    @EnvironmentObject var store: Store
+    var service: Service
+    @ObservedObject var store: Store
     @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showAbout = false
@@ -62,10 +62,12 @@ struct HomeView<
             .disabled(isRefresh)
             .opacity(isRefresh ? 0.5 : 1)
 
-            ButtonView(title: "New") {
-                viewModel.setNewItem()
+            if store.state.items.isEmpty {
+                ButtonView(title: "New") {
+                    viewModel.setNewItem()
+                }
+                .padding()
             }
-            .padding()
             
             ButtonView(title: "Update") {
                 viewModel.fetchItems()
@@ -99,7 +101,7 @@ extension PresentationDetent {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(service: MockSessionServiceImpl())
+            HomeView(service: MockSessionServiceImpl(), store: StateStore(state: FeedState(), committer: FeedCommitter(), dispatcher: FeedDispatcher()))
                 .environmentObject(HomeViewModel(with: ItemsService()))
         }
     }

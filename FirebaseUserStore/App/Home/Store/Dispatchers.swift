@@ -1,17 +1,11 @@
 import Foundation
+import Combine
 
 struct FeedDispatcher: DispatcherType {
     typealias MutationType = FeedMutation
-    var commit: (MutationType) -> Void
     
-    init(commit: @escaping (MutationType) -> Void) {
-        self.commit = commit
-    }
-    
-    func dispatch(action: FeedAction) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.commit(.startMutation)
-        }
+    func dispatch(action: FeedAction) -> AnyPublisher<MutationType, Never> {
+        Just<MutationType>(.startMutation).eraseToAnyPublisher()
     }
 
 //  func FetchParkDescription() {

@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 struct FeedState: StateType {
-    let items: [String]
+    var items: [String] = ["uh"]
 
     func itemBy(id: Int) -> String {
         items[id]

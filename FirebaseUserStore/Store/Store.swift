@@ -10,23 +10,34 @@ final class StateStore<StoreState, Committer, Dispatcher>:
 
     @Published var state: StoreState
     var committer: Committer
+    var dispatcher: Dispatcher
     
     private let lock = NSLock()
 
     init(
         state: StoreState,
-        committer: Committer
+        committer: Committer,
+        dispatcher: Dispatcher
     ) {
         self.state = state
         self.committer = committer
+        self.dispatcher = dispatcher
     }
 
-    private func commit<Mutation>(_ mutation: Mutation) where Mutation == Committer.MutationType {
-        state = committer.commit(state: self.state, mutation: mutation)
+    private func commit<Mutation>(_ mutation: Mutation) -> AnyPublisher<StoreState, Never> where Mutation == Committer.MutationType {
+        committer.commit(state: self.state, mutation: mutation)
     }
     
     func dispatch<Action>(_ action: Action) where Action == Dispatcher.ActionType {
-        Dispatcher(commit: self.commit).dispatch(action: action)
+        dispatcher.dispatch(action: action)
+            .commit(commit)
+            .assign(to: &$state)
+    }
+}
+
+extension Publisher where Output: Mutation, Failure == Never {
+    func commit<State: StateType>(_ commit: @escaping (Output) -> AnyPublisher<State, Never>) -> AnyPublisher<State, Never> {
+        self.flatMap { commit($0) }.eraseToAnyPublisher()
     }
 }
 

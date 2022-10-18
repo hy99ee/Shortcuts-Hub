@@ -1,11 +1,14 @@
-import Foundation
+import Combine
 
 struct FeedCommitter: CommitterType {
-  func commit(state: FeedState, mutation: FeedMutation) -> FeedState {
-    switch mutation {
-    case .startMutation:
-        print(state.itemBy(id: 2))
-    }
-      return state
+  func commit(state: FeedState, mutation: FeedMutation) -> AnyPublisher<FeedState, Never> {
+      Just({
+          var _state = state
+          switch mutation {
+          case .startMutation:
+              _state.items = []
+          }
+          return _state
+      }()).eraseToAnyPublisher()
   }
 }
