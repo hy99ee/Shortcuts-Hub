@@ -1,13 +1,7 @@
 import SwiftUI
 
-@available(iOS 16.0, *)
-struct HomeView<
-    Service: SessionService,
-    Store: StateStore<
-        FeedState,
-        FeedCommitter,
-        FeedDispatcher>
->: View {
+typealias FeedStore = StateStore<FeedState, FeedDispatcher, FeedEnvironment>
+struct HomeView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
     @ObservedObject var store: Store
     @EnvironmentObject var viewModel: HomeViewModel
@@ -101,8 +95,17 @@ extension PresentationDetent {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(service: MockSessionServiceImpl(), store: StateStore(state: FeedState(), committer: FeedCommitter(), dispatcher: FeedDispatcher()))
-                .environmentObject(HomeViewModel(with: ItemsService()))
+            HomeView(
+                service: MockSessionServiceImpl(),
+                store:
+                    StateStore(
+                        state: FeedState(),
+                        dispatcher: FeedDispatcher(),
+                        environment: FeedEnvironment(),
+                        reducer: feedReducer
+                    )
+            )
+            .environmentObject(HomeViewModel(with: ItemsService()))
         }
     }
 }

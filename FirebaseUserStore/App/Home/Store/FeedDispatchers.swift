@@ -5,7 +5,10 @@ struct FeedDispatcher: DispatcherType {
     typealias MutationType = FeedMutation
     
     func dispatch(action: FeedAction) -> AnyPublisher<MutationType, Never> {
-        Just<MutationType>(.startMutation).eraseToAnyPublisher()
+        switch action {
+        case .startAction:
+            return Just<MutationType>(.startMutation).eraseToAnyPublisher()
+        }
     }
 
 //  func FetchParkDescription() {

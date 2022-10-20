@@ -28,7 +28,7 @@ final class HomeViewModel: ObservableObject, AlertProviderType {
         return true
     }
     
-    func fetchItems(_ complition: (() -> Void)? = nil) {
+    func fetchItems() {
         fetchPublisher
             .assertNoFailure()
             .assign(to: &$items)

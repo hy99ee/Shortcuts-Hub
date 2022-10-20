@@ -39,84 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "301CB1D1-70B7-4167-8E37-768C44E47E1C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "refreshItems()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "301CB1D1-70B7-4167-8E37-768C44E47E1C - a820ccd26101ff57"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for FirebaseUserStore.HomeViewModel.refreshItems() async -&gt; Swift.Bool"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  uuid = "301CB1D1-70B7-4167-8E37-768C44E47E1C - d2149051341d5378"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for FirebaseUserStore.HomeViewModel.refreshItems() async -&gt; Swift.Bool"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  uuid = "301CB1D1-70B7-4167-8E37-768C44E47E1C - 7cea76667e28b359"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for FirebaseUserStore.HomeViewModel.refreshItems() async -&gt; Swift.Bool"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "301CB1D1-70B7-4167-8E37-768C44E47E1C - 9a893aa070bc115a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for FirebaseUserStore.HomeViewModel.refreshItems() async -&gt; Swift.Bool"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "18"
-                  endingLineNumber = "18"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8494A95C-685E-44DB-85F5-E8FB89239632"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -160,22 +82,6 @@
                   offsetFromSymbolStart = "280">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EBD8A50A-4295-4CEC-9756-9BC6765B1053"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FirebaseUserStore/App/Home/ViewModel/HomeViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "refreshItems()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

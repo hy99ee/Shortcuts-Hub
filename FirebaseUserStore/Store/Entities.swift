@@ -5,3 +5,4 @@ protocol StateType {}
 protocol Mutation {}
 
 protocol Action {}
+
