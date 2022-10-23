@@ -1,6 +1,6 @@
 import SwiftUI
 
-typealias FeedStore = StateStore<FeedState, FeedDispatcher, FeedEnvironment>
+typealias FeedStore = StateStore<FeedState, FeedDispatcher, FeedEnvironment, AnyMiddleware>
 struct HomeView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
     @ObservedObject var store: Store
@@ -36,15 +36,15 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
             NavigationView {
                 
                     List {
-                        ForEach(viewModel.items) {
+                        ForEach(store.state.items) {
                             Text($0.title)
                         }
-                        .onMove {
-                            viewModel.items.move(fromOffsets: $0, toOffset: $1)
-                        }
-                        .onDelete {
-                            viewModel.removeItem($0)
-                        }
+//                        .onMove {
+//                            viewModel.items.move(fromOffsets: $0, toOffset: $1)
+//                        }
+//                        .onDelete {
+//                            viewModel.removeItem($0)
+//                        }
                     }
                     .refreshable {
                         isRefresh = await viewModel.refreshItems()

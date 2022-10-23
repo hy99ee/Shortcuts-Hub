@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */; };
 		3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */; };
-		3B1F669628FC0C6C009225A4 /* FeedDispatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* FeedDispatchers.swift */; };
+		3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */; };
 		3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669128FC0C6C009225A4 /* FeedState.swift */; };
 		3B1F669828FC0C6C009225A4 /* Mutations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* Mutations.swift */; };
 		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
@@ -52,7 +52,7 @@
 /* Begin PBXFileReference section */
 		3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertShowViewModifier.swift; sourceTree = "<group>"; };
 		3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceType.swift; sourceTree = "<group>"; };
-		3B1F669028FC0C6C009225A4 /* FeedDispatchers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDispatchers.swift; sourceTree = "<group>"; };
+		3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDispatcher.swift; sourceTree = "<group>"; };
 		3B1F669128FC0C6C009225A4 /* FeedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
 		3B1F669228FC0C6C009225A4 /* Mutations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutations.swift; sourceTree = "<group>"; };
 		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		3B1F668F28FC0C6C009225A4 /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				3B1F669028FC0C6C009225A4 /* FeedDispatchers.swift */,
+				3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */,
 				3B4C44A629019E5500CDC700 /* FeedReducer.swift */,
 				3B1F669128FC0C6C009225A4 /* FeedState.swift */,
 				3B1F669228FC0C6C009225A4 /* Mutations.swift */,
@@ -483,7 +483,7 @@
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */,
-				3B1F669628FC0C6C009225A4 /* FeedDispatchers.swift in Sources */,
+				3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */,
 				3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */,
 				3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */,
 			);

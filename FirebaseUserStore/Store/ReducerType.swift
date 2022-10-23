@@ -1,6 +1,7 @@
 import Combine
 
-typealias ReducerType<StoreState: StateType> = (_ state: inout StoreState, _ mutation: Mutation, _ environment: EnvironmentType) -> AnyPublisher<StoreState, Never>
+typealias ReducerType<StoreState: StateType> = (_ state: StoreState, _ mutation: Mutation) -> AnyPublisher<StoreState?, Never>
+
 
 
 //

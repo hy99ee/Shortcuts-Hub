@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-protocol ItemsServiceType {
+protocol ItemsServiceType: EnvironmentType {
     func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsServiceError>
     func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError>
 

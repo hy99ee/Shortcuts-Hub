@@ -3,13 +3,23 @@ import Combine
 
 struct FeedDispatcher: DispatcherType {
     typealias MutationType = FeedMutation
+    typealias ServiceEnvironment = FeedEnvironment
     
-    func dispatch(action: FeedAction) -> AnyPublisher<MutationType, Never> {
+    func dispatch(_ action: FeedAction, environment: ServiceEnvironment) -> AnyPublisher<MutationType, Never> {
         switch action {
         case .startAction:
-            return Just<MutationType>(.startMutation).eraseToAnyPublisher()
+            return Just(.startMutation).eraseToAnyPublisher()
         }
     }
+
+//    private var fetchPublisher: AnyPublisher<[Item], Never> {
+//        service.fetchDishesByUserRequest()
+//            .catch { error -> AnyPublisher<[Item], Never> in
+//                print(error.localizedDescription)
+//                return Just([]).eraseToAnyPublisher()
+//            }
+//            .eraseToAnyPublisher()
+//    }
 
 //  func FetchParkDescription() {
 //    guard let escapedName = landmark.park.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }

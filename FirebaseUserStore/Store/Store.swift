@@ -1,15 +1,18 @@
 import SwiftUI
 import Combine
 
-final class StateStore<StoreState, StoreDispatcher, StoreEnvironment>:
+final class StateStore<StoreState, StoreDispatcher, StoreEnvironment, StoreMiddleware>:
     ObservableObject where StoreState: StateType,
                            StoreDispatcher: DispatcherType,
-                           StoreEnvironment: EnvironmentType {
+                           StoreEnvironment: EnvironmentType,
+                           StoreMiddleware: MiddlewareType,
+                           StoreEnvironment == StoreDispatcher.ServiceEnvironment{
 
     @Published var state: StoreState
     var reducer: ReducerType<StoreState>
     var dispatcher: StoreDispatcher
     var environment: StoreEnvironment
+    var middleware: [StoreMiddleware]
     
     private let lock = NSLock()
 
@@ -17,32 +20,32 @@ final class StateStore<StoreState, StoreDispatcher, StoreEnvironment>:
         state: StoreState,
         dispatcher: StoreDispatcher,
         environment: StoreEnvironment,
+        middleware: [StoreMiddleware] = [],
         reducer: @escaping ReducerType<StoreState>
     ) {
         self.state = state
         self.dispatcher = dispatcher
-        self.reducer = reducer
         self.environment = environment
+        self.middleware = middleware
+        self.reducer = reducer
     }
-
-//    private func commit<Mutation>(_ mutation: Mutation) -> AnyPublisher<StoreState, Never> where Mutation == Reducer.MutationType {
-//        reducer.reduce(state: state, mutation: mutation)
-//    }
     
-    func dispatch<Action>(_ action: Action) where Action == StoreDispatcher.ActionType {
-        dispatcher
-            .dispatch(action: action)
-            .flatMap {[unowned self] in
-                reducer(&state, $0, environment)
+    func dispatch<Action>(_  action: Action) where Action == StoreDispatcher.ActionType {
+        let mappedAction = {
+            var actionForMap = action
+            self.middleware.forEach { middleware in
+                let action = middleware.middlewareMap(actionForMap, nil)
+                if action != nil { actionForMap = action! }
             }
-        
+            return actionForMap
+        }()
+
+        dispatcher
+            .dispatch(mappedAction, environment: environment)
+            .flatMap { [unowned self] in reducer(state, $0) }
+            .compactMap { $0 }
             .assign(to: &$state)
     }
 }
 
-//extension Publisher where Output: Mutation, Failure == Never {
-//    func commit<State: StateType>(_ commit: @escaping (Output) -> AnyPublisher<State, Never>) -> AnyPublisher<State, Never> {
-//        self.flatMap { commit($0) }.eraseToAnyPublisher()
-//    }
-//}
 
