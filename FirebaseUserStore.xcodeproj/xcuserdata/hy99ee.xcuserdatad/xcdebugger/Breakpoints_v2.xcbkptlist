@@ -36,53 +36,5 @@
             landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8494A95C-685E-44DB-85F5-E8FB89239632"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FirebaseUserStore/Base/AwaitPublisher.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "10"
-            endingLineNumber = "10"
-            landmarkName = "async(completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "8494A95C-685E-44DB-85F5-E8FB89239632 - 73b72c3f5ac885e3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.CheckedContinuation&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; () in Combine.AnyPublisher.async(completion: Swift.Optional&lt;() -&gt; ()&gt;) async throws -&gt; &#x3c4;_0_0"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/Base/AwaitPublisher.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "10"
-                  endingLineNumber = "10"
-                  offsetFromSymbolStart = "408">
-               </Location>
-               <Location
-                  uuid = "8494A95C-685E-44DB-85F5-E8FB89239632 - 4f5d6d4908308b80"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Combine.Subscribers.Completion&lt;&#x3c4;_0_1&gt;) -&gt; () in closure #1 (Swift.CheckedContinuation&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; () in Combine.AnyPublisher.async(completion: Swift.Optional&lt;() -&gt; ()&gt;) async throws -&gt; &#x3c4;_0_0"
-                  moduleName = "FirebaseUserStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/Base/AwaitPublisher.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "10"
-                  endingLineNumber = "10"
-                  offsetFromSymbolStart = "280">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

@@ -24,12 +24,10 @@ struct Firebase_User_Account_ManagementApp: App {
                     store:
                         StateStore(
                             state: FeedState(),
-                            dispatcher: FeedDispatcher(),
-                            environment: FeedEnvironment(),
+                            dispatcher: FeedDispatcher(environment: ItemsService()),
                             reducer: feedReducer
                         )
                 )
-                .environmentObject(HomeViewModel(with: ItemsService()))
             case .loggedOut:
                 LoginView()
             case .loading:

@@ -1,13 +1,14 @@
 import Combine
 
-var feedReducer: ReducerType<FeedState> = { state, _ in
-    Just(state)
-        .map { _state in
-            var state = _state
-            state.items = []
+var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
+    var state = _state
+    switch mutation {
+    case let .fetchItems(items):
+        state.items = items
 
-            return state
-        }
-        .eraseToAnyPublisher()
+    default: break
+    }
+
+    return Just(state).eraseToAnyPublisher()
 }
 

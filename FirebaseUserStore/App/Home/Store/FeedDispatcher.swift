@@ -1,36 +1,57 @@
 import Foundation
 import Combine
 
-struct FeedDispatcher: DispatcherType {
+struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType & EnvironmentType) {
     typealias MutationType = FeedMutation
-    typealias ServiceEnvironment = FeedEnvironment
-    
-    func dispatch(_ action: FeedAction, environment: ServiceEnvironment) -> AnyPublisher<MutationType, Never> {
+    typealias ServiceEnvironment = Service
+    typealias ServiceError = Service.ServiceError
+
+    var environment: Service
+
+    func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
         switch action {
         case .startAction:
             return Just(.startMutation).eraseToAnyPublisher()
+        case  .updateFeed:
+            return mutationFetchItems
+        case .addItem:
+            return mutationAddItem
         }
     }
+}
 
-//    private var fetchPublisher: AnyPublisher<[Item], Never> {
-//        service.fetchDishesByUserRequest()
-//            .catch { error -> AnyPublisher<[Item], Never> in
-//                print(error.localizedDescription)
-//                return Just([]).eraseToAnyPublisher()
-//            }
-//            .eraseToAnyPublisher()
-//    }
+// MARK: - Mutations
+extension FeedDispatcher {
+    private var mutationFetchItems: AnyPublisher<FeedMutation, Never> {
+        fetchPublisher
+            .map { FeedMutation.fetchItems(newItems: $0) }
+            .eraseToAnyPublisher()
+    }
 
-//  func FetchParkDescription() {
-//    guard let escapedName = landmark.park.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-//    let url = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&exintro=&explaintext&titles=" + escapedName
-//
-//    Alamofire.request(url).responseString { response in
-//      guard let responseXML = response.result.value else { return }
-//      let xml = SWXMLHash.parse(responseXML)
-//      guard let description = xml["api"]["query"]["pages"]["page"]["extract"].element?.text else { return }
-//
-//      self.commit(LandmarkMutation.SetParkDescription(landmark.id, description))
-//    }
-//  }
+    private var mutationAddItem: AnyPublisher<FeedMutation, Never> {
+        addItemPublisher
+            .map { FeedMutation.newItem(item: $0) }
+            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+            .eraseToAnyPublisher()
+    }
+
+}
+
+// MARK: - Publishers
+extension FeedDispatcher {
+    private var fetchPublisher: AnyPublisher<[Item], Never> {
+        environment.fetchDishesByUserRequest()
+            .catch { error -> AnyPublisher<[Item], Never> in
+                print(error.localizedDescription)
+                return Just([]).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private var addItemPublisher: AnyPublisher<Item, ServiceError> {
+        environment.setNewItemRequest()
+            .flatMap { environment.fetchItemByID($0).eraseToAnyPublisher() }
+            .eraseToAnyPublisher()
+            
+    }
 }

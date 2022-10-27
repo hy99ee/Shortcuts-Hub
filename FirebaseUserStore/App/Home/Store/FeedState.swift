@@ -1,9 +1,9 @@
 import SwiftUI
 import Combine
 
-struct FeedState: StateType {
+class FeedState: StateType, AlertProviderType {
     var items: [Item] = [Item(id: UUID(), userId: "ID", title: "Need to refresh", description: "Desc", source: "Source")]
-
+    @Published var error: Error?
 //    func itemBy(id: Int) -> String {
 //        items[id]
 //    }

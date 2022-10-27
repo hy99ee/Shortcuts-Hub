@@ -1,10 +1,10 @@
 import SwiftUI
 
-typealias FeedStore = StateStore<FeedState, FeedDispatcher, FeedEnvironment, AnyMiddleware>
+typealias FeedStore = StateStore<FeedState, FeedDispatcher<ItemsService>>
 struct HomeView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
     @ObservedObject var store: Store
-    @EnvironmentObject var viewModel: HomeViewModel
+//    @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showAbout = false
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
@@ -29,51 +29,38 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
                         Image(systemName: "person")
                     }
                 }
-                       .padding()
+                .padding()
             }
                    .padding(.horizontal, 16)
-            
+
             NavigationView {
-                
                     List {
                         ForEach(store.state.items) {
                             Text($0.title)
                         }
-//                        .onMove {
+                        .onMove { _, _ in
 //                            viewModel.items.move(fromOffsets: $0, toOffset: $1)
-//                        }
-//                        .onDelete {
+                        }
+                        .onDelete { _ in
 //                            viewModel.removeItem($0)
-//                        }
-                    }
-                    .refreshable {
-                        isRefresh = await viewModel.refreshItems()
+                        }
                     }
             }
-
-            
             
             .disabled(isRefresh)
             .opacity(isRefresh ? 0.5 : 1)
-
-            if store.state.items.isEmpty {
-                ButtonView(title: "New") {
-                    viewModel.setNewItem()
-                }
-                .padding()
-            }
             
-            ButtonView(title: "Update") {
-                viewModel.fetchItems()
-            }
-            .padding()
+//            ButtonView(title: "Update") {
+//                viewModel.fetchItems()
+//            }
+//            .padding()
             
             ButtonView(title: "FLUX") {
-                store.dispatch(.startAction)
+                store.dispatch(.updateFeed)
             }
             .padding()
         }
-        .modifier(AlertShowViewModifier(provider: viewModel))
+        .modifier(AlertShowViewModifier(provider: store.state))
         .sheet(isPresented: $showAbout) {
             AboutView(
                 user: service.userDetails!,
@@ -100,12 +87,10 @@ struct HomeView_Previews: PreviewProvider {
                 store:
                     StateStore(
                         state: FeedState(),
-                        dispatcher: FeedDispatcher(),
-                        environment: FeedEnvironment(),
+                        dispatcher: FeedDispatcher(environment: ItemsService()),
                         reducer: feedReducer
                     )
             )
-            .environmentObject(HomeViewModel(with: ItemsService()))
         }
     }
 }

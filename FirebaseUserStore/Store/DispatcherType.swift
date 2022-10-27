@@ -5,7 +5,9 @@ protocol DispatcherType {
     associatedtype MutationType: Mutation
     associatedtype ServiceEnvironment: EnvironmentType
 
-    func dispatch(_ action: ActionType, environment: ServiceEnvironment) -> AnyPublisher<MutationType, Never>
+    var environment: ServiceEnvironment { get }
+
+    func dispatch(_ action: ActionType) -> AnyPublisher<MutationType, Never>
 }
 
 protocol MiddlewareType {

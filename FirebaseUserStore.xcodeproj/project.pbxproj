@@ -47,6 +47,7 @@
 		3BFA9FA8288734CE00A7FF2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */; };
 		3BFA9FAB288734CE00A7FF2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */; };
 		3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */; };
+		3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsService.swift; sourceTree = "<group>"; };
+		3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,6 +371,7 @@
 			children = (
 				3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */,
 				3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */,
+				3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				3BD76EEE2899AF6C001D64E2 /* ForgotPasswordViewModel.swift in Sources */,
 				3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */,
 				3B1F669E28FC141F009225A4 /* Entities.swift in Sources */,
+				3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */,
 				3B4C44A92901B2D600CDC700 /* EnvironmentType.swift in Sources */,
