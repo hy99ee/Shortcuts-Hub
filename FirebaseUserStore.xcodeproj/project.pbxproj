@@ -48,6 +48,7 @@
 		3BFA9FAB288734CE00A7FF2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */; };
 		3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */; };
 		3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */; };
+		3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCDC44290BCAF700BF599E /* MockItemsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsService.swift; sourceTree = "<group>"; };
 		3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceError.swift; sourceTree = "<group>"; };
+		3BFCDC44290BCAF700BF599E /* MockItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockItemsService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -372,6 +374,7 @@
 				3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */,
 				3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */,
 				3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */,
+				3BFCDC44290BCAF700BF599E /* MockItemsService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
+				3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,

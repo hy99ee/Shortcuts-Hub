@@ -26,10 +26,9 @@ final class StateStore<StoreState, StoreDispatcher>:
         dispatcher
             .dispatch(action)
             .subscribe(on: queue)
-            .flatMap { [unowned self] in reducer(state, $0) }
-            .subscribe(on: queue)
-            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
+            .flatMap { [unowned self] in reducer(state, $0) }
+            .compactMap { $0 }
             .assign(to: &$state)
     }
 }

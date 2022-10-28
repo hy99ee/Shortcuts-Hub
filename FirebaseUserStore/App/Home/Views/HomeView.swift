@@ -1,6 +1,8 @@
 import SwiftUI
 
 typealias FeedStore = StateStore<FeedState, FeedDispatcher<ItemsService>>
+typealias MockFeedStore = StateStore<FeedState, FeedDispatcher<MockItemsService>>
+
 struct HomeView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
     @ObservedObject var store: Store
@@ -38,29 +40,30 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
                         ForEach(store.state.items) {
                             Text($0.title)
                         }
-                        .onMove { _, _ in
-//                            viewModel.items.move(fromOffsets: $0, toOffset: $1)
+                        .onDelete {
+                            let idsToDelete = $0.map { self.store.state.items[$0].id }
+                            guard let id = idsToDelete.first else { return }
+
+                            store.dispatch(.removeItem(id: id))
                         }
-                        .onDelete { _ in
-//                            viewModel.removeItem($0)
-                        }
+
                     }
             }
             
             .disabled(isRefresh)
             .opacity(isRefresh ? 0.5 : 1)
             
-//            ButtonView(title: "Update") {
-//                viewModel.fetchItems()
-//            }
-//            .padding()
+            ButtonView(title: "NEW") {
+                store.dispatch(.addItem)
+            }
+            .padding()
             
             ButtonView(title: "FLUX") {
                 store.dispatch(.updateFeed)
             }
             .padding()
         }
-        .modifier(AlertShowViewModifier(provider: store.state))
+        .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
         .sheet(isPresented: $showAbout) {
             AboutView(
                 user: service.userDetails!,

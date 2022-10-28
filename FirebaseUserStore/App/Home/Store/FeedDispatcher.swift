@@ -10,12 +10,12 @@ struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType 
 
     func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
         switch action {
-        case .startAction:
-            return Just(.startMutation).eraseToAnyPublisher()
         case  .updateFeed:
             return mutationFetchItems
         case .addItem:
             return mutationAddItem
+        case let .removeItem(id):
+            return mutationRemoveItem(by: id)
         }
     }
 }
@@ -25,6 +25,7 @@ extension FeedDispatcher {
     private var mutationFetchItems: AnyPublisher<FeedMutation, Never> {
         fetchPublisher
             .map { FeedMutation.fetchItems(newItems: $0) }
+            .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
 
@@ -35,16 +36,20 @@ extension FeedDispatcher {
             .eraseToAnyPublisher()
     }
 
+    private func mutationRemoveItem(by id: UUID) -> AnyPublisher<FeedMutation, Never> {
+        environment.removeItemRequest(id)
+            .map { FeedMutation.removeItem(id: $0) }
+            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+            .eraseToAnyPublisher()
+//            .sink {[unowned self] _ in self.fetchItems() }
+//            .store(in: &subscriptions)
+    }
 }
 
 // MARK: - Publishers
 extension FeedDispatcher {
-    private var fetchPublisher: AnyPublisher<[Item], Never> {
+    private var fetchPublisher: AnyPublisher<[Item], ServiceError> {
         environment.fetchDishesByUserRequest()
-            .catch { error -> AnyPublisher<[Item], Never> in
-                print(error.localizedDescription)
-                return Just([]).eraseToAnyPublisher()
-            }
             .eraseToAnyPublisher()
     }
 
