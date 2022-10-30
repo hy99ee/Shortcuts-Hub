@@ -1,10 +1,10 @@
 import Foundation
 
-protocol StateType {}
-
 protocol Mutation {}
 
 protocol Action {}
+
+protocol StateType {}
 
 typealias StateWithAlert = (StateType & WithAlertProvider)
 

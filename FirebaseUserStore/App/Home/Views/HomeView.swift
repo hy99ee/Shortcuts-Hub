@@ -5,7 +5,7 @@ typealias MockFeedStore = StateStore<FeedState, FeedDispatcher<MockItemsService>
 
 struct HomeView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
-    @ObservedObject var store: Store
+    @EnvironmentObject var store: Store
 //    @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showAbout = false
@@ -85,15 +85,14 @@ extension PresentationDetent {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(
-                service: MockSessionServiceImpl(),
-                store:
+            HomeView(service: MockSessionServiceImpl())
+                .environmentObject(
                     StateStore(
                         state: FeedState(),
                         dispatcher: FeedDispatcher(environment: ItemsService()),
                         reducer: feedReducer
                     )
-            )
+                )
         }
     }
 }
