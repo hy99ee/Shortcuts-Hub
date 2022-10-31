@@ -28,6 +28,8 @@
 		3B9DBAA928BD6502006C2407 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA828BD6502006C2407 /* FirebaseStorage */; };
 		3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */; };
 		3BAC260028E611CD00E9D3C1 /* ImageOverlayViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FF28E611CD00E9D3C1 /* ImageOverlayViewModifier.swift */; };
+		3BD6489B290D330C0029F4E9 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489A290D330C0029F4E9 /* Array.swift */; };
+		3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489C290E80040029F4E9 /* Middleware.swift */; };
 		3BD76EEA2899AF6C001D64E2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ECE2899AF6C001D64E2 /* HomeView.swift */; };
 		3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED12899AF6C001D64E2 /* RegistrationViewModel.swift */; };
 		3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED32899AF6C001D64E2 /* RegistrationService.swift */; };
@@ -70,6 +72,8 @@
 		3B8C6E2B288757850045BFA4 /* AuthServiceTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServiceTarget.swift; sourceTree = "<group>"; };
 		3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		3BAC25FF28E611CD00E9D3C1 /* ImageOverlayViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageOverlayViewModifier.swift; sourceTree = "<group>"; };
+		3BD6489A290D330C0029F4E9 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		3BD6489C290E80040029F4E9 /* Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middleware.swift; sourceTree = "<group>"; };
 		3BD76ECE2899AF6C001D64E2 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		3BD76ED12899AF6C001D64E2 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		3BD76ED32899AF6C001D64E2 /* RegistrationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
@@ -129,6 +133,7 @@
 				3B1F669F28FC1429009225A4 /* ReducerType.swift */,
 				3B1F66A128FC1457009225A4 /* DispatcherType.swift */,
 				3B4C44A82901B2D600CDC700 /* EnvironmentType.swift */,
+				3BD6489C290E80040029F4E9 /* Middleware.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -307,6 +312,7 @@
 				3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */,
 				3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */,
 				3BAC25FF28E611CD00E9D3C1 /* ImageOverlayViewModifier.swift */,
+				3BD6489A290D330C0029F4E9 /* Array.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -468,12 +474,14 @@
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */,
 				3B4C44A92901B2D600CDC700 /* EnvironmentType.swift in Sources */,
+				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3BD76EF828A1AB60001D64E2 /* HomeViewModel.swift in Sources */,
 				3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */,
 				3BD76EF12899AF6C001D64E2 /* LoginViewModel.swift in Sources */,
 				3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */,
 				3BFA9FA6288734CA00A7FF2C /* ContentView.swift in Sources */,
+				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* HomeView.swift in Sources */,
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */,
