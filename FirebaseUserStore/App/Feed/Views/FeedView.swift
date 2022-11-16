@@ -1,14 +1,12 @@
 import SwiftUI
 
-typealias FeedStore = StateStore<FeedState, FeedDispatcher<ItemsService>>
-typealias MockFeedStore = StateStore<FeedState, FeedDispatcher<MockItemsService>>
-
-struct HomeView<Service: SessionService, Store: FeedStore>: View {
+struct FeedView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
-    @ObservedObject var store: Store
+    @EnvironmentObject var store: Store
 //    @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showAbout = false
+    @State var showLoader = false
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
     
     @State var isRefresh = false
@@ -26,7 +24,7 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
                 HStack {
                     Spacer()
                     Button {
-                        showAbout.toggle()
+                        store.dispatch(.showAboutSheet(serviceData: service.makeSlice))
                     } label: {
                         Image(systemName: "person")
                     }
@@ -49,7 +47,6 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
 
                     }
             }
-            
             .disabled(isRefresh)
             .opacity(isRefresh ? 0.5 : 1)
             
@@ -64,17 +61,12 @@ struct HomeView<Service: SessionService, Store: FeedStore>: View {
             .padding()
         }
         .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
-        .sheet(isPresented: $showAbout) {
-            AboutView(
-                user: service.userDetails!,
-                logout: {
-                    service.logout()
-                    showAbout = false
-                })
-            .presentationDetents([.height(200), .medium])
+        .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
+        .onAppear {
+            store.dispatch(.updateFeed)
         }
-        .disabled(service.userDetails == nil)
     }
+        
 }
 
 
@@ -85,15 +77,14 @@ extension PresentationDetent {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            HomeView(
-                service: MockSessionServiceImpl(),
-                store:
+            FeedView(service: MockSessionServiceImpl())
+                .environmentObject(
                     StateStore(
                         state: FeedState(),
                         dispatcher: FeedDispatcher(environment: ItemsService()),
                         reducer: feedReducer
                     )
-            )
+                )
         }
     }
 }

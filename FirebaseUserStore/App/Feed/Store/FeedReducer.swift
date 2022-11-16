@@ -1,4 +1,5 @@
 import Combine
+import Foundation
 
 var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
@@ -14,6 +15,9 @@ var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
 
     case let .errorAlert(error):
         state.alertProvider.error = error
+
+    case let .showAbout(aboutData):
+        state.aboutSheetProvider.sheetView = AboutView(aboutData: aboutData)
     }
 
     return Just(state).eraseToAnyPublisher()

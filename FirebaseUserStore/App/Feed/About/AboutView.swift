@@ -2,12 +2,23 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseDatabase
 
+struct AboutViewData {
+    let user: UserDetails
+    let logout: () -> ()
+}
+
 struct AboutView: View {
     let user: UserDetails
     let logout: () -> ()
 
     private let actions = ["Logout", "Remove account"]
     private let accountImageSize = 80.0
+
+    init(aboutData: AboutViewData) {
+        self.user = aboutData.user
+        self.logout = aboutData.logout
+    }
+
     var body: some View {
         VStack {
             Text(
@@ -63,14 +74,6 @@ struct AboutView: View {
     }
 }
 
-//extension View {
-//    func scrollEnabled(_ value: Bool) -> some View {
-//        self.onAppear {
-//            UITableView.appearance().isScrollEnabled = value
-//        }
-//    }
-//}
-
 extension Color {
     static var random: Color {
         return Color(red: .random(in: 0...1),
@@ -85,6 +88,6 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var mail = "mail@mail.com"
 
     static var previews: some View {
-        AboutView(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, occupation: "Occupation"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {})
+        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, occupation: "Occupation"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}) )
     }
 }
