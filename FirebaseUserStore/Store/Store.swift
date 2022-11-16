@@ -27,10 +27,7 @@ final class StateStore<StoreState, StoreDispatcher>:
         self.state = state
         self.dispatcher = dispatcher
         self.reducer = reducer
-
-        let mock_middlewares = [mockMiddleware1, mockMiddleware3]
-        self.middlewareStore = MiddlewareStore(middlewares: mock_middlewares)
-        
+        self.middlewareStore = MiddlewareStore(middlewares: middlewares)
     }
     
     func dispatch(_ action: Action) {
@@ -45,26 +42,10 @@ final class StateStore<StoreState, StoreDispatcher>:
             .subscribe(on: queue)
             .flatMap { [unowned self] in dispatcher.dispatch($0) } // Dispatch
             .assertNoFailure()
+            .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
             .assign(to: &$state)
-    }
-    
-    lazy var mockMiddleware1: MiddlewareStore.Middleware = { _, action in
-        print("---> Middleware 1")
-        return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
-    }
-
-    lazy var mockMiddleware2: MiddlewareStore.Middleware = { _, action in
-        print("---> Middleware 2")
-//        return Just(action).setFailureType(to: MiddlewareError.self).eraseToAnyPublisher()
-        return Fail(error: MiddlewareStore.MiddlewareRedispatch.redispatch(action: FeedAction.updateFeed as! StoreDispatcher.ActionType)).eraseToAnyPublisher()
-    }
-
-    lazy var mockMiddleware3: MiddlewareStore.Middleware = { _, action in
-        print("---> Middleware 3")
-        return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
 }
 

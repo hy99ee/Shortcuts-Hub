@@ -18,8 +18,7 @@ final class MiddlewareStore<StoreState, StoreAction>: MiddlewareStoreType where 
     }
 
     typealias Middleware = (StoreState, StoreAction) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
-    
-//    let input: PassthroughSubject<(StoreState, Action), Never> = .init()
+
     let output: PassthroughSubject<StoreAction, MiddlewareRedispatch> = .init()
 
     private var middlewares: [Middleware]
@@ -34,13 +33,12 @@ final class MiddlewareStore<StoreState, StoreAction>: MiddlewareStoreType where 
             Future {[unowned self] promise in
                 middlewares.publisher
                     .flatMap { $0(state, action) }
-                    .sink(receiveCompletion: {[unowned self] in
+                    .sink(receiveCompletion: {
                         switch $0 {
                         case .finished:
                             print("Success with action: \(action)")
                             promise(.success(action))
                         case .failure(.redispatch(action: let action)):
-                            self.middlewares = []
                             print("Redispatch with action: \(action)")
                             promise(.failure(.redispatch(action: action)))
                         }

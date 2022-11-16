@@ -10,12 +10,14 @@ struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType 
 
     func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
         switch action {
-        case  .updateFeed:
+        case .updateFeed:
             return mutationFetchItems
         case .addItem:
             return mutationAddItem
         case let .removeItem(id):
             return mutationRemoveItem(by: id)
+        case let .showAboutSheet(sessionData):
+            return mutationShowAboutSheet(data: sessionData)
         }
     }
 }
@@ -41,8 +43,13 @@ extension FeedDispatcher {
             .map { FeedMutation.removeItem(id: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
-//            .sink {[unowned self] _ in self.fetchItems() }
-//            .store(in: &subscriptions)
+    }
+
+    private func mutationShowAboutSheet(data sessionData: SessionServiceSlice) -> AnyPublisher<FeedMutation, Never> {
+        guard let user = sessionData.userDetails else { return Empty(completeImmediately: true).eraseToAnyPublisher() }
+
+        return Just(FeedMutation.showAbout(aboutData: AboutViewData(user: user, logout: sessionData.logout)))
+            .eraseToAnyPublisher()
     }
 }
 

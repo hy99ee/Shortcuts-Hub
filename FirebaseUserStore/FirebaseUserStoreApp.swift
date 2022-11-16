@@ -19,12 +19,13 @@ struct Firebase_User_Account_ManagementApp: App {
         WindowGroup {
             switch sessionService.state {
             case .loggedIn:
-                HomeView(service: sessionService)
+                FeedView(service: sessionService)
                     .environmentObject(
                         StateStore(
                             state: FeedState(),
                             dispatcher: FeedDispatcher(environment: ItemsService()),
-                            reducer: feedReducer
+                            reducer: feedReducer,
+                            middlewares: [FeedStore.middleware1, FeedStore.middleware2, FeedStore.middleware3]
                         )
                     )
             case .loggedOut:

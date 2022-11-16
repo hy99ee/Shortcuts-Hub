@@ -27,12 +27,23 @@ struct UserAuthDetails {
 protocol SessionService: ObservableObject {
     var state: SessionState { get }
     var userDetails: UserDetails? { get }
+    var makeSlice: SessionServiceSlice { get }
+
     init()
+
     func logout()
 }
 
+extension SessionService {
+    var makeSlice: SessionServiceSlice { SessionServiceSlice(state: state, userDetails: userDetails, logout: logout) }
+}
+struct SessionServiceSlice {
+    let state: SessionState
+    let userDetails: UserDetails?
+    let logout: () -> ()
+}
+
 final class SessionServiceImpl: SessionService, ObservableObject {
-    
     @Published var state: SessionState = .loading
     @Published var userDetails: UserDetails?
     
@@ -55,7 +66,6 @@ final class SessionServiceImpl: SessionService, ObservableObject {
 }
 
 private extension SessionServiceImpl {
-    
     func setupObservations() {
         handler = Auth
             .auth()

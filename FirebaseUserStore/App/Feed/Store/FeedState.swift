@@ -2,8 +2,10 @@ import SwiftUI
 import Combine
 
 struct FeedState: StateWithAlert {
-    var items: [Item] = [Item(id: UUID(), userId: "ID", title: "Need to refresh", description: "Desc", source: "Source")]
+//    var items: [Item] = [Item(id: UUID(), userId: "ID", title: "Need to refresh", description: "Desc", source: "Source")]
+    var items: [Item] = []
     var alertProvider = AlertProvider()
+    var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])
 }
 
 extension FeedState {
