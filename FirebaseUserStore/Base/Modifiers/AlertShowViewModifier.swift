@@ -18,5 +18,6 @@ struct AlertShowViewModifier<AlertProvider: AlertProviderType>: ViewModifier {
                       message: Text(provider.error?.localizedDescription ?? ""),
                       dismissButton: .default(Text("OK")))
             }
+            
     }
 }

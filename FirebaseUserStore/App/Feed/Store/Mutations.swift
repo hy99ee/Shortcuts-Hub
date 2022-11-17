@@ -7,5 +7,6 @@ enum FeedMutation: Mutation {
     case removeItem(id: UUID)
 
     case errorAlert(error: Error)
-    case showAbout(aboutData: AboutViewData)
+    case showAbout(data: AboutViewData)
+    case progressViewStatus(status: ProgressViewStatus)
 }

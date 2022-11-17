@@ -5,7 +5,6 @@ struct FeedView<Service: SessionService, Store: FeedStore>: View {
     @EnvironmentObject var store: Store
 //    @EnvironmentObject var viewModel: HomeViewModel
     
-    @State var showAbout = false
     @State var showLoader = false
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
     
@@ -60,6 +59,7 @@ struct FeedView<Service: SessionService, Store: FeedStore>: View {
             }
             .padding()
         }
+        .modifier(ProgressViewModifier(provider: store.state.progressViewProvier))
         .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
         .onAppear {

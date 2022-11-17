@@ -12,7 +12,6 @@ final class StateStore<StoreState, StoreDispatcher>:
 
     var reducer: Reducer
     var dispatcher: StoreDispatcher
-//    var middlewares: [Middleware]
     var middlewareStore: MiddlewareStore!
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)
@@ -30,7 +29,7 @@ final class StateStore<StoreState, StoreDispatcher>:
         self.middlewareStore = MiddlewareStore(middlewares: middlewares)
     }
     
-    func dispatch(_ action: Action) {
+    func dispatch(_ action: Action, withMiddleware: Bool = true) {
         middlewareStore.dispatch(state: state, action: action) // Middleware
             .catch {[unowned self] in
                 switch $0 {

@@ -36,10 +36,10 @@ final class MiddlewareStore<StoreState, StoreAction>: MiddlewareStoreType where 
                     .sink(receiveCompletion: {
                         switch $0 {
                         case .finished:
-                            print("Success with action: \(action)")
+                            print("Successful finish middlewares flow with action: \(action)")
                             promise(.success(action))
                         case .failure(.redispatch(action: let action)):
-                            print("Redispatch with action: \(action)")
+                            print("Redispatch from middlewares flow with action: \(action)")
                             promise(.failure(.redispatch(action: action)))
                         }
                     }, receiveValue: { _ in })

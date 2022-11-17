@@ -16,8 +16,11 @@ var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     case let .errorAlert(error):
         state.alertProvider.error = error
 
-    case let .showAbout(aboutData):
-        state.aboutSheetProvider.sheetView = AboutView(aboutData: aboutData)
+    case let .showAbout(data):
+        state.aboutSheetProvider.sheetView = AboutView(aboutData: data)
+    
+    case let .progressViewStatus(status):
+        state.progressViewProvier.progressStatus = status
     }
 
     return Just(state).eraseToAnyPublisher()

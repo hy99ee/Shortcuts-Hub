@@ -6,16 +6,18 @@ protocol Action {}
 
 protocol StateType {}
 
-typealias StateWithAlert = (StateType & WithAlertProvider)
+enum ProgressViewStatus {
+    case start
+    case stop
 
-protocol WithAlertProvider {
-    associatedtype ProviderType: AlertProviderType
-    var alertProvider: ProviderType { get }
+    mutating func toggle() {
+        if self == .stop { self = .start }
+        else { self = .stop }
+    }
 }
 
-protocol WithSheetProvider {
-    associatedtype ProviderType: SheetProviderType
-    var sheetProvider: ProviderType { get }
+class ProgressViewProvider: ProgressViewProviderType {
+    @Published var progressStatus: ProgressViewStatus = .stop
 }
 
 class AlertProvider: AlertProviderType {

@@ -3,27 +3,6 @@ import FirebaseAuth
 import FirebaseDatabase
 import Combine
 
-enum SessionState {
-    case loggedIn
-    case loggedOut
-    case loading
-}
-
-struct UserDetails {
-    let storage: UserStorageDetails
-    let auth: UserAuthDetails
-}
-
-struct UserStorageDetails {
-    let firstName: String
-    let lastName: String
-    let occupation: String
-}
-
-struct UserAuthDetails {
-    let email: (String, isVerified: Bool)
-}
-
 protocol SessionService: ObservableObject {
     var state: SessionState { get }
     var userDetails: UserDetails? { get }
@@ -114,9 +93,32 @@ final class MockSessionServiceImpl: SessionService, ObservableObject {
         storage: UserStorageDetails(firstName: "Name", lastName: "Surname", occupation: "Occupation"),
         auth: UserAuthDetails(email: (mail: "string@mail.com", isVerified: false))
         )
+
+    var makeSlice: SessionServiceSlice { SessionServiceSlice(state: state, userDetails: nil, logout: logout) }
     
     private var handler: AuthStateDidChangeListenerHandle?
     private var subscriptions = Set<AnyCancellable>()
     
     func logout() {}
+}
+
+enum SessionState {
+    case loggedIn
+    case loggedOut
+    case loading
+}
+
+struct UserDetails {
+    let storage: UserStorageDetails
+    let auth: UserAuthDetails
+}
+
+struct UserStorageDetails {
+    let firstName: String
+    let lastName: String
+    let occupation: String
+}
+
+struct UserAuthDetails {
+    let email: (String, isVerified: Bool)
 }

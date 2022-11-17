@@ -10,17 +10,22 @@ extension FeedStore {
         return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
 
-    static let middleware2: FeedStore.MiddlewareStore.Middleware = { _, action in
-        print("---> FeedStore.middleware2 { .addItem => .updateFeed } <---")
+    static let middleware2: FeedStore.MiddlewareStore.Middleware = { state, action in
+        print("---> FeedStore.middleware2: { print isMainThread: \(Thread.isMainThread) <---}")
+        return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
+    }
+
+    static let middleware3: FeedStore.MiddlewareStore.Middleware = { _, action in
+        print("---> FeedStore.middleware3 { .mockAction => .updateFeed } <---")
         switch action {
-        case FeedAction.addItem:
+        case FeedAction.mockAction:
             return Fail(error: MiddlewareStore.MiddlewareRedispatch.redispatch(action: FeedAction.updateFeed)).eraseToAnyPublisher()
         default: return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
         }
     }
 
-    static let middleware3: FeedStore.MiddlewareStore.Middleware = { _, action in
-        print("---> FeedStore.middleware3: { .delay 3 seconds } <---")
+    static let middleware4: FeedStore.MiddlewareStore.Middleware = { _, action in
+        print("---> FeedStore.middleware4: { .delay 3 seconds } <---")
         return Just(action).delay(for: .seconds(3), scheduler: DispatchQueue.main).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
 }
