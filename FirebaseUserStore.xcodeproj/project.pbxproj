@@ -11,15 +11,20 @@
 		3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */; };
 		3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */; };
 		3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669128FC0C6C009225A4 /* FeedState.swift */; };
-		3B1F669828FC0C6C009225A4 /* Mutations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* Mutations.swift */; };
+		3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* FeedMutation.swift */; };
 		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
-		3B1F669B28FC0C6C009225A4 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* Actions.swift */; };
+		3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* FeedAction.swift */; };
 		3B1F669E28FC141F009225A4 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669D28FC141F009225A4 /* Entities.swift */; };
 		3B1F66A028FC1429009225A4 /* ReducerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669F28FC1429009225A4 /* ReducerType.swift */; };
 		3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F66A128FC1457009225A4 /* DispatcherType.swift */; };
-		3B410ACE289586D400BB487D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B410ACD289586D400BB487D /* GoogleService-Info.plist */; };
+		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
+		3B45AC05292BC862002531D8 /* RegistrationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* RegistrationDispatcher.swift */; };
+		3B45AC08292BC884002531D8 /* RegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* RegistrationStore.swift */; };
+		3B45AC0A292BC8AC002531D8 /* RegistrationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC09292BC8AC002531D8 /* RegistrationAction.swift */; };
+		3B45AC0C292BC8C7002531D8 /* RegistrationMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0B292BC8C7002531D8 /* RegistrationMutation.swift */; };
+		3B45AC0E292BC8DE002531D8 /* RegistrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0D292BC8DE002531D8 /* RegistrationState.swift */; };
+		3B45AC10292BC8F6002531D8 /* RegistrationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0F292BC8F6002531D8 /* RegistrationReducer.swift */; };
 		3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4C44A629019E5500CDC700 /* FeedReducer.swift */; };
-		3B4C44A92901B2D600CDC700 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4C44A82901B2D600CDC700 /* EnvironmentType.swift */; };
 		3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7795492926222000A70A9A /* ProgressViewModifier.swift */; };
 		3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */; };
 		3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */; };
@@ -27,16 +32,11 @@
 		3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
 		3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C6E2B288757850045BFA4 /* AuthServiceTarget.swift */; };
-		3B9DBAA328BD6502006C2407 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA228BD6502006C2407 /* FirebaseAuth */; };
-		3B9DBAA528BD6502006C2407 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA428BD6502006C2407 /* FirebaseDatabase */; };
-		3B9DBAA728BD6502006C2407 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA628BD6502006C2407 /* FirebaseFirestore */; };
-		3B9DBAA928BD6502006C2407 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA828BD6502006C2407 /* FirebaseStorage */; };
 		3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */; };
 		3BAC260028E611CD00E9D3C1 /* ImageOverlayViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FF28E611CD00E9D3C1 /* ImageOverlayViewModifier.swift */; };
 		3BD6489B290D330C0029F4E9 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489A290D330C0029F4E9 /* Array.swift */; };
 		3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489C290E80040029F4E9 /* Middleware.swift */; };
 		3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ECE2899AF6C001D64E2 /* FeedView.swift */; };
-		3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED12899AF6C001D64E2 /* RegistrationViewModel.swift */; };
 		3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED32899AF6C001D64E2 /* RegistrationService.swift */; };
 		3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED52899AF6C001D64E2 /* RegisterView.swift */; };
 		3BD76EEE2899AF6C001D64E2 /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76ED82899AF6C001D64E2 /* ForgotPasswordViewModel.swift */; };
@@ -48,10 +48,12 @@
 		3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE62899AF6C001D64E2 /* SessionService.swift */; };
 		3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */; };
 		3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EF928A1ABD2001D64E2 /* Item.swift */; };
+		3BE52495292E73E40082BA5A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52494292E73E40082BA5A /* FirebaseAuth */; };
+		3BE52497292E73E40082BA5A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52496292E73E40082BA5A /* FirebaseDatabase */; };
+		3BE52499292E73E40082BA5A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52498292E73E40082BA5A /* FirebaseFirestore */; };
+		3BE5249B292E73E40082BA5A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE5249A292E73E40082BA5A /* FirebaseStorage */; };
 		3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */; };
 		3BFA9FA6288734CA00A7FF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA5288734CA00A7FF2C /* ContentView.swift */; };
-		3BFA9FA8288734CE00A7FF2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */; };
-		3BFA9FAB288734CE00A7FF2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */; };
 		3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */; };
 		3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */; };
 		3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCDC44290BCAF700BF599E /* MockItemsService.swift */; };
@@ -62,15 +64,21 @@
 		3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceType.swift; sourceTree = "<group>"; };
 		3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDispatcher.swift; sourceTree = "<group>"; };
 		3B1F669128FC0C6C009225A4 /* FeedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
-		3B1F669228FC0C6C009225A4 /* Mutations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutations.swift; sourceTree = "<group>"; };
+		3B1F669228FC0C6C009225A4 /* FeedMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedMutation.swift; sourceTree = "<group>"; };
 		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		3B1F669528FC0C6C009225A4 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
+		3B1F669528FC0C6C009225A4 /* FeedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAction.swift; sourceTree = "<group>"; };
 		3B1F669D28FC141F009225A4 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		3B1F669F28FC1429009225A4 /* ReducerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerType.swift; sourceTree = "<group>"; };
 		3B1F66A128FC1457009225A4 /* DispatcherType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatcherType.swift; sourceTree = "<group>"; };
 		3B410ACD289586D400BB487D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
+		3B45AC04292BC862002531D8 /* RegistrationDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationDispatcher.swift; sourceTree = "<group>"; };
+		3B45AC07292BC884002531D8 /* RegistrationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStore.swift; sourceTree = "<group>"; };
+		3B45AC09292BC8AC002531D8 /* RegistrationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationAction.swift; sourceTree = "<group>"; };
+		3B45AC0B292BC8C7002531D8 /* RegistrationMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationMutation.swift; sourceTree = "<group>"; };
+		3B45AC0D292BC8DE002531D8 /* RegistrationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationState.swift; sourceTree = "<group>"; };
+		3B45AC0F292BC8F6002531D8 /* RegistrationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationReducer.swift; sourceTree = "<group>"; };
 		3B4C44A629019E5500CDC700 /* FeedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedReducer.swift; sourceTree = "<group>"; };
-		3B4C44A82901B2D600CDC700 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		3B7795492926222000A70A9A /* ProgressViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModifier.swift; sourceTree = "<group>"; };
 		3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatusPublisher.swift; sourceTree = "<group>"; };
 		3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitPublisher.swift; sourceTree = "<group>"; };
@@ -84,7 +92,6 @@
 		3BD6489A290D330C0029F4E9 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3BD6489C290E80040029F4E9 /* Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middleware.swift; sourceTree = "<group>"; };
 		3BD76ECE2899AF6C001D64E2 /* FeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
-		3BD76ED12899AF6C001D64E2 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		3BD76ED32899AF6C001D64E2 /* RegistrationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
 		3BD76ED52899AF6C001D64E2 /* RegisterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		3BD76ED82899AF6C001D64E2 /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -111,10 +118,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B9DBAA528BD6502006C2407 /* FirebaseDatabase in Frameworks */,
-				3B9DBAA928BD6502006C2407 /* FirebaseStorage in Frameworks */,
-				3B9DBAA328BD6502006C2407 /* FirebaseAuth in Frameworks */,
-				3B9DBAA728BD6502006C2407 /* FirebaseFirestore in Frameworks */,
+				3BE52497292E73E40082BA5A /* FirebaseDatabase in Frameworks */,
+				3BE5249B292E73E40082BA5A /* FirebaseStorage in Frameworks */,
+				3BE52495292E73E40082BA5A /* FirebaseAuth in Frameworks */,
+				3BE52499292E73E40082BA5A /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,8 +134,8 @@
 				3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */,
 				3B4C44A629019E5500CDC700 /* FeedReducer.swift */,
 				3B1F669128FC0C6C009225A4 /* FeedState.swift */,
-				3B1F669228FC0C6C009225A4 /* Mutations.swift */,
-				3B1F669528FC0C6C009225A4 /* Actions.swift */,
+				3B1F669228FC0C6C009225A4 /* FeedMutation.swift */,
+				3B1F669528FC0C6C009225A4 /* FeedAction.swift */,
 				3B81C4F12924C8820008BD8E /* FeedStore.swift */,
 			);
 			path = Store;
@@ -141,8 +148,20 @@
 				3B1F669D28FC141F009225A4 /* Entities.swift */,
 				3B1F669F28FC1429009225A4 /* ReducerType.swift */,
 				3B1F66A128FC1457009225A4 /* DispatcherType.swift */,
-				3B4C44A82901B2D600CDC700 /* EnvironmentType.swift */,
 				3BD6489C290E80040029F4E9 /* Middleware.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		3B633830292BB99100F7A07F /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B45AC04292BC862002531D8 /* RegistrationDispatcher.swift */,
+				3B45AC07292BC884002531D8 /* RegistrationStore.swift */,
+				3B45AC09292BC8AC002531D8 /* RegistrationAction.swift */,
+				3B45AC0B292BC8C7002531D8 /* RegistrationMutation.swift */,
+				3B45AC0D292BC8DE002531D8 /* RegistrationState.swift */,
+				3B45AC0F292BC8F6002531D8 /* RegistrationReducer.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -182,51 +201,44 @@
 				3B1F668F28FC0C6C009225A4 /* Store */,
 				3BFAB6CC28BBE9E7002488FF /* Service */,
 				3BD76EFB28A1AC79001D64E2 /* Model */,
-				3BD76ECD2899AF6C001D64E2 /* Views */,
+				3BD76ECD2899AF6C001D64E2 /* View */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
 		};
-		3BD76ECD2899AF6C001D64E2 /* Views */ = {
+		3BD76ECD2899AF6C001D64E2 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				3BD76ECE2899AF6C001D64E2 /* FeedView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		3BD76ECF2899AF6C001D64E2 /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				3BD76ED02899AF6C001D64E2 /* ViewModel */,
+				3B633830292BB99100F7A07F /* Store */,
 				3BD76ED22899AF6C001D64E2 /* Service */,
-				3BD76ED42899AF6C001D64E2 /* Views */,
+				3BD76ED42899AF6C001D64E2 /* View */,
 			);
 			path = Registration;
-			sourceTree = "<group>";
-		};
-		3BD76ED02899AF6C001D64E2 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				3BD76ED12899AF6C001D64E2 /* RegistrationViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		3BD76ED22899AF6C001D64E2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				3BD76ED32899AF6C001D64E2 /* RegistrationService.swift */,
+				3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
 		};
-		3BD76ED42899AF6C001D64E2 /* Views */ = {
+		3BD76ED42899AF6C001D64E2 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				3BD76ED52899AF6C001D64E2 /* RegisterView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		3BD76ED62899AF6C001D64E2 /* Forgot Password */ = {
@@ -464,9 +476,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BFA9FAB288734CE00A7FF2C /* Preview Assets.xcassets in Resources */,
-				3BFA9FA8288734CE00A7FF2C /* Assets.xcassets in Resources */,
-				3B410ACE289586D400BB487D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B45AC0E292BC8DE002531D8 /* RegistrationState.swift in Sources */,
 				3BAC260028E611CD00E9D3C1 /* ImageOverlayViewModifier.swift in Sources */,
 				3B1F66A028FC1429009225A4 /* ReducerType.swift in Sources */,
 				3BD76EEE2899AF6C001D64E2 /* ForgotPasswordViewModel.swift in Sources */,
@@ -485,11 +495,12 @@
 				3B1F669E28FC141F009225A4 /* Entities.swift in Sources */,
 				3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
-				3BD76EEB2899AF6C001D64E2 /* RegistrationViewModel.swift in Sources */,
-				3B4C44A92901B2D600CDC700 /* EnvironmentType.swift in Sources */,
+				3B45AC10292BC8F6002531D8 /* RegistrationReducer.swift in Sources */,
+				3B45AC05292BC862002531D8 /* RegistrationDispatcher.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */,
+				3B45AC08292BC884002531D8 /* RegistrationStore.swift in Sources */,
 				3BD76EF12899AF6C001D64E2 /* LoginViewModel.swift in Sources */,
 				3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */,
 				3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */,
@@ -501,22 +512,25 @@
 				3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */,
 				3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */,
 				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
-				3B1F669828FC0C6C009225A4 /* Mutations.swift in Sources */,
+				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */,
-				3B1F669B28FC0C6C009225A4 /* Actions.swift in Sources */,
+				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
+				3B45AC0C292BC8C7002531D8 /* RegistrationMutation.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
 				3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
+				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */,
 				3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */,
 				3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */,
 				3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */,
+				3B45AC0A292BC8AC002531D8 /* RegistrationAction.swift in Sources */,
 				3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

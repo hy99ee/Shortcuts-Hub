@@ -51,7 +51,14 @@ struct LoginView: View {
                     showRegistration.toggle()
                 }
                 .sheet(isPresented: $showRegistration) {
-                        RegisterView()
+                    RegisterView()
+                        .environmentObject(
+                            RegistrationStore(
+                                state: RegistrationState(),
+                                dispatcher: RegistrationDispatcher(environment: RegistrationService()),
+                                reducer: registrationReducer
+                            )
+                        )
                 }
             }
         }

@@ -3,7 +3,6 @@ import SwiftUI
 struct FeedView<Service: SessionService, Store: FeedStore>: View {
     var service: Service
     @EnvironmentObject var store: Store
-//    @EnvironmentObject var viewModel: HomeViewModel
     
     @State var showLoader = false
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
@@ -81,7 +80,7 @@ struct HomeView_Previews: PreviewProvider {
                 .environmentObject(
                     StateStore(
                         state: FeedState(),
-                        dispatcher: FeedDispatcher(environment: ItemsService()),
+                        dispatcher: FeedDispatcher(environment: MockItemsService()),
                         reducer: feedReducer
                     )
                 )

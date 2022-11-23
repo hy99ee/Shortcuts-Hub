@@ -6,6 +6,10 @@ protocol Action {}
 
 protocol StateType {}
 
+protocol EnvironmentType {
+    associatedtype ServiceError: Error
+}
+
 enum ProgressViewStatus {
     case start
     case stop
