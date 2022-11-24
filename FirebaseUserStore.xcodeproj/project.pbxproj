@@ -32,6 +32,10 @@
 		3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
 		3B8C6E2C288757850045BFA4 /* AuthServiceTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8C6E2B288757850045BFA4 /* AuthServiceTarget.swift */; };
+		3B920391292FC49500A1DD63 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA228BD6502006C2407 /* FirebaseAuth */; };
+		3B920392292FC49500A1DD63 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA428BD6502006C2407 /* FirebaseDatabase */; };
+		3B920393292FC49500A1DD63 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA628BD6502006C2407 /* FirebaseFirestore */; };
+		3B920394292FC49500A1DD63 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA828BD6502006C2407 /* FirebaseStorage */; };
 		3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */; };
 		3BAC260028E611CD00E9D3C1 /* ImageOverlayViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FF28E611CD00E9D3C1 /* ImageOverlayViewModifier.swift */; };
 		3BD6489B290D330C0029F4E9 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489A290D330C0029F4E9 /* Array.swift */; };
@@ -48,10 +52,6 @@
 		3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE62899AF6C001D64E2 /* SessionService.swift */; };
 		3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */; };
 		3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EF928A1ABD2001D64E2 /* Item.swift */; };
-		3BE52495292E73E40082BA5A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52494292E73E40082BA5A /* FirebaseAuth */; };
-		3BE52497292E73E40082BA5A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52496292E73E40082BA5A /* FirebaseDatabase */; };
-		3BE52499292E73E40082BA5A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE52498292E73E40082BA5A /* FirebaseFirestore */; };
-		3BE5249B292E73E40082BA5A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3BE5249A292E73E40082BA5A /* FirebaseStorage */; };
 		3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */; };
 		3BFA9FA6288734CA00A7FF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA5288734CA00A7FF2C /* ContentView.swift */; };
 		3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */; };
@@ -118,10 +118,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BE52497292E73E40082BA5A /* FirebaseDatabase in Frameworks */,
-				3BE5249B292E73E40082BA5A /* FirebaseStorage in Frameworks */,
-				3BE52495292E73E40082BA5A /* FirebaseAuth in Frameworks */,
-				3BE52499292E73E40082BA5A /* FirebaseFirestore in Frameworks */,
+				3B920394292FC49500A1DD63 /* FirebaseStorage in Frameworks */,
+				3B920393292FC49500A1DD63 /* FirebaseFirestore in Frameworks */,
+				3B920392292FC49500A1DD63 /* FirebaseDatabase in Frameworks */,
+				3B920391292FC49500A1DD63 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
