@@ -1,34 +1,26 @@
 import SwiftUI
 
 struct ForgotPasswordView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-
-    @StateObject private var viewModel = ForgotPasswordViewModelImpl(
-        service: ForgotPasswordServiceImpl()
-    )
+//    @Environment(\.presentationMode) var presentationMode
+    @StateObject var store: LoginStore
+    @State private var email = ""
     
     var body: some View {
             VStack(spacing: 16) {
             
-                InputTextFieldView(text: $viewModel.email,
+                InputTextFieldView(text: $email,
                                    placeholder: "Email",
                                    keyboardType: .emailAddress,
                                    systemImage: "envelope")
                 
                 ButtonView(title: "Send Password Reset") {
-                    viewModel.sendPasswordResetRequest()
-                    presentationMode.wrappedValue.dismiss()
+                    store.dispatch(.openForgot(store: store))
+//                    viewModel.sendPasswordResetRequest()
+//                    presentationMode.wrappedValue.dismiss()
                 }
             }
             .padding(.horizontal, 15)
             .navigationTitle("Reset Password")
             .applyClose()
-    }
-}
-
-struct ForgotPasswordView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForgotPasswordView()
     }
 }

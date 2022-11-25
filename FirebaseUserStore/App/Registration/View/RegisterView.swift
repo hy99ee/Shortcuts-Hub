@@ -1,9 +1,8 @@
 import SwiftUI
 import Combine
 
-struct RegisterView<Store: RegistrationStore>: View {
-
-    @EnvironmentObject var store: Store
+struct RegisterView: View {
+    @StateObject var store: LoginStore
     @State var newUser = RegistrationCredentials(email: "", password: "", firstName: "", lastName: "", occupation: "")
     var body: some View {
 
@@ -41,7 +40,7 @@ struct RegisterView<Store: RegistrationStore>: View {
                 }
 
                 ButtonView(title: "Sign up") {
-                    store.dispatch(.create(newUser: newUser))
+                    store.dispatch(.clickCreate(newUser: newUser))
                 }
             }
             .padding(.horizontal, 15)

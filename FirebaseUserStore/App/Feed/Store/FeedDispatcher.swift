@@ -4,10 +4,10 @@ import SwiftUI
 
 struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType & EnvironmentType) {
     typealias MutationType = FeedMutation
-    typealias ServiceEnvironment = Service
     typealias ServiceError = Service.ServiceError
 
     var environment: Service
+    private let session = SessionService.shared
 
     func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
         switch action {
@@ -17,8 +17,8 @@ struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType 
             return mutationAddItem.withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
         case let .removeItem(id):
             return mutationRemoveItem(by: id)
-        case let .showAboutSheet(sessionData):
-            return mutationShowAboutSheet(data: sessionData)
+        case .showAboutSheet:
+            return mutationShowAboutSheet
 
         case .mockAction:
             return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -48,19 +48,10 @@ extension FeedDispatcher {
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    private func mutationShowAboutSheet(data sessionData: SessionServiceSlice) -> AnyPublisher<FeedMutation, Never> {
-        guard let user = sessionData.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
+    private var mutationShowAboutSheet: AnyPublisher<FeedMutation, Never> {
+        guard let user = session.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
 
-        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: sessionData.logout)))
-            .eraseToAnyPublisher()
-    }
-// Loader
-    private var mutationStartProgressView: AnyPublisher<FeedMutation, Never> {
-        Just(FeedMutation.progressViewStatus(status: .start))
-            .eraseToAnyPublisher()
-    }
-    private var mutationStopProgressView: AnyPublisher<FeedMutation, Never> {
-        Just(FeedMutation.progressViewStatus(status: .stop))
+        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: session.logout)))
             .eraseToAnyPublisher()
     }
 }

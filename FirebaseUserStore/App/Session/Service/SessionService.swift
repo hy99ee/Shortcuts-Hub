@@ -3,7 +3,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import Combine
 
-protocol SessionService: ObservableObject {
+protocol SessionServiceType: ObservableObject {
     var state: SessionState { get }
     var userDetails: UserDetails? { get }
     var makeSlice: SessionServiceSlice { get }
@@ -13,7 +13,7 @@ protocol SessionService: ObservableObject {
     func logout()
 }
 
-extension SessionService {
+extension SessionServiceType {
     var makeSlice: SessionServiceSlice { SessionServiceSlice(state: state, userDetails: userDetails, logout: logout) }
 }
 struct SessionServiceSlice {
@@ -22,8 +22,9 @@ struct SessionServiceSlice {
     let logout: () -> ()
 }
 
-final class SessionServiceImpl: SessionService, ObservableObject {
-    @Published var state: SessionState = .loading
+final class SessionService: SessionServiceType, ObservableObject {
+    static let shared = SessionService()
+    @Published var state: SessionState = .loggedOut
     @Published var userDetails: UserDetails?
     
     private var handler: AuthStateDidChangeListenerHandle?
@@ -44,7 +45,7 @@ final class SessionServiceImpl: SessionService, ObservableObject {
     }
 }
 
-private extension SessionServiceImpl {
+private extension SessionService {
     func setupObservations() {
         handler = Auth
             .auth()
@@ -87,7 +88,7 @@ private extension SessionServiceImpl {
     }
 }
 
-final class MockSessionServiceImpl: SessionService, ObservableObject {
+final class MockSessionService: SessionServiceType, ObservableObject {
     @Published var state: SessionState = .loggedOut
     @Published var userDetails: UserDetails? = UserDetails(
         storage: UserStorageDetails(firstName: "Name", lastName: "Surname", occupation: "Occupation"),
@@ -105,7 +106,6 @@ final class MockSessionServiceImpl: SessionService, ObservableObject {
 enum SessionState {
     case loggedIn
     case loggedOut
-    case loading
 }
 
 struct UserDetails {

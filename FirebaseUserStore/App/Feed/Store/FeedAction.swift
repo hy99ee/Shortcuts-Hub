@@ -5,7 +5,7 @@ enum FeedAction: Action {
     case addItem
     case removeItem(id: UUID)
 
-    case showAboutSheet(serviceData: SessionServiceSlice)
+    case showAboutSheet
     
     case mockAction
 }

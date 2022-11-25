@@ -1,26 +1,23 @@
 import SwiftUI
 
 struct LoginView: View {
-    
-    @State private var showRegistration = false
+    @EnvironmentObject var store: LoginStore
     @State private var showForgotPassword = false
-    
-    @StateObject private var viewModel = LoginViewModelImpl(
-        service: LoginServiceImpl()
-    )
-    
+    @State private var email = ""
+    @State private var password = ""
+
     var body: some View {
         
         VStack(spacing: 16) {
             
             VStack(spacing: 16) {
                 
-                InputTextFieldView(text: $viewModel.credentials.email,
+                InputTextFieldView(text: $email,
                                    placeholder: "Email",
                                    keyboardType: .emailAddress,
                                    systemImage: "envelope")
                 
-                InputPasswordView(password: $viewModel.credentials.password,
+                InputPasswordView(password: $password,
                                   placeholder: "Password",
                                   systemImage: "lock")
             }
@@ -33,50 +30,30 @@ struct LoginView: View {
                     Text("Forgot Password?")
                 })
                 .font(.system(size: 16, weight: .bold))
-                .sheet(isPresented: $showForgotPassword) {
-                        ForgotPasswordView()
-                }
             }
             
             VStack(spacing: 16) {
                 
                 ButtonView(title: "Login") {
-                    viewModel.login()
+                    store.dispatch(.clickLogin(user: LoginCredentials(email: email, password: password)))
                 }
                 
                 ButtonView(title: "Register",
                            background: .clear,
                            foreground: .blue,
                            border: .blue) {
-                    showRegistration.toggle()
+                    store.dispatch(.openRegister(store: store))
                 }
-                .sheet(isPresented: $showRegistration) {
-                    RegisterView()
-                        .environmentObject(
-                            RegistrationStore(
-                                state: RegistrationState(),
-                                dispatcher: RegistrationDispatcher(environment: RegistrationService()),
-                                reducer: registrationReducer
-                            )
-                        )
-                }
+
             }
         }
+        
+        .modifier(SheetShowViewModifier(provider: store.state.registerProvider))
+        .modifier(SheetShowViewModifier(provider: store.state.registerProvider))
+        .modifier(ProgressViewModifier(provider: store.state.progressViewProvier))
+        .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
-        .alert(isPresented: $viewModel.hasError,
-               content: {
-                
-                if case .failed(let error) = viewModel.state {
-                    return Alert(
-                        title: Text("Error"),
-                        message: Text(error.localizedDescription))
-                } else {
-                    return Alert(
-                        title: Text("Error"),
-                        message: Text("Something went wrong"))
-                }
-         })
     }
 }
 

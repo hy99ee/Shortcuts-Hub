@@ -1,8 +1,7 @@
 import SwiftUI
 
-struct FeedView<Service: SessionService, Store: FeedStore>: View {
-    var service: Service
-    @EnvironmentObject var store: Store
+struct FeedView: View {
+    @EnvironmentObject var store: FeedStore
     
     @State var showLoader = false
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
@@ -22,7 +21,7 @@ struct FeedView<Service: SessionService, Store: FeedStore>: View {
                 HStack {
                     Spacer()
                     Button {
-                        store.dispatch(.showAboutSheet(serviceData: service.makeSlice))
+                        store.dispatch(.showAboutSheet)
                     } label: {
                         Image(systemName: "person")
                     }
@@ -76,7 +75,7 @@ extension PresentationDetent {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            FeedView(service: MockSessionServiceImpl())
+            FeedView()
                 .environmentObject(
                     StateStore(
                         state: FeedState(),

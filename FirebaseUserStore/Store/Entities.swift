@@ -20,6 +20,11 @@ enum ProgressViewStatus {
     }
 }
 
+enum ServiceResponceStatus {
+    case success
+    case failure
+}
+
 class ProgressViewProvider: ProgressViewProviderType {
     @Published var progressStatus: ProgressViewStatus = .stop
 }
@@ -32,7 +37,7 @@ class SheetProvider<SheetViewType>: SheetProviderType where SheetViewType: View 
     var presentationDetent: Set<PresentationDetent>
     @Published var sheetView: SheetViewType?
 
-    init(presentationDetent: Set<PresentationDetent>) {
+    init(presentationDetent: Set<PresentationDetent> = Set()) {
         self.presentationDetent = presentationDetent
     }
 }
