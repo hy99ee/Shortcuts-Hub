@@ -2,7 +2,6 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var store: LoginStore
-    @State private var showForgotPassword = false
     @State private var email = ""
     @State private var password = ""
 
@@ -25,7 +24,7 @@ struct LoginView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    showForgotPassword.toggle()
+                    store.dispatch(.openForgot(store: store))
                 }, label: {
                     Text("Forgot Password?")
                 })
@@ -37,6 +36,7 @@ struct LoginView: View {
                 ButtonView(title: "Login") {
                     store.dispatch(.clickLogin(user: LoginCredentials(email: email, password: password)))
                 }
+                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress))
                 
                 ButtonView(title: "Register",
                            background: .clear,
@@ -48,10 +48,9 @@ struct LoginView: View {
             }
         }
         
-        .modifier(SheetShowViewModifier(provider: store.state.registerProvider))
-        .modifier(SheetShowViewModifier(provider: store.state.registerProvider))
-        .modifier(ProgressViewModifier(provider: store.state.progressViewProvier))
-        .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
+        .modifier(SheetShowViewModifier(provider: store.state.registerSheet))
+        .modifier(SheetShowViewModifier(provider: store.state.forgotSheet))
+        .modifier(AlertShowViewModifier(provider: store.state.alert))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
     }

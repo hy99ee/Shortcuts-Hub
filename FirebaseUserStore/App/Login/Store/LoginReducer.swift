@@ -5,25 +5,32 @@ var loginReducer: ReducerType<LoginState, LoginMutation> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .showRegister(store):
-        state.registerProvider.sheetView = RegisterView(store: store)
+        state.registerSheet.sheetView = RegisterView(store: store)
 
     case let .showForgot(store):
-        state.forgotProvider.sheetView = ForgotPasswordView(store: store)
+        state.forgotSheet.sheetView = ForgotPasswordView(store: store)
 
     case .closeForgot:
-        state.forgotProvider.sheetView = nil
+        state.forgotSheet.sheetView = nil
 
-    case .login(_):
+    case .login:
         break
 
-    case .newUser:
+    case .create:
         break
+
+    case let .progressLoginStatus(status):
+        state.loginProgress.progressStatus = status
+
+    case let .progressRegisterStatus(status):
+        state.registerProgress.progressStatus = status
+
+    case let .progressForgotStatus(status):
+        state.forgotProgress.progressStatus = status
         
     case let .errorAlert(error):
-        state.alertProvider.error = error
+        state.alert.error = error
         
-    case let .progressViewStatus(status):
-        state.progressViewProvier.progressStatus = status
 
     }
 

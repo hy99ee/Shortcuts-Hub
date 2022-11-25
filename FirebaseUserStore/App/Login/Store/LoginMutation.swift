@@ -6,11 +6,14 @@ enum LoginMutation: Mutation {
     case showForgot(store: LoginStore)
     
     case login(user: LoginCredentials)
-    case newUser(user: RegistrationCredentials)
+    case create(user: RegistrationCredentials)
     
     case closeForgot
 
+    case progressLoginStatus(_ status: ProgressViewStatus)
+    case progressForgotStatus(_ status: ProgressViewStatus)
+    case progressRegisterStatus(_ status: ProgressViewStatus)
+
     case errorAlert(error: Error)
-    case progressViewStatus(status: ProgressViewStatus)
 }
 

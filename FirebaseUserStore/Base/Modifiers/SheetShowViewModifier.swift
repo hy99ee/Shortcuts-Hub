@@ -19,7 +19,5 @@ struct SheetShowViewModifier<SheetProvider: SheetProviderType>: ViewModifier {
                 self.provider.sheetView
                     .presentationDetents(self.provider.presentationDetent)
             }
-            
-        
     }
 }

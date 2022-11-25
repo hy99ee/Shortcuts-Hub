@@ -27,3 +27,30 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
         
     }
 }
+
+struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+    @ObservedObject var provider: ProgressProvider
+
+    func body(content: Content) -> some View {
+        let announcingResult = Binding<Bool>(
+            get: { self.provider.progressStatus != .stop },
+            set: { _ in self.provider.progressStatus = .stop }
+        )
+        ZStack {
+            if announcingResult.wrappedValue {
+                content.overlay {
+                    ZStack {
+                        Color(.clear).background(.blue)
+
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .scaleEffect(1.2)
+                    }
+                }.mask(content)
+            } else {
+                content
+            }
+        }
+        
+    }
+}

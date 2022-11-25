@@ -14,11 +14,14 @@ struct ForgotPasswordView: View {
                                    systemImage: "envelope")
                 
                 ButtonView(title: "Send Password Reset") {
-                    store.dispatch(.openForgot(store: store))
+                    store.dispatch(.clickForgot(email: email))
+                    
 //                    viewModel.sendPasswordResetRequest()
 //                    presentationMode.wrappedValue.dismiss()
                 }
+                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress))
             }
+            .modifier(AlertShowViewModifier(provider: store.state.alert))
             .padding(.horizontal, 15)
             .navigationTitle("Reset Password")
             .applyClose()

@@ -30,7 +30,6 @@ final class RegistrationService: RegistrationServiceType {
                 Auth.auth().createUser(
                     withEmail: credentials.email,
                     password: credentials.password) { res, error in
-                        
                         if let err = error {
                             promise(.failure(.firebaseError(err)))
                         }

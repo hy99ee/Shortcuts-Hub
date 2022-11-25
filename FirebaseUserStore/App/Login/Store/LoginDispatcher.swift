@@ -21,13 +21,13 @@ struct LoginDispatcher<Login, Registration, Forgot>:
             return Just(LoginMutation.showForgot(store: store)).eraseToAnyPublisher()
 
         case let .clickLogin(user):
-            return mutationLogin(user).withStatus(start: LoginMutation.progressViewStatus(status: .start), finish: LoginMutation.progressViewStatus(status: .stop))
+            return mutationLogin(user).withStatus(start: LoginMutation.progressLoginStatus(.start), finish: LoginMutation.progressLoginStatus(.stop))
 
         case let .clickCreate(newUser):
-            return mutationRegister(newUser).withStatus(start: LoginMutation.progressViewStatus(status: .start), finish: LoginMutation.progressViewStatus(status: .stop))
+            return mutationRegister(newUser).withStatus(start: LoginMutation.progressRegisterStatus(.start), finish: LoginMutation.progressRegisterStatus(.stop))
 
         case let .clickForgot(email):
-            return mutationForgot(email).withStatus(start: LoginMutation.progressViewStatus(status: .start), finish: LoginMutation.progressViewStatus(status: .stop))
+            return mutationForgot(email).withStatus(start: LoginMutation.progressForgotStatus(.start), finish: LoginMutation.progressForgotStatus(.stop))
 
         case .mockAction:
             return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -48,7 +48,7 @@ extension LoginDispatcher {
     private func mutationRegister(_ user: RegistrationCredentials) -> AnyPublisher<LoginMutation, Never> {
         registerPublisher(user)
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-            .map { LoginMutation.newUser(user: user) }
+            .map { LoginMutation.create(user: user) }
             .catch { Just(LoginMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

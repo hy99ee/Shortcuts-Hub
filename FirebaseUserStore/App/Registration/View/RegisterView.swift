@@ -5,13 +5,9 @@ struct RegisterView: View {
     @StateObject var store: LoginStore
     @State var newUser = RegistrationCredentials(email: "", password: "", firstName: "", lastName: "", occupation: "")
     var body: some View {
-
         NavigationView {
-
             VStack(spacing: 32) {
-
                 VStack(spacing: 16) {
-
                     InputTextFieldView(text: $newUser.email,
                                        placeholder: "Email",
                                        keyboardType: .emailAddress,
@@ -42,11 +38,12 @@ struct RegisterView: View {
                 ButtonView(title: "Sign up") {
                     store.dispatch(.clickCreate(newUser: newUser))
                 }
+                .modifier(ButtonProgressViewModifier(provider: store.state.registerProgress))
             }
             .padding(.horizontal, 15)
             .navigationTitle("Register")
             .applyClose()
-            .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
+            .modifier(AlertShowViewModifier(provider: store.state.alert))
         }
     }
 }
