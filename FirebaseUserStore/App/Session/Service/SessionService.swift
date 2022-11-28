@@ -24,27 +24,37 @@ struct SessionServiceSlice {
 
 final class SessionService: SessionServiceType, ObservableObject {
     static let shared = SessionService()
-    @Published var state: SessionState = .loggedOut
+    @Published var state: SessionState = .loading
     @Published var userDetails: UserDetails?
     
     private var handler: AuthStateDidChangeListenerHandle?
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
-        setupObservations()
+        login()
     }
-    
-    deinit {
-        guard let handler = handler else { return }
-        Auth.auth().removeStateDidChangeListener(handler)
-        print("deinit SessionServiceImpl")
+
+    func login() {
+        let auth = self.auth()
+            .retry(3)
+            .replaceError(with: nil)
+            .share()
+
+        auth
+            .compactMap { $0 }
+            .assign(to: &$userDetails)
+        
+        auth
+            .map { $0 == nil ? SessionState.loggedOut : SessionState.loggedIn }
+            .assertNoFailure()
+            .assign(to: &$state)
     }
-    
+
     func logout() {
         try? Auth.auth().signOut()
     }
 }
-
+var isError = true
 private extension SessionService {
     func setupObservations() {
         handler = Auth
@@ -86,6 +96,47 @@ private extension SessionService {
                 }
             }
     }
+
+    private func auth() -> AnyPublisher<UserDetails?, SessionServiceError>  {
+        Deferred {
+            Future { promise in
+                let currentUser = Auth.auth().currentUser
+
+                if let uid = currentUser?.uid {
+                    Database
+                        .database()
+                        .reference()
+                        .child("users")
+                        .child(uid)
+                        .observe(.value) { snapshot in
+                            
+                            guard
+                                  let value = snapshot.value as? NSDictionary,
+                                  let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
+                                  let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
+                                  let occupation = value[RegistrationKeys.occupation.rawValue] as? String,
+                                  let currentUser = currentUser else {
+                                return promise(.success(nil))
+                            }
+                            
+                            let userDetails = UserDetails(
+                                storage: UserStorageDetails(
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    occupation: occupation),
+                                auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
+                            )
+                            promise(.success(userDetails))
+                        }
+                } else {
+                    promise(.failure(.errorWithAuth))
+                }
+            }
+        }
+        .delay(for: .seconds(5), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
+     
 }
 
 final class MockSessionService: SessionServiceType, ObservableObject {
@@ -106,6 +157,7 @@ final class MockSessionService: SessionServiceType, ObservableObject {
 enum SessionState {
     case loggedIn
     case loggedOut
+    case loading
 }
 
 struct UserDetails {

@@ -40,6 +40,8 @@ struct Firebase_User_Account_ManagementApp: App {
                             ),
                             reducer: loginReducer)
                     )
+            case .loading:
+                ProgressView().scaleEffect(1.2)
             }
         }
     }
