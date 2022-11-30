@@ -79,8 +79,9 @@ struct HomeView_Previews: PreviewProvider {
                 .environmentObject(
                     StateStore(
                         state: FeedState(),
-                        dispatcher: FeedDispatcher(environment: MockItemsService()),
-                        reducer: feedReducer
+                        dispatcher: FeedDispatcher(),
+                        reducer: feedReducer,
+                        packages: FeedPackages()
                     )
                 )
         }

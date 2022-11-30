@@ -4,22 +4,23 @@ import Combine
 protocol MiddlewareStoreType {
     associatedtype StoreState: StateType
     associatedtype StoreAction: Action
+    associatedtype StorePackages: EnvironmentPackages
     associatedtype MiddlewareRedispatch: Error
 
     associatedtype Middleware = (StoreState, StoreAction) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
 
-    func dispatch(state: StoreState, action: StoreAction) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
+    func dispatch(state: StoreState, action: StoreAction, packages: StorePackages) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
 }
 
 typealias _MiddlewareStore = MiddlewareStore
-final class MiddlewareStore<StoreState, StoreAction>: MiddlewareStoreType where StoreState: StateType, StoreAction: Action {
+final class MiddlewareStore<StoreState, StoreAction, StorePackages>: MiddlewareStoreType where StoreState: StateType,
+                                                                                            StoreAction: Action,
+                                                                                            StorePackages: EnvironmentPackages {
     enum MiddlewareRedispatch: Error {
         case redispatch(action: StoreAction)
     }
 
-    typealias Middleware = (StoreState, StoreAction) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
-
-    let output: PassthroughSubject<StoreAction, MiddlewareRedispatch> = .init()
+    typealias Middleware = (StoreState, StoreAction, StorePackages) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
 
     private var middlewares: [Middleware]
     private var anyCancellables: Set<AnyCancellable> = []
@@ -28,11 +29,12 @@ final class MiddlewareStore<StoreState, StoreAction>: MiddlewareStoreType where 
         self.middlewares = middlewares
     }
 
-    func dispatch(state: StoreState, action: StoreAction) -> AnyPublisher<StoreAction, MiddlewareRedispatch>  {
+    func dispatch(state: StoreState, action: StoreAction, packages: StorePackages) -> AnyPublisher<StoreAction, MiddlewareRedispatch>  {
         Deferred {
             Future {[unowned self] promise in
+                self.anyCancellables = []
                 middlewares.publisher
-                    .flatMap { $0(state, action) }
+                    .flatMap { $0(state, action, packages) }
                     .sink(receiveCompletion: {
                         switch $0 {
                         case .finished:

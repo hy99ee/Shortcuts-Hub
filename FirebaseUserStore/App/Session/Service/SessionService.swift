@@ -31,7 +31,8 @@ final class SessionService: SessionServiceType, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
-        login()
+        setupObservations()
+//        login()
     }
 
     func login() {

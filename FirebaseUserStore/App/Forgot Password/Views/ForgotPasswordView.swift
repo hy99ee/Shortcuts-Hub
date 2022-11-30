@@ -19,7 +19,7 @@ struct ForgotPasswordView: View {
 //                    viewModel.sendPasswordResetRequest()
 //                    presentationMode.wrappedValue.dismiss()
                 }
-                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress))
+                .modifier(ButtonProgressViewModifier(provider: store.state.forgotProgress))
             }
             .modifier(AlertShowViewModifier(provider: store.state.alert))
             .padding(.horizontal, 15)

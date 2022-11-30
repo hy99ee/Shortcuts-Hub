@@ -23,8 +23,9 @@ struct Firebase_User_Account_ManagementApp: App {
                     .environmentObject(
                         StateStore(
                             state: FeedState(),
-                            dispatcher: FeedDispatcher(environment: ItemsService()),
+                            dispatcher: FeedDispatcher(),
                             reducer: feedReducer,
+                            packages: FeedPackages(),
                             middlewares: [FeedStore.middleware1, FeedStore.middleware2, FeedStore.middleware3]
                         )
                     )
@@ -33,12 +34,9 @@ struct Firebase_User_Account_ManagementApp: App {
                     .environmentObject(
                         LoginStore(
                             state: LoginState(),
-                            dispatcher: LoginDispatcher(
-                                loginService: LoginService(),
-                                registrationService: RegistrationService(),
-                                forgotService: ForgotPasswordService()
-                            ),
-                            reducer: loginReducer)
+                            dispatcher: LoginDispatcher(),
+                            reducer: loginReducer,
+                            packages: LoginPackages())
                     )
             case .loading:
                 ProgressView().scaleEffect(1.2)

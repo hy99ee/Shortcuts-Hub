@@ -2,21 +2,22 @@ import Foundation
 import Combine
 import SwiftUI
 
-struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType & EnvironmentType) {
+struct FeedDispatcher: DispatcherType {
     typealias MutationType = FeedMutation
-    typealias ServiceError = Service.ServiceError
+    
+    typealias EnvironmentPackagesType = FeedPackages
+    typealias ServiceError = EnvironmentPackagesType.PackageItemsService.ServiceError
 
-    var environment: Service
     private let session = SessionService.shared
 
-    func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
+    func dispatch(_ action: FeedAction, packages: EnvironmentPackagesType) -> AnyPublisher<MutationType, Never> {
         switch action {
         case .updateFeed:
-            return mutationFetchItems.withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            return mutationFetchItems(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
         case .addItem:
-            return mutationAddItem.withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
         case let .removeItem(id):
-            return mutationRemoveItem(by: id)
+            return mutationRemoveItem(by: id, packages: packages)
         case .showAboutSheet:
             return mutationShowAboutSheet
 
@@ -28,22 +29,23 @@ struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType 
 
 // MARK: - Mutations
 extension FeedDispatcher {
-    private var mutationFetchItems: AnyPublisher<FeedMutation, Never> {
-        fetchPublisher
+    private func mutationFetchItems(packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.fetchDishesByUserRequest()
             .map { FeedMutation.fetchItems(newItems: $0) }
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    private var mutationAddItem: AnyPublisher<FeedMutation, Never> {
-        addItemPublisher
+    private func mutationAddItem(packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.setNewItemRequest()
+            .flatMap { packages.itemsService.fetchItemByID($0).eraseToAnyPublisher() }
             .map { FeedMutation.newItem(item: $0) }
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    private func mutationRemoveItem(by id: UUID) -> AnyPublisher<FeedMutation, Never> {
-        removeItemRequest(id)
+    private func mutationRemoveItem(by id: UUID, packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.removeItemRequest(id)
             .map { FeedMutation.removeItem(id: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
@@ -52,23 +54,6 @@ extension FeedDispatcher {
         guard let user = session.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
 
         return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: session.logout)))
-            .eraseToAnyPublisher()
-    }
-}
-
-// MARK: - Publishers
-extension FeedDispatcher {
-    private var fetchPublisher: AnyPublisher<[Item], ServiceError> {
-        environment.fetchDishesByUserRequest()
-            .eraseToAnyPublisher()
-    }
-    private var addItemPublisher: AnyPublisher<Item, ServiceError> {
-        environment.setNewItemRequest()
-            .flatMap { environment.fetchItemByID($0).eraseToAnyPublisher() }
-            .eraseToAnyPublisher()
-    }
-    private func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ServiceError> {
-        environment.removeItemRequest(id)
             .eraseToAnyPublisher()
     }
 }

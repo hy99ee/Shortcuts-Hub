@@ -30,8 +30,6 @@ var loginReducer: ReducerType<LoginState, LoginMutation> = { _state, mutation in
         
     case let .errorAlert(error):
         state.alert.error = error
-        
-
     }
 
     return Just(state).eraseToAnyPublisher()

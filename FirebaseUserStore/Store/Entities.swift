@@ -10,6 +10,8 @@ protocol EnvironmentType {
     associatedtype ServiceError: Error
 }
 
+protocol EnvironmentPackages {}
+
 enum ProgressViewStatus {
     case start
     case stop

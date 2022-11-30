@@ -1,36 +1,40 @@
 import SwiftUI
 import Combine
 
-final class StateStore<StoreState, StoreDispatcher>:
+final class StateStore<StoreState, StoreDispatcher, StorePackages>:
     ObservableObject where StoreState: StateType,
-                           StoreDispatcher: DispatcherType {
-    typealias MiddlewareStore = _MiddlewareStore<StoreState, Action>
+                           StoreDispatcher: DispatcherType,
+                           StorePackages: EnvironmentPackages,
+                           StoreDispatcher.EnvironmentPackagesType == StorePackages {
+    typealias MiddlewareStore = _MiddlewareStore<StoreState, Action, StorePackages>
     typealias Action = StoreDispatcher.ActionType
     typealias Reducer = ReducerType<StoreState, StoreDispatcher.MutationType>
 
     @Published var state: StoreState
 
-    var reducer: Reducer
-    var dispatcher: StoreDispatcher
-    var middlewareStore: MiddlewareStore!
+    let reducer: Reducer
+    let dispatcher: StoreDispatcher
+    let packages: StorePackages
+    let middlewaresStore: MiddlewareStore
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)
-    private var anyCancellables: Set<AnyCancellable> = []
 
     init(
         state: StoreState,
         dispatcher: StoreDispatcher,
         reducer: @escaping Reducer,
+        packages: StorePackages,
         middlewares: [MiddlewareStore.Middleware] = []
     ) {
         self.state = state
         self.dispatcher = dispatcher
         self.reducer = reducer
-        self.middlewareStore = MiddlewareStore(middlewares: middlewares)
+        self.packages = packages
+        self.middlewaresStore = MiddlewareStore(middlewares: middlewares)
     }
     
     func dispatch(_ action: Action, withMiddleware: Bool = true) {
-        middlewareStore.dispatch(state: state, action: action) // Middleware
+        middlewaresStore.dispatch(state: state, action: action, packages: packages) // Middleware
             .catch {[unowned self] in
                 switch $0 {
                 case let MiddlewareStore.MiddlewareRedispatch.redispatch(action):
@@ -39,7 +43,7 @@ final class StateStore<StoreState, StoreDispatcher>:
                 }
             }
             .subscribe(on: queue)
-            .flatMap { [unowned self] in dispatcher.dispatch($0) } // Dispatch
+            .flatMap { [unowned self] in dispatcher.dispatch($0, packages: self.packages) } // Dispatch
             .assertNoFailure()
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
