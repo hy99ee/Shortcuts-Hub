@@ -7,7 +7,7 @@ struct FeedView: View {
     let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
     
     @State var isRefresh = false
-
+    let userDetailStore = SessionService.shared.userDetails
     var body: some View {
         mainView
     }
@@ -56,6 +56,16 @@ struct FeedView: View {
                 store.dispatch(.updateFeed)
             }
             .padding()
+
+            ButtonView(title: "LOGOUT") {
+                SessionService.shared.userDetails = nil
+            }
+            .padding()
+
+            ButtonView(title: "LOGIN") {
+                SessionService.shared.login()
+            }
+            .padding()
         }
         .modifier(ProgressViewModifier(provider: store.state.progressViewProvier))
         .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
@@ -64,8 +74,8 @@ struct FeedView: View {
             store.dispatch(.updateFeed)
         }
     }
-        
 }
+
 
 
 extension PresentationDetent {

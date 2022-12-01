@@ -3,10 +3,12 @@ import Firebase
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
-        return true
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+            FirebaseApp.configure()
+            return true
     }
 }
 
@@ -26,7 +28,7 @@ struct Firebase_User_Account_ManagementApp: App {
                             dispatcher: FeedDispatcher(),
                             reducer: feedReducer,
                             packages: FeedPackages(),
-                            middlewares: [FeedStore.middleware1, FeedStore.middleware2, FeedStore.middleware3]
+                            middlewares: [FeedStore.middleware5, FeedStore.middleware7]
                         )
                     )
             case .loggedOut:

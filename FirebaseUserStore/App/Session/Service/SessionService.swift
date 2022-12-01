@@ -31,8 +31,8 @@ final class SessionService: SessionServiceType, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
-        setupObservations()
-//        login()
+//        setupObservations()
+        login()
     }
 
     func login() {
@@ -64,10 +64,9 @@ private extension SessionService {
                 guard let self = self else { return }
                 
                 let currentUser = Auth.auth().currentUser
-                self.state = currentUser == nil ? .loggedOut : .loggedIn
+
                 
                 if let uid = currentUser?.uid {
-                    
                     Database
                         .database()
                         .reference()
@@ -81,10 +80,12 @@ private extension SessionService {
                                   let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
                                   let occupation = value[RegistrationKeys.occupation.rawValue] as? String,
                                   let currentUser = currentUser else {
+                                self?.state = .loggedOut
                                 return
                             }
 
                             DispatchQueue.main.async {
+                                self.state = .loggedIn
                                 self.userDetails = UserDetails(
                                     storage: UserStorageDetails(
                                         firstName: firstName,
@@ -134,7 +135,6 @@ private extension SessionService {
                 }
             }
         }
-        .delay(for: .seconds(5), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
      

@@ -6,6 +6,9 @@ enum FeedAction: Action {
     case removeItem(id: UUID)
 
     case showAboutSheet
-    
+    case showAlert(error: Error)
+
+    case logout
+
     case mockAction
 }

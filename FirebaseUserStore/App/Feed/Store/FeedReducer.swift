@@ -21,6 +21,9 @@ var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     
     case let .progressViewStatus(status):
         state.progressViewProvier.progressStatus = status
+
+    case .logout:
+        break
     }
 
     return Just(state).eraseToAnyPublisher()

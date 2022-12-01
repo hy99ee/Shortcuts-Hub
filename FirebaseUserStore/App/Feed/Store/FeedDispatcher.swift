@@ -20,6 +20,10 @@ struct FeedDispatcher: DispatcherType {
             return mutationRemoveItem(by: id, packages: packages)
         case .showAboutSheet:
             return mutationShowAboutSheet
+        case let .showAlert(error):
+            return mutationShowAlert(with: error)
+        case .logout:
+            return mutationLogout(packages: packages)
 
         case .mockAction:
             return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -50,10 +54,21 @@ extension FeedDispatcher {
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
+    private func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
+        Just(FeedMutation.errorAlert(error: error))
+            .eraseToAnyPublisher()
+    }
     private var mutationShowAboutSheet: AnyPublisher<FeedMutation, Never> {
         guard let user = session.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
-
         return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: session.logout)))
+            .eraseToAnyPublisher()
+    }
+    private func mutationLogout(packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {
+        Just(())
+            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
+            .handleEvents(receiveOutput: { packages.sessionService.logout() })
+            .map { FeedMutation.logout }
+//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
 }
