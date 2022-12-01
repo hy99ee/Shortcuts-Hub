@@ -50,6 +50,7 @@ struct FeedView: View {
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
+            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress))
             .padding()
             
             ButtonView(title: "FLUX") {
@@ -67,8 +68,8 @@ struct FeedView: View {
             }
             .padding()
         }
-        .modifier(ProgressViewModifier(provider: store.state.progressViewProvier))
-        .modifier(AlertShowViewModifier(provider: store.state.alertProvider))
+        .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+        .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
         .onAppear {
             store.dispatch(.updateFeed)

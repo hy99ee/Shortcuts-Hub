@@ -3,9 +3,11 @@ import Combine
 
 struct FeedState: StateType {
     var items: [Item] = []
-    var alertProvider = AlertProvider()
+    var alert = AlertProvider()
     var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])
-    var progressViewProvier = ProgressViewProvider()
+
+    var viewProgress = ProgressViewProvider()
+    var buttonProgress = ProgressViewProvider()
 }
 
 extension FeedState {

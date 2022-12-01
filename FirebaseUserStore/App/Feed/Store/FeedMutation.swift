@@ -10,5 +10,6 @@ enum FeedMutation: Mutation {
 
     case errorAlert(error: Error)
     case showAbout(data: AboutViewData)
+    case progressButtonStatus(status: ProgressViewStatus)
     case progressViewStatus(status: ProgressViewStatus)
 }

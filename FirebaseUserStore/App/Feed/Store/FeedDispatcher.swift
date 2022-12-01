@@ -8,18 +8,16 @@ struct FeedDispatcher: DispatcherType {
     typealias EnvironmentPackagesType = FeedPackages
     typealias ServiceError = EnvironmentPackagesType.PackageItemsService.ServiceError
 
-    private let session = SessionService.shared
-
     func dispatch(_ action: FeedAction, packages: EnvironmentPackagesType) -> AnyPublisher<MutationType, Never> {
         switch action {
         case .updateFeed:
             return mutationFetchItems(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
         case .addItem:
-            return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
         case let .removeItem(id):
             return mutationRemoveItem(by: id, packages: packages)
         case .showAboutSheet:
-            return mutationShowAboutSheet
+            return mutationShowAboutSheet(packages: packages)
         case let .showAlert(error):
             return mutationShowAlert(with: error)
         case .logout:
@@ -54,13 +52,13 @@ extension FeedDispatcher {
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    private func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
-        Just(FeedMutation.errorAlert(error: error))
+    private func mutationShowAboutSheet(packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {
+        guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
+        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))
             .eraseToAnyPublisher()
     }
-    private var mutationShowAboutSheet: AnyPublisher<FeedMutation, Never> {
-        guard let user = session.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
-        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: session.logout)))
+    private func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
+        Just(FeedMutation.errorAlert(error: error))
             .eraseToAnyPublisher()
     }
     private func mutationLogout(packages: EnvironmentPackagesType) -> AnyPublisher<FeedMutation, Never> {

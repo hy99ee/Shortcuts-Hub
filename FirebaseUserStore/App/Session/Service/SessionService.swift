@@ -31,8 +31,8 @@ final class SessionService: SessionServiceType, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     init() {
-//        setupObservations()
-        login()
+        setupObservations()
+//        login()
     }
 
     func login() {
@@ -73,7 +73,6 @@ private extension SessionService {
                         .child("users")
                         .child(uid)
                         .observe(.value) { [weak self] snapshot in
-                            
                             guard let self = self,
                                   let value = snapshot.value as? NSDictionary,
                                   let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
@@ -95,6 +94,8 @@ private extension SessionService {
                                 )
                             }
                         }
+                } else {
+                    self.state = .loggedOut
                 }
             }
     }

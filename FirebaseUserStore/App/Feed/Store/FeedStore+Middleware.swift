@@ -50,7 +50,7 @@ extension FeedStore {
     }
 
     static let middleware6: FeedStore.MiddlewareStore.Middleware = { _, action, packages in
-        print("---> FeedStore.middleware5: { checking session state } <---")
+        print("---> FeedStore.middleware6: { checking session state } <---")
         if packages.sessionService.state == .loggedOut {
             return Fail(error:
                             MiddlewareStore.MiddlewareRedispatch.redispatch(
@@ -63,11 +63,11 @@ extension FeedStore {
     }
 
     static let middleware7: FeedStore.MiddlewareStore.Middleware = { state, action, packages in
-        print("---> FeedStore.middleware5: { checking fullness of items } <---")
+        print("---> FeedStore.middleware7: { checking fullness of items } <---")
         if state.items == [] {
             return Fail(error:
                             MiddlewareStore.MiddlewareRedispatch.redispatch(
-                                action: FeedAction.showAlert(error: ItemsServiceError.unknownError),
+                                action: action,
                                 type: .excludeRedispatch
                             )
             ).eraseToAnyPublisher()
