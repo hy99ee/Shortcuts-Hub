@@ -47,10 +47,10 @@ struct LoginView: View {
 
             }
         }
-        
         .modifier(SheetShowViewModifier(provider: store.state.registerSheet))
         .modifier(SheetShowViewModifier(provider: store.state.forgotSheet))
         .modifier(AlertShowViewModifier(provider: store.state.alert))
+        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
     }
@@ -63,10 +63,6 @@ struct LoginView_Previews: PreviewProvider {
         }
     }
 }
-
-/**
- * Button view component
- */
 
 struct ButtonView: View {
     
@@ -111,24 +107,17 @@ struct ButtonView: View {
     }
 }
 
-
-/**
- * Textfield input view component
- */
-
 struct InputTextFieldView: View {
-    
+
     @Binding var text: String
     let placeholder: String
     let keyboardType: UIKeyboardType
     let systemImage: String?
-    
+
     private let textFieldLeading: CGFloat = 30
-    
+
     var body: some View {
-        
         VStack {
-            
             TextField(placeholder, text: $text)
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
                        minHeight: 44,
@@ -136,9 +125,7 @@ struct InputTextFieldView: View {
                 .padding(.leading, systemImage == nil ? textFieldLeading / 2 : textFieldLeading)
                 .keyboardType(keyboardType)
                 .background(
-                    
                     ZStack(alignment: .leading) {
-                        
                         if let systemImage = systemImage {
                             
                             Image(systemName: systemImage)
@@ -146,7 +133,6 @@ struct InputTextFieldView: View {
                                 .padding(.leading, 5)
                                 .foregroundColor(Color.gray.opacity(0.5))
                         }
-                        
                         RoundedRectangle(cornerRadius: 10,
                                          style: .continuous)
                             .stroke(Color.gray.opacity(0.25), lineWidth: 1)

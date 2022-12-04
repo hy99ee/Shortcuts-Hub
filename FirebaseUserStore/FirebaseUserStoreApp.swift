@@ -38,7 +38,8 @@ struct Firebase_User_Account_ManagementApp: App {
                             state: LoginState(),
                             dispatcher: LoginDispatcher(),
                             reducer: loginReducer,
-                            packages: LoginPackages())
+                            packages: LoginPackages(),
+                            middlewares: [LoginStore.middleware1, LoginStore.middleware1])
                     )
             case .loading:
                 ProgressView().scaleEffect(1.2)

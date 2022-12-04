@@ -50,6 +50,7 @@ final class StateStore<StoreState, StoreDispatcher, StorePackages>:
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
             .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
             .assign(to: &$state)
     }
 }

@@ -44,8 +44,7 @@ struct FeedView: View {
 
                     }
             }
-            .disabled(isRefresh)
-            .opacity(isRefresh ? 0.5 : 1)
+            .modifier(ProgressViewModifier(provider: store.state.viewProgress))
             
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
@@ -68,9 +67,10 @@ struct FeedView: View {
             }
             .padding()
         }
-        .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
+        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
         .onAppear {
             store.dispatch(.updateFeed)
         }

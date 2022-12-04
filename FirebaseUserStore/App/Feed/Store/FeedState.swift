@@ -8,6 +8,12 @@ struct FeedState: StateType {
 
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()
+
+    let processViewProgress: ProcessViewProvider
+
+    init() {
+        processViewProgress = ProcessViewProvider(viewProgress, buttonProgress)
+    }
 }
 
 extension FeedState {

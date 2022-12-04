@@ -2,12 +2,18 @@ import SwiftUI
 import Combine
 
 struct LoginState: StateType {
-    var registerSheet = SheetProvider<RegisterView>()
-    var forgotSheet = SheetProvider<ForgotPasswordView>()
+    let registerSheet = SheetProvider<RegisterView>()
+    let forgotSheet = SheetProvider<ForgotPasswordView>()
     
-    var alert = AlertProvider()
+    let alert = AlertProvider()
 
-    var loginProgress = ProgressViewProvider()
-    var registerProgress = ProgressViewProvider()
-    var forgotProgress = ProgressViewProvider()
+    let loginProgress = ProgressViewProvider()
+    let registerProgress = ProgressViewProvider()
+    let forgotProgress = ProgressViewProvider()
+
+    let processViewProgress: ProcessViewProvider
+
+    init() {
+        processViewProgress = ProcessViewProvider(loginProgress, registerProgress, forgotProgress)
+    }
 }
