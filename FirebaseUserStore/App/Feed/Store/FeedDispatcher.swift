@@ -66,7 +66,6 @@ extension FeedDispatcher {
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .handleEvents(receiveOutput: { packages.sessionService.logout() })
             .map { FeedMutation.logout }
-//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
 }

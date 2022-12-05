@@ -49,6 +49,7 @@ final class StateStore<StoreState, StoreDispatcher, StorePackages>:
             .assertNoFailure()
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
+            .subscribe(on: DispatchQueue.main)
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .assign(to: &$state)
