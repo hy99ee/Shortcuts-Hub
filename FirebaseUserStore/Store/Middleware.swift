@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-protocol MiddlewareStoreType {
+protocol MiddlewareRepositoryType {
     associatedtype StoreState: StateType
     associatedtype StoreAction: Action
     associatedtype StorePackages: EnvironmentPackages
@@ -12,8 +12,7 @@ protocol MiddlewareStoreType {
     func dispatch(state: StoreState, action: StoreAction, packages: StorePackages, isRedispatch: Bool) -> AnyPublisher<StoreAction, MiddlewareRedispatch>
 }
 
-typealias _MiddlewareStore = MiddlewareStore
-final class MiddlewareStore<StoreState, StoreAction, StorePackages>: MiddlewareStoreType where StoreState: StateType,
+final class MiddlewareRepository<StoreState, StoreAction, StorePackages>: MiddlewareRepositoryType where StoreState: StateType,
                                                                                             StoreAction: Action,
                                                                                             StorePackages: EnvironmentPackages {
     typealias Middleware = (StoreState, StoreAction, StorePackages) -> AnyPublisher<StoreAction, MiddlewareRedispatch>

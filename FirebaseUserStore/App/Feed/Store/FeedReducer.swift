@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
+let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .fetchItems(items):

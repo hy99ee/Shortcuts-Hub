@@ -25,10 +25,10 @@ struct Firebase_User_Account_ManagementApp: App {
                     .environmentObject(
                         StateStore(
                             state: FeedState(),
-                            dispatcher: FeedDispatcher(),
+                            dispatcher: feedDispatcher,
                             reducer: feedReducer,
                             packages: FeedPackages(),
-                            middlewares: [FeedStore.middleware5, FeedStore.middleware7]
+                            middlewares: [FeedStore.middleware5]
                         )
                     )
             case .loggedOut:
@@ -36,10 +36,11 @@ struct Firebase_User_Account_ManagementApp: App {
                     .environmentObject(
                         LoginStore(
                             state: LoginState(),
-                            dispatcher: LoginDispatcher(),
+                            dispatcher: loginDispatcher,
                             reducer: loginReducer,
                             packages: LoginPackages(),
-                            middlewares: [LoginStore.middleware1, LoginStore.middleware1])
+                            middlewares: [LoginStore.middleware1, LoginStore.middleware1]
+                            )
                     )
             case .loading:
                 ProgressView().scaleEffect(1.2)

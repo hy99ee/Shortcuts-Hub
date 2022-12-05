@@ -83,18 +83,18 @@ extension PresentationDetent {
     static let bar = Self.fraction(0.2)
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            FeedView()
-                .environmentObject(
-                    StateStore(
-                        state: FeedState(),
-                        dispatcher: FeedDispatcher(),
-                        reducer: feedReducer,
-                        packages: FeedPackages()
-                    )
-                )
-        }
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            FeedView()
+//                .environmentObject(
+//                    StateStore(
+//                        state: FeedState(),
+//                        dispatcher: loginDispatcher,
+//                        reducer: feedReducer,
+//                        packages: FeedPackages()
+//                    )
+//                )
+//        }
+//    }
+//}

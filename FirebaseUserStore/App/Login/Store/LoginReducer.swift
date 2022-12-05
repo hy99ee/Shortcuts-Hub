@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-var loginReducer: ReducerType<LoginState, LoginMutation> = { _state, mutation in
+let loginReducer: ReducerType<LoginState, LoginMutation> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .showRegister(store):

@@ -17,8 +17,7 @@
 		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
 		3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* FeedAction.swift */; };
 		3B1F669E28FC141F009225A4 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669D28FC141F009225A4 /* Entities.swift */; };
-		3B1F66A028FC1429009225A4 /* ReducerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669F28FC1429009225A4 /* ReducerType.swift */; };
-		3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F66A128FC1457009225A4 /* DispatcherType.swift */; };
+		3B1F66A028FC1429009225A4 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669F28FC1429009225A4 /* Providers.swift */; };
 		3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F789F29377EB30035BAAF /* LoginPackages.swift */; };
 		3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F78A12937880A0035BAAF /* FeedPackages.swift */; };
 		3B2F78A62938FBC40035BAAF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */; };
@@ -76,8 +75,7 @@
 		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		3B1F669528FC0C6C009225A4 /* FeedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAction.swift; sourceTree = "<group>"; };
 		3B1F669D28FC141F009225A4 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
-		3B1F669F28FC1429009225A4 /* ReducerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReducerType.swift; sourceTree = "<group>"; };
-		3B1F66A128FC1457009225A4 /* DispatcherType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatcherType.swift; sourceTree = "<group>"; };
+		3B1F669F28FC1429009225A4 /* Providers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
 		3B2F789F29377EB30035BAAF /* LoginPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPackages.swift; sourceTree = "<group>"; };
 		3B2F78A12937880A0035BAAF /* FeedPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPackages.swift; sourceTree = "<group>"; };
 		3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -167,8 +165,7 @@
 			children = (
 				3B1F669428FC0C6C009225A4 /* Store.swift */,
 				3B1F669D28FC141F009225A4 /* Entities.swift */,
-				3B1F669F28FC1429009225A4 /* ReducerType.swift */,
-				3B1F66A128FC1457009225A4 /* DispatcherType.swift */,
+				3B1F669F28FC1429009225A4 /* Providers.swift */,
 				3BD6489C290E80040029F4E9 /* Middleware.swift */,
 			);
 			path = Store;
@@ -506,7 +503,7 @@
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BAC260028E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift in Sources */,
-				3B1F66A028FC1429009225A4 /* ReducerType.swift in Sources */,
+				3B1F66A028FC1429009225A4 /* Providers.swift in Sources */,
 				3BD76EEE2899AF6C001D64E2 /* ForgotPasswordViewModel.swift in Sources */,
 				3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */,
 				3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */,
@@ -534,7 +531,6 @@
 				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
 				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
-				3B1F66A228FC1457009225A4 /* DispatcherType.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
