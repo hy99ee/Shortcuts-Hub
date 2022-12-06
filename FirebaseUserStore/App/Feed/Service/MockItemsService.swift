@@ -2,6 +2,8 @@ import Combine
 import Firebase
 
 final class MockItemsService: ItemsServiceType {
+    typealias ServiceError = ItemsServiceError
+
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
     

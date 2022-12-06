@@ -1,11 +1,19 @@
 import SwiftUI
 import Combine
 
-struct FeedState: StateWithAlert {
-//    var items: [Item] = [Item(id: UUID(), userId: "ID", title: "Need to refresh", description: "Desc", source: "Source")]
+struct FeedState: StateType {
     var items: [Item] = []
-    var alertProvider = AlertProvider()
+    var alert = AlertProvider()
     var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])
+
+    var viewProgress = ProgressViewProvider()
+    var buttonProgress = ProgressViewProvider()
+
+    let processViewProgress: ProcessViewProvider
+
+    init() {
+        processViewProgress = ProcessViewProvider(viewProgress, buttonProgress)
+    }
 }
 
 extension FeedState {

@@ -2,8 +2,8 @@ import Combine
 import Foundation
 import Firebase
 
-protocol LoginService {
-    func login(with credentials: LoginCredentials) -> AnyPublisher<Void, Error>
+protocol LoginServiceType: EnvironmentType {
+    func login(with credentials: LoginCredentials) -> AnyPublisher<Void, ServiceError>
 }
 
 struct LoginCredentials {
@@ -11,21 +11,18 @@ struct LoginCredentials {
     var password: String
 }
 
-final class LoginServiceImpl: LoginService {
+final class LoginService: LoginServiceType {
+    typealias ServiceError = LoginServiceError
     
-    func login(with credentials: LoginCredentials) -> AnyPublisher<Void, Error> {
-        
+    func login(with credentials: LoginCredentials) -> AnyPublisher<Void, ServiceError> {
         Deferred {
-            
             Future { promise in
-                
                 Auth
                     .auth()
                     .signIn(withEmail: credentials.email,
                             password: credentials.password) { res, error in
-                        
                         if let err = error {
-                            promise(.failure(err))
+                            promise(.failure(.firebaseError(err)))
                         } else {
                             promise(.success(()))
                         }

@@ -88,3 +88,6 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+.DS_Store
+*.xcbkptlist
+FirebaseUserStore.xcodeproj/xcuserdata/hy99ee.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist

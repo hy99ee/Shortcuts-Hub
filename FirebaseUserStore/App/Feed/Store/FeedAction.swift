@@ -5,14 +5,10 @@ enum FeedAction: Action {
     case addItem
     case removeItem(id: UUID)
 
-<<<<<<<< HEAD:FirebaseUserStore/App/Feed/Store/Actions.swift
-    case showAboutSheet(serviceData: SessionServiceSlice)
-========
     case showAboutSheet
     case showAlert(error: Error)
 
     case logout
 
     case mockAction
->>>>>>>> redux:FirebaseUserStore/App/Feed/Store/FeedAction.swift
 }

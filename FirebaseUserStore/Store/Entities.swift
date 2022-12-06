@@ -1,4 +1,4 @@
-import SwiftUI
+import Combine
 
 protocol Mutation {}
 
@@ -6,27 +6,12 @@ protocol Action {}
 
 protocol StateType {}
 
-typealias StateWithAlert = (StateType & WithAlertProvider)
+typealias DispatcherType<ActionType: Action, MutationType: Mutation, EnvironmentPackagesType: EnvironmentPackages> = ( _ action: ActionType, _ packages: EnvironmentPackagesType) -> AnyPublisher<MutationType, Never>
 
-protocol WithAlertProvider {
-    associatedtype ProviderType: AlertProviderType
-    var alertProvider: ProviderType { get }
+typealias ReducerType<StoreState: StateType, StoreMutation: Mutation> = (_ state: StoreState, _ mutation: StoreMutation) -> AnyPublisher<StoreState?, Never>
+
+protocol EnvironmentType {
+    associatedtype ServiceError: Error
 }
 
-protocol WithSheetProvider {
-    associatedtype ProviderType: SheetProviderType
-    var sheetProvider: ProviderType { get }
-}
-
-class AlertProvider: AlertProviderType {
-    @Published var error: Error?
-}
-
-class SheetProvider<SheetViewType>: SheetProviderType where SheetViewType: View {
-    var presentationDetent: Set<PresentationDetent>
-    @Published var sheetView: SheetViewType?
-
-    init(presentationDetent: Set<PresentationDetent>) {
-        self.presentationDetent = presentationDetent
-    }
-}
+protocol EnvironmentPackages {}

@@ -1,69 +1,62 @@
 import Foundation
 import Combine
+import SwiftUI
 
-struct FeedDispatcher<Service>: DispatcherType where Service: (ItemsServiceType & EnvironmentType) {
-    typealias MutationType = FeedMutation
-    typealias ServiceEnvironment = Service
-    typealias ServiceError = Service.ServiceError
-
-    var environment: Service
-
-    func dispatch(_ action: FeedAction) -> AnyPublisher<MutationType, Never> {
-        switch action {
-        case .updateFeed:
-            return mutationFetchItems
-        case .addItem:
-            return mutationAddItem
-        case let .removeItem(id):
-            return mutationRemoveItem(by: id)
-        case let .showAboutSheet(sessionData):
-            return mutationShowAboutSheet(data: sessionData)
-        }
+let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
+    switch action {
+    case .updateFeed:
+        return mutationFetchItems(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+    case .addItem:
+        return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
+    case let .removeItem(id):
+        return mutationRemoveItem(by: id, packages: packages)
+    case .showAboutSheet:
+        return mutationShowAboutSheet(packages: packages)
+    case let .showAlert(error):
+        return mutationShowAlert(with: error)
+    case .logout:
+        return mutationLogout(packages: packages)
+    case .mockAction:
+        return Empty(completeImmediately: true).eraseToAnyPublisher()
     }
-}
 
-// MARK: - Mutations
-extension FeedDispatcher {
-    private var mutationFetchItems: AnyPublisher<FeedMutation, Never> {
-        fetchPublisher
+
+    // MARK: - Mutations
+    func mutationFetchItems(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.fetchDishesByUserRequest()
             .map { FeedMutation.fetchItems(newItems: $0) }
+            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-
-    private var mutationAddItem: AnyPublisher<FeedMutation, Never> {
-        addItemPublisher
+    func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.setNewItemRequest()
+            .flatMap { packages.itemsService.fetchItemByID($0).eraseToAnyPublisher() }
             .map { FeedMutation.newItem(item: $0) }
+            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-
-    private func mutationRemoveItem(by id: UUID) -> AnyPublisher<FeedMutation, Never> {
-        environment.removeItemRequest(id)
+    func mutationRemoveItem(by id: UUID, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        packages.itemsService.removeItemRequest(id)
             .map { FeedMutation.removeItem(id: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-
-    private func mutationShowAboutSheet(data sessionData: SessionServiceSlice) -> AnyPublisher<FeedMutation, Never> {
-        guard let user = sessionData.userDetails else { return Empty(completeImmediately: true).eraseToAnyPublisher() }
-
-        return Just(FeedMutation.showAbout(aboutData: AboutViewData(user: user, logout: sessionData.logout)))
+    func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
+        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))
             .eraseToAnyPublisher()
     }
-}
-
-// MARK: - Publishers
-extension FeedDispatcher {
-    private var fetchPublisher: AnyPublisher<[Item], ServiceError> {
-        environment.fetchDishesByUserRequest()
+    func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
+        Just(FeedMutation.errorAlert(error: error))
             .eraseToAnyPublisher()
     }
-
-    private var addItemPublisher: AnyPublisher<Item, ServiceError> {
-        environment.setNewItemRequest()
-            .flatMap { environment.fetchItemByID($0).eraseToAnyPublisher() }
+    func mutationLogout(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        Just(())
+            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
+            .handleEvents(receiveOutput: { packages.sessionService.logout() })
+            .map { FeedMutation.logout }
             .eraseToAnyPublisher()
-            
     }
 }

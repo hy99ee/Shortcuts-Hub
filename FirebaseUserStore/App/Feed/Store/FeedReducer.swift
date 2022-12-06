@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
+let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .fetchItems(items):
@@ -14,10 +14,19 @@ var feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.removedById(id)
 
     case let .errorAlert(error):
-        state.alertProvider.error = error
+        state.alert.error = error
 
-    case let .showAbout(aboutData):
-        state.aboutSheetProvider.sheetView = AboutView(aboutData: aboutData)
+    case let .showAbout(data):
+        state.aboutSheetProvider.sheetView = AboutView(aboutData: data)
+    
+    case let .progressViewStatus(status):
+        state.viewProgress.progressStatus = status
+
+    case let .progressButtonStatus(status):
+        state.buttonProgress.progressStatus = status
+
+    case .logout:
+        break
     }
 
     return Just(state).eraseToAnyPublisher()
