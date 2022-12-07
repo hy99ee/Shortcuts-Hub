@@ -1,11 +1,11 @@
-import Foundation
 import Combine
 import SwiftUI
+import Firebase
 
 let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
     switch action {
     case .updateFeed:
-        return mutationFetchItems(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+        return mutationFetchItems(packages: packages)
     case .addItem:
         return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
     case let .removeItem(id):
@@ -23,11 +23,27 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
     // MARK: - Mutations
     func mutationFetchItems(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        packages.itemsService.fetchDishesByUserRequest()
-            .map { FeedMutation.fetchItems(newItems: $0) }
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
+        let fetchDocs = packages.itemsService.fetchQuery().share()
+
+        let fetchFromDocs = fetchDocs
+            .compactMap { $0 }
+            .flatMap { packages.itemsService.fetchItems($0.query) }
+        
+        return Publishers.Merge(
+            fetchDocs
+                .compactMap { $0 }
+                .map { FeedMutation.fetchItemsPreloaders(count: $0.count) }
+                .print("FETCH DOCS")
+                .catch { Just(FeedMutation.errorAlert(error: $0)) }
+
+                .eraseToAnyPublisher()
+                .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            , fetchFromDocs
+                .map { FeedMutation.fetchItems(newItems: $0) }
+                .print("FETCH FROM DOCS")
+                .catch { Just(FeedMutation.errorAlert(error: $0)) })
+        .eraseToAnyPublisher()
+        
     }
     func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         packages.itemsService.setNewItemRequest()

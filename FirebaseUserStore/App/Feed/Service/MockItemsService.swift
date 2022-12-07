@@ -1,7 +1,7 @@
 import Combine
 import Firebase
 
-final class MockItemsService: ItemsServiceType {
+final class MockItemsService {
     typealias ServiceError = ItemsServiceError
 
     private let db = Firestore.firestore()
@@ -10,7 +10,7 @@ final class MockItemsService: ItemsServiceType {
     let userId = Auth.auth().currentUser?.uid
     var idInc = 0
 
-    func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItemsByUserRequest() -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 

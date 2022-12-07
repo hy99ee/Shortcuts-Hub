@@ -30,7 +30,9 @@ struct FeedView: View {
             }
                    .padding(.horizontal, 16)
 
+            
             NavigationView {
+                if store.state.itemsPreloadersCount == 0 {
                     List {
                         ForEach(store.state.items) {
                             Text($0.title)
@@ -38,38 +40,39 @@ struct FeedView: View {
                         .onDelete {
                             let idsToDelete = $0.map { self.store.state.items[$0].id }
                             guard let id = idsToDelete.first else { return }
-
+                            
                             store.dispatch(.removeItem(id: id))
                         }
-
                     }
+                    .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+                } else {
+                    List {
+                        ForEach(store.state.loadItems) {
+                            Text($0.title)
+                        }
+                    }
+                }
             }
-            .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+            
+//                let items: [LoaderItem] = Array(repeating: LoaderItem(), count: store.state.itemsPreloadersCount)
+            
 
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress))
+            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .padding()
             
-            ButtonView(title: "FLUX") {
+            ButtonView(title: "UPDATE") {
                 store.dispatch(.updateFeed)
             }
-            .padding()
-
-            ButtonView(title: "LOGOUT") {
-                SessionService.shared.userDetails = nil
-            }
-            .padding()
-
-            ButtonView(title: "LOGIN") {
-                SessionService.shared.login()
-            }
+            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .padding()
         }
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
-        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
+        
         .onAppear {
             store.dispatch(.updateFeed)
         }

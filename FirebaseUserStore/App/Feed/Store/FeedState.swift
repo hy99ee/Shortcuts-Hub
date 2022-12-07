@@ -2,7 +2,16 @@ import SwiftUI
 import Combine
 
 struct FeedState: StateType {
+    var itemsPreloadersCount = 0 {
+        didSet {
+            loadItems = Array(repeating: LoaderItem(), count: itemsPreloadersCount)
+        }
+    }
+
+    var loadItems: [LoaderItem] = []
     var items: [Item] = []
+    var emptyItems = false
+    
     var alert = AlertProvider()
     var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])
 

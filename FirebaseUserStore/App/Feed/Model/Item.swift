@@ -1,6 +1,10 @@
 import Foundation
 
-struct Item: Codable, Equatable, Identifiable, Hashable {
+protocol ItemType: Codable, Equatable, Identifiable, Hashable {
+    var title: String { get }
+}
+
+struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var id: UUID
     var createAt: Date
     var modifiedAt: Date

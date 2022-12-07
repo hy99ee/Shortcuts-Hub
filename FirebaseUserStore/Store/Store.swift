@@ -33,7 +33,7 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
         self.packages = packages
         self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares)
     }
-    
+
     func dispatch(_ action: StoreAction, isRedispatch: Bool = false) {
         middlewaresRepository.dispatch(state: state, action: action, packages: packages, isRedispatch: isRedispatch) // Middleware
             .catch {[unowned self] in
@@ -56,4 +56,3 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
             .assign(to: &$state)
     }
 }
-
