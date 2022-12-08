@@ -36,7 +36,7 @@ struct LoginView: View {
                 ButtonView(title: "Login") {
                     store.dispatch(.clickLogin(user: LoginCredentials(email: email, password: password)))
                 }
-                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress))
+                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress, type: .buttonView))
                 
                 ButtonView(title: "Register",
                            background: .clear,

@@ -38,7 +38,7 @@ struct RegisterView: View {
                 ButtonView(title: "Sign up") {
                     store.dispatch(.clickCreate(newUser: newUser))
                 }
-                .modifier(ButtonProgressViewModifier(provider: store.state.registerProgress))
+                .modifier(ButtonProgressViewModifier(provider: store.state.registerProgress, type: .buttonView))
             }
             .padding(.horizontal, 15)
             .navigationTitle("Register")

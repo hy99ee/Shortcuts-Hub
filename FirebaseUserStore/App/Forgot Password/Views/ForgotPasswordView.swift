@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ForgotPasswordView: View {
-//    @Environment(\.presentationMode) var presentationMode
     @StateObject var store: LoginStore
     @State private var email = ""
     
@@ -15,11 +14,8 @@ struct ForgotPasswordView: View {
                 
                 ButtonView(title: "Send Password Reset") {
                     store.dispatch(.clickForgot(email: email))
-                    
-//                    viewModel.sendPasswordResetRequest()
-//                    presentationMode.wrappedValue.dismiss()
                 }
-                .modifier(ButtonProgressViewModifier(provider: store.state.forgotProgress))
+                .modifier(ButtonProgressViewModifier(provider: store.state.forgotProgress, type: .buttonView))
             }
             .modifier(AlertShowViewModifier(provider: store.state.alert))
             .padding(.horizontal, 15)

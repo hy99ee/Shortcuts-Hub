@@ -34,11 +34,10 @@ struct FeedView: View {
                     Spacer()
                     Image(systemName: "eyes").scaleEffect(3)
                         .padding()
-                    ButtonView(title: "UPDATE") {
+                    ImageView(systemName: "arrow.triangle.2.circlepath") {
                         store.dispatch(.updateFeed)
                     }
-                    .frame(width: 100)
-                    .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress))
+                    .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
                     .padding()
                     Spacer()
                 }
@@ -49,7 +48,7 @@ struct FeedView: View {
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
-            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress))
+            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .buttonView))
             .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .padding()
         }
