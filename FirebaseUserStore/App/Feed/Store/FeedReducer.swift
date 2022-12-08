@@ -12,14 +12,16 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.itemsPreloadersCount = 0
         state.items = items.sorted(by: FeedState.sortingByModified)
 
+    case .empty:
+        state.showEmptyView = true
+
     case let .newItem(item):
         state.items.append(item)
+        state.showEmptyView = state.items.isEmpty
 
     case let .removeItem(id):
         state.removedById(id)
-
-    case .empty:
-        state.emptyItems = true
+        state.showEmptyView = state.items.isEmpty
 
     case let .errorAlert(error):
         state.alert.error = error

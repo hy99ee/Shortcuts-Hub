@@ -10,7 +10,7 @@ struct FeedState: StateType {
 
     var loadItems: [LoaderItem] = []
     var items: [Item] = []
-    var emptyItems = false
+    var showEmptyView = false
     
     var alert = AlertProvider()
     var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])

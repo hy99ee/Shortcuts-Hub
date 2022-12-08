@@ -18,10 +18,8 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
                 Color(.systemBackground)
                     .opacity(0.5)
                     .ignoresSafeArea()
-                
+
                 ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .black))
-                    .scaleEffect(2)
             }
         }
         

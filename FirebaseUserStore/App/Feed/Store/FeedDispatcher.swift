@@ -26,16 +26,23 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         let fetchDocs = packages.itemsService.fetchQuery().share()
 
         let fetchFromDocs = fetchDocs
-            .compactMap { $0 }
+            .compactMap { docsInfo -> (query: Query, count: Int)? in
+                guard let docsInfo, docsInfo.count != 0 else { return nil }
+                return docsInfo
+            }
             .flatMap { packages.itemsService.fetchItems($0.query) }
         
         return Publishers.Merge(
             fetchDocs
-                .compactMap { $0 }
-                .map { FeedMutation.fetchItemsPreloaders(count: $0.count) }
+                .map { docs in
+                    if let docs, docs.count > 0 {
+                        return FeedMutation.fetchItemsPreloaders(count: docs.count)
+                    } else {
+                        return FeedMutation.empty
+                    }
+                }
                 .print("FETCH DOCS")
                 .catch { Just(FeedMutation.errorAlert(error: $0)) }
-
                 .eraseToAnyPublisher()
                 .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
             , fetchFromDocs
@@ -49,7 +56,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         packages.itemsService.setNewItemRequest()
             .flatMap { packages.itemsService.fetchItemByID($0).eraseToAnyPublisher() }
             .map { FeedMutation.newItem(item: $0) }
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

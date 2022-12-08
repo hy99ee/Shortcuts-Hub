@@ -13,9 +13,9 @@ final class ItemsService {
 
     func fetchQuery() -> AnyPublisher<(query: Query, count: Int)?, ItemsServiceError> {
         Deferred {
-            Future {[weak self] promise in
+            Future { promise in
                 Task { [weak self] in
-                    guard let self = self,
+                    guard let self,
                           let userId = self.userId else { return promise(.failure(ServiceError.invalidUserId)) }
 
                     let collection = self.db.collection(Self.collectionName)
@@ -23,10 +23,9 @@ final class ItemsService {
                     let countQuery = query.count
 
                     countQuery.getAggregation(source: .server) { snapshot, error in
-                        guard let snapshot, error == nil else { return promise(.failure(ServiceError.firebaseError(error!))) }
+                        guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
                         return promise(.success((query: query, count: Int(truncating: snapshot.count))))
                     }
-                    
                 }
             }
         }
@@ -45,13 +44,15 @@ final class ItemsService {
                         for document in snapshot.documents {
                             let data = document.data()
 
-                            items.append(Item(
-                                id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
-                                userId: data["userId"] as? String ?? "",
-                                title: data["title"] as? String ?? "",
-                                description: data["description"] as? String ?? "",
-                                source: ""
-                            ))
+                            items.append(
+                                Item(
+                                    id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
+                                    userId: data["userId"] as? String ?? "",
+                                    title: data["title"] as? String ?? "",
+                                    description: data["description"] as? String ?? "",
+                                    source: ""
+                                )
+                            )
                         }
                         return promise(.success(items))
                     }
@@ -63,7 +64,7 @@ final class ItemsService {
     func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
-                guard let self = self,
+                guard let self,
                       let userId = self.userId
                 else { return promise(.failure(.unknownError))}
 
@@ -100,7 +101,7 @@ final class ItemsService {
         Deferred {
             Future {[weak self] promise in
                 guard
-                    let self = self,
+                    let self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
                 self.idInc += 1
                 let document = [
@@ -124,7 +125,7 @@ final class ItemsService {
         Deferred {
             Future {[weak self] promise in
                 guard
-                    let self = self,
+                    let self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
 
                 let ref = self.db.collection(Self.collectionName)

@@ -4,9 +4,12 @@ import Foundation
 typealias FeedStore = StateStore<FeedState, FeedAction, FeedMutation, FeedPackages>
 
 extension FeedStore {
-    static let middlewareItemsCheck: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, _ in
-        print("---> FeedStore.middleware1: { print state items before mutation\nitems: \(state.items) } <---")
-        return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+    static let middlewareDeleteStatusCheck: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, _ in
+        print("---> FeedStore.middlewareDeleteStatusCheck: {  } <---")
+        switch action {
+        case let FeedAction.removeItem(id): return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+        default: return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+        }
     }
 
     static let middleware1: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, _ in

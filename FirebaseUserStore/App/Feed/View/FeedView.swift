@@ -12,7 +12,6 @@ struct FeedView: View {
         mainView
     }
     
-    @ViewBuilder
     var mainView: some View {
         VStack {
             VStack(alignment: .leading,
@@ -30,43 +29,27 @@ struct FeedView: View {
             }
                    .padding(.horizontal, 16)
 
-            
-            NavigationView {
-                if store.state.itemsPreloadersCount == 0 {
-                    List {
-                        ForEach(store.state.items) {
-                            Text($0.title)
-                        }
-                        .onDelete {
-                            let idsToDelete = $0.map { self.store.state.items[$0].id }
-                            guard let id = idsToDelete.first else { return }
-                            
-                            store.dispatch(.removeItem(id: id))
-                        }
+            if store.state.showEmptyView {
+                VStack {
+                    Spacer()
+                    Image(systemName: "eyes").scaleEffect(3)
+                        .padding()
+                    ButtonView(title: "UPDATE") {
+                        store.dispatch(.updateFeed)
                     }
-                    .modifier(ProgressViewModifier(provider: store.state.viewProgress))
-                } else {
-                    List {
-                        ForEach(store.state.loadItems) {
-                            Text($0.title)
-                        }
-                    }
+                    .frame(width: 100)
+                    .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress))
+                    .padding()
+                    Spacer()
                 }
+            } else {
+                itemsCollection()
             }
-            
-//                let items: [LoaderItem] = Array(repeating: LoaderItem(), count: store.state.itemsPreloadersCount)
-            
 
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress))
-            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
-            .padding()
-            
-            ButtonView(title: "UPDATE") {
-                store.dispatch(.updateFeed)
-            }
             .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .padding()
         }
@@ -77,7 +60,36 @@ struct FeedView: View {
             store.dispatch(.updateFeed)
         }
     }
-        
+
+    @ViewBuilder
+    private func itemsCollection() -> some View {
+        NavigationView {
+            if store.state.itemsPreloadersCount == 0 {
+                List {
+                    ForEach(store.state.items) {
+                        Text($0.title)
+                    }
+                    .onDelete {
+                        let idsToDelete = $0.map { self.store.state.items[$0].id }
+                        guard let id = idsToDelete.first else { return }
+                        
+                        store.dispatch(.removeItem(id: id))
+                    }
+                }
+                .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+                .refreshable {
+                    store.dispatch(.updateFeed)
+                }
+            } else {
+                List {
+                    ForEach(store.state.loadItems) { _ in
+                        ProgressView()
+                            .opacity(0.5)
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension PresentationDetent {
