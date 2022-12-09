@@ -12,7 +12,7 @@ final class StoreRepository {
         middlewares: [LoginStore.middleware1, LoginStore.middleware1]
         )
 
-    lazy var feedStore = StateStore(
+    lazy var feedStore = FeedStore(
         state: FeedState(),
         dispatcher: feedDispatcher,
         reducer: feedReducer,

@@ -8,6 +8,7 @@ struct FeedView: View {
     
     @State var isRefresh = false
     let userDetailStore = SessionService.shared.userDetails
+
     var body: some View {
         mainView
     }
@@ -42,7 +43,7 @@ struct FeedView: View {
                     Spacer()
                 }
             } else {
-                itemsCollection()
+                newItemsCollection()
             }
 
             ButtonView(title: "NEW") {
@@ -89,8 +90,53 @@ struct FeedView: View {
             }
         }
     }
+
+    @ViewBuilder
+    private func newItemsCollection() -> some View {
+        FeedCollectionView(store: store)
+            .padding()
+        
+    }
 }
 
 extension PresentationDetent {
     static let bar = Self.fraction(0.2)
+}
+
+
+struct FeedCollectionView: View {
+    @State var store: FeedStore
+    
+    var intt = 0
+    var columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
+
+    var body: some View {
+        NavigationView {
+            ScrollView(showsIndicators: false) {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    if store.state.itemsPreloadersCount == 0 {
+                        ForEach(store.state.items) {
+                            FeedCellView(title: $0.title)
+                                .frame(height: 150)
+                        }
+                    } else {
+                        ForEach(store.state.loadItems, id: \.id) {
+                            FeedCellView(title: $0.title)
+                                .frame(height: 150)
+                        }
+                    }
+                }
+            }
+            .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+            .refreshable {
+                store.dispatch(.updateFeed)
+            }
+        }
+    }
+    
+    
 }

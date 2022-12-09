@@ -42,3 +42,8 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     return Just(state).eraseToAnyPublisher()
 }
 
+//let mockFeedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
+//    var state = _state
+//
+//    return Just(state).eraseToAnyPublisher()
+//}

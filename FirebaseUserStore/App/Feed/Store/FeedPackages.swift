@@ -5,6 +5,4 @@ class FeedPackages: EnvironmentPackages {
 
     lazy var itemsService = PackageItemsService()
     lazy var sessionService = SessionService.shared
-
-//    var subscribtions = Set<AnyCancellable>()
 }
