@@ -12,7 +12,13 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.itemsPreloadersCount = 0
         state.items = items.sorted(by: FeedState.sortingByModified)
 
+    case .clean:
+        state.itemsPreloadersCount = 0
+        state.items = []
+
     case .empty:
+        state.itemsPreloadersCount = 0
+        state.items = []
         state.showEmptyView = true
 
     case let .newItem(item):

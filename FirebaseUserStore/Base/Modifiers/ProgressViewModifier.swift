@@ -82,7 +82,7 @@ struct FeedPreloaderProgressViewModifier: ViewModifier {
         content
             .opacity(isAnimating ? 0.5 : 1)
             .onAppear {
-                withAnimation(.easeIn(duration: 1).repeatForever()) {
+                withAnimation(.easeIn(duration: 0.5).repeatForever()) {
                     isAnimating.toggle()
                 }
             }

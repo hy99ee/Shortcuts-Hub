@@ -99,10 +99,24 @@ extension PresentationDetent {
 
 
 struct FeedCollectionView: View {
-    @State var store: FeedStore
-    @State private var animating = false
+    var store: FeedStore
+    @State private var isAnimating = false
 
     private let columns = Array(repeating: GridItem(.flexible()), count: 3)
+    
+    private let updateListener = PassthroughSubject<Void, Never>()
+    private var subscriptions = Set<AnyCancellable>()
+    
+    init(store: FeedStore) {
+        self.store = store
+
+        self.store.$state
+            .filter { $0.itemsPreloadersCount != 0 && !$0.items.isEmpty }
+            .print("_STORE_STATE")
+            .map { _ in () }
+            .subscribe(updateListener)
+            .store(in: &subscriptions)
+    }
 
     var body: some View {
         NavigationView {
@@ -111,30 +125,38 @@ struct FeedCollectionView: View {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
                             FeedCellView(title: store.state.items[index].title)
-                                .opacity(animating ? 1 : 0)
-                                .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: animating)
+                                .padding(3)
+                                .opacity(isAnimating ? 1 : 0)
+                                .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
                         }
                     }
                 }
-                .background(.red)
                 .modifier(ProgressViewModifier(provider: store.state.viewProgress))
                 .refreshable {
-                    store.dispatch(.updateFeed)
+                    await asyncUpdate()
                 }
-                .onAppear { animating = true }
+                .onAppear { isAnimating = true }
             } else {
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 16) {
+                    LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(store.state.loadItems, id: \.id) { _ in
                             LoaderFeedCellView()
+                                .padding(3)
                         }
                     }
                 }
                 .modifier(FeedPreloaderProgressViewModifier())
-                .onAppear { animating = false }
+                .onAppear { isAnimating = false }
             }
         }
+        .padding(12)
         .cornerRadius(12)
-        .padding()
+    }
+
+    func asyncUpdate() async -> Void {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            store.dispatch(.updateFeed)
+        }
+        try! await updateListener.eraseToAnyPublisher().async()
     }
 }
