@@ -12,17 +12,17 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
             get: { self.provider.progressStatus != .stop },
             set: { _ in self.provider.progressStatus = .stop }
         )
-        ZStack {
+        if announcingResult.wrappedValue {
             content
-            if announcingResult.wrappedValue {
-                Color(.systemBackground)
-                    .opacity(0.5)
-                    .ignoresSafeArea()
-
-                ProgressView()
-            }
+                .opacity(0.5)
+                .overlay {
+                    ZStack {
+                        ProgressView()
+                    }
+                }
+        } else {
+            content
         }
-        
     }
 }
 
@@ -59,20 +59,33 @@ struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
             get: { self.provider.progressStatus != .stop },
             set: { _ in self.provider.progressStatus = .stop }
         )
-        ZStack {
-            if announcingResult.wrappedValue {
-                content.overlay {
-                    ZStack {
-                        Color(.clear).background(backgroundColor)
-
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
-                            .scaleEffect(scale)
-                    }
-                }.mask(content)
-            } else {
-                content
-            }
+        if announcingResult.wrappedValue {
+            content.overlay {
+                ZStack {
+                    Color(.clear).background(backgroundColor)
+                    
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
+                        .scaleEffect(scale)
+                }
+            }.mask(content)
+        } else {
+            content
         }
     }
 }
+
+struct FeedPreloaderProgressViewModifier: ViewModifier {
+    @State private var isAnimating = false
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(isAnimating ? 0.5 : 1)
+            .onAppear {
+                withAnimation(.easeIn(duration: 1).repeatForever()) {
+                    isAnimating.toggle()
+                }
+            }
+    }
+}
+

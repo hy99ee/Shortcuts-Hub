@@ -1,5 +1,5 @@
 import Combine
-import Foundation
+import SwiftUI
 
 let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
@@ -20,7 +20,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.showEmptyView = state.items.isEmpty
 
     case let .removeItem(id):
-        state.removedById(id)
+        state.items.removeAll { $0.id == id }
         state.showEmptyView = state.items.isEmpty
 
     case let .errorAlert(error):
@@ -41,9 +41,3 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
 
     return Just(state).eraseToAnyPublisher()
 }
-
-//let mockFeedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
-//    var state = _state
-//
-//    return Just(state).eraseToAnyPublisher()
-//}

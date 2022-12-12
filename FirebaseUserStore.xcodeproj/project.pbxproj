@@ -23,6 +23,7 @@
 		3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F789F29377EB30035BAAF /* LoginPackages.swift */; };
 		3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F78A12937880A0035BAAF /* FeedPackages.swift */; };
 		3B2F78A62938FBC40035BAAF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */; };
+		3B306D4B2945DB2D00BEC321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */; };
 		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
 		3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* LoginDispatcher.swift */; };
 		3B45AC08292BC884002531D8 /* LoginStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* LoginStore+Middleware.swift */; };
@@ -44,7 +45,6 @@
 		3B920393292FC49500A1DD63 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA628BD6502006C2407 /* FirebaseFirestore */; };
 		3B920394292FC49500A1DD63 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA828BD6502006C2407 /* FirebaseStorage */; };
 		3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */; };
-		3BAC260028E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC25FF28E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift */; };
 		3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0A333292FEFAA008B348D /* LoginServiceError.swift */; };
 		3BD6489B290D330C0029F4E9 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489A290D330C0029F4E9 /* Array.swift */; };
 		3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6489C290E80040029F4E9 /* Middleware.swift */; };
@@ -101,7 +101,6 @@
 		3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
 		3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		3BAC25FF28E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubviewOverlayViewModifier.swift; sourceTree = "<group>"; };
 		3BC0A333292FEFAA008B348D /* LoginServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginServiceError.swift; sourceTree = "<group>"; };
 		3BD6489A290D330C0029F4E9 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3BD6489C290E80040029F4E9 /* Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Middleware.swift; sourceTree = "<group>"; };
@@ -350,7 +349,6 @@
 			children = (
 				3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */,
 				3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */,
-				3BAC25FF28E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift */,
 				3BD6489A290D330C0029F4E9 /* Array.swift */,
 				3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */,
 				3B7795492926222000A70A9A /* ProgressViewModifier.swift */,
@@ -487,6 +485,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B306D4B2945DB2D00BEC321 /* Assets.xcassets in Resources */,
 				3B2F78A62938FBC40035BAAF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -502,7 +501,6 @@
 				3B07BB942940D3090088B38B /* StoreRepository.swift in Sources */,
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */,
-				3BAC260028E611CD00E9D3C1 /* SubviewOverlayViewModifier.swift in Sources */,
 				3B1F66A028FC1429009225A4 /* Providers.swift in Sources */,
 				3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */,
 				3BAC25FE28E5B8FA00E9D3C1 /* AboutView.swift in Sources */,
