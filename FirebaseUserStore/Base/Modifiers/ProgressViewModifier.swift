@@ -12,17 +12,51 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
             get: { self.provider.progressStatus != .stop },
             set: { _ in self.provider.progressStatus = .stop }
         )
+        content
+            .opacity(announcingResult.wrappedValue ? 0.5 : 1)
+            .overlay {
+                if announcingResult.wrappedValue {
+                    ZStack {
+                        HDotsProgress()
+                    }
+                }
+            }
+    }
+}
+
+struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+    @ObservedObject var provider: ProgressProvider
+
+    func body(content: Content) -> some View {
+        let announcingResult = Binding<Bool>(
+            get: { self.provider.progressStatus != .stop },
+            set: { _ in self.provider.progressStatus = .stop }
+        )
         if announcingResult.wrappedValue {
             content
                 .opacity(0.5)
-                .overlay {
-                    ZStack {
-                        ProgressView()
-                    }
-                }
+                .disabled(true)
         } else {
             content
         }
+    }
+}
+
+struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+    @State private var isAnimating = false
+    @ObservedObject var provider: ProgressProvider
+    let animation: Animation
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(isAnimating ? 0.5 : 1)
+            .onReceive(provider.objectWillChange) { _ in
+//                if self.provider.progressStatus == .stop {
+                    withAnimation(animation) {
+                        isAnimating.toggle()
+                    }
+//                }
+            }
     }
 }
 
@@ -75,7 +109,7 @@ struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
     }
 }
 
-struct FeedPreloaderProgressViewModifier: ViewModifier {
+struct StaticPreloaderViewModifier: ViewModifier {
     @State private var isAnimating = false
 
     func body(content: Content) -> some View {
@@ -88,4 +122,3 @@ struct FeedPreloaderProgressViewModifier: ViewModifier {
             }
     }
 }
-

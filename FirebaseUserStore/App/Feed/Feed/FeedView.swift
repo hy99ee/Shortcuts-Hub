@@ -99,24 +99,11 @@ extension PresentationDetent {
 
 
 struct FeedCollectionView: View {
-    var store: FeedStore
+    let store: FeedStore
     @State private var isAnimating = false
 
     private let columns = Array(repeating: GridItem(.flexible()), count: 3)
-    
-    private let updateListener = PassthroughSubject<Void, Never>()
-    private var subscriptions = Set<AnyCancellable>()
-    
-    init(store: FeedStore) {
-        self.store = store
-
-        self.store.$state
-            .filter { $0.itemsPreloadersCount != 0 && !$0.items.isEmpty }
-            .print("_STORE_STATE")
-            .map { _ in () }
-            .subscribe(updateListener)
-            .store(in: &subscriptions)
-    }
+    private let progress = HDotsProgress()
 
     var body: some View {
         NavigationView {
@@ -131,11 +118,17 @@ struct FeedCollectionView: View {
                         }
                     }
                 }
-                .modifier(ProgressViewModifier(provider: store.state.viewProgress))
+                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
                 .refreshable {
                     await asyncUpdate()
                 }
-                .onAppear { isAnimating = true }
+                .onAppear {
+                    isAnimating = true
+                    UIRefreshControl.appearance().tintColor = UIColor(.blue)
+                    
+//                    UIRefreshControl.appearance().backgroundColor = .green.withAlphaComponent(0.5)
+//                    UIRefreshControl.appearance().attributedTitle = try? NSAttributedString(markdown: "**Some** cool *title*")
+                }
             } else {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
@@ -145,18 +138,21 @@ struct FeedCollectionView: View {
                         }
                     }
                 }
-                .modifier(FeedPreloaderProgressViewModifier())
+                .modifier(StaticPreloaderViewModifier())
                 .onAppear { isAnimating = false }
             }
         }
+        
         .padding(12)
-        .cornerRadius(12)
+        .cornerRadius(22)
     }
 
     func asyncUpdate() async -> Void {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            store.dispatch(.updateFeed)
-        }
-        try! await updateListener.eraseToAnyPublisher().async()
+        store.dispatch(.updateFeed)
+
+        try! await self.store.objectWillChange
+            .filter { self.store.state.viewProgress.progressStatus == .stop }
+            .eraseToAnyPublisher()
+            .async()
     }
 }

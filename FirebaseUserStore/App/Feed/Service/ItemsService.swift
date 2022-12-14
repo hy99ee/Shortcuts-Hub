@@ -29,6 +29,7 @@ final class ItemsService {
                 }
             }
         }
+        .delay(for: .seconds(3), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 

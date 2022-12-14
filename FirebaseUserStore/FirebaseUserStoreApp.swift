@@ -29,7 +29,7 @@ struct Firebase_User_Account_ManagementApp: App {
                 LoginView()
                     .environmentObject(storeRepository.loginStore)
             case .loading:
-                ProgressView().scaleEffect(1.2)
+                HDotsProgress().scaleEffect(2)
             }
         }
     }
