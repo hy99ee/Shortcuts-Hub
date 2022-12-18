@@ -33,6 +33,7 @@
 		3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0F292BC8F6002531D8 /* LoginReducer.swift */; };
 		3B4B8F5B293B922D007B4DC9 /* ProcessViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */; };
 		3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4C44A629019E5500CDC700 /* FeedReducer.swift */; };
+		3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */; };
 		3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */; };
 		3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7795492926222000A70A9A /* ProgressViewModifier.swift */; };
 		3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */; };
@@ -94,6 +95,7 @@
 		3B45AC0F292BC8F6002531D8 /* LoginReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReducer.swift; sourceTree = "<group>"; };
 		3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessViewModifier.swift; sourceTree = "<group>"; };
 		3B4C44A629019E5500CDC700 /* FeedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedReducer.swift; sourceTree = "<group>"; };
+		3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteModifier.swift; sourceTree = "<group>"; };
 		3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceError.swift; sourceTree = "<group>"; };
 		3B7795492926222000A70A9A /* ProgressViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModifier.swift; sourceTree = "<group>"; };
 		3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatusPublisher.swift; sourceTree = "<group>"; };
@@ -152,7 +154,7 @@
 			path = Repos;
 			sourceTree = "<group>";
 		};
-		3B0E36BB293E2B57009A7DCE /* BaseViews */ = {
+		3B0E36BB293E2B57009A7DCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */,
@@ -161,7 +163,7 @@
 				3BB7861A294886D400012DB0 /* Progress.swift */,
 				3BB7861C294893C600012DB0 /* ScrollView.swift */,
 			);
-			path = BaseViews;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3B1F668F28FC0C6C009225A4 /* Store */ = {
@@ -343,6 +345,7 @@
 		3BD76EE72899AF6C001D64E2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				3B0E36BB293E2B57009A7DCE /* Views */,
 				3BD76EE82899AF6C001D64E2 /* Modifiers */,
 				3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */,
 				3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */,
@@ -359,6 +362,7 @@
 				3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */,
 				3B7795492926222000A70A9A /* ProgressViewModifier.swift */,
 				3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */,
+				3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -392,7 +396,6 @@
 			isa = PBXGroup;
 			children = (
 				3B07BB922940D2B90088B38B /* Repos */,
-				3B0E36BB293E2B57009A7DCE /* BaseViews */,
 				3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */,
 				3B1F669C28FC1404009225A4 /* Store */,
 				3B77A13528F44BDB007710E2 /* Info.plist */,
@@ -546,6 +549,7 @@
 				3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
+				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */,

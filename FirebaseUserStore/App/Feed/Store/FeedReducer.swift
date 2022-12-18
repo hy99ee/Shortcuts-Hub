@@ -5,10 +5,12 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .fetchItemsPreloaders(count):
+        state.showEmptyView = false
         state.itemsPreloadersCount = count
         state.items = []
 
     case let .fetchItems(items):
+        state.showEmptyView = false
         state.itemsPreloadersCount = 0
         state.items = items.sorted(by: FeedState.sortingByModified)
 

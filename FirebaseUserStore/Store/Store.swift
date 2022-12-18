@@ -11,7 +11,7 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
     typealias StoreDispatcher = DispatcherType<StoreAction, StoreMutation, StorePackages>
     typealias StoreReducer = ReducerType<StoreState, StoreMutation>
 
-    @Published var state: StoreState
+    @Published private(set) var state: StoreState
 
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher

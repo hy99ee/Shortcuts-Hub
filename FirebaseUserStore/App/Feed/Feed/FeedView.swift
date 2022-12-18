@@ -124,10 +124,6 @@ struct FeedCollectionView: View {
                 }
                 .onAppear {
                     isAnimating = true
-                    UIRefreshControl.appearance().tintColor = UIColor(.blue)
-                    
-//                    UIRefreshControl.appearance().backgroundColor = .green.withAlphaComponent(0.5)
-//                    UIRefreshControl.appearance().attributedTitle = try? NSAttributedString(markdown: "**Some** cool *title*")
                 }
             } else {
                 ScrollView(showsIndicators: false) {
@@ -142,7 +138,6 @@ struct FeedCollectionView: View {
                 .onAppear { isAnimating = false }
             }
         }
-        
         .padding(12)
         .cornerRadius(22)
     }
