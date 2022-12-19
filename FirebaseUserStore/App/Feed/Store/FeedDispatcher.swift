@@ -10,6 +10,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
+    case let .search(query):
+        return mutationSearchItems(by: query, packages: packages)
     case .showAboutSheet:
         return mutationShowAboutSheet(packages: packages)
     case let .showAlert(error):
@@ -26,8 +28,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         let fetchDocs = packages.itemsService.fetchQuery().share()
 
         let fetchFromDocs = fetchDocs
-            .compactMap { docsInfo -> (query: Query, count: Int)? in
-                guard let docsInfo, docsInfo.count != 0 else { return nil }
+            .compactMap { docsInfo -> FetchedResponce? in
+                guard docsInfo.count != 0 else { return nil }
                 return docsInfo
             }
             .flatMap { packages.itemsService.fetchItems($0.query) }
@@ -35,7 +37,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return Publishers.Merge(
             fetchDocs
                 .map { docs in
-                    if let docs, docs.count > 0 {
+                    if docs.count > 0 {
                         return FeedMutation.fetchItemsPreloaders(count: docs.count)
                     } else {
                         return FeedMutation.empty
@@ -52,7 +54,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     }
     func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         packages.itemsService.setNewItemRequest()
-            .flatMap { packages.itemsService.fetchItemByID($0).eraseToAnyPublisher() }
+            .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
             .map { FeedMutation.newItem(item: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
@@ -62,6 +64,23 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             .map { FeedMutation.removeItem(id: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
+    }
+    func mutationSearchItems(by id: String, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        let fetchDocs = packages.itemsService.searchItems(id)
+
+        let fetchFromDocs = fetchDocs
+            .flatMap { packages.itemsService.fetchItems($0.query) }
+        
+        return Publishers.Merge(
+            fetchDocs
+                .map { FeedMutation.fetchItemsPreloaders(count: $0.count) }
+                .catch { Just(FeedMutation.errorAlert(error: $0)) }
+                .eraseToAnyPublisher()
+                .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            , fetchFromDocs
+                .map { FeedMutation.fetchItems(newItems: $0) }
+                .catch { Just(FeedMutation.errorAlert(error: $0)) })
+        .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }

@@ -3,12 +3,23 @@ import Combine
 
 
 struct FeedView: View {
-    @EnvironmentObject var store: FeedStore
-    @State var showLoader = false
-    let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
-    
-    @State var isRefresh = false
-    let userDetailStore = SessionService.shared.userDetails
+    @StateObject var store: FeedStore
+
+    private let searchQueryBublisher = CurrentValueSubject<String, Never>("")
+    private var subscriptions = Set<AnyCancellable>()
+
+    init(store: FeedStore) {
+        self._store = StateObject(wrappedValue: store)
+
+        searchQueryBublisher
+            .removeDuplicates()
+            .debounce(for: .seconds(2), scheduler: DispatchQueue.main)
+            .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(query: $0)) }
+            .store(in: &subscriptions)
+    }
+
+    @State private var showLoader = false
+    @State private var isRefresh = false
 
     var body: some View {
         mainView
@@ -44,22 +55,23 @@ struct FeedView: View {
                     Spacer()
                 }
             } else {
-                FeedCollectionView(store: store)
+                FeedCollectionView(store: store, searchQuery:
+                                    Binding<String>(
+                                        get: { searchQueryBublisher.value },
+                                        set: { searchQueryBublisher.send($0) }
+                                    )
+                )
             }
 
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .buttonView))
-            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .padding()
         }
+        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
-        
-        .onAppear {
-            store.dispatch(.updateFeed)
-        }
     }
 
     @ViewBuilder
@@ -95,61 +107,4 @@ struct FeedView: View {
 
 extension PresentationDetent {
     static let bar = Self.fraction(0.2)
-}
-
-
-struct FeedCollectionView: View {
-    let store: FeedStore
-    @State private var isAnimating = false
-
-    private let columns = Array(repeating: GridItem(.flexible()), count: 3)
-    private let progress = HDotsProgress()
-
-    var body: some View {
-        NavigationView {
-            if store.state.itemsPreloadersCount == 0 {
-                ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title) {
-                                store.dispatch(.removeItem(id: store.state.items[index].id))
-                            }
-                            .padding(3)
-                            .opacity(isAnimating ? 1 : 0)
-                            .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
-                        }
-                    }
-                }
-                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
-                .refreshable {
-                    await asyncUpdate()
-                }
-                .onAppear {
-                    isAnimating = true
-                }
-            } else {
-                ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(store.state.loadItems, id: \.id) { _ in
-                            LoaderFeedCellView()
-                                .padding(3)
-                        }
-                    }
-                }
-                .modifier(StaticPreloaderViewModifier())
-                .onAppear { isAnimating = false }
-            }
-        }
-        .padding(12)
-        .cornerRadius(22)
-    }
-
-    func asyncUpdate() async -> Void {
-        store.dispatch(.updateFeed)
-
-        try? await self.store.objectWillChange
-            .filter { self.store.state.viewProgress.progressStatus == .stop }
-            .eraseToAnyPublisher()
-            .async()
-    }
 }
