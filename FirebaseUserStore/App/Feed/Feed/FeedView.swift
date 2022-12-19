@@ -111,10 +111,12 @@ struct FeedCollectionView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title)
-                                .padding(3)
-                                .opacity(isAnimating ? 1 : 0)
-                                .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
+                            FeedCellView(title: store.state.items[index].title) {
+                                store.dispatch(.removeItem(id: store.state.items[index].id))
+                            }
+                            .padding(3)
+                            .opacity(isAnimating ? 1 : 0)
+                            .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
                         }
                     }
                 }
@@ -145,7 +147,7 @@ struct FeedCollectionView: View {
     func asyncUpdate() async -> Void {
         store.dispatch(.updateFeed)
 
-        try! await self.store.objectWillChange
+        try? await self.store.objectWillChange
             .filter { self.store.state.viewProgress.progressStatus == .stop }
             .eraseToAnyPublisher()
             .async()
