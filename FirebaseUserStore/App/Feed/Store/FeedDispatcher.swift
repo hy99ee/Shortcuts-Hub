@@ -1,11 +1,11 @@
-import Foundation
 import Combine
 import SwiftUI
+import Firebase
 
 let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
     switch action {
     case .updateFeed:
-        return mutationFetchItems(packages: packages).withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+        return mutationFetchItems(packages: packages)
     case .addItem:
         return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
     case let .removeItem(id):
@@ -23,17 +23,37 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
     // MARK: - Mutations
     func mutationFetchItems(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        packages.itemsService.fetchDishesByUserRequest()
-            .map { FeedMutation.fetchItems(newItems: $0) }
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
+        let fetchDocs = packages.itemsService.fetchQuery().share()
+
+        let fetchFromDocs = fetchDocs
+            .compactMap { docsInfo -> (query: Query, count: Int)? in
+                guard let docsInfo, docsInfo.count != 0 else { return nil }
+                return docsInfo
+            }
+            .flatMap { packages.itemsService.fetchItems($0.query) }
+        
+        return Publishers.Merge(
+            fetchDocs
+                .map { docs in
+                    if let docs, docs.count > 0 {
+                        return FeedMutation.fetchItemsPreloaders(count: docs.count)
+                    } else {
+                        return FeedMutation.empty
+                    }
+                }
+                .catch { Just(FeedMutation.errorAlert(error: $0)) }
+                .eraseToAnyPublisher()
+                .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+            , fetchFromDocs
+                .map { FeedMutation.fetchItems(newItems: $0) }
+                .catch { Just(FeedMutation.errorAlert(error: $0)) })
+        .eraseToAnyPublisher()
+        
     }
     func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         packages.itemsService.setNewItemRequest()
             .flatMap { packages.itemsService.fetchItemByID($0).eraseToAnyPublisher() }
             .map { FeedMutation.newItem(item: $0) }
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

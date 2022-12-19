@@ -1,4 +1,4 @@
-import Foundation
+import Combine
 
 class FeedPackages: EnvironmentPackages {
     typealias PackageItemsService = ItemsService

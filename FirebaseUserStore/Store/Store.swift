@@ -11,7 +11,7 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
     typealias StoreDispatcher = DispatcherType<StoreAction, StoreMutation, StorePackages>
     typealias StoreReducer = ReducerType<StoreState, StoreMutation>
 
-    @Published var state: StoreState
+    @Published private(set) var state: StoreState
 
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher
@@ -33,9 +33,10 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
         self.packages = packages
         self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares)
     }
-    
+
     func dispatch(_ action: StoreAction, isRedispatch: Bool = false) {
         middlewaresRepository.dispatch(state: state, action: action, packages: packages, isRedispatch: isRedispatch) // Middleware
+            .subscribe(on: queue)
             .catch {[unowned self] in
                 switch $0 {
                 case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(action, _):
@@ -45,15 +46,13 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
                     return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
                 }
             }
-            .subscribe(on: queue)
             .flatMap { [unowned self] in dispatcher($0, self.packages) } // Dispatch
+            .subscribe(on: queue)
             .assertNoFailure()
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
             .subscribe(on: DispatchQueue.main)
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
             .assign(to: &$state)
     }
 }
-

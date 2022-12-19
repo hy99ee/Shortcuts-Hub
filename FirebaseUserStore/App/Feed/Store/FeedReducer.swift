@@ -1,24 +1,41 @@
 import Combine
-import Foundation
+import SwiftUI
 
 let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
     switch mutation {
+    case let .fetchItemsPreloaders(count):
+        state.showEmptyView = false
+        state.itemsPreloadersCount = count
+        state.items = []
+
     case let .fetchItems(items):
+        state.showEmptyView = false
+        state.itemsPreloadersCount = 0
         state.items = items.sorted(by: FeedState.sortingByModified)
+
+    case .clean:
+        state.itemsPreloadersCount = 0
+        state.items = []
+
+    case .empty:
+        cleanData()
 
     case let .newItem(item):
         state.items.append(item)
+        state.showEmptyView = state.items.isEmpty
 
     case let .removeItem(id):
-        state.removedById(id)
+        state.items.removeAll { $0.id == id }
+        state.showEmptyView = state.items.isEmpty
 
     case let .errorAlert(error):
+        cleanData()
         state.alert.error = error
 
     case let .showAbout(data):
         state.aboutSheetProvider.sheetView = AboutView(aboutData: data)
-    
+
     case let .progressViewStatus(status):
         state.viewProgress.progressStatus = status
 
@@ -30,5 +47,10 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     }
 
     return Just(state).eraseToAnyPublisher()
+    
+    func cleanData() {
+        state.itemsPreloadersCount = 0
+        state.items = []
+        state.showEmptyView = true
+    }
 }
-

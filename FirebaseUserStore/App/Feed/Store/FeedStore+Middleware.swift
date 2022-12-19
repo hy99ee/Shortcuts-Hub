@@ -4,6 +4,14 @@ import Foundation
 typealias FeedStore = StateStore<FeedState, FeedAction, FeedMutation, FeedPackages>
 
 extension FeedStore {
+    static let middlewareDeleteStatusCheck: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, _ in
+        print("---> FeedStore.middlewareDeleteStatusCheck: {  } <---")
+        switch action {
+        case let FeedAction.removeItem(id): return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+        default: return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+        }
+    }
+
     static let middleware1: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, _ in
         print("---> FeedStore.middleware1: { print state items before mutation\nitems: \(state.items) } <---")
         return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
@@ -26,11 +34,6 @@ extension FeedStore {
             ).eraseToAnyPublisher()
         default: return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
         }
-    }
-
-    static let middleware4: FeedStore.StoreMiddlewareRepository.Middleware = { _, action, _ in
-        print("---> FeedStore.middleware4: { .delay 3 seconds } <---")
-        return Just(action).delay(for: .seconds(3), scheduler: DispatchQueue.main).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
 
     static let middleware5: FeedStore.StoreMiddlewareRepository.Middleware = { _, action, packages in

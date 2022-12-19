@@ -16,34 +16,20 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 struct Firebase_User_Account_ManagementApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var sessionService = SessionService.shared
-    
+
+    private let storeRepository = StoreRepository.shared
+
     var body: some Scene {
         WindowGroup {
             switch sessionService.state {
             case .loggedIn:
                 FeedView()
-                    .environmentObject(
-                        StateStore(
-                            state: FeedState(),
-                            dispatcher: feedDispatcher,
-                            reducer: feedReducer,
-                            packages: FeedPackages(),
-                            middlewares: [FeedStore.middleware5]
-                        )
-                    )
+                    .environmentObject(storeRepository.feedStore)
             case .loggedOut:
                 LoginView()
-                    .environmentObject(
-                        LoginStore(
-                            state: LoginState(),
-                            dispatcher: loginDispatcher,
-                            reducer: loginReducer,
-                            packages: LoginPackages(),
-                            middlewares: [LoginStore.middleware1, LoginStore.middleware1]
-                            )
-                    )
+                    .environmentObject(storeRepository.loginStore)
             case .loading:
-                ProgressView().scaleEffect(1.2)
+                HDotsProgress().scaleEffect(2)
             }
         }
     }

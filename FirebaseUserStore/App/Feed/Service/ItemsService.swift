@@ -1,53 +1,71 @@
 import Combine
 import Firebase
+import FirebaseFirestore
 
-final class ItemsService: ItemsServiceType {
+final class ItemsService {
     typealias ServiceError = ItemsServiceError
 
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
-    
+
     let userId = Auth.auth().currentUser?.uid
     var idInc = 0
 
-    func fetchDishesByUserRequest() -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchQuery() -> AnyPublisher<(query: Query, count: Int)?, ItemsServiceError> {
         Deferred {
-            Future {[weak self] promise in
-                guard let self = self,
-                    let userId = self.userId else { return promise(.failure(.invalidUserId)) }
-                
-                let ref = self.db.collection(Self.collectionName).whereField("userId", isEqualTo: userId)
-                
-                ref.getDocuments { snapshot, error in
+            Future { promise in
+                Task { [weak self] in
+                    guard let self,
+                          let userId = self.userId else { return promise(.failure(ServiceError.invalidUserId)) }
+
+                    let collection = self.db.collection(Self.collectionName)
+                    let query = collection.whereField("userId", isEqualTo: userId)
+                    let countQuery = query.count
+
+                    countQuery.getAggregation(source: .server) { snapshot, error in
+                        guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
+                        return promise(.success((query: query, count: Int(truncating: snapshot.count))))
+                    }
+                }
+            }
+        }
+        .delay(for: .seconds(3), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
+
+    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
+        Deferred {
+            Future { promise in
+                query.getDocuments { snapshot, error in
                     if let _error = error {
                         return promise(.failure(.firebaseError(_error)))
                     }
-
                     if let snapshot = snapshot {
                         var items: [Item] = []
                         for document in snapshot.documents {
                             let data = document.data()
 
-                            items.append(Item(
-                                id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
-                                userId: data["userId"] as? String ?? "",
-                                title: data["title"] as? String ?? "",
-                                description: data["description"] as? String ?? "",
-                                source: ""
-                            ))
+                            items.append(
+                                Item(
+                                    id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
+                                    userId: data["userId"] as? String ?? "",
+                                    title: data["title"] as? String ?? "",
+                                    description: data["description"] as? String ?? "",
+                                    source: ""
+                                )
+                            )
                         }
                         return promise(.success(items))
                     }
-                
                 }
             }
         }.eraseToAnyPublisher()
     }
-    
+
     func fetchItemByID(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
-                guard let self = self,
+                guard let self,
                       let userId = self.userId
                 else { return promise(.failure(.unknownError))}
 
@@ -75,7 +93,6 @@ final class ItemsService: ItemsServiceType {
                         }
                         return promise(item != nil ? .success(item!) : .failure(.unknownError))
                     }
-                
                 }
             }
         }.eraseToAnyPublisher()
@@ -85,7 +102,7 @@ final class ItemsService: ItemsServiceType {
         Deferred {
             Future {[weak self] promise in
                 guard
-                    let self = self,
+                    let self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
                 self.idInc += 1
                 let document = [
@@ -109,7 +126,7 @@ final class ItemsService: ItemsServiceType {
         Deferred {
             Future {[weak self] promise in
                 guard
-                    let self = self,
+                    let self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
 
                 let ref = self.db.collection(Self.collectionName)
