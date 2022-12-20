@@ -55,21 +55,21 @@ struct FeedView: View {
                     Spacer()
                 }
             } else {
-                FeedCollectionView(store: store, searchQuery:
-                                    Binding<String>(
-                                        get: { searchQueryBublisher.value },
-                                        set: { searchQueryBublisher.send($0) }
-                                    )
-                )
+                let searchBinding = Binding<String>(
+                    get: { searchQueryBublisher.value },
+                    set: { searchQueryBublisher.send($0) }
+                  )
+                SearchBar(searchQuery: searchBinding)
+                FeedCollectionView(store: store, searchQuery: searchBinding)
             }
 
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
+            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .buttonView))
             .padding()
         }
-        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
     }

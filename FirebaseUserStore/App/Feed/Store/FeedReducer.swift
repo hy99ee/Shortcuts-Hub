@@ -21,6 +21,9 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     case .empty:
         cleanData()
 
+    case let .addItems(items):
+        state.items.append(contentsOf: items)
+
     case let .newItem(item):
         state.items.append(item)
         state.showEmptyView = state.items.isEmpty

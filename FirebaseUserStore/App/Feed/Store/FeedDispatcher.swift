@@ -6,18 +6,28 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     switch action {
     case .updateFeed:
         return mutationFetchItems(packages: packages)
+
     case .addItem:
         return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
+
+    case let .addItems(items):
+        return Just(FeedMutation.addItems(items: items)).eraseToAnyPublisher()
+
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
+
     case let .search(query):
         return mutationSearchItems(by: query, packages: packages)
+
     case .showAboutSheet:
         return mutationShowAboutSheet(packages: packages)
+
     case let .showAlert(error):
         return mutationShowAlert(with: error)
+
     case .logout:
         return mutationLogout(packages: packages)
+
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
     }

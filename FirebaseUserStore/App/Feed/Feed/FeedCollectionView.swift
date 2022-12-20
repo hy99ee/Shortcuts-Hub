@@ -12,29 +12,24 @@ struct FeedCollectionView: View {
     var body: some View {
         NavigationView {
             if store.state.itemsPreloadersCount == 0 {
-                VStack {
-                    TextField("Search...", text: $searchQuery)
-                        .padding()
-                    ScrollView(showsIndicators: false) {
-                        LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(0..<store.state.items.count, id: \.self) { index in
-                                FeedCellView(title: store.state.items[index].title) {
-                                    store.dispatch(.removeItem(id: store.state.items[index].id))
-                                }
-                                .padding(3)
-                                .opacity(isAnimating ? 1 : 0)
-                                .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(0..<store.state.items.count, id: \.self) { index in
+                            FeedCellView(title: store.state.items[index].title) {
+                                store.dispatch(.removeItem(id: store.state.items[index].id))
                             }
+                            .padding(3)
+                            .opacity(isAnimating ? 1 : 0)
+                            .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
                         }
                     }
-                    .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
-                    .refreshable {
-                        await asyncUpdate()
-                    }
-                    .onAppear {
-                        isAnimating = true
-                    }
-                    Spacer()
+                }
+                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
+                .refreshable {
+                    await asyncUpdate()
+                }
+                .onAppear {
+                    isAnimating = true
                 }
             } else {
                 ScrollView(showsIndicators: false) {
