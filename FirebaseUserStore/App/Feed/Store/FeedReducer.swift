@@ -19,7 +19,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.items = []
 
     case .empty:
-        cleanData()
+        emptyData()
 
     case let .addItems(items):
         state.items.append(contentsOf: items)
@@ -33,7 +33,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.showEmptyView = state.items.isEmpty
 
     case let .errorAlert(error):
-        cleanData()
+        emptyData()
         state.alert.error = error
 
     case let .showAbout(data):
@@ -51,7 +51,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
 
     return Just(state).eraseToAnyPublisher()
     
-    func cleanData() {
+    func emptyData() {
         state.itemsPreloadersCount = 0
         state.items = []
         state.showEmptyView = true

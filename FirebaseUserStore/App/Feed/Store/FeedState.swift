@@ -29,4 +29,8 @@ extension FeedState {
     static var sortingByModified: (Item, Item) -> Bool = {
         $0.modifiedAt < $1.modifiedAt
     }
+
+    func itemsWithFilter(_ filter: String) -> [Item] {
+        items.filter { $0.title.contains(filter) }
+    }
 }

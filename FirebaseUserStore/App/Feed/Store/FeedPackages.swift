@@ -1,8 +1,19 @@
 import Combine
 
-class FeedPackages: EnvironmentPackages {
-    typealias PackageItemsService = ItemsService
+protocol FeedPackagesType: EnvironmentPackages {
+    associatedtype PackageItemsService: ItemsServiceType
 
-    lazy var itemsService = PackageItemsService()
-    lazy var sessionService = SessionService.shared
+    var itemsService: PackageItemsService { get }
+    var sessionService: SessionService { get }
+}
+extension FeedPackagesType {
+    var sessionService: SessionService { SessionService.shared }
+}
+
+class FeedPackages: FeedPackagesType {
+    lazy var itemsService = ItemsService()
+}
+
+class MockFeedPackages: FeedPackagesType {
+    lazy var itemsService = MockItemsService()
 }

@@ -49,7 +49,7 @@ struct FeedCollectionView: View {
     }
 
     func asyncUpdate() async -> Void {
-        searchQuery.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(query: searchQuery))
+        searchQuery.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: searchQuery))
 
         try? await self.store.objectWillChange
             .filter { self.store.state.viewProgress.progressStatus == .stop }

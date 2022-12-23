@@ -14,7 +14,7 @@ struct FeedView: View {
         searchQueryBublisher
             .removeDuplicates()
             .debounce(for: .seconds(2), scheduler: DispatchQueue.main)
-            .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(query: $0)) }
+            .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
 

@@ -38,6 +38,8 @@
 		3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7795492926222000A70A9A /* ProgressViewModifier.swift */; };
 		3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */; };
 		3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */; };
+		3B7A4B552954525E000AF26A /* MockItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B542954525E000AF26A /* MockItemsService.swift */; };
+		3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B5A29546583000AF26A /* FetchedResponce.swift */; };
 		3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */; };
 		3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
@@ -69,7 +71,6 @@
 		3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */; };
 		3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */; };
 		3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */; };
-		3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFCDC44290BCAF700BF599E /* MockItemsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,8 @@
 		3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatusPublisher.swift; sourceTree = "<group>"; };
 		3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitPublisher.swift; sourceTree = "<group>"; };
 		3B77A13528F44BDB007710E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3B7A4B542954525E000AF26A /* MockItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockItemsService.swift; sourceTree = "<group>"; };
+		3B7A4B5A29546583000AF26A /* FetchedResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResponce.swift; sourceTree = "<group>"; };
 		3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetShowViewModifier.swift; sourceTree = "<group>"; };
 		3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
@@ -134,7 +137,6 @@
 		3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsService.swift; sourceTree = "<group>"; };
 		3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceError.swift; sourceTree = "<group>"; };
-		3BFCDC44290BCAF700BF599E /* MockItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockItemsService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,22 @@
 				3B2F789F29377EB30035BAAF /* LoginPackages.swift */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		3B7A4B5329545248000AF26A /* mock */ = {
+			isa = PBXGroup;
+			children = (
+				3B7A4B542954525E000AF26A /* MockItemsService.swift */,
+			);
+			path = mock;
+			sourceTree = "<group>";
+		};
+		3B7A4B5729545596000AF26A /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				3B7A4B5A29546583000AF26A /* FetchedResponce.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		3B81C4EE2923CEE40008BD8E /* About */ = {
@@ -354,6 +372,7 @@
 		3BD76EE72899AF6C001D64E2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				3B7A4B5729545596000AF26A /* Service */,
 				3B0E36BB293E2B57009A7DCE /* Views */,
 				3BD76EE82899AF6C001D64E2 /* Modifiers */,
 				3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */,
@@ -428,10 +447,10 @@
 		3BFAB6CC28BBE9E7002488FF /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3B7A4B5329545248000AF26A /* mock */,
 				3BFAB6CD28BBEA1C002488FF /* ItemsService.swift */,
 				3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */,
 				3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */,
-				3BFCDC44290BCAF700BF599E /* MockItemsService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -550,14 +569,15 @@
 				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
+				3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3BB7861B294886D400012DB0 /* Progress.swift in Sources */,
+				3B7A4B552954525E000AF26A /* MockItemsService.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */,
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
-				3BFCDC45290BCAF700BF599E /* MockItemsService.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,

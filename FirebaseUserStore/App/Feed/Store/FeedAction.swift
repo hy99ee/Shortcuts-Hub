@@ -5,7 +5,8 @@ enum FeedAction: Action {
     case addItems(items: [Item])
     case addItem
     case removeItem(id: UUID)
-    case search(query: String)
+    case search(text: String, local: Set<UUID> = Set())
+    case clean
 
     case showAboutSheet
     case showAlert(error: Error)

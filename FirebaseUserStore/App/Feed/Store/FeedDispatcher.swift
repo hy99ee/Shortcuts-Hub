@@ -16,8 +16,11 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
 
-    case let .search(query):
-        return mutationSearchItems(by: query, packages: packages)
+    case let .search(text, local):
+        return mutationSearchItems(by: text, local: local, packages: packages)
+
+    case .clean:
+        return Just(FeedMutation.clean).eraseToAnyPublisher()
 
     case .showAboutSheet:
         return mutationShowAboutSheet(packages: packages)
@@ -38,11 +41,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         let fetchDocs = packages.itemsService.fetchQuery().share()
 
         let fetchFromDocs = fetchDocs
-            .compactMap { docsInfo -> FetchedResponce? in
-                guard docsInfo.count != 0 else { return nil }
-                return docsInfo
-            }
-            .flatMap { packages.itemsService.fetchItems($0.query) }
+            .map { $0.query }
+            .flatMap { packages.itemsService.fetchItems($0) }
         
         return Publishers.Merge(
             fetchDocs
@@ -75,22 +75,17 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    func mutationSearchItems(by id: String, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        let fetchDocs = packages.itemsService.searchItems(id)
+    func mutationSearchItems(by text: String, local: Set<UUID>, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        let fetchDocs = packages.itemsService.searchQuery(text, local: local)
 
         let fetchFromDocs = fetchDocs
             .flatMap { packages.itemsService.fetchItems($0.query) }
-        
-        return Publishers.Merge(
-            fetchDocs
-                .map { FeedMutation.fetchItemsPreloaders(count: $0.count) }
-                .catch { Just(FeedMutation.errorAlert(error: $0)) }
-                .eraseToAnyPublisher()
-                .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
-            , fetchFromDocs
-                .map { FeedMutation.fetchItems(newItems: $0) }
-                .catch { Just(FeedMutation.errorAlert(error: $0)) })
-        .eraseToAnyPublisher()
+
+        return fetchFromDocs
+            .map { FeedMutation.addItems(items: $0) }
+            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+            .print("___Search Merge publishe")
+            .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
