@@ -5,10 +5,10 @@ import FirebaseFirestore
 final class MockItemsService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
 
-    func fetchItems(_ query: ResponceType.DataType) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItems(_ query: ResponceType.DataType, filter: (Item) -> Bool) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
-                let items = query.data.isEmpty ? mockItems : mockItems.filter { $0.title.contains(query.data) && !query.local.contains($0.id) }
+                let items = query.data.isEmpty ? mockItems : mockItems.filter { $0.title.contains(query.data) }
                 return promise(.success(items))
             }
         }
@@ -19,17 +19,17 @@ final class MockItemsService: ItemsServiceType {
     func fetchQuery() -> AnyPublisher<MockFetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in
-                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: String(), local: Set()), count: mockItems.count )))
+                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: String()), count: mockItems.count )))
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 
-    func searchQuery(_ text: String, local: Set<UUID>) -> AnyPublisher<MockFetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<MockFetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in
-                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: text, local: local), count: mockItems.filter { $0.title.contains(text) && !local.contains($0.id) }.count )))
+                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: text), count: 0 )))
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)

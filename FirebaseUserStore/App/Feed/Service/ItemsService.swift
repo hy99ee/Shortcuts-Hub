@@ -11,7 +11,7 @@ final class ItemsService: ItemsServiceType {
     let userId = Auth.auth().currentUser?.uid
     var idInc = 0
 
-    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 query.getDocuments { snapshot, error in
@@ -33,7 +33,7 @@ final class ItemsService: ItemsServiceType {
                                 )
                             )
                         }
-                        return promise(.success(items))
+                        return promise(.success(items.filter(filter)))
                     }
                 }
             }
@@ -64,27 +64,49 @@ final class ItemsService: ItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func searchQuery(_ text: String, local: Set<UUID> = Set()) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self,
                       let userId = self.userId
                 else { return promise(.failure(.unknownError))}
 
+//                let localArray = Array(local).map { $0.uuidString }
+//                let localSearch = [text].reduce(into: [String]()) { partialResult, element in
+//                    Array(element).reduce(into: String()) {
+//                        $0.append($1)
+//                        partialResult.append($0)
+//                    }
+//                }
+//                
+
                 let collection = self.db.collection(Self.collectionName)
                 let query = collection.whereField("userId", isEqualTo: userId)
-                    .whereField("title", isEqualTo: text)
-                    .whereField("id", isNotEqualTo: Array(local))
-                    
-                    
-                    
+                    .whereField("title", isGreaterThanOrEqualTo: text)
+                    .order(by: "title")
+//                    .whereField("title", isEqualTo: text)
+            
+//                    .whereField("title", in: [text, text.lowercased(), text.uppercased(), text.capitalized, text.capitalizedSentence])
 
-                let countQuery = query.count
+//                if !localSearch.isEmpty {
+//                    for textSearch in localSearch.suffix(2) {
+//                        query.whereField("title", isEqualTo: text)
+//                    }
+//                }
+//                if !localArray.isEmpty {
+//                    for localId in localArray {
+//                        query.whereField("id", isNotEqualTo: localId)
+//                    }
+//                }
+                return promise(.success(FetchedResponce(query: query, count: 0)))
 
-                countQuery.getAggregation(source: .server) { snapshot, error in
-                    guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
-                    return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
-                }
+//                let countQuery = query.count
+//
+//                countQuery.getAggregation(source: .server) { snapshot, error in
+//                    guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
+//                    let count = Int(truncating: snapshot.count)
+//                    return promise(.success(FetchedResponce(query: query, count: count)))
+//                }
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)
@@ -133,11 +155,10 @@ final class ItemsService: ItemsServiceType {
                 guard
                     let self,
                     let userId = self.userId else { return promise(.failure(.invalidUserId)) }
-                self.idInc += 1
                 let document = [
                     "id": UUID().uuidString,
                     "userId": userId,
-                    "title": "title \(self.idInc)",
+                    "title": "ooo",
                     "description": "description"
                 ]
                 self.db.collection(Self.collectionName).addDocument(data: document) { error in

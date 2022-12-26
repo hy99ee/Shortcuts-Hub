@@ -14,7 +14,6 @@ struct FetchedResponce: FetchedResponceType {
 struct MockFetchedResponce: FetchedResponceType {
     struct MockQuery {
         let data: String
-        let local: Set<UUID>
     }
 
     let query: MockQuery

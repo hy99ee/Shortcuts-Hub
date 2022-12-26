@@ -31,6 +31,6 @@ extension FeedState {
     }
 
     func itemsWithFilter(_ filter: String) -> [Item] {
-        items.filter { $0.title.contains(filter) }
+        items.filter { $0.title.lowercased().contains(filter.lowercased()) }
     }
 }

@@ -76,10 +76,14 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             .eraseToAnyPublisher()
     }
     func mutationSearchItems(by text: String, local: Set<UUID>, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        let fetchDocs = packages.itemsService.searchQuery(text, local: local)
+        let fetchDocs = packages.itemsService.searchQuery(text)
 
         let fetchFromDocs = fetchDocs
-            .flatMap { packages.itemsService.fetchItems($0.query) }
+            .flatMap {
+                packages.itemsService.fetchItems($0.query) {
+                    $0.title.lowercased().contains(text.lowercased()) && !local.contains($0.id)
+                }
+            }
 
         return fetchFromDocs
             .map { FeedMutation.addItems(items: $0) }
