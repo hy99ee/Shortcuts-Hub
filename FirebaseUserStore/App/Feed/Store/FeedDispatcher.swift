@@ -88,7 +88,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return fetchFromDocs
             .map { FeedMutation.addItems(items: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .print("___Search Merge publishe")
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {

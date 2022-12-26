@@ -71,42 +71,12 @@ final class ItemsService: ItemsServiceType {
                       let userId = self.userId
                 else { return promise(.failure(.unknownError))}
 
-//                let localArray = Array(local).map { $0.uuidString }
-//                let localSearch = [text].reduce(into: [String]()) { partialResult, element in
-//                    Array(element).reduce(into: String()) {
-//                        $0.append($1)
-//                        partialResult.append($0)
-//                    }
-//                }
-//                
-
                 let collection = self.db.collection(Self.collectionName)
                 let query = collection.whereField("userId", isEqualTo: userId)
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
-//                    .whereField("title", isEqualTo: text)
-            
-//                    .whereField("title", in: [text, text.lowercased(), text.uppercased(), text.capitalized, text.capitalizedSentence])
 
-//                if !localSearch.isEmpty {
-//                    for textSearch in localSearch.suffix(2) {
-//                        query.whereField("title", isEqualTo: text)
-//                    }
-//                }
-//                if !localArray.isEmpty {
-//                    for localId in localArray {
-//                        query.whereField("id", isNotEqualTo: localId)
-//                    }
-//                }
                 return promise(.success(FetchedResponce(query: query, count: 0)))
-
-//                let countQuery = query.count
-//
-//                countQuery.getAggregation(source: .server) { snapshot, error in
-//                    guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
-//                    let count = Int(truncating: snapshot.count)
-//                    return promise(.success(FetchedResponce(query: query, count: count)))
-//                }
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)
