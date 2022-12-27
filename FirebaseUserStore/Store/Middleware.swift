@@ -24,18 +24,18 @@ final class MiddlewareRepository<StoreState, StoreAction, StorePackages>: Middle
         case stopFlow
     }
     enum MiddlewareRedispatch: Error {
-        case redispatch(action: StoreAction, type: RedispatchType)
+        case redispatch(actions: [StoreAction], type: RedispatchType)
         case stopFlow
     }
 
-    private let middlewares: [Middleware]
+    private var middlewares: [Middleware]
     private var processMiddlewares: [Middleware]
     private var anyCancellables: Set<AnyCancellable> = []
     private var index = 0
 
     init(middlewares: [Middleware]) {
         self.middlewares = middlewares
-        self.processMiddlewares = self.middlewares
+        self.processMiddlewares = middlewares
     }
 
     func dispatch(state: StoreState, action: StoreAction, packages: StorePackages, isRedispatch: Bool) -> AnyPublisher<StoreAction, MiddlewareRedispatch>  {
@@ -62,7 +62,7 @@ final class MiddlewareRepository<StoreState, StoreAction, StorePackages>: Middle
                                 self.processMiddlewares.remove(at: self.index)
                             default: break
                             }
-                            promise(.failure(.redispatch(action: action, type: type)))
+                            promise(.failure(.redispatch(actions: action, type: type)))
                         }
                     }, receiveValue: { _ in })
                     .store(in: &anyCancellables)

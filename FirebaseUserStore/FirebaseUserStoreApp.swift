@@ -23,8 +23,7 @@ struct Firebase_User_Account_ManagementApp: App {
         WindowGroup {
             switch sessionService.state {
             case .loggedIn:
-                FeedView()
-                    .environmentObject(storeRepository.feedStore)
+                FeedView(store: storeRepository.feedStore)
             case .loggedOut:
                 LoginView()
                     .environmentObject(storeRepository.loginStore)
