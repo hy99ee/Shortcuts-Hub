@@ -8,8 +8,7 @@ final class StoreRepository {
         state: LoginState(),
         dispatcher: loginDispatcher,
         reducer: loginReducer,
-        packages: LoginPackages(),
-        middlewares: [LoginStore.middleware1, LoginStore.middleware1]
+        packages: LoginPackages()
         )
 
     lazy var feedStore = FeedStore(
@@ -17,6 +16,6 @@ final class StoreRepository {
         dispatcher: feedDispatcher,
         reducer: feedReducer,
         packages: FeedPackages(),
-        middlewares: [FeedStore.middleware5]
+        middlewares: [FeedStore.middlewareLocalSearch]
     )
 }
