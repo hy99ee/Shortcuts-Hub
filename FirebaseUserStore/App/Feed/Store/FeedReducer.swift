@@ -3,16 +3,18 @@ import SwiftUI
 
 let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
     var state = _state
+
     switch mutation {
     case let .fetchItemsPreloaders(count):
-        state.showEmptyView = false
+        state.showEmptyView = count == 0
         state.itemsPreloadersCount = count
         state.items = []
 
     case let .fetchItems(items):
-        state.showEmptyView = false
+        let items = items.sorted(by: FeedState.sortingByModified)
+        state.showEmptyView = items.isEmpty
         state.itemsPreloadersCount = 0
-        state.items = items.sorted(by: FeedState.sortingByModified)
+        state.items = items
 
     case .clean:
         state.itemsPreloadersCount = 0
@@ -26,15 +28,17 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
 
     case let .newItem(item):
         state.items.append(item)
-        state.showEmptyView = state.items.isEmpty
+        state.showEmptyView = false
 
     case let .removeItem(id):
         state.items.removeAll { $0.id == id }
-        state.showEmptyView = state.items.isEmpty
+        if state.items.isEmpty { state.showEmptyView = true }
 
     case let .errorAlert(error):
-        emptyData()
         state.alert.error = error
+
+    case .errorFeed:
+        errorData()
 
     case let .showAbout(data):
         state.aboutSheetProvider.sheetView = AboutView(aboutData: data)
@@ -55,5 +59,11 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         state.itemsPreloadersCount = 0
         state.items = []
         state.showEmptyView = true
+    }
+
+    func errorData() {
+        state.itemsPreloadersCount = 0
+        state.items = []
+        state.showErrorView = true
     }
 }

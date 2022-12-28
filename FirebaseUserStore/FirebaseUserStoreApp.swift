@@ -17,7 +17,7 @@ struct Firebase_User_Account_ManagementApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var sessionService = SessionService.shared
 
-    private let storeRepository = StoreRepository.shared
+    private let storeRepository = GlobalStoreRepository.shared
 
     var body: some Scene {
         WindowGroup {

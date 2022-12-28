@@ -117,7 +117,7 @@ struct StaticPreloaderViewModifier: ViewModifier {
             .opacity(isAnimating ? 0.5 : 1)
             .onAppear {
                 withAnimation(.easeIn(duration: 0.5).repeatForever()) {
-                    isAnimating.toggle()
+                    isAnimating = true
                 }
             }
     }

@@ -9,7 +9,6 @@ final class ItemsService: ItemsServiceType {
     private static let collectionName = "Items"
 
     let userId = Auth.auth().currentUser?.uid
-    var idInc = 0
 
     func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
@@ -76,7 +75,7 @@ final class ItemsService: ItemsServiceType {
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
 
-                return promise(.success(FetchedResponce(query: query, count: 0)))
+                return promise(.success(FetchedResponce(query: query, count: 5)))
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)
@@ -128,7 +127,7 @@ final class ItemsService: ItemsServiceType {
                 let document = [
                     "id": UUID().uuidString,
                     "userId": userId,
-                    "title": "ooo",
+                    "title": "item \(Int.random(in: 0..<10))",
                     "description": "description"
                 ]
                 self.db.collection(Self.collectionName).addDocument(data: document) { error in

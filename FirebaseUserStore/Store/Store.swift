@@ -50,7 +50,7 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
                     return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
                 }
             }
-            .flatMap { [unowned self] in dispatcher($0, self.packages) } // Dispatch
+            .flatMap { [unowned self] in dispatcher($0, self.packages).receive(on: queue) } // Dispatch
             .subscribe(on: queue)
             .assertNoFailure()
             .receive(on: DispatchQueue.main)

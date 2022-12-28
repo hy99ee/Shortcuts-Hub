@@ -78,8 +78,6 @@ struct Delete: ViewModifier {
     let deletionDistance = CGFloat(200)
     let halfDeletionDistance = CGFloat(50)
     let tappableDeletionWidth = CGFloat(100)
-    
-    
 }
 
 extension View {

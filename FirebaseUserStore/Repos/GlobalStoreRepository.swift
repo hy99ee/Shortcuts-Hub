@@ -1,7 +1,7 @@
 import Foundation
 
-final class StoreRepository {
-    static let shared = StoreRepository()
+final class GlobalStoreRepository {
+    static let shared = GlobalStoreRepository()
     private init() { }
 
     lazy var loginStore = LoginStore(
@@ -16,6 +16,6 @@ final class StoreRepository {
         dispatcher: feedDispatcher,
         reducer: feedReducer,
         packages: FeedPackages(),
-        middlewares: [FeedStore.middlewareLocalSearch]
+        middlewares: [FeedStore.middlewareLocalSearch, FeedStore.middlewareUserValidation]
     )
 }
