@@ -45,7 +45,7 @@ let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> =
         forgotPublisher(email, package: packages.forgotService)
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .map { LoginMutation.closeForgot }
-            .catch { Just(LoginMutation.errorAlert(error: $0)) }
+            .catch { _ in Just(LoginMutation.errorWithForgot) }
             .eraseToAnyPublisher()
     }
 

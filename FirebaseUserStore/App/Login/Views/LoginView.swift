@@ -70,8 +70,26 @@ struct InputTextFieldView: View {
     let placeholder: String
     let keyboardType: UIKeyboardType
     let systemImage: String?
+    @Binding var isValid: Bool
 
+    @FocusState private var focused: Bool
     private let textFieldLeading: CGFloat = 30
+
+    init(text: Binding<String>, placeholder: String, keyboardType: UIKeyboardType, systemImage: String?, isValid: Binding<Bool>) {
+        self._text = text
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.systemImage = systemImage
+        self._isValid = isValid
+    }
+
+    init(text: Binding<String>, placeholder: String, keyboardType: UIKeyboardType, systemImage: String?) {
+        self._text = text
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.systemImage = systemImage
+        self._isValid = Binding(get: { true }, set: { _ in })
+    }
 
     var body: some View {
         VStack {
@@ -92,9 +110,16 @@ struct InputTextFieldView: View {
                         }
                         RoundedRectangle(cornerRadius: 10,
                                          style: .continuous)
-                            .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+                        .stroke(isValid ? Color.gray.opacity(0.25) : Color.red, lineWidth: 1)
                     }
                 )
+                .onTapGesture {
+                    isValid = true
+                }
+                .onChange(of: isValid, perform: { _ in
+                    focused = false
+                })
+                .focused($focused)
         }
     }
 }

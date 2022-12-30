@@ -40,11 +40,9 @@ final class StateStore<StoreState, StoreAction, StoreMutation, StorePackages>:
             .catch {[unowned self] in
                 switch $0 {
                 case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions, _):
-//                    action.sink {[weak self] action in self?.dispatch(action, isRedispatch: true) }.store(in: &subscriptions)
                     for action in actions {
                         self.dispatch(action, isRedispatch: true)
                     }
-                    
                     return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
                 case .stopFlow:
                     return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)

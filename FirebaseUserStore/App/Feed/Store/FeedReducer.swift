@@ -41,7 +41,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         errorData()
 
     case let .showAbout(data):
-        state.aboutSheetProvider.sheetView = AboutView(aboutData: data)
+        state.aboutSheetProvider.initialize(with: data)
 
     case let .progressViewStatus(status):
         state.viewProgress.progressStatus = status
