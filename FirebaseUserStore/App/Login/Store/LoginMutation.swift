@@ -15,5 +15,7 @@ enum LoginMutation: Mutation {
     case progressRegisterStatus(_ status: ProgressViewStatus)
 
     case errorAlert(error: Error)
+    case errorWithRegister
+    case errorWithForgot
 }
 

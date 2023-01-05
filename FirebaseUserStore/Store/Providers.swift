@@ -19,15 +19,6 @@ class AlertProvider: AlertProviderType {
     @Published var error: Error?
 }
 
-class SheetProvider<SheetViewType>: SheetProviderType where SheetViewType: View {
-    var presentationDetent: Set<PresentationDetent>
-    @Published var sheetView: SheetViewType?
-
-    init(presentationDetent: Set<PresentationDetent> = Set()) {
-        self.presentationDetent = presentationDetent
-    }
-}
-
 class ProcessViewProvider: ProcessViewProviderType {
     @Published var processViewStatus: Bool = false
 
@@ -83,4 +74,50 @@ class ProcessViewProvider: ProcessViewProviderType {
         .assign(to: &$processViewStatus)
     }
     
+}
+
+class SheetProvider<SheetViewType>: SheetProviderType where SheetViewType: View {
+    var presentationDetent: Set<PresentationDetent>
+    @Published var sheetView: SheetViewType?
+
+    init(presentationDetent: Set<PresentationDetent> = Set()) {
+        self.presentationDetent = presentationDetent
+    }
+}
+
+class AboutSheetProvider: SheetProvider<AboutView> {
+    override init(presentationDetent: Set<PresentationDetent> = [.height(200), .medium]) {
+        super.init(presentationDetent: presentationDetent)
+    }
+
+    func initialize(with data: AboutViewData) {
+        super.sheetView = AboutView(aboutData: data)
+    }
+}
+
+class RegisterSheetProvider: SheetProvider<RegisterView> {
+    override init(presentationDetent: Set<PresentationDetent> = Set()) {
+        super.init(presentationDetent: presentationDetent)
+    }
+
+    func initialize(with store: LoginStore) {
+        super.sheetView = RegisterView(store: store)
+    }
+}
+
+class ForgotSheetProvider: SheetProvider<ForgotPasswordView> {
+    @Published var isValidEmailField = true
+
+    override init(presentationDetent: Set<PresentationDetent> = Set()) {
+        super.init(presentationDetent: presentationDetent)
+    }
+
+    func initialize(with store: LoginStore) {
+        super.sheetView = ForgotPasswordView(store: store)
+    }
+
+    func deinitialize() {
+        super.sheetView = nil
+        self.isValidEmailField = true
+    }
 }

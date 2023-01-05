@@ -10,6 +10,7 @@ enum FeedAction: Action {
 
     case showAboutSheet
     case showAlert(error: Error)
+    case showFeedError
 
     case logout
 

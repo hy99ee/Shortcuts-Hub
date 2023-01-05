@@ -9,11 +9,17 @@ struct FeedState: StateType {
     }
 
     var loadItems: [LoaderItem] = []
-    var items: [Item] = []
+    var items: [Item] = [] {
+        didSet {
+            showErrorView = false
+        }
+    }
+
     var showEmptyView = false
+    var showErrorView = false
 
     var alert = AlertProvider()
-    var aboutSheetProvider = SheetProvider<AboutView>(presentationDetent: [.height(200), .medium])
+    var aboutSheetProvider = AboutSheetProvider()
 
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()

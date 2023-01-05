@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B00F002293F678C0056B5C9 /* LaoderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B00F001293F678C0056B5C9 /* LaoderItem.swift */; };
-		3B07BB942940D3090088B38B /* StoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B07BB932940D3090088B38B /* StoreRepository.swift */; };
+		3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B07BB932940D3090088B38B /* GlobalStoreRepository.swift */; };
 		3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */; };
 		3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */; };
 		3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */; };
@@ -74,7 +74,7 @@
 
 /* Begin PBXFileReference section */
 		3B00F001293F678C0056B5C9 /* LaoderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaoderItem.swift; sourceTree = "<group>"; };
-		3B07BB932940D3090088B38B /* StoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreRepository.swift; sourceTree = "<group>"; };
+		3B07BB932940D3090088B38B /* GlobalStoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStoreRepository.swift; sourceTree = "<group>"; };
 		3B0AA8B128D9C5D300CEEFA4 /* AlertShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertShowViewModifier.swift; sourceTree = "<group>"; };
 		3B0AA8B328D9C95F00CEEFA4 /* ItemsServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceType.swift; sourceTree = "<group>"; };
 		3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		3B07BB922940D2B90088B38B /* Repos */ = {
 			isa = PBXGroup;
 			children = (
-				3B07BB932940D3090088B38B /* StoreRepository.swift */,
+				3B07BB932940D3090088B38B /* GlobalStoreRepository.swift */,
 			);
 			path = Repos;
 			sourceTree = "<group>";
@@ -532,7 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
-				3B07BB942940D3090088B38B /* StoreRepository.swift in Sources */,
+				3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */,
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */,
 				3B1F66A028FC1429009225A4 /* Providers.swift in Sources */,

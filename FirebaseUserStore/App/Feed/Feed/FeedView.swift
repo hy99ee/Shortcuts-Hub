@@ -8,18 +8,20 @@ struct FeedView: View {
     private let searchQueryBublisher = CurrentValueSubject<String, Never>("")
     private var subscriptions = Set<AnyCancellable>()
 
+    @State private var showLoader = false
+    @State private var isRefresh = false
+    @State private var errorFeedDelay = false
+
     init(store: FeedStore) {
         self._store = StateObject(wrappedValue: store)
 
         searchQueryBublisher
             .removeDuplicates()
             .debounce(for: .seconds(1), scheduler: DispatchQueue.global())
+            .print("______")
             .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
-
-    @State private var showLoader = false
-    @State private var isRefresh = false
 
     var body: some View {
         mainView
@@ -45,13 +47,30 @@ struct FeedView: View {
             if store.state.showEmptyView {
                 VStack {
                     Spacer()
-                    Image(systemName: "eyes").scaleEffect(3)
-                        .padding()
+                    Text("Empty").bold()
+                    Spacer()
+                }
+            } else if store.state.showErrorView {
+                VStack {
+                    Spacer()
+                    Text("Error").monospacedDigit().bold().foregroundColor(.red)
                     ImageView(systemName: "arrow.triangle.2.circlepath") {
-                        store.dispatch(.updateFeed)
+                        withAnimation {
+                            errorFeedDelay = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                errorFeedDelay = false
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    store.dispatch(.updateFeed)
+                                }
+                            }
+                        }
                     }
                     .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
+                    .opacity(errorFeedDelay ? 0.5 : 1)
+                    .scaleEffect(errorFeedDelay ? 0.9 : 1)
+                    .disabled(errorFeedDelay)
                     .padding()
+
                     Spacer()
                 }
             } else {
@@ -72,36 +91,6 @@ struct FeedView: View {
         }
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(SheetShowViewModifier(provider: store.state.aboutSheetProvider))
-    }
-
-    @ViewBuilder
-    private func itemsCollection() -> some View {
-        NavigationView {
-            if store.state.itemsPreloadersCount == 0 {
-                List {
-                    ForEach(store.state.items) {
-                        Text($0.title)
-                    }
-                    .onDelete {
-                        let idsToDelete = $0.map { self.store.state.items[$0].id }
-                        guard let id = idsToDelete.first else { return }
-                        
-                        store.dispatch(.removeItem(id: id))
-                    }
-                }
-                .modifier(ProgressViewModifier(provider: store.state.viewProgress))
-                .refreshable {
-                    store.dispatch(.updateFeed)
-                }
-            } else {
-                List {
-                    ForEach(store.state.loadItems) { _ in
-                        ProgressView()
-                            .opacity(0.5)
-                    }
-                }
-            }
-        }
     }
 }
 

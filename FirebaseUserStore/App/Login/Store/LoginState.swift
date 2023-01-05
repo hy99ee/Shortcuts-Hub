@@ -2,8 +2,8 @@ import SwiftUI
 import Combine
 
 struct LoginState: StateType {
-    let registerSheet = SheetProvider<RegisterView>()
-    let forgotSheet = SheetProvider<ForgotPasswordView>()
+    let registerSheet = RegisterSheetProvider()
+    let forgotSheet = ForgotSheetProvider()
     
     let alert = AlertProvider()
 

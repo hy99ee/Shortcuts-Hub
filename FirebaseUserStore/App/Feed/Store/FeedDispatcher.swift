@@ -27,6 +27,9 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
     case let .showAlert(error):
         return mutationShowAlert(with: error)
+    
+    case .showFeedError:
+        return Just(FeedMutation.errorFeed).eraseToAnyPublisher()
 
     case .logout:
         return mutationLogout(packages: packages)

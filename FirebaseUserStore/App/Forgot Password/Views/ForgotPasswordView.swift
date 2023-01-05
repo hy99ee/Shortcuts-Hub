@@ -6,11 +6,19 @@ struct ForgotPasswordView: View {
     
     var body: some View {
             VStack(spacing: 16) {
-            
                 InputTextFieldView(text: $email,
                                    placeholder: "Email",
                                    keyboardType: .emailAddress,
-                                   systemImage: "envelope")
+                                   systemImage: "envelope",
+                                   isValid:
+                                    Binding(
+                                    get: {
+                                        store.state.forgotSheet.isValidEmailField
+                                    }, set: { value, _ in
+                                        store.state.forgotSheet.isValidEmailField = value
+                                        store.objectWillChange.send()
+                                    })
+                )
                 
                 ButtonView(title: "Send Password Reset") {
                     store.dispatch(.clickForgot(email: email))
