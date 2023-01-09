@@ -5,6 +5,8 @@ enum GlobalLink: TransitionType {
     case login
     case logout
 
+    case progress
+
     case promo
 
     var id: String {
@@ -13,7 +15,7 @@ enum GlobalLink: TransitionType {
 }
 
 class GlobalTransition: ObservableObject {
-    @Published var path = NavigationPath()
+    @Published var core: GlobalLink = .progress
     @Published var promoSheet: GlobalLink?
 
     private var subscriptions = Set<AnyCancellable>()
@@ -23,9 +25,11 @@ class GlobalTransition: ObservableObject {
             guard let self else { return }
             switch transition {
             case .login:
-                self.path.append("login")
+                self.core = transition
             case .logout:
-                self.path.append("logout")
+                self.core = transition
+            case .progress:
+                self.core = transition
             case .promo:
                 self.promoSheet = transition
             }
@@ -35,40 +39,39 @@ class GlobalTransition: ObservableObject {
     }
 }
 
-struct GlobalCoordinator<Content: View>: View {
+struct GlobalCoordinator: View {
     @ObservedObject var state: GlobalTransition
-    let root: Content
 
     private let storeRepository = GlobalStoreRepository.shared
 
     var body: some View {
-        NavigationStack(path: $state.path) {
-            ZStack {
-                root
-                    .fullScreenCover(item: $state.promoSheet, content: coverContent)
-            }
-            .navigationDestination(for: GlobalLink.self, destination: linkDestination)
-        }
+        linkDestination(link: state.core)
+            .fullScreenCover(item: $state.promoSheet, content: coverContent)
     }
 
     @ViewBuilder private func linkDestination(link: GlobalLink) -> some View {
         switch link {
+        case .progress:
+            HDotsProgress().scaleEffect(2)
         case .login:
             FeedView(store: storeRepository.feedStore)
         case .logout:
-            LoginView()
-                .environmentObject(storeRepository.loginStore)
+            LoginCoordinator(state: LoginTransitionState(sender: storeRepository.loginStore), root: loginView)
         default:
-            ProgressView().background(.green)
+            EmptyView()
         }
     }
 
     @ViewBuilder private func coverContent(link: GlobalLink) -> some View {
         switch link {
         case .promo:
-            ProgressView().background(.red)
+            ProgressView().background(.red).applyClose(.view)
         default:
             EmptyView()
         }
+    }
+
+    private var loginView: some View {
+        LoginView().environmentObject(storeRepository.loginStore)
     }
 }

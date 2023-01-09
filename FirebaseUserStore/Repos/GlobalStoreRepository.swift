@@ -4,6 +4,8 @@ final class GlobalStoreRepository {
     static let shared = GlobalStoreRepository()
     private init() { }
 
+    lazy var sender = GlobalSender()
+
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,

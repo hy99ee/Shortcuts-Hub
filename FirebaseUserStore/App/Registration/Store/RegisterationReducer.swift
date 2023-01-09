@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, GlobalLink> = { _state, mutation in
+let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, NoneTransition> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .progressStatus(status):

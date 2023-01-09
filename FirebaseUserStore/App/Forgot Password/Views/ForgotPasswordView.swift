@@ -36,6 +36,6 @@ struct ForgotPasswordView: View {
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .padding(.horizontal, 15)
         .navigationTitle("Reset Password")
-        .applyClose(style: .view)
+        .applyClose(.view)
     }
 }

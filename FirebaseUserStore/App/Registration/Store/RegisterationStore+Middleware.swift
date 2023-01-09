@@ -1,6 +1,6 @@
 import Combine
 import SwiftUI
 
-typealias RegisterationStore = StateStore<RegisterationState, RegisterationAction, RegisterationMutation, RegisterationPackages, GlobalLink>
+typealias RegisterationStore = StateStore<RegisterationState, RegisterationAction, RegisterationMutation, RegisterationPackages, NoneTransition>
 
 

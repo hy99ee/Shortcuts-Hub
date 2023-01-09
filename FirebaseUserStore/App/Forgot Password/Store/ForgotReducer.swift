@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-let forgotReducer: ReducerType<ForgotState, ForgotMutation, GlobalLink> = { _state, mutation in
+let forgotReducer: ReducerType<ForgotState, ForgotMutation, NoneTransition> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .progressForgotStatus(status):

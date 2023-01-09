@@ -40,7 +40,6 @@ class LoginTransitionState: ObservableObject {
             }
         }
         .store(in: &subscriptions)
-    
     }
 }
 

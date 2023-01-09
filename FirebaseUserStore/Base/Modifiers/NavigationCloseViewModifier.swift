@@ -46,7 +46,7 @@ enum CloseButtonSite {
 }
 
 extension View {
-    @ViewBuilder func applyClose(style: CloseButtonSite = .tollbar) -> some View {
+    @ViewBuilder func applyClose(_ style: CloseButtonSite = .tollbar) -> some View {
         switch style {
         case .tollbar:
             self.modifier(NavigationCloseToolbarViewModifier())

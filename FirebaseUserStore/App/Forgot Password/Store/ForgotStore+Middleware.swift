@@ -1,4 +1,4 @@
 import Combine
 import SwiftUI
 
-typealias ForgotStore = StateStore<ForgotState, ForgotAction, ForgotMutation, ForgotPackages, GlobalLink>
+typealias ForgotStore = StateStore<ForgotState, ForgotAction, ForgotMutation, ForgotPackages, NoneTransition>
