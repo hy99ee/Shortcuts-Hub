@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
+let feedReducer: ReducerType<FeedState, FeedMutation, GlobalLink> = { _state, mutation in
     var state = _state
 
     switch mutation {
@@ -53,7 +53,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation> = { _state, mutation in
         break
     }
 
-    return Just(state).eraseToAnyPublisher()
+    return Just((state, nil)).eraseToAnyPublisher()
     
     func emptyData() {
         state.itemsPreloadersCount = 0

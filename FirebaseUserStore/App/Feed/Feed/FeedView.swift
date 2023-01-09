@@ -18,7 +18,6 @@ struct FeedView: View {
         searchQueryBublisher
             .removeDuplicates()
             .debounce(for: .seconds(1), scheduler: DispatchQueue.global())
-            .print("______")
             .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
@@ -66,8 +65,7 @@ struct FeedView: View {
                         }
                     }
                     .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
-                    .opacity(errorFeedDelay ? 0.5 : 1)
-                    .scaleEffect(errorFeedDelay ? 0.9 : 1)
+                    .opacity(errorFeedDelay ? 0.3 : 1)
                     .disabled(errorFeedDelay)
                     .padding()
 

@@ -7,18 +7,15 @@ let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> =
     case let .openRegister(store):
         return Just(LoginMutation.showRegister(store: store)).eraseToAnyPublisher()
         
-    case let .openForgot(store):
-        return Just(LoginMutation.showForgot(store: store)).eraseToAnyPublisher()
+    case .openForgot:
+        return Just(LoginMutation.showForgot).eraseToAnyPublisher()
         
     case let .clickLogin(user):
         return mutationLogin(user, packages: packages).withStatus(start: LoginMutation.progressLoginStatus(.start), finish: LoginMutation.progressLoginStatus(.stop))
         
     case let .clickCreate(newUser):
         return mutationRegister(newUser, packages: packages).withStatus(start: LoginMutation.progressRegisterStatus(.start), finish: LoginMutation.progressRegisterStatus(.stop))
-        
-    case let .clickForgot(email):
-        return mutationForgot(email, packages: packages).withStatus(start: LoginMutation.progressForgotStatus(.start), finish: LoginMutation.progressForgotStatus(.stop))
-        
+
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
     }
@@ -40,14 +37,6 @@ let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> =
             .catch { Just(LoginMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    
-    func mutationForgot(_ email: String, packages: LoginPackages) -> AnyPublisher<LoginMutation, Never> {
-        forgotPublisher(email, package: packages.forgotService)
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-            .map { LoginMutation.closeForgot }
-            .catch { _ in Just(LoginMutation.errorWithForgot) }
-            .eraseToAnyPublisher()
-    }
 
     // MARK: - Publishers
     func loginPublisher(_ user: LoginCredentials, package: LoginService) -> AnyPublisher<Void, LoginServiceError> {
@@ -57,10 +46,6 @@ let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> =
     }
     func registerPublisher(_ user: RegistrationCredentials, package: RegistrationService) -> AnyPublisher<Void, RegistrationServiceError> {
         package.register(with: user)
-            .eraseToAnyPublisher()
-    }
-    func forgotPublisher(_ email: String, package: ForgotPasswordService) -> AnyPublisher<Void, ForgotServiceError> {
-        package.sendPasswordResetRequest(to: email)
             .eraseToAnyPublisher()
     }
 }

@@ -9,7 +9,7 @@ final class GlobalStoreRepository {
         dispatcher: loginDispatcher,
         reducer: loginReducer,
         packages: LoginPackages()
-        )
+    )
 
     lazy var feedStore = FeedStore(
         state: FeedState(),

@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-typealias FeedStore = StateStore<FeedState, FeedAction, FeedMutation, FeedPackages>
+typealias FeedStore = StateStore<FeedState, FeedAction, FeedMutation, FeedPackages, GlobalLink>
 
 extension FeedStore {
     static let middlewareLocalSearch: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in

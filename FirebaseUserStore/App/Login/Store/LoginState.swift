@@ -4,7 +4,7 @@ import Combine
 struct LoginState: StateType {
     let registerSheet = RegisterSheetProvider()
     let forgotSheet = ForgotSheetProvider()
-    
+
     let alert = AlertProvider()
 
     let loginProgress = ProgressViewProvider()

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ForgotPasswordView: View {
-    @StateObject var store: LoginStore
+    @StateObject var store: ForgotStore
     @State private var email = ""
     
     var body: some View {
@@ -13,10 +13,9 @@ struct ForgotPasswordView: View {
                                    isValid:
                                     Binding(
                                     get: {
-                                        store.state.forgotSheet.isValidEmailField
+                                        store.state.isValidEmailField
                                     }, set: { value, _ in
-                                        store.state.forgotSheet.isValidEmailField = value
-                                        store.objectWillChange.send()
+                                        store.dispatch(.clickEmailField)
                                     })
                 )
                 
