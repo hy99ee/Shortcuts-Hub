@@ -37,14 +37,14 @@ class GlobalTransition: ObservableObject {
 
 struct GlobalCoordinator<Content: View>: View {
     @ObservedObject var state: GlobalTransition
-    let content: () -> Content
+    let root: Content
 
     private let storeRepository = GlobalStoreRepository.shared
 
     var body: some View {
         NavigationStack(path: $state.path) {
             ZStack {
-                content()
+                root
                     .fullScreenCover(item: $state.promoSheet, content: coverContent)
             }
             .navigationDestination(for: GlobalLink.self, destination: linkDestination)

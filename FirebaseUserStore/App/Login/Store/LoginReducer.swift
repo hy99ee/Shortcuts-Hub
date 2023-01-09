@@ -1,19 +1,16 @@
 import Combine
 import Foundation
 
-let loginReducer: ReducerType<LoginState, LoginMutation, GlobalLink> = { _state, mutation in
+let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, mutation in
     var state = _state
-    var link: GlobalLink?
+    var link: LoginLink?
 
     switch mutation {
     case let .showRegister(store):
         state.registerSheet.initialize(with: store)
 
     case .showForgot:
-        
-        link = .promo
-//        state.transition.send(StateTransition(ForgotStore.Transition.forgot, StateTransitionType.sheet))
-//        state.transition(ForgotStore.Transition.forgot, StateTransitionType.sheet)
+        link = .forgot
 
     case .login:
         break

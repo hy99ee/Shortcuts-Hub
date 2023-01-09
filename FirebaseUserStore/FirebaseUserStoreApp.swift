@@ -25,11 +25,14 @@ struct Firebase_User_Account_ManagementApp: App {
             case .loggedIn:
                 FeedView(store: storeRepository.feedStore)
             case .loggedOut:
-                LoginView()
-                    .environmentObject(storeRepository.loginStore)
+                LoginCoordinator(state: LoginTransitionState(sender: storeRepository.loginStore), root: loginView)
             case .loading:
                 HDotsProgress().scaleEffect(2)
             }
         }
+    }
+
+    private var loginView: some View {
+        LoginView().environmentObject(storeRepository.loginStore)
     }
 }
