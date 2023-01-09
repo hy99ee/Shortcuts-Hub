@@ -24,10 +24,10 @@ struct FeedState: StateType {
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()
 
-    let processViewProgress: ProcessViewProvider
+    let processView: ProcessViewProvider
 
     init() {
-        processViewProgress = ProcessViewProvider(viewProgress, buttonProgress)
+        processView = ProcessViewProvider(viewProgress, buttonProgress)
     }
 }
 

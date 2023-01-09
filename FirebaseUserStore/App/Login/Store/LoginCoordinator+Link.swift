@@ -4,10 +4,23 @@ import Combine
 
 enum LoginLink: TransitionType {
     case forgot
-    case register
+    case register(store: LoginStore)
 
     var id: String {
         String(describing: self)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .forgot:
+            hasher.combine(0)
+        case .register:
+            hasher.combine(1)
+        }
+    }
+
+    static func == (lhs: LoginLink, rhs: LoginLink) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }
 
@@ -22,8 +35,8 @@ class LoginTransitionState: ObservableObject {
         sender.transition.sink {[weak self] transition in
             guard let self else { return }
             switch transition {
-            case .forgot: self.path.append(transition)
-            case .register: self.sheet = transition
+            case .forgot: self.fullcover = transition
+            case .register: self.path.append(transition)
             }
         }
         .store(in: &subscriptions)
@@ -48,8 +61,8 @@ struct LoginCoordinator<Content: View>: View {
 
     @ViewBuilder private func linkDestination(link: LoginLink) -> some View {
         switch link {
-        case .forgot:
-            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages()))
+        case let .register(store):
+            RegisterView(store: RegisterationStore(state: RegisterationState(), dispatcher: registerationDispatcher, reducer: registerationReducer, packages: RegisterationPackages()))
         default:
             EmptyView()
         }
@@ -58,17 +71,15 @@ struct LoginCoordinator<Content: View>: View {
     @ViewBuilder private func coverContent(link: LoginLink) -> some View {
         switch link {
         case .forgot:
-            EmptyView()
-        case .register:
+            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages())).presentationDetents([.height(200), .medium])
+        default:
             EmptyView()
         }
     }
 
     @ViewBuilder private func sheetContent(link: LoginLink) -> some View {
         switch link {
-        case .forgot:
-            EmptyView().presentationDetents([.height(200), .medium])
-        case .register:
+        default:
             EmptyView()
         }
     }

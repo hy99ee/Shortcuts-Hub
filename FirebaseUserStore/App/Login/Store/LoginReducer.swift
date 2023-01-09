@@ -7,10 +7,10 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
 
     switch mutation {
     case let .showRegister(store):
-        state.registerSheet.initialize(with: store)
+        return Just(.coordinate(destination: .register(store: store))).eraseToAnyPublisher()
 
     case .showForgot:
-        link = .forgot
+        return Just(.coordinate(destination: .forgot)).eraseToAnyPublisher()
 
     case .login:
         break
@@ -31,6 +31,6 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
         break
     }
 
-    return Just((state, link)).eraseToAnyPublisher()
+    return Just(.state(state)).eraseToAnyPublisher()
 }
 

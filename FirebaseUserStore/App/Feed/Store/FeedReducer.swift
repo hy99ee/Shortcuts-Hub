@@ -53,7 +53,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation, GlobalLink> = { _state, mu
         break
     }
 
-    return Just((state, nil)).eraseToAnyPublisher()
+    return Just(.state(state)).eraseToAnyPublisher()
     
     func emptyData() {
         state.itemsPreloadersCount = 0

@@ -41,10 +41,8 @@ struct LoginView: View {
                 }
             }
         }
-        .modifier(SheetShowViewModifier(provider: store.state.registerSheet))
-        .modifier(SheetShowViewModifier(provider: store.state.forgotSheet))
         .modifier(AlertShowViewModifier(provider: store.state.alert))
-        .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
+        .modifier(ProcessViewModifier(provider: store.state.processView))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
     }
@@ -110,8 +108,8 @@ struct InputTextFieldView: View {
                 .onTapGesture {
                     isValid = true
                 }
-                .onChange(of: isValid, perform: { _ in
-                    focused = false
+                .onChange(of: isValid, perform: {
+                    focused = $0
                 })
                 .focused($focused)
         }

@@ -5,8 +5,5 @@ enum LoginAction: Action {
     case openForgot
     
     case clickLogin(user: LoginCredentials)
-    case clickCreate(newUser: RegistrationCredentials)
-
-    case mockAction
 }
 

@@ -63,12 +63,13 @@ where StoreState: StateType,
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in reducer(state, $0) } // Reduce
             .subscribe(on: DispatchQueue.main)
-            .compactMap({ undefinedState in
-                if let coordinate = undefinedState.1 {
-                    self.transition.send(coordinate)
+            .compactMap({
+                switch $0 {  
+                case let .state(state):
+                    return state
+                case let .coordinate(destination):
+                    self.transition.send(destination)
                     return nil
-                } else {
-                    return undefinedState.0
                 }
             })
             .assign(to: &$state)

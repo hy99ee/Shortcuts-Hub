@@ -4,10 +4,9 @@ import Combine
 enum ForgotMutation: Mutation {
     case progressForgotStatus(_ status: ProgressViewStatus)
 
-    case validEmailField
+    case emailValid(status: Bool)
 
     case errorAlert(error: Error)
-    case error
 
     case close
 }

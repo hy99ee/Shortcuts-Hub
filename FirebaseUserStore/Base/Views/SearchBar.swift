@@ -1,10 +1,3 @@
-//
-//  SearchBar.swift
-//  FirebaseUserStore
-//
-//  Created by hy99ee on 20.12.2022.
-//
-
 import SwiftUI
 
 struct SearchBar: View {

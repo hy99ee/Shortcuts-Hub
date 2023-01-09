@@ -5,21 +5,18 @@ let forgotReducer: ReducerType<ForgotState, ForgotMutation, GlobalLink> = { _sta
     var state = _state
     switch mutation {
     case let .progressForgotStatus(status):
-        state.forgotProgress.progressStatus = status
+        state.progress.progressStatus = status
     
-    case .validEmailField:
-        state.isValidEmailField = true
+    case let .emailValid(status):
+        state.isValidEmailField = status
 
     case let .errorAlert(error):
         state.alert.error = error
-
-    case .error:
-        state.isValidEmailField = false
 
     case .close:
         break
     }
 
-    return Just((state, nil)).eraseToAnyPublisher()
+    return Just(.state(state)).eraseToAnyPublisher()
 }
 

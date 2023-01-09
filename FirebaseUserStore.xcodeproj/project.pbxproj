@@ -33,7 +33,6 @@
 		3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0F292BC8F6002531D8 /* LoginReducer.swift */; };
 		3B4B8F5B293B922D007B4DC9 /* ProcessViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */; };
 		3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4C44A629019E5500CDC700 /* FeedReducer.swift */; };
-		3B4F70C32966DD3C007EE428 /* RegisterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4F70C22966DD3C007EE428 /* RegisterProvider.swift */; };
 		3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */; };
 		3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */; };
 		3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4A2967366500F43A45 /* ForgotPackages.swift */; };
@@ -42,7 +41,6 @@
 		3B703D552967366500F43A45 /* ForgotState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4D2967366500F43A45 /* ForgotState.swift */; };
 		3B703D562967366500F43A45 /* ForgotDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */; };
 		3B703D572967366500F43A45 /* ForgotAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4F2967366500F43A45 /* ForgotAction.swift */; };
-		3B703D582967366500F43A45 /* ForgotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D502967366500F43A45 /* ForgotProvider.swift */; };
 		3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D512967366500F43A45 /* ForgotReducer.swift */; };
 		3B703D5C29698ED100F43A45 /* AboutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5B29698ED100F43A45 /* AboutProvider.swift */; };
 		3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5D29698EF200F43A45 /* ProcessProvider.swift */; };
@@ -54,6 +52,13 @@
 		3B7A4B552954525E000AF26A /* MockItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B542954525E000AF26A /* MockItemsService.swift */; };
 		3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B5A29546583000AF26A /* FetchedResponce.swift */; };
 		3B7AE4C6296C4577002A9948 /* LoginCoordinator+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4C5296C4577002A9948 /* LoginCoordinator+Link.swift */; };
+		3B7AE4D2296C6085002A9948 /* RegisterationPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */; };
+		3B7AE4D3296C6085002A9948 /* RegisterationMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */; };
+		3B7AE4D4296C6085002A9948 /* RegisterationStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */; };
+		3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CD296C6085002A9948 /* RegisterationState.swift */; };
+		3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */; };
+		3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */; };
+		3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */; };
 		3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */; };
 		3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
@@ -112,7 +117,6 @@
 		3B45AC0F292BC8F6002531D8 /* LoginReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReducer.swift; sourceTree = "<group>"; };
 		3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessViewModifier.swift; sourceTree = "<group>"; };
 		3B4C44A629019E5500CDC700 /* FeedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedReducer.swift; sourceTree = "<group>"; };
-		3B4F70C22966DD3C007EE428 /* RegisterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterProvider.swift; sourceTree = "<group>"; };
 		3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteModifier.swift; sourceTree = "<group>"; };
 		3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceError.swift; sourceTree = "<group>"; };
 		3B703D4A2967366500F43A45 /* ForgotPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPackages.swift; sourceTree = "<group>"; };
@@ -121,7 +125,6 @@
 		3B703D4D2967366500F43A45 /* ForgotState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotState.swift; sourceTree = "<group>"; };
 		3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotDispatcher.swift; sourceTree = "<group>"; };
 		3B703D4F2967366500F43A45 /* ForgotAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotAction.swift; sourceTree = "<group>"; };
-		3B703D502967366500F43A45 /* ForgotProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotProvider.swift; sourceTree = "<group>"; };
 		3B703D512967366500F43A45 /* ForgotReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotReducer.swift; sourceTree = "<group>"; };
 		3B703D5B29698ED100F43A45 /* AboutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutProvider.swift; sourceTree = "<group>"; };
 		3B703D5D29698EF200F43A45 /* ProcessProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessProvider.swift; sourceTree = "<group>"; };
@@ -134,6 +137,13 @@
 		3B7A4B542954525E000AF26A /* MockItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockItemsService.swift; sourceTree = "<group>"; };
 		3B7A4B5A29546583000AF26A /* FetchedResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResponce.swift; sourceTree = "<group>"; };
 		3B7AE4C5296C4577002A9948 /* LoginCoordinator+Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginCoordinator+Link.swift"; sourceTree = "<group>"; };
+		3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationPackages.swift; sourceTree = "<group>"; };
+		3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationMutation.swift; sourceTree = "<group>"; };
+		3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegisterationStore+Middleware.swift"; sourceTree = "<group>"; };
+		3B7AE4CD296C6085002A9948 /* RegisterationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationState.swift; sourceTree = "<group>"; };
+		3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationDispatcher.swift; sourceTree = "<group>"; };
+		3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationAction.swift; sourceTree = "<group>"; };
+		3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationReducer.swift; sourceTree = "<group>"; };
 		3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetShowViewModifier.swift; sourceTree = "<group>"; };
 		3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
@@ -225,14 +235,6 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
-		3B4F70B82966D65C007EE428 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				3B4F70C22966DD3C007EE428 /* RegisterProvider.swift */,
-			);
-			path = Store;
-			sourceTree = "<group>";
-		};
 		3B633830292BB99100F7A07F /* Store */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +260,6 @@
 				3B703D512967366500F43A45 /* ForgotReducer.swift */,
 				3B703D4C2967366500F43A45 /* ForgotStore+Middleware.swift */,
 				3B703D4A2967366500F43A45 /* ForgotPackages.swift */,
-				3B703D502967366500F43A45 /* ForgotProvider.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -296,6 +297,20 @@
 				3B7A4B5A29546583000AF26A /* FetchedResponce.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		3B7AE4C9296C6085002A9948 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */,
+				3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */,
+				3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */,
+				3B7AE4CD296C6085002A9948 /* RegisterationState.swift */,
+				3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */,
+				3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */,
+				3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		3B81C4EE2923CEE40008BD8E /* About */ = {
@@ -343,7 +358,7 @@
 		3BD76ECF2899AF6C001D64E2 /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				3B4F70B82966D65C007EE428 /* Store */,
+				3B7AE4C9296C6085002A9948 /* Store */,
 				3BD76ED22899AF6C001D64E2 /* Service */,
 				3BD76ED42899AF6C001D64E2 /* View */,
 			);
@@ -623,6 +638,7 @@
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator+Link.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
+				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */,
 				3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */,
@@ -634,6 +650,7 @@
 				3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */,
 				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
+				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
 				3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */,
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B703D532967366500F43A45 /* ForgotMutation.swift in Sources */,
@@ -643,7 +660,9 @@
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
 				3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */,
+				3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */,
 				3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */,
+				3B7AE4D2296C6085002A9948 /* RegisterationPackages.swift in Sources */,
 				3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
@@ -662,10 +681,12 @@
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */,
+				3B7AE4D4296C6085002A9948 /* RegisterationStore+Middleware.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */,
+				3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */,
 				3B4B8F5B293B922D007B4DC9 /* ProcessViewModifier.swift in Sources */,
-				3B703D582967366500F43A45 /* ForgotProvider.swift in Sources */,
 				3B0AA8B228D9C5D300CEEFA4 /* AlertShowViewModifier.swift in Sources */,
+				3B7AE4D3296C6085002A9948 /* RegisterationMutation.swift in Sources */,
 				3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */,
 				3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */,
 				3B703D63296ACE4A00F43A45 /* Coordinator.swift in Sources */,
@@ -675,7 +696,6 @@
 				3B703D572967366500F43A45 /* ForgotAction.swift in Sources */,
 				3B45AC0A292BC8AC002531D8 /* LoginAction.swift in Sources */,
 				3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */,
-				3B4F70C32966DD3C007EE428 /* RegisterProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

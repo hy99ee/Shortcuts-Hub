@@ -83,7 +83,7 @@ struct FeedView: View {
             ButtonView(title: "NEW") {
                 store.dispatch(.addItem)
             }
-            .modifier(ProcessViewModifier(provider: store.state.processViewProgress))
+            .modifier(ProcessViewModifier(provider: store.state.processView))
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .buttonView))
             .padding()
         }
