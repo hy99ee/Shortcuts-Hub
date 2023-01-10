@@ -19,7 +19,7 @@ struct FeedState: StateType {
     var showErrorView = false
 
     var alert = AlertProvider()
-    var aboutSheetProvider = AboutSheetProvider()
+//    var aboutSheetProvider = AboutSheetProvider()
 
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()

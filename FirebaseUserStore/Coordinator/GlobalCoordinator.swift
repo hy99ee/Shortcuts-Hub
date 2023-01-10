@@ -54,7 +54,8 @@ struct GlobalCoordinator: View {
         case .progress:
             HDotsProgress().scaleEffect(2)
         case .login:
-            FeedView(store: storeRepository.feedStore)
+//            FeedView(store: storeRepository.feedStore)
+            FeedCoordinator(state: FeedTransitionState(sender: storeRepository.feedStore), root: feedView)
         case .logout:
             LoginCoordinator(state: LoginTransitionState(sender: storeRepository.loginStore), root: loginView)
         default:
@@ -73,5 +74,9 @@ struct GlobalCoordinator: View {
 
     private var loginView: some View {
         LoginView().environmentObject(storeRepository.loginStore)
+    }
+
+    private var feedView: some View {
+        FeedView(store: storeRepository.feedStore)
     }
 }

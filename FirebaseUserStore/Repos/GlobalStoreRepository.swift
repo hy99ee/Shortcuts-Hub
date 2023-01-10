@@ -18,6 +18,6 @@ final class GlobalStoreRepository {
         dispatcher: feedDispatcher,
         reducer: feedReducer,
         packages: FeedPackages(),
-        middlewares: [FeedStore.middlewareLocalSearch, FeedStore.middlewareUserValidation]
+        middlewares: [FeedStore.middlewareLocalSearch]
     )
 }

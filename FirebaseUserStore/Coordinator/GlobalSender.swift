@@ -5,8 +5,7 @@ class GlobalSender: TransitionSender {
     @ObservedObject var sessionService = SessionService.shared
     private var subscriptions = Set<AnyCancellable>()
     private lazy var isFirstOpenKey = "isFirstOpen"
-    private lazy var isFirstOpen = !UserDefaults.standard.bool(forKey: isFirstOpenKey)
-//    let isFirstOpen = true
+    private lazy var isFirstOpen = UserDefaults.standard.bool(forKey: isFirstOpenKey)
 
     let transition = PassthroughSubject<GlobalLink, Never>()
     
@@ -30,23 +29,22 @@ class GlobalSender: TransitionSender {
                     return Publishers.Merge(
                         sessionState,
                         Just(GlobalLink.promo)
-                            .handleEvents(receiveOutput: { _ in UserDefaults.standard.set(false, forKey: self.isFirstOpenKey)})
-                            .delay(for: .seconds(5), scheduler: DispatchQueue.main)
+                            .handleEvents(receiveOutput: { _ in
+                                self.isFirstOpen = false
+                                UserDefaults.standard.set(self.isFirstOpen, forKey: self.isFirstOpenKey)
+                            })
+                            .delay(for: .seconds(3), scheduler: DispatchQueue.main)
                     ).eraseToAnyPublisher()
                 }
+                if case .logout = state {
+                    self.isFirstOpen = true
+                    UserDefaults.standard.set(self.isFirstOpen, forKey: self.isFirstOpenKey)
+                }
+
                 return sessionState
             }
-            .print("++++++++++")
             .receive(on: DispatchQueue.main)
-            .subscribe(on: DispatchQueue.main)
             .subscribe(transition)
-//            .sink(receiveValue: {
-////                guard let self else { return }
-//                self.transition.send($0)
-//            })
             .store(in: &subscriptions)
-    }
-    deinit {
-        print("+++++++ DEAD +++++")
     }
 }

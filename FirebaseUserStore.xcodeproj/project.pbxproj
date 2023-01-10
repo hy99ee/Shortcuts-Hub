@@ -42,7 +42,6 @@
 		3B703D562967366500F43A45 /* ForgotDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */; };
 		3B703D572967366500F43A45 /* ForgotAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4F2967366500F43A45 /* ForgotAction.swift */; };
 		3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D512967366500F43A45 /* ForgotReducer.swift */; };
-		3B703D5C29698ED100F43A45 /* AboutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5B29698ED100F43A45 /* AboutProvider.swift */; };
 		3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5D29698EF200F43A45 /* ProcessProvider.swift */; };
 		3B703D6029698F6200F43A45 /* ProgressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5F29698F6200F43A45 /* ProgressProvider.swift */; };
 		3B703D63296ACE4A00F43A45 /* GlobalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */; };
@@ -60,6 +59,7 @@
 		3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */; };
 		3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */; };
 		3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4DA296CB564002A9948 /* GlobalSender.swift */; };
+		3B7AE4DD296D6C4D002A9948 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */; };
 		3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */; };
 		3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
@@ -127,7 +127,6 @@
 		3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotDispatcher.swift; sourceTree = "<group>"; };
 		3B703D4F2967366500F43A45 /* ForgotAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotAction.swift; sourceTree = "<group>"; };
 		3B703D512967366500F43A45 /* ForgotReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotReducer.swift; sourceTree = "<group>"; };
-		3B703D5B29698ED100F43A45 /* AboutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutProvider.swift; sourceTree = "<group>"; };
 		3B703D5D29698EF200F43A45 /* ProcessProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessProvider.swift; sourceTree = "<group>"; };
 		3B703D5F29698F6200F43A45 /* ProgressProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressProvider.swift; sourceTree = "<group>"; };
 		3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalCoordinator.swift; sourceTree = "<group>"; };
@@ -146,6 +145,7 @@
 		3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationAction.swift; sourceTree = "<group>"; };
 		3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationReducer.swift; sourceTree = "<group>"; };
 		3B7AE4DA296CB564002A9948 /* GlobalSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSender.swift; sourceTree = "<group>"; };
+		3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
 		3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetShowViewModifier.swift; sourceTree = "<group>"; };
 		3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
@@ -223,6 +223,7 @@
 				3B1F669528FC0C6C009225A4 /* FeedAction.swift */,
 				3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */,
 				3B2F78A12937880A0035BAAF /* FeedPackages.swift */,
+				3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -270,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				3B1F669F28FC1429009225A4 /* AlertProvider.swift */,
-				3B703D5B29698ED100F43A45 /* AboutProvider.swift */,
 				3B703D5D29698EF200F43A45 /* ProcessProvider.swift */,
 				3B703D5F29698F6200F43A45 /* ProgressProvider.swift */,
 			);
@@ -645,6 +645,7 @@
 				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */,
+				3B7AE4DD296D6C4D002A9948 /* FeedCoordinator.swift in Sources */,
 				3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */,
 				3B0E36C0293E2BA6009A7DCE /* InputPasswordView.swift in Sources */,
 				3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */,
@@ -681,7 +682,6 @@
 				3B703D542967366500F43A45 /* ForgotStore+Middleware.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,
-				3B703D5C29698ED100F43A45 /* AboutProvider.swift in Sources */,
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */,
