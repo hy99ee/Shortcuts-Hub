@@ -48,7 +48,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0) }
+            .flatMap { packages.itemsService.fetchItems($0, filter: {_ in true}) }
         
         return Publishers.Merge(
             fetchDocs

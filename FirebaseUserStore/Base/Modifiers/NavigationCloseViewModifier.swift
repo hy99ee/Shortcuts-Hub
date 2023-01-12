@@ -18,14 +18,15 @@ struct NavigationCloseToolbarViewModifier: ViewModifier {
 
 struct NavigationCloseViewModifier: ViewModifier {
     
-    @Environment(\.presentationMode) var presentationMode
+//    @Environment(\.presentationMode) var presentationMode
+    @Binding var onClose: Bool
     
     func body(content: Content) -> some View {
         VStack {
             HStack {
                 Spacer()
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    onClose = true
                 }, label: {
                     Image(systemName: "xmark")
                 })
@@ -51,7 +52,21 @@ extension View {
         case .tollbar:
             self.modifier(NavigationCloseToolbarViewModifier())
         case .view:
-            self.modifier(NavigationCloseViewModifier())
+//            self.modifier(NavigationCloseViewModifier())
+            self
+        }
+    }
+
+    @ViewBuilder func applyClose<T>(onClose: Binding<T?>, _ style: CloseButtonSite = .tollbar) -> some View {
+        switch style {
+        case .tollbar:
+            self.modifier(NavigationCloseToolbarViewModifier())
+        case .view:
+            let closeBinding = Binding<Bool>(
+                get: { onClose.wrappedValue != nil },
+                set: { _ in onClose.wrappedValue = nil }
+            )
+            self.modifier(NavigationCloseViewModifier(onClose: closeBinding))
         }
     }
 }

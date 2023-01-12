@@ -1,10 +1,15 @@
 import Foundation
+import SwiftUI
 
 final class GlobalStoreRepository {
     static let shared = GlobalStoreRepository()
     private init() { }
 
     lazy var sender = GlobalSender()
+
+    lazy var feedState = FeedTransitionState(sender: feedStore)
+
+    lazy var loginState = LoginTransitionState(sender: loginStore)
 
     lazy var loginStore = LoginStore(
         state: LoginState(),

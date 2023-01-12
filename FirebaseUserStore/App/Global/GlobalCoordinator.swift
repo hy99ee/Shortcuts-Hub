@@ -24,11 +24,7 @@ class GlobalTransition: ObservableObject {
         sender.transition.sink {[weak self] transition in
             guard let self else { return }
             switch transition {
-            case .login:
-                self.core = transition
-            case .logout:
-                self.core = transition
-            case .progress:
+            case .login, .logout, .progress:
                 self.core = transition
             case .promo:
                 self.promoSheet = transition
@@ -54,10 +50,9 @@ struct GlobalCoordinator: View {
         case .progress:
             HDotsProgress().scaleEffect(2)
         case .login:
-//            FeedView(store: storeRepository.feedStore)
-            FeedCoordinator(state: FeedTransitionState(sender: storeRepository.feedStore), root: feedView)
+            FeedCoordinator(state: storeRepository.feedState, root: feedView)
         case .logout:
-            LoginCoordinator(state: LoginTransitionState(sender: storeRepository.loginStore), root: loginView)
+            LoginCoordinator(state: storeRepository.loginState, root: loginView)
         default:
             EmptyView()
         }
@@ -66,17 +61,12 @@ struct GlobalCoordinator: View {
     @ViewBuilder private func coverContent(link: GlobalLink) -> some View {
         switch link {
         case .promo:
-            ProgressView().background(.red).applyClose(.view)
+            ProgressView().background(.red).applyClose(onClose: $state.promoSheet, .view)
         default:
             EmptyView()
         }
     }
 
-    private var loginView: some View {
-        LoginView().environmentObject(storeRepository.loginStore)
-    }
-
-    private var feedView: some View {
-        FeedView(store: storeRepository.feedStore)
-    }
+    private var loginView: some View { LoginView().environmentObject(storeRepository.loginStore) }
+    private var feedView: some View { FeedView(store: storeRepository.feedStore) }
 }

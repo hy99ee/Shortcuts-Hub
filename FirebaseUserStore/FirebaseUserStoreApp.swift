@@ -23,8 +23,4 @@ struct Firebase_User_Account_ManagementApp: App {
             GlobalCoordinator(state: GlobalTransition(sender: storeRepository.sender))
         }
     }
-
-    private var loginView: some View {
-        LoginView().environmentObject(storeRepository.loginStore)
-    }
 }

@@ -48,6 +48,7 @@ final class SessionService: SessionServiceType, ObservableObject {
         try? Auth.auth().signOut()
     }
 }
+
 var isError = true
 private extension SessionService {
     func setupObservations() {
@@ -57,7 +58,6 @@ private extension SessionService {
                 guard let self = self else { return }
                 
                 let currentUser = Auth.auth().currentUser
-
                 
                 if let uid = currentUser?.uid {
                     Database

@@ -36,7 +36,7 @@ struct FeedView: View {
                 let searchBinding = Binding<String>(
                     get: { searchQueryBublisher.value },
                     set: { searchQueryBublisher.send($0) }
-                  )
+                )
                 SearchBar(searchQuery: searchBinding)
                 FeedCollectionView(store: store, searchQuery: searchBinding)
             }

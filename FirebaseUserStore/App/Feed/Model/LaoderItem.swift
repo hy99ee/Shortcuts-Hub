@@ -1,9 +1,7 @@
 import Foundation
 
 
-struct LoaderItem: Codable, Equatable, Identifiable {
-    var id: UUID {
-        UUID()
-    }
+struct LoaderItem: Codable, Equatable, Hashable, Identifiable {
+    var id = UUID()
     var title = "Loading..."
 }

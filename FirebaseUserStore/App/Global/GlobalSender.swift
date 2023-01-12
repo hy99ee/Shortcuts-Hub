@@ -3,14 +3,16 @@ import SwiftUI
 
 class GlobalSender: TransitionSender {
     @ObservedObject var sessionService = SessionService.shared
-    private var subscriptions = Set<AnyCancellable>()
+    let transition = PassthroughSubject<GlobalLink, Never>()
+
     private lazy var isFirstOpenKey = "isFirstOpen"
     private lazy var isFirstOpen = UserDefaults.standard.bool(forKey: isFirstOpenKey)
-
-    let transition = PassthroughSubject<GlobalLink, Never>()
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     init() {
         sessionService.$state
+            .removeDuplicates()
             .map {
                 switch $0 {
                 case .loggedIn:
@@ -44,6 +46,7 @@ class GlobalSender: TransitionSender {
                 return sessionState
             }
             .receive(on: DispatchQueue.main)
+            .subscribe(on: DispatchQueue.main)
             .subscribe(transition)
             .store(in: &subscriptions)
     }
