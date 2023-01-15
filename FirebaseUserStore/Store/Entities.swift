@@ -41,4 +41,34 @@ protocol EnvironmentType {
 
 protocol EnvironmentPackages {}
 
+extension NavigationPath {
+    static let coordinatorsShared = NavigationPath()
+}
+protocol CoordinatorType: View {
+    associatedtype Link: TransitionType
 
+    var stateReceiver: AnyPublisher<Link, Never> { get }
+
+    var path: NavigationPath { get }
+    var alert: Link? { get }
+    var sheet: Link? { get }
+    var fullcover: Link? { get }
+
+    var view: AnyView { get }
+    
+    func transitionReceiver(_ link: Link)
+}
+
+extension CoordinatorType {
+    var path: NavigationPath { NavigationPath.coordinatorsShared }
+    var alert: Link? { nil }
+    var sheet: Link? { nil }
+    var fullcover: Link? { nil }
+
+    var body: some View {
+        view
+        .onReceive(stateReceiver) {
+            transitionReceiver($0)
+        }
+    }
+}

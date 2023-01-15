@@ -31,41 +31,17 @@ enum TransitionState<T: TransitionType> {
     case fullcover(_ link: T)
 }
 
-protocol CoordinatorType: View {
-    associatedtype Link: TransitionType
-
-    var stateReceiver: AnyPublisher<Link, Never> { get }
-    var path: NavigationPath { get set }
-    var sheet: Link? { get }
-    var fullcover: Link? { get }
-
-
-    var view: AnyView { get }
-    
-    func transitionReceiver(_ link: Link)
-}
-
-extension CoordinatorType {
-    var body: some View {
-        view
-        .onReceive(stateReceiver) {
-            transitionReceiver($0)
-        }
-    }
-}
-
 struct FeedCoordinator: CoordinatorType {
     @State var path = NavigationPath()
     @State var sheet: FeedLink?
-    var fullcover: FeedLink?
 
     private var store: FeedStore
-    private var root: FeedView
+    private var rootView: FeedView
     let stateReceiver: AnyPublisher<FeedLink, Never>
 
     init(store: FeedStore) {
         self.store = store
-        self.root = FeedView(store: store)
+        self.rootView = FeedView(store: store)
         self.stateReceiver = store.transition.eraseToAnyPublisher()
     }
     
@@ -75,7 +51,7 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var _view: some View {
         NavigationStack(path: $path) {
             ZStack {
-                root
+                rootView
                     .sheet(item: $sheet, content: sheetContent)
             }
             .navigationDestination(for: FeedLink.self, destination: linkDestination)

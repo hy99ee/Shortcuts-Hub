@@ -20,7 +20,7 @@ struct Firebase_User_Account_ManagementApp: App {
 
     var body: some Scene {
         WindowGroup {
-            GlobalCoordinator(state: GlobalTransition(sender: storeRepository.sender))
+            GlobalCoordinator()
         }
     }
 }

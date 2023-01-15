@@ -24,37 +24,43 @@ enum LoginLink: TransitionType {
     }
 }
 
-class LoginTransitionState: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var fullcover: LoginLink?
-    @Published var sheet: LoginLink?
+struct LoginCoordinator: CoordinatorType {
+    @State var path = NavigationPath()
+    @State var fullcover: LoginLink?
+    @State var sheet: LoginLink?
 
-    private var subscriptions = Set<AnyCancellable>()
-
-    init<T: TransitionSender>(sender: T) where T.SenderTransitionType == LoginLink {
-        sender.transition.sink {[weak self] transition in
-            guard let self else { return }
-            switch transition {
-            case .forgot: self.fullcover = transition
-            case .register: self.path.append(transition)
-            }
-        }
-        .store(in: &subscriptions)
+    private var store: LoginStore
+    let stateReceiver: AnyPublisher<LoginLink, Never>
+    @ViewBuilder private var rootView: some View {
+        LoginView().environmentObject(store)
     }
-}
 
-struct LoginCoordinator<Content: View>: View {
-    @ObservedObject var state: LoginTransitionState
-    let root: Content
+    init(store: LoginStore) {
+        self.store = store
+        self.stateReceiver = store.transition.eraseToAnyPublisher()
+    }
 
-    var body: some View {
-        NavigationStack(path: $state.path) {
+    
+    var view: AnyView {
+        AnyView(_view)
+    }
+    @ViewBuilder var _view: some View {
+        NavigationStack(path: $path) {
             ZStack {
-                root
-                    .fullScreenCover(item: $state.fullcover, content: coverContent)
-                    .sheet(item: $state.sheet, content: sheetContent)
+                rootView
+                    .fullScreenCover(item: $fullcover, content: coverContent)
+                    .sheet(item: $sheet, content: sheetContent)
             }
             .navigationDestination(for: LoginLink.self, destination: linkDestination)
+        }
+    }
+
+    func transitionReceiver(_ link: LoginLink) {
+        switch link {
+        case .forgot:
+            self.fullcover = link
+        case .register:
+            self.path.append(link)
         }
     }
 

@@ -14,45 +14,46 @@ enum GlobalLink: TransitionType {
     }
 }
 
-class GlobalTransition: ObservableObject {
-    @Published var core: GlobalLink = .progress
-    @Published var promoSheet: GlobalLink?
 
-    private var subscriptions = Set<AnyCancellable>()
+struct GlobalCoordinator: CoordinatorType {
+    @State var sheet: GlobalLink?
+    @State var root: GlobalLink = .progress
 
-    init<T: TransitionSender>(sender: T) where T.SenderTransitionType == GlobalLink {
-        sender.transition.sink {[weak self] transition in
-            guard let self else { return }
-            switch transition {
-            case .login, .logout, .progress:
-                self.core = transition
-            case .promo:
-                self.promoSheet = transition
-            }
-        }
-        .store(in: &subscriptions)
+    var stateReceiver: AnyPublisher<GlobalLink, Never>
+    private let sender: GlobalSender
     
+    init() {
+        self.sender = GlobalSender()
+        stateReceiver = self.sender.transition.eraseToAnyPublisher()
     }
-}
-
-struct GlobalCoordinator: View {
-    @ObservedObject var state: GlobalTransition
+    
+    var view: AnyView {
+        AnyView(_view)
+    }
+    @ViewBuilder private var _view: some View {
+        rootView
+            .fullScreenCover(item: $sheet, content: coverContent)
+    }
 
     private let storeRepository = GlobalStoreRepository.shared
 
-    var body: some View {
-        linkDestination(link: state.core)
-            .fullScreenCover(item: $state.promoSheet, content: coverContent)
+    func transitionReceiver(_ link: GlobalLink) {
+        switch link {
+        case .login, .logout, .progress:
+            root = link
+        case .promo:
+            sheet = link
+        }
     }
 
-    @ViewBuilder private func linkDestination(link: GlobalLink) -> some View {
-        switch link {
+    @ViewBuilder private var rootView: some View {
+        switch root {
         case .progress:
             HDotsProgress().scaleEffect(2)
         case .login:
             FeedCoordinator(store: storeRepository.feedStore)
         case .logout:
-            LoginCoordinator(state: storeRepository.loginState, root: loginView)
+            LoginCoordinator(store: storeRepository.loginStore)
         default:
             EmptyView()
         }
@@ -61,12 +62,9 @@ struct GlobalCoordinator: View {
     @ViewBuilder private func coverContent(link: GlobalLink) -> some View {
         switch link {
         case .promo:
-            ProgressView().background(.red).applyClose(onClose: $state.promoSheet, .view)
+            ProgressView().background(.red).applyClose(onClose: $sheet, .view)
         default:
             EmptyView()
         }
     }
-
-    private var loginView: some View { LoginView().environmentObject(storeRepository.loginStore) }
-   
 }

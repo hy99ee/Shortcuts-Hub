@@ -8,8 +8,6 @@ final class GlobalStoreRepository {
 
     lazy var sender = GlobalSender()
 
-    lazy var loginState = LoginTransitionState(sender: loginStore)
-
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,
