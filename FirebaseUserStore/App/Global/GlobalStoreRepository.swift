@@ -1,13 +1,12 @@
-import Foundation
+import Combine
 import SwiftUI
 
 final class GlobalStoreRepository {
+    private var subscriptions = Set<AnyCancellable>()
     static let shared = GlobalStoreRepository()
     private init() { }
 
     lazy var sender = GlobalSender()
-
-    lazy var feedState = FeedTransitionState(sender: feedStore)
 
     lazy var loginState = LoginTransitionState(sender: loginStore)
 

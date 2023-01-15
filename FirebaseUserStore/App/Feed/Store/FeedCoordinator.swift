@@ -24,36 +24,70 @@ enum FeedLink: TransitionType {
     }
 }
 
-class FeedTransitionState: ObservableObject {
-    @Published var path = NavigationPath()
-    @Published var fullcover: FeedLink?
-    @Published var sheet: FeedLink?
+enum TransitionState<T: TransitionType> {
+    case start
+    case appendPath(_ link: T)
+    case sheet(_ link: T)
+    case fullcover(_ link: T)
+}
 
-    private var subscriptions = Set<AnyCancellable>()
+protocol CoordinatorType: View {
+    associatedtype Link: TransitionType
 
-    init<T: TransitionSender>(sender: T) where T.SenderTransitionType == FeedLink {
-        sender.transition.sink {[weak self] transition in
-            guard let self else { return }
-            switch transition {
-            case .about: self.sheet = transition
-            case .detail: self.path.append(transition)
-            }
+    var stateReceiver: AnyPublisher<Link, Never> { get }
+    var path: NavigationPath { get set }
+    var sheet: Link? { get }
+    var fullcover: Link? { get }
+
+
+    var view: AnyView { get }
+    
+    func transitionReceiver(_ link: Link)
+}
+
+extension CoordinatorType {
+    var body: some View {
+        view
+        .onReceive(stateReceiver) {
+            transitionReceiver($0)
         }
-        .store(in: &subscriptions)
     }
 }
 
-struct FeedCoordinator<Content: View>: View {
-    @ObservedObject var state: FeedTransitionState
-    let root: Content
+struct FeedCoordinator: CoordinatorType {
+    @State var path = NavigationPath()
+    @State var sheet: FeedLink?
+    var fullcover: FeedLink?
 
-    var body: some View {
-        NavigationStack(path: $state.path) {
+    private var store: FeedStore
+    private var root: FeedView
+    let stateReceiver: AnyPublisher<FeedLink, Never>
+
+    init(store: FeedStore) {
+        self.store = store
+        self.root = FeedView(store: store)
+        self.stateReceiver = store.transition.eraseToAnyPublisher()
+    }
+    
+    var view: AnyView {
+        AnyView(_view)
+    }
+    @ViewBuilder private var _view: some View {
+        NavigationStack(path: $path) {
             ZStack {
                 root
-                    .sheet(item: $state.sheet, content: sheetContent)
+                    .sheet(item: $sheet, content: sheetContent)
             }
             .navigationDestination(for: FeedLink.self, destination: linkDestination)
+        }
+    }
+
+    func transitionReceiver(_ link: FeedLink) {
+        switch link {
+        case .about:
+            self.sheet = link
+        case .detail:
+            self.path.append(link)
         }
     }
 
