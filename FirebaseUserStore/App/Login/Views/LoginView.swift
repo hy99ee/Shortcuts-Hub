@@ -28,7 +28,7 @@ struct LoginView: View {
             }
 
             VStack(spacing: 16) {
-                ButtonView(title: "Login") {
+                ButtonView(title: "Login", disabled: .constant((!email.isEmail || password.isEmpty))) {
                     store.dispatch(.clickLogin(user: LoginCredentials(email: email, password: password)))
                 }
                 .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress, type: .buttonView))

@@ -4,7 +4,7 @@ import Combine
 
 enum LoginLink: TransitionType {
     case forgot
-    case register(store: LoginStore)
+    case register
 
     var id: String {
         String(describing: self)
@@ -40,16 +40,14 @@ struct LoginCoordinator: CoordinatorType {
         self.stateReceiver = store.transition.eraseToAnyPublisher()
     }
 
-    
     var view: AnyView {
         AnyView(_view)
     }
-    @ViewBuilder var _view: some View {
+    @ViewBuilder private var _view: some View {
         NavigationStack(path: $path) {
             ZStack {
                 rootView
                     .fullScreenCover(item: $fullcover, content: coverContent)
-                    .sheet(item: $sheet, content: sheetContent)
             }
             .navigationDestination(for: LoginLink.self, destination: linkDestination)
         }
@@ -66,7 +64,7 @@ struct LoginCoordinator: CoordinatorType {
 
     @ViewBuilder private func linkDestination(link: LoginLink) -> some View {
         switch link {
-        case let .register(store):
+        case .register:
             RegisterView(store: RegisterationStore(state: RegisterationState(), dispatcher: registerationDispatcher, reducer: registerationReducer, packages: RegisterationPackages()))
         default:
             EmptyView()
@@ -76,14 +74,7 @@ struct LoginCoordinator: CoordinatorType {
     @ViewBuilder private func coverContent(link: LoginLink) -> some View {
         switch link {
         case .forgot:
-            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages())).presentationDetents([.height(200), .medium])
-        default:
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder private func sheetContent(link: LoginLink) -> some View {
-        switch link {
+            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages())).applyClose(.view)
         default:
             EmptyView()
         }

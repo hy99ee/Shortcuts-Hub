@@ -7,7 +7,7 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
 
     switch mutation {
     case let .showRegister(store):
-        return Just(.coordinate(destination: .register(store: store))).eraseToAnyPublisher()
+        return Just(.coordinate(destination: .register)).eraseToAnyPublisher()
 
     case .showForgot:
         return Just(.coordinate(destination: .forgot)).eraseToAnyPublisher()

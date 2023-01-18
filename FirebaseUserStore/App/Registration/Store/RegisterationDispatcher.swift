@@ -6,8 +6,13 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
     switch action {
     case let .clickRegisteration(user):
         return mutationRegisteration(user, packages: packages).withStatus(start: RegisterationMutation.progressStatus(.start), finish: RegisterationMutation.progressStatus(.stop))
+
+    case .check:
+        return Just(RegisterationMutation.registrationCredentials(.init())).eraseToAnyPublisher()
     }
 
+
+    //MARK: Mutations
     func mutationRegisteration(_ user: RegistrationCredentials, packages: RegisterationPackages) -> AnyPublisher<RegisterationMutation, Never> {
         packages.registerationService.register(with: user)
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)

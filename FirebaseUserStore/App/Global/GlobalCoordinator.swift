@@ -32,7 +32,6 @@ struct GlobalCoordinator: CoordinatorType {
     }
     @ViewBuilder private var _view: some View {
         rootView
-            .fullScreenCover(item: $sheet, content: coverContent)
     }
 
     private let storeRepository = GlobalStoreRepository.shared
@@ -54,15 +53,6 @@ struct GlobalCoordinator: CoordinatorType {
             FeedCoordinator(store: storeRepository.feedStore)
         case .logout:
             LoginCoordinator(store: storeRepository.loginStore)
-        default:
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder private func coverContent(link: GlobalLink) -> some View {
-        switch link {
-        case .promo:
-            ProgressView().background(.red).applyClose(onClose: $sheet, .view)
         default:
             EmptyView()
         }

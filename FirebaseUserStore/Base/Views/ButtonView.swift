@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct ButtonView: View {
-    
     typealias ActionHandler = () -> Void
+
+    private let title: String
+    private let background: Color
+    private let foreground: Color
+    private let border: Color
     
-    let title: String
-    let background: Color
-    let foreground: Color
-    let border: Color
-    let handler: ActionHandler
+    @Binding private var disabled: Bool
+    private let handler: ActionHandler
     
     private let cornerRadius: CGFloat = 10
     
@@ -16,11 +17,13 @@ struct ButtonView: View {
                   background: Color = .blue,
                   foreground: Color = .white,
                   border: Color = .clear,
+                  disabled: Binding<Bool> = .constant(false),
                   handler: @escaping ButtonView.ActionHandler) {
         self.title = title
         self.background = background
         self.foreground = foreground
         self.border = border
+        self._disabled = disabled
         self.handler = handler
     }
     
@@ -32,7 +35,8 @@ struct ButtonView: View {
             Text(title)
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 50)
         })
-        .background(background)
+        .disabled(disabled)
+        .background(disabled ? Color(.lightGray).opacity(0.7) : background)
         .foregroundColor(foreground)
         .font(.system(size: 16, weight: .bold))
         .cornerRadius(cornerRadius)
@@ -40,13 +44,5 @@ struct ButtonView: View {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(border, lineWidth: 2)
         )
-    }
-}
-
-extension View {
-    func visibleDisabled(_ disabled: Bool) -> some View {
-        self.overlay {
-            Rectangle().background(.gray).opacity(disabled ? 0.15 : 0).mask(self)
-        }
     }
 }

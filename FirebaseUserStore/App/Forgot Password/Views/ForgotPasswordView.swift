@@ -17,25 +17,22 @@ struct ForgotPasswordView: View {
                                placeholder: "Email",
                                keyboardType: .emailAddress,
                                systemImage: "envelope",
-                               isValid:
-                                Binding(
-                                    get: {
-                                        store.state.isValidEmailField
-                                    }, set: { value, _ in
-                                        store.dispatch(.clickEmailField)
-                                    })
+                               isValid: Binding(
+                                get: {
+                                    store.state.isValidEmailField
+                                }, set: { _, _ in
+                                    store.dispatch(.clickEmailField)
+                                }
+                               )
             )
             
-            ButtonView(title: "Send Password Reset") {
+            ButtonView(title: "Send Password Reset", disabled: .constant(!email.isEmail)) {
                 store.dispatch(.clickForgot(email: email))
             }
-            .visibleDisabled(email.isEmpty)
-            .disabled(email.isEmpty)
             .modifier(ButtonProgressViewModifier(provider: store.state.progress, type: .buttonView))
         }
         .modifier(AlertShowViewModifier(provider: store.state.alert))
         .padding(.horizontal, 15)
         .navigationTitle("Reset Password")
-        .applyClose(.view)
     }
 }
