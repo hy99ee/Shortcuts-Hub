@@ -57,35 +57,66 @@ struct LoginView_Previews: PreviewProvider {
 }
 
 struct InputTextFieldView: View {
-
     @Binding var text: String
+    let isSecureField: Bool
     let placeholder: String
     let keyboardType: UIKeyboardType
     let systemImage: String?
+    let errorMessage: String?
     @Binding var isValid: Bool
 
+    @State private var isShowMessage = false
     @FocusState private var focused: Bool
+    private let unfocusHandler: (() -> ())?
     private let textFieldLeading: CGFloat = 30
 
-    init(text: Binding<String>, placeholder: String, keyboardType: UIKeyboardType, systemImage: String?, isValid: Binding<Bool>) {
+    init(
+        text: Binding<String>,
+        isSecureField: Bool = false,
+        placeholder: String,
+        keyboardType: UIKeyboardType = .default,
+        systemImage: String?,
+        errorMessage: String? = nil,
+        isValid: Binding<Bool>,
+        unfocusHandler: (() -> ())? = nil
+    ) {
         self._text = text
+        self.isSecureField = isSecureField
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
+        self.errorMessage = errorMessage
         self._isValid = isValid
+        self.unfocusHandler = unfocusHandler
     }
 
-    init(text: Binding<String>, placeholder: String, keyboardType: UIKeyboardType, systemImage: String?) {
+    init(
+        text: Binding<String>,
+        placeholder: String,
+        keyboardType: UIKeyboardType,
+        systemImage: String?
+    ) {
         self._text = text
+        self.isSecureField = false
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
         self._isValid = Binding(get: { true }, set: { _ in })
+        self.errorMessage = nil
+        self.unfocusHandler = nil
     }
 
     var body: some View {
         VStack {
-            TextField(placeholder, text: $text)
+            if isShowMessage {
+                HStack {
+                    Text(errorMessage!)
+                        .font(.system(size: 10, design: .monospaced)).bold().foregroundColor(.gray)
+                    Spacer()
+                }
+            }
+            
+            textViewByStyle
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
                        minHeight: 44,
                        alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -94,7 +125,6 @@ struct InputTextFieldView: View {
                 .background(
                     ZStack(alignment: .leading) {
                         if let systemImage = systemImage {
-                            
                             Image(systemName: systemImage)
                                 .font(.system(size: 16, weight: .semibold))
                                 .padding(.leading, 5)
@@ -106,12 +136,30 @@ struct InputTextFieldView: View {
                     }
                 )
                 .onTapGesture {
-                    isValid = true
+                    withAnimation(.easeIn(duration: 10)) {
+                        isValid = true
+                    }
                 }
-                .onChange(of: isValid, perform: {
-                    focused = $0
+                .onChange(of: isValid, perform: { isValid in
+                    focused = isValid
+                    if errorMessage != nil && !isValid {
+                        withAnimation {
+                            isShowMessage = true
+                        }
+                    } else {
+                        withAnimation {
+                            isShowMessage = false
+                        }
+                    }
+                })
+                .onChange(of: focused, perform: {
+                    if !$0 { unfocusHandler?() }
                 })
                 .focused($focused)
         }
+    }
+
+    @ViewBuilder private var textViewByStyle: some View {
+        if isSecureField { SecureField(placeholder, text: $text) } else { TextField(placeholder, text: $text) }
     }
 }

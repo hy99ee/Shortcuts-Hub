@@ -7,6 +7,7 @@ enum RegistrationCredentialsField: CaseIterable {
     case email
     case phone
     case password
+    case conformPassword
     case firstName
     case lastName
 }
@@ -14,7 +15,7 @@ struct RegistrationCredentials {
     var email = ""
     var phone = ""
     var password: String = ""
-    var repeatPassword: String = ""
+    var conformPassword: String = ""
     var firstName: String = ""
     var lastName: String = ""
 }
@@ -27,6 +28,8 @@ extension RegistrationCredentials {
             return self.phone
         case .password:
             return self.password
+        case .conformPassword:
+            return self.conformPassword
         case .firstName:
             return self.firstName
         case .lastName:
@@ -37,7 +40,7 @@ extension RegistrationCredentials {
         email.isEmail &&
         phone.isPhone &&
         password.isPassword &&
-        repeatPassword.isPassword &&
+        conformPassword.isPassword &&
         firstName.isUsername &&
         lastName.isUsername
     }

@@ -4,8 +4,8 @@ import Foundation
 let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, NoneTransition> = { _state, mutation in
     var state = _state
     switch mutation {
-    case .registrationCredentials(_):
-        break
+    case let .registrationCredentials(field):
+        state.fieldsStatus.updateValue(field.status, forKey: field.credentials)
         
     case let .progressStatus(status):
         state.progress.progressStatus = status

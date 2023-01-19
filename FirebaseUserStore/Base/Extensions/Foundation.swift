@@ -14,7 +14,16 @@ extension String {
     }
 
     var isPassword: Bool {
-        self.count >= 8
+        self.count >= 8 && !self.localizedStandardContains(" ")
+    }
+
+    var isEqualDoublePassword: Bool {
+        let password = self.components(separatedBy: " ")
+        return password.count == 2 && password[0] == password[1]
+    }
+
+    func combine(_ string: String, with separator: String = " ") -> Self {
+        self + separator + string
     }
 
     private func validate(regexp expession: String) -> Bool {

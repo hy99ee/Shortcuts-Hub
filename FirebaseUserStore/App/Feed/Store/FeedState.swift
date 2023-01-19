@@ -4,7 +4,10 @@ import Combine
 struct FeedState: StateType {
     var itemsPreloadersCount = 0 {
         didSet {
-            loadItems = Array(repeating: LoaderItem(), count: itemsPreloadersCount)
+            loadItems = []
+            for index in 0...itemsPreloadersCount {
+                loadItems.append(LoaderItem(id: index))
+            }
         }
     }
 
