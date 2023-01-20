@@ -13,13 +13,29 @@ extension String {
         validate(regexp: #"^[a-zA-Z-]"#)
     }
 
-    var isPassword: Bool {
-        self.count >= 8 && !self.localizedStandardContains(" ")
+    var isPasswordMinCount: Bool {
+        self.count >= 8
     }
 
-    var isEqualDoublePassword: Bool {
+    var isPasswordMaxCount: Bool {
+        self.count < 16
+    }
+
+    var passwordValidationMessage: String? {
+        if !self.isPasswordMinCount {
+            return "The password must be longer than 8 characters"
+        } else if !self.isPasswordMaxCount {
+            return "The password must be shorter than 16 characters"
+        } else if self.localizedStandardContains(" ") {
+            return "The password must be without a space"
+        } else {
+            return nil
+        }
+    }
+
+    var conformPasswordValidationMessage: String? {
         let password = self.components(separatedBy: " ")
-        return password.count == 2 && password[0] == password[1]
+        return (password.count == 2 && password[0] == password[1]) ? nil : "Passwords are not equal"
     }
 
     func combine(_ string: String, with separator: String = " ") -> Self {

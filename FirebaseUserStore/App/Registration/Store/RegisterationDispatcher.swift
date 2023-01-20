@@ -12,7 +12,7 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
         return mutatationCalculateFieldStatus(field, input).eraseToAnyPublisher()
     
     case let .click(field):
-        return Just(RegisterationMutation.registrationCredentials((credentials: field, status: true))).eraseToAnyPublisher()
+        return Just(RegisterationMutation.registrationCredentials((credentials: field, status: .valid))).eraseToAnyPublisher()
     }
 
 
@@ -29,17 +29,17 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
         Just({
             switch field {
             case .email:
-                return RegisterationMutation.registrationCredentials((credentials: .email, status: input.isEmail))
+                return RegisterationMutation.registrationCredentials((credentials: .email, status: input.isEmail ? .valid : .unvalidWithMessage("Unvalid email format")))
             case .phone:
-                return RegisterationMutation.registrationCredentials((credentials: .phone, status: input.isPhone))
+                return RegisterationMutation.registrationCredentials((credentials: .phone, status: input.isPhone ? .valid : .unvalid))
             case .password:
-                return RegisterationMutation.registrationCredentials((credentials: .password, status: input.isPassword))
+                return RegisterationMutation.registrationCredentials((credentials: .password, status: input.passwordValidationMessage == nil ? .valid : .unvalidWithMessage(input.passwordValidationMessage!) ))
             case .conformPassword:
-                return RegisterationMutation.registrationCredentials((credentials: .conformPassword, status: input.isEqualDoublePassword))
+                return RegisterationMutation.registrationCredentials((credentials: .conformPassword, status: input.conformPasswordValidationMessage == nil ? .valid : .unvalidWithMessage(input.conformPasswordValidationMessage!)))
             case .firstName:
-                return RegisterationMutation.registrationCredentials((credentials: .firstName, status: input.isUsername))
+                return RegisterationMutation.registrationCredentials((credentials: .firstName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid username format")))
             case .lastName:
-                return RegisterationMutation.registrationCredentials((credentials: .lastName, status: input.isUsername))
+                return RegisterationMutation.registrationCredentials((credentials: .lastName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid lastname format")))
             }
         }()).eraseToAnyPublisher()
     }

@@ -62,7 +62,7 @@ struct InputTextFieldView: View {
     let placeholder: String
     let keyboardType: UIKeyboardType
     let systemImage: String?
-    let errorMessage: String?
+    @Binding var errorMessage: String?
     @Binding var isValid: Bool
 
     @State private var isShowMessage = false
@@ -75,9 +75,9 @@ struct InputTextFieldView: View {
         isSecureField: Bool = false,
         placeholder: String,
         keyboardType: UIKeyboardType = .default,
-        systemImage: String?,
-        errorMessage: String? = nil,
-        isValid: Binding<Bool>,
+        systemImage: String? = nil,
+        errorMessage: Binding<String?> = .constant(nil),
+        isValid: Binding<Bool> = .constant(true),
         unfocusHandler: (() -> ())? = nil
     ) {
         self._text = text
@@ -85,7 +85,7 @@ struct InputTextFieldView: View {
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
-        self.errorMessage = errorMessage
+        self._errorMessage = errorMessage
         self._isValid = isValid
         self.unfocusHandler = unfocusHandler
     }
@@ -101,8 +101,8 @@ struct InputTextFieldView: View {
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
-        self._isValid = Binding(get: { true }, set: { _ in })
-        self.errorMessage = nil
+        self._isValid = .constant(true)
+        self._errorMessage = .constant(nil)
         self.unfocusHandler = nil
     }
 
@@ -110,7 +110,7 @@ struct InputTextFieldView: View {
         VStack {
             if isShowMessage {
                 HStack {
-                    Text(errorMessage!)
+                    Text(errorMessage ?? " ")
                         .font(.system(size: 10, design: .monospaced)).bold().foregroundColor(.gray)
                     Spacer()
                 }

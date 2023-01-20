@@ -15,6 +15,7 @@ struct RegisterView: View {
                         placeholder: "Email",
                         keyboardType: .emailAddress,
                         systemImage: "envelope",
+                        errorMessage: createBindingUnvalidMessage(.email),
                         isValid: createBindingForTextField(.email),
                         unfocusHandler: { store.dispatch(.check(field: .email, input: newUser.email)) }
                     )
@@ -33,7 +34,7 @@ struct RegisterView: View {
                         isSecureField: true,
                         placeholder: "Password",
                         systemImage: "lock",
-                        errorMessage: "Enter password without space",
+                        errorMessage: createBindingUnvalidMessage(.password),
                         isValid: createBindingForTextField(.password),
                         unfocusHandler: { store.dispatch(.check(field: .password, input: newUser.password)) }
                     )
@@ -43,7 +44,7 @@ struct RegisterView: View {
                         isSecureField: true,
                         placeholder: "Confirm password",
                         systemImage: "lock",
-                        errorMessage: "Passwords isn't equal",
+                        errorMessage: createBindingUnvalidMessage(.conformPassword),
                         isValid: createBindingForTextField(.conformPassword),
                         unfocusHandler: { store.dispatch(.check(field: .conformPassword, input: newUser.password.combine(newUser.conformPassword))) }
                     )
@@ -58,7 +59,7 @@ struct RegisterView: View {
                         text: $newUser.firstName,
                         placeholder: "First Name",
                         keyboardType: .namePhonePad,
-                        systemImage: nil,
+                        errorMessage: createBindingUnvalidMessage(.firstName),
                         isValid: createBindingForTextField(.firstName),
                         unfocusHandler: { store.dispatch(.check(field: .firstName, input: newUser.firstName)) }
                     )
@@ -67,14 +68,14 @@ struct RegisterView: View {
                         text: $newUser.lastName,
                         placeholder: "Last Name",
                         keyboardType: .namePhonePad,
-                        systemImage: nil,
+                        errorMessage: createBindingUnvalidMessage(.lastName),
                         isValid: createBindingForTextField(.lastName),
                         unfocusHandler: { store.dispatch(.check(field: .lastName, input: newUser.lastName)) }
                     )
                     
                 }
 
-                ButtonView(title: "Sign up", disabled: .constant(!store.state.fieldsStatus.map { $0.value }.filter { !$0 }.isEmpty)) {
+                ButtonView(title: "Sign up", disabled: .constant(!store.state.fieldsStatus.map { $0.value == .valid }.filter { !$0 }.isEmpty)) {
                     store.dispatch(.clickRegisteration(user: newUser))
                 }
                 .modifier(ButtonProgressViewModifier(provider: store.state.progress, type: .buttonView))
@@ -84,8 +85,11 @@ struct RegisterView: View {
             .modifier(AlertShowViewModifier(provider: store.state.alert))
             .onChange(of: newUser.password) { newValue in
                 withAnimation {
-                    repeatPassword = newValue.isPassword
-                    if !repeatPassword { newUser.conformPassword = "" }
+                    repeatPassword = newValue.isPasswordMinCount && newValue.isPasswordMaxCount
+                    if !repeatPassword {
+                        newUser.conformPassword = ""
+                        store.dispatch(.click(field: .conformPassword))
+                    }
                 }
             }
         }
@@ -94,10 +98,24 @@ struct RegisterView: View {
     private func createBindingForTextField(_ field: RegistrationCredentialsField) -> Binding<Bool> {
         Binding(
             get: {
-                store.state.fieldsStatus[field] ?? true
+                store.state.fieldsStatus[field] ?? .valid == .valid
             }, set: { _ in
                 store.dispatch(.click(field: field))
             }
         )
     }
+
+    private func createBindingUnvalidMessage(_ field: RegistrationCredentialsField) -> Binding<String?> {
+        Binding(
+            get: {
+                if case let .unvalidWithMessage(message) = store.state.fieldsStatus[field] {
+                    return message
+                } else {
+                    return nil
+                }
+            }, set: { _ in
+                
+            }
+        )
+    }        
 }

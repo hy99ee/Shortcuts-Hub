@@ -36,14 +36,6 @@ extension RegistrationCredentials {
             return self.lastName
         }
     }
-    var isValid: Bool {
-        email.isEmail &&
-        phone.isPhone &&
-        password.isPassword &&
-        conformPassword.isPassword &&
-        firstName.isUsername &&
-        lastName.isUsername
-    }
 }
 
 protocol RegistrationServiceType: EnvironmentType {
