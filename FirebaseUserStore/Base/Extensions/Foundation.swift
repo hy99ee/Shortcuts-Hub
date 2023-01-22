@@ -6,7 +6,7 @@ extension String {
     }
 
     var isPhone: Bool {
-        validate(regexp: #"^\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$"#)
+        validate(regexp: #"^[+]?\d{1}\(?\d{3}\)?[-]?\d{3}[-]?\d{2}[-]?\d{2}$"#)
     }
 
     var isUsername: Bool {

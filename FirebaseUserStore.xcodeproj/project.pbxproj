@@ -24,6 +24,7 @@
 		3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F78A12937880A0035BAAF /* FeedPackages.swift */; };
 		3B2F78A62938FBC40035BAAF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */; };
 		3B306D4B2945DB2D00BEC321 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */; };
+		3B38A8C9297AD592008BD6E2 /* KeyboardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B38A8C8297AD592008BD6E2 /* KeyboardModifier.swift */; };
 		3B40EBCF2976CDD800200BB5 /* Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B40EBCE2976CDD800200BB5 /* Foundation.swift */; };
 		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
 		3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* LoginDispatcher.swift */; };
@@ -64,6 +65,7 @@
 		3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */; };
 		3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
+		3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B843EE5297C264200436E3A /* InputTextFieldView.swift */; };
 		3B920391292FC49500A1DD63 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA228BD6502006C2407 /* FirebaseAuth */; };
 		3B920392292FC49500A1DD63 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA428BD6502006C2407 /* FirebaseDatabase */; };
 		3B920393292FC49500A1DD63 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA628BD6502006C2407 /* FirebaseFirestore */; };
@@ -109,6 +111,7 @@
 		3B2F789F29377EB30035BAAF /* LoginPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPackages.swift; sourceTree = "<group>"; };
 		3B2F78A12937880A0035BAAF /* FeedPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPackages.swift; sourceTree = "<group>"; };
 		3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3B38A8C8297AD592008BD6E2 /* KeyboardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModifier.swift; sourceTree = "<group>"; };
 		3B40EBCE2976CDD800200BB5 /* Foundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foundation.swift; sourceTree = "<group>"; };
 		3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
 		3B45AC04292BC862002531D8 /* LoginDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDispatcher.swift; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 		3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetShowViewModifier.swift; sourceTree = "<group>"; };
 		3B81C4F12924C8820008BD8E /* FeedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
+		3B843EE5297C264200436E3A /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
 		3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		3BB7861A294886D400012DB0 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		3BC0A333292FEFAA008B348D /* LoginServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginServiceError.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 				3BE57E4A294241A4004B4423 /* ImageView.swift */,
 				3BB7861A294886D400012DB0 /* Progress.swift */,
 				3BC63D402951B1C300DF54A8 /* SearchBar.swift */,
+				3B843EE5297C264200436E3A /* InputTextFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -481,6 +486,7 @@
 				3B7795492926222000A70A9A /* ProgressViewModifier.swift */,
 				3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */,
 				3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */,
+				3B38A8C8297AD592008BD6E2 /* KeyboardModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -652,6 +658,7 @@
 				3B45AC08292BC884002531D8 /* LoginStore+Middleware.swift in Sources */,
 				3BFAB6CE28BBEA1C002488FF /* ItemsService.swift in Sources */,
 				3B81C4F22924C8820008BD8E /* FeedStore+Middleware.swift in Sources */,
+				3B38A8C9297AD592008BD6E2 /* KeyboardModifier.swift in Sources */,
 				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
 				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
@@ -659,6 +666,7 @@
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B703D532967366500F43A45 /* ForgotMutation.swift in Sources */,
 				3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */,
+				3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */,
 				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
 				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,

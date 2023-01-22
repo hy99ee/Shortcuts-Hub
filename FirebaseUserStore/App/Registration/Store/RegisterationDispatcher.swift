@@ -12,7 +12,7 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
         return mutatationCalculateFieldStatus(field, input).eraseToAnyPublisher()
     
     case let .click(field):
-        return Just(RegisterationMutation.registrationCredentials((credentials: field, status: .valid))).eraseToAnyPublisher()
+        return Just(RegisterationMutation.registrationCredentials((credentials: field, status: .undefined))).eraseToAnyPublisher()
     }
 
 

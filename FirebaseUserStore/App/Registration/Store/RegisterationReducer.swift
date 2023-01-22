@@ -6,6 +6,11 @@ let registerationReducer: ReducerType<RegisterationState, RegisterationMutation,
     switch mutation {
     case let .registrationCredentials(field):
         state.fieldsStatus.updateValue(field.status, forKey: field.credentials)
+        if field.status == .valid && state.fieldsStatus.map({ $0.value.isStateValidForAccept }).filter({ !$0 }).isEmpty {
+            state.singUpButtonValid = true
+        } else {
+            state.singUpButtonValid = false
+        }
         
     case let .progressStatus(status):
         state.progress.progressStatus = status

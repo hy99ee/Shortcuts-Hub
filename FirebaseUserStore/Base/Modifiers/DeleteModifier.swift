@@ -4,6 +4,7 @@ struct Delete: ViewModifier {
     
     let action: () -> Void
     
+    @State var animation = false
     @State var offset: CGSize = .zero
     @State var initialOffset: CGSize = .zero
     @State var contentWidth: CGFloat = 0.0
@@ -60,7 +61,7 @@ struct Delete: ViewModifier {
                         }
                     }
             )
-            .animation(.interactiveSpring())
+            .animation(.interactiveSpring(), value: animation)
     }
     
     private func delete() {
