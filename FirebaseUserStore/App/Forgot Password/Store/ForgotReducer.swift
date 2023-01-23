@@ -7,11 +7,12 @@ let forgotReducer: ReducerType<ForgotState, ForgotMutation, NoneTransition> = { 
     case let .progressForgotStatus(status):
         state.progress.progressStatus = status
     
-    case let .emailValid(status):
-        state.isValidEmailField = status
-
-    case let .errorAlert(error):
-        state.alert.error = error
+    case let .emailFieldStatus(status):
+        if case let .unvalidWithMessage(message) = status {
+            state.emailErrorMessage = message
+        } else {
+            state.emailErrorMessage = nil
+        }
 
     case .close:
         break

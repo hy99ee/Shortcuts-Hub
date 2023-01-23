@@ -5,6 +5,7 @@ import Combine
 enum FeedLink: TransitionType {
     case about(_ data: AboutViewData)
     case detail(_ item: Item)
+    case error(_ error: Error)
 
     var id: String {
         String(describing: self)
@@ -16,6 +17,8 @@ enum FeedLink: TransitionType {
             hasher.combine(0)
         case .detail:
             hasher.combine(1)
+        case .error:
+            hasher.combine(2)
         }
     }
 
@@ -34,6 +37,7 @@ enum TransitionState<T: TransitionType> {
 struct FeedCoordinator: CoordinatorType {
     @State var path = NavigationPath()
     @State var sheet: FeedLink?
+    @State var alert: FeedLink?
 
     private var store: FeedStore
     private var rootView: FeedView
@@ -53,6 +57,7 @@ struct FeedCoordinator: CoordinatorType {
             ZStack {
                 rootView
                     .sheet(item: $sheet, content: sheetContent)
+                    .alert(item: $alert, content: alertContent)
             }
             .navigationDestination(for: FeedLink.self, destination: linkDestination)
         }
@@ -64,6 +69,8 @@ struct FeedCoordinator: CoordinatorType {
             self.sheet = link
         case .detail:
             self.path.append(link)
+        case .error:
+            self.alert = link
         }
     }
 
@@ -82,6 +89,17 @@ struct FeedCoordinator: CoordinatorType {
             AboutView(aboutData: data).presentationDetents([.height(200), .medium])
         default:
             EmptyView()
+        }
+    }
+
+    private func alertContent(link: FeedLink) -> Alert {
+        switch link {
+        case let .error(error):
+            return Alert(title: Text("Something went wrong"),
+                  message: Text(error.localizedDescription),
+                  dismissButton: .default(Text("OK")))
+        default:
+            return Alert(title: Text(""))
         }
     }
 }

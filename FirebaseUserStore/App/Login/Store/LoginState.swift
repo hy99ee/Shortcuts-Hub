@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 struct LoginState: StateType {
-    let alert = AlertProvider()
+//    let alert = AlertProvider()
 
     let loginProgress = ProgressViewProvider()
     let registerProgress = ProgressViewProvider()

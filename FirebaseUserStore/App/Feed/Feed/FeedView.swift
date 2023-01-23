@@ -1,7 +1,6 @@
 import SwiftUI
 import Combine
 
-
 struct FeedView: View {
     @StateObject var store: FeedStore
 
@@ -23,10 +22,6 @@ struct FeedView: View {
     }
 
     var body: some View {
-        mainView
-    }
-
-    var mainView: some View {
         VStack {
             if store.state.showEmptyView {
                 emptyView()
@@ -42,7 +37,6 @@ struct FeedView: View {
             }
         }
         .toolbar { toolbarView() }
-        .modifier(AlertShowViewModifier(provider: store.state.alert))
     }
 
     private func updateableErrorView() -> some View {

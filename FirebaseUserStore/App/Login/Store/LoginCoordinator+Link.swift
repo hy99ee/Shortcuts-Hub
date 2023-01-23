@@ -5,6 +5,7 @@ import Combine
 enum LoginLink: TransitionType {
     case forgot
     case register
+    case error(_ error: Error)
 
     var id: String {
         String(describing: self)
@@ -16,6 +17,8 @@ enum LoginLink: TransitionType {
             hasher.combine(0)
         case .register:
             hasher.combine(1)
+        case .error:
+            hasher.combine(2)
         }
     }
 
@@ -28,6 +31,7 @@ struct LoginCoordinator: CoordinatorType {
     @State var path = NavigationPath()
     @State var fullcover: LoginLink?
     @State var sheet: LoginLink?
+    @State var alert: LoginLink?
 
     private var store: LoginStore
     let stateReceiver: AnyPublisher<LoginLink, Never>
@@ -47,7 +51,9 @@ struct LoginCoordinator: CoordinatorType {
         NavigationStack(path: $path) {
             ZStack {
                 rootView
-                    .fullScreenCover(item: $fullcover, content: coverContent)
+                    .sheet(item: $sheet, content: sheetContent)
+                    .alert(item: $alert, content: alertContent)
+                
             }
             .navigationDestination(for: LoginLink.self, destination: linkDestination)
         }
@@ -56,9 +62,11 @@ struct LoginCoordinator: CoordinatorType {
     func transitionReceiver(_ link: LoginLink) {
         switch link {
         case .forgot:
-            self.fullcover = link
+            self.sheet = link
         case .register:
             self.path.append(link)
+        case .error:
+            self.alert = link
         }
     }
 
@@ -71,12 +79,24 @@ struct LoginCoordinator: CoordinatorType {
         }
     }
 
-    @ViewBuilder private func coverContent(link: LoginLink) -> some View {
+    @ViewBuilder private func sheetContent(link: LoginLink) -> some View {
         switch link {
         case .forgot:
-            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages())).applyClose(.view)
+            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages()))
+                .presentationDetents([.height(200)])
         default:
             EmptyView()
+        }
+    }
+
+    private func alertContent(link: LoginLink) -> Alert {
+        switch link {
+        case let .error(error):
+            return Alert(title: Text("Something went wrong"),
+                  message: Text(error.localizedDescription),
+                  dismissButton: .default(Text("OK")))
+        default:
+            return Alert(title: Text(""))
         }
     }
 }

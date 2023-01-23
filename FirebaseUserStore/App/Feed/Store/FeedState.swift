@@ -21,8 +21,6 @@ struct FeedState: StateType {
     var showEmptyView = false
     var showErrorView = false
 
-    var alert = AlertProvider()
-
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()
 

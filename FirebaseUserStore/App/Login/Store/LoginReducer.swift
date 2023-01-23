@@ -25,7 +25,7 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
         state.registerProgress.progressStatus = status
         
     case let .errorAlert(error):
-        state.alert.error = error
+        return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
 
     case .errorWithRegister:
         break

@@ -4,15 +4,15 @@ import SwiftUI
 
 let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMutation, RegisterationPackages> = { action, packages in
     switch action {
-    case let .clickRegisteration(user):
-        return mutationRegisteration(user, packages: packages)
-            .withStatus(start: RegisterationMutation.progressStatus(.start), finish: RegisterationMutation.progressStatus(.stop))
-
     case let .check(field, input):
-        return mutatationCalculateFieldStatus(field, input).eraseToAnyPublisher()
+        return mutatationDefineFieldStatus(field, input).eraseToAnyPublisher()
     
     case let .click(field):
         return Just(RegisterationMutation.registrationCredentials((credentials: field, status: .undefined))).eraseToAnyPublisher()
+
+    case let .clickRegisteration(user):
+        return mutationRegisteration(user, packages: packages)
+            .withStatus(start: RegisterationMutation.progressStatus(.start), finish: RegisterationMutation.progressStatus(.stop))
     }
 
 
@@ -25,7 +25,7 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
             .eraseToAnyPublisher()
     }
 
-    func mutatationCalculateFieldStatus(_ field: RegistrationCredentialsField, _ input: String) -> AnyPublisher<RegisterationMutation, Never> {
+    func mutatationDefineFieldStatus(_ field: RegistrationCredentialsField, _ input: String) -> AnyPublisher<RegisterationMutation, Never> {
         Just({
             switch field {
             case .email:

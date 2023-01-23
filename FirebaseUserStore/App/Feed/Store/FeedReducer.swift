@@ -38,7 +38,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         if state.items.isEmpty { state.showEmptyView = true }
 
     case let .errorAlert(error):
-        state.alert.error = error
+        return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
 
     case .errorFeed:
         errorData()

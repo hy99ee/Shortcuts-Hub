@@ -11,12 +11,17 @@ let registerationReducer: ReducerType<RegisterationState, RegisterationMutation,
         } else {
             state.singUpButtonValid = false
         }
-        
+
     case let .progressStatus(status):
         state.progress.progressStatus = status
         
     case let .errorAlert(error):
-        state.alert.error = error
+        state.registrationErrorMessage = error.localizedDescription
+
+        var stateWithoutMessage = state
+        stateWithoutMessage.registrationErrorMessage = nil
+
+        return Publishers.Merge(Just(.state(state)), Just(.state(stateWithoutMessage)).delay(for: .seconds(3), scheduler: DispatchQueue.main)).eraseToAnyPublisher()
 
     case .close:
         break

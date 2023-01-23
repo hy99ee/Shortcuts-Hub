@@ -11,8 +11,10 @@ struct InputTextFieldView: View {
 
     @State private var isShowMessage = false
     @FocusState private var focused: Bool
-    private let unfocusHandler: (() -> ())?
     private let textFieldLeading: CGFloat = 30
+
+    private let focusHandler: (() -> ())?
+    private let unfocusHandler: (() -> ())?
 
     init(
         text: Binding<String>,
@@ -22,6 +24,7 @@ struct InputTextFieldView: View {
         systemImage: String? = nil,
         errorMessage: Binding<String?> = .constant(nil),
         isValid: Binding<Bool> = .constant(true),
+        focusHandler: (() -> ())? = nil,
         unfocusHandler: (() -> ())? = nil
     ) {
         self._text = text
@@ -31,6 +34,7 @@ struct InputTextFieldView: View {
         self.systemImage = systemImage
         self._errorMessage = errorMessage
         self._isValid = isValid
+        self.focusHandler = focusHandler
         self.unfocusHandler = unfocusHandler
     }
 
@@ -47,6 +51,7 @@ struct InputTextFieldView: View {
         self.systemImage = systemImage
         self._isValid = .constant(true)
         self._errorMessage = .constant(nil)
+        self.focusHandler = nil
         self.unfocusHandler = nil
     }
 
@@ -97,7 +102,7 @@ struct InputTextFieldView: View {
                     }
                 })
                 .onChange(of: focused, perform: {
-                    if !$0 { unfocusHandler?() }
+                    $0 ? focusHandler?() : unfocusHandler?()
                 })
                 .focused($focused)
                 .onChange(of: text) { _ in
@@ -152,4 +157,20 @@ struct InputTextFieldView: View {
 //        default: break
 //        }
 //    }
+}
+
+enum InputTextFieldStatus: Equatable {
+    case valid
+
+    case undefined
+    case unvalid
+    case unvalidWithMessage(_ message: String)
+
+    var isStateValidForField: Bool {
+        self == .valid || self == .undefined
+    }
+
+    var isStateValidForAccept: Bool {
+        self == .valid
+    }
 }

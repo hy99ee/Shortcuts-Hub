@@ -41,7 +41,7 @@ struct LoginView: View {
                 }
             }
         }
-        .modifier(AlertShowViewModifier(provider: store.state.alert))
+//        .modifier(AlertShowViewModifier(provider: store.state.alert))
         .modifier(ProcessViewModifier(provider: store.state.processView))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
