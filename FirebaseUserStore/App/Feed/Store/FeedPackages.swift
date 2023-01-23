@@ -11,7 +11,7 @@ extension FeedPackagesType {
 }
 
 class FeedPackages: FeedPackagesType {
-    lazy var itemsService = ItemsService()
+    lazy var itemsService = MockItemsService()
 }
 
 class MockFeedPackages: FeedPackagesType {

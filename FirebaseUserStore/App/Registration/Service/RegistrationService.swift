@@ -3,12 +3,39 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 
+enum RegistrationCredentialsField: CaseIterable {
+    case email
+    case phone
+    case password
+    case conformPassword
+    case firstName
+    case lastName
+}
 struct RegistrationCredentials {
-    var email: String
-    var password: String
-    var firstName: String
-    var lastName: String
-    var occupation: String
+    var email = ""
+    var phone = ""
+    var password: String = ""
+    var conformPassword: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
+}
+extension RegistrationCredentials {
+    func credentialsField(_ field: RegistrationCredentialsField) -> String {
+        switch field {
+        case .email:
+            return self.email
+        case .phone:
+            return self.phone
+        case .password:
+            return self.password
+        case .conformPassword:
+            return self.conformPassword
+        case .firstName:
+            return self.firstName
+        case .lastName:
+            return self.lastName
+        }
+    }
 }
 
 protocol RegistrationServiceType: EnvironmentType {
@@ -35,8 +62,7 @@ final class RegistrationService: RegistrationServiceType {
                         }
                         if let uid = res?.user.uid {
                             let values = [RegistrationKeys.firstName.rawValue: credentials.firstName,
-                                          RegistrationKeys.lastName.rawValue: credentials.lastName,
-                                          RegistrationKeys.occupation.rawValue: credentials.occupation] as [String : Any]
+                                          RegistrationKeys.lastName.rawValue: credentials.lastName] as [String : Any]
                             Database
                                 .database()
                                 .reference()

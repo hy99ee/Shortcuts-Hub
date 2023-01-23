@@ -15,21 +15,12 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct Firebase_User_Account_ManagementApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var sessionService = SessionService.shared
 
     private let storeRepository = GlobalStoreRepository.shared
 
     var body: some Scene {
         WindowGroup {
-            switch sessionService.state {
-            case .loggedIn:
-                FeedView(store: storeRepository.feedStore)
-            case .loggedOut:
-                LoginView()
-                    .environmentObject(storeRepository.loginStore)
-            case .loading:
-                HDotsProgress().scaleEffect(2)
-            }
+            GlobalCoordinator()
         }
     }
 }

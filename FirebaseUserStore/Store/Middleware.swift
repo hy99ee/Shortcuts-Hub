@@ -49,17 +49,19 @@ final class MiddlewareRepository<StoreState, StoreAction, StorePackages>: Middle
                     .sink(receiveCompletion: {[unowned self] in
                         switch $0 {
                         case .finished:
-                            print("Successful finish middlewares flow with action: \(action)")
+//                            print("Successful finish middlewares flow with action: \(action)")
                             processMiddlewares = middlewares
                             promise(.success(action))
                         case .failure(.stopFlow):
-                            print("Stop middlewares flow")
+//                            print("Stop middlewares flow")
                             promise(.failure(.stopFlow))
                         case let .failure(.redispatch(action, type)):
-                            print("Redispatch from middlewares flow with action: \(action)")
+//                            print("Redispatch from middlewares flow with action: \(action)")
                             switch type {
                             case .excludeRedispatch:
-                                self.processMiddlewares.remove(at: self.index)
+                                if processMiddlewares.count - 1 >= self.index {
+                                    self.processMiddlewares.remove(at: self.index)
+                                }
                             default: break
                             }
                             promise(.failure(.redispatch(actions: action, type: type)))

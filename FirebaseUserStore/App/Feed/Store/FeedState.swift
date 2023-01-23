@@ -4,7 +4,10 @@ import Combine
 struct FeedState: StateType {
     var itemsPreloadersCount = 0 {
         didSet {
-            loadItems = Array(repeating: LoaderItem(), count: itemsPreloadersCount)
+            loadItems = []
+            for index in 0...itemsPreloadersCount {
+                loadItems.append(LoaderItem(id: index))
+            }
         }
     }
 
@@ -18,16 +21,13 @@ struct FeedState: StateType {
     var showEmptyView = false
     var showErrorView = false
 
-    var alert = AlertProvider()
-    var aboutSheetProvider = AboutSheetProvider()
-
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()
 
-    let processViewProgress: ProcessViewProvider
+    let processView: ProcessViewProvider
 
     init() {
-        processViewProgress = ProcessViewProvider(viewProgress, buttonProgress)
+        processView = ProcessViewProvider(viewProgress, buttonProgress)
     }
 }
 
