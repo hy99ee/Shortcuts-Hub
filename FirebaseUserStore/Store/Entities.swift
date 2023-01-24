@@ -10,12 +10,17 @@ enum EquivocalMutation<State, Transition> where State: StateType, Transition: Tr
     case coordinate(destination: Transition)
 }
 
-protocol StateType {
+protocol Reinitable {
+    func reinit() -> Self
+}
+
+protocol StateType: Reinitable {
     var processView: ProcessViewProvider { get }
 }
 
 extension StateType {
     var processView: ProcessViewProvider { .shared }
+    func reinit() -> Self { self }
 }
 
 protocol TransitionType: Hashable, Identifiable {}
@@ -39,7 +44,10 @@ protocol EnvironmentType {
     associatedtype ServiceError: Error
 }
 
-protocol EnvironmentPackages {}
+protocol EnvironmentPackages: Reinitable {}
+extension EnvironmentPackages {
+    func reinit() -> Self { self }
+}
 
 extension NavigationPath {
     static let coordinatorsShared = NavigationPath()

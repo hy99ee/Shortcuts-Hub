@@ -70,7 +70,7 @@ private extension SessionService {
                                   let value = snapshot.value as? NSDictionary,
                                   let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
                                   let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let occupation = value[RegistrationKeys.occupation.rawValue] as? String,
+                                  let phone = value[RegistrationKeys.phone.rawValue] as? String,
                                   let currentUser = currentUser else {
                                 self?.state = .loggedOut
                                 return
@@ -82,7 +82,7 @@ private extension SessionService {
                                     storage: UserStorageDetails(
                                         firstName: firstName,
                                         lastName: lastName,
-                                        occupation: occupation),
+                                        phone: phone),
                                     auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
                                 )
                             }
@@ -110,7 +110,7 @@ private extension SessionService {
                                   let value = snapshot.value as? NSDictionary,
                                   let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
                                   let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let occupation = value[RegistrationKeys.occupation.rawValue] as? String,
+                                  let phone = value[RegistrationKeys.phone.rawValue] as? String,
                                   let currentUser = currentUser else {
                                 return promise(.success(nil))
                             }
@@ -119,7 +119,7 @@ private extension SessionService {
                                 storage: UserStorageDetails(
                                     firstName: firstName,
                                     lastName: lastName,
-                                    occupation: occupation),
+                                    phone: phone),
                                 auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
                             )
                             promise(.success(userDetails))
@@ -137,8 +137,8 @@ private extension SessionService {
 final class MockSessionService: SessionServiceType, ObservableObject {
     @Published var state: SessionState = .loggedOut
     @Published var userDetails: UserDetails? = UserDetails(
-        storage: UserStorageDetails(firstName: "Name", lastName: "Surname", occupation: "Occupation"),
-        auth: UserAuthDetails(email: (mail: "string@mail.com", isVerified: false))
+        storage: UserStorageDetails(firstName: "Name", lastName: "Surname", phone: "89008007060"),
+        auth: UserAuthDetails(email: (mail: "string@gmail.com", isVerified: false))
         )
 
     var makeSlice: SessionServiceSlice { SessionServiceSlice(state: state, userDetails: nil, logout: logout) }
@@ -163,7 +163,7 @@ struct UserDetails {
 struct UserStorageDetails {
     let firstName: String
     let lastName: String
-    let occupation: String
+    let phone: String
 }
 
 struct UserAuthDetails {

@@ -8,7 +8,8 @@ final class ItemsService: ItemsServiceType {
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
 
-    let userId = Auth.auth().currentUser?.uid
+//    let userId = Auth.auth().currentUser?.uid
+    private var userId: String? { Auth.auth().currentUser?.uid }
 
     func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
@@ -37,7 +38,7 @@ final class ItemsService: ItemsServiceType {
                 }
             }
         }
-        .delay(for: .seconds(3), scheduler: DispatchQueue.main)
+        .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 
@@ -59,7 +60,6 @@ final class ItemsService: ItemsServiceType {
                 }
             }
         }
-        .delay(for: .seconds(3), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 
@@ -75,10 +75,9 @@ final class ItemsService: ItemsServiceType {
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
 
-                return promise(.success(FetchedResponce(query: query, count: 5)))
+                return promise(.success(FetchedResponce(query: query, count: 0)))
             }
         }
-        .delay(for: .seconds(3), scheduler: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 

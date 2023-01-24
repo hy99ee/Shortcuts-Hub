@@ -14,10 +14,10 @@ enum RegistrationCredentialsField: CaseIterable {
 struct RegistrationCredentials {
     var email = ""
     var phone = ""
-    var password: String = ""
-    var conformPassword: String = ""
-    var firstName: String = ""
-    var lastName: String = ""
+    var password = ""
+    var conformPassword = ""
+    var firstName = ""
+    var lastName = ""
 }
 extension RegistrationCredentials {
     func credentialsField(_ field: RegistrationCredentialsField) -> String {
@@ -45,7 +45,7 @@ protocol RegistrationServiceType: EnvironmentType {
 enum RegistrationKeys: String {
     case firstName
     case lastName
-    case occupation
+    case phone
 }
 
 final class RegistrationService: RegistrationServiceType {
@@ -61,8 +61,11 @@ final class RegistrationService: RegistrationServiceType {
                             promise(.failure(.firebaseError(err)))
                         }
                         if let uid = res?.user.uid {
-                            let values = [RegistrationKeys.firstName.rawValue: credentials.firstName,
-                                          RegistrationKeys.lastName.rawValue: credentials.lastName] as [String : Any]
+                            let values = [
+                                RegistrationKeys.firstName.rawValue: credentials.firstName,
+                                RegistrationKeys.lastName.rawValue: credentials.lastName,
+                                RegistrationKeys.phone.rawValue: credentials.phone
+                            ] as [String : Any]
                             Database
                                 .database()
                                 .reference()

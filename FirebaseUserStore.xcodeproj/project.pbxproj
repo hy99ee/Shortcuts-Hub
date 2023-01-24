@@ -848,7 +848,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.hy99ee.FirebaseUserStore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hy99ee.store;
 				PRODUCT_NAME = FirebaseUserStore;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -880,7 +880,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.hy99ee.FirebaseUserStore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hy99ee.store;
 				PRODUCT_NAME = FirebaseUserStore;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

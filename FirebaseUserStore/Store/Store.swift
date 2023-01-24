@@ -7,7 +7,7 @@ final class StateStore<
     StoreMutation,
     StorePackages,
     StoreTransition
->: ObservableObject, TransitionSender
+>: ObservableObject, TransitionSender, Reinitable
 where StoreState: StateType,
       StoreAction: Action,
       StoreMutation: Mutation,
@@ -24,7 +24,7 @@ where StoreState: StateType,
 
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher
-    private let packages: StorePackages
+    private(set) var packages: StorePackages
     private var middlewaresRepository: StoreMiddlewareRepository
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)
@@ -73,5 +73,12 @@ where StoreState: StateType,
                 }
             })
             .assign(to: &$state)
+    }
+
+    func reinit() -> Self {
+        packages = packages.reinit()
+        state = state.reinit()
+
+        return self
     }
 }

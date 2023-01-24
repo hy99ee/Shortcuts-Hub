@@ -1,5 +1,10 @@
 import Foundation
 
 class LoginPackages: EnvironmentPackages {
-    lazy var loginService = LoginService()
+    private(set) var loginService = LoginService()
+
+    func reinit() -> Self {
+        loginService = LoginService()
+        return self
+    }
 }

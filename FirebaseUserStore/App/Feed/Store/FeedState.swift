@@ -5,7 +5,7 @@ struct FeedState: StateType {
     var itemsPreloadersCount = 0 {
         didSet {
             loadItems = []
-            for index in 0...itemsPreloadersCount {
+            for index in 0..<itemsPreloadersCount {
                 loadItems.append(LoaderItem(id: index))
             }
         }
@@ -28,6 +28,10 @@ struct FeedState: StateType {
 
     init() {
         processView = ProcessViewProvider(viewProgress, buttonProgress)
+    }
+
+    func reinit() -> Self {
+        FeedState()
     }
 }
 

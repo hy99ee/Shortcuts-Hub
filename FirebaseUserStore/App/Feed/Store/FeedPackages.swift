@@ -11,7 +11,11 @@ extension FeedPackagesType {
 }
 
 class FeedPackages: FeedPackagesType {
-    lazy var itemsService = MockItemsService()
+    private(set) var itemsService = ItemsService()
+
+    func reinit() {
+        self.itemsService = ItemsService()
+    }
 }
 
 class MockFeedPackages: FeedPackagesType {

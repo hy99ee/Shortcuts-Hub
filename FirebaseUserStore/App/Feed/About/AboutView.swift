@@ -84,6 +84,6 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var mail = "mail@mail.com"
 
     static var previews: some View {
-        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, occupation: "Occupation"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}) )
+        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}) )
     }
 }

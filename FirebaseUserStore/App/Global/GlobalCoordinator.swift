@@ -50,9 +50,9 @@ struct GlobalCoordinator: CoordinatorType {
         case .progress:
             HDotsProgress().scaleEffect(2)
         case .login:
-            FeedCoordinator(store: storeRepository.feedStore)
+            FeedCoordinator(store: storeRepository.feedStore.reinit())
         case .logout:
-            LoginCoordinator(store: storeRepository.loginStore)
+            LoginCoordinator(store: storeRepository.loginStore.reinit())
         default:
             EmptyView()
         }
