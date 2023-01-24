@@ -15,6 +15,7 @@ struct InputTextFieldView: View {
 
     private let focusHandler: (() -> ())?
     private let unfocusHandler: (() -> ())?
+    private let onChangeTextHandler: ((String) -> ())?
 
     init(
         text: Binding<String>,
@@ -25,7 +26,8 @@ struct InputTextFieldView: View {
         errorMessage: Binding<String?> = .constant(nil),
         isValid: Binding<Bool> = .constant(true),
         focusHandler: (() -> ())? = nil,
-        unfocusHandler: (() -> ())? = nil
+        unfocusHandler: (() -> ())? = nil,
+        onChangeTextHandler: ((String) -> ())? = nil
     ) {
         self._text = text
         self.isSecureField = isSecureField
@@ -36,6 +38,7 @@ struct InputTextFieldView: View {
         self._isValid = isValid
         self.focusHandler = focusHandler
         self.unfocusHandler = unfocusHandler
+        self.onChangeTextHandler = onChangeTextHandler
     }
 
     init(
@@ -53,6 +56,7 @@ struct InputTextFieldView: View {
         self._errorMessage = .constant(nil)
         self.focusHandler = nil
         self.unfocusHandler = nil
+        self.onChangeTextHandler = nil
     }
 
     var body: some View {
@@ -105,10 +109,8 @@ struct InputTextFieldView: View {
                     $0 ? focusHandler?() : unfocusHandler?()
                 })
                 .focused($focused)
-                .onChange(of: text) { _ in
-                    if keyboardType == .phonePad, text.isPhone {
-                        focused = false
-                    }
+                .onChange(of: text) {
+                    onChangeTextHandler?($0)
                 }
         }
         .padding(3)
