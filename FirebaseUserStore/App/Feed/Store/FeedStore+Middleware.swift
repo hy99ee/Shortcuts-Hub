@@ -18,6 +18,11 @@ extension FeedStore {
         }
     }
 
+    static let middlewareFeedLogger: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+        print("===State=== \(state)")
+        print("===Action=== \(action)")
+        return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
+    }
 //    static var count = 0
 //    static let middlewareUserValidation: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
 //        guard count == 3, packages.itemsService.userId != nil else {

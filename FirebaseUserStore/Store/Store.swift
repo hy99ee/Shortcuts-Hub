@@ -24,7 +24,7 @@ where StoreState: StateType,
 
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher
-    private(set) var packages: StorePackages
+    private var packages: StorePackages
     private var middlewaresRepository: StoreMiddlewareRepository
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)
@@ -47,15 +47,12 @@ where StoreState: StateType,
         middlewaresRepository.dispatch(state: state, action: action, packages: packages, isRedispatch: isRedispatch) // Middleware
             .subscribe(on: queue)
             .catch {[unowned self] in
-                switch $0 {
-                case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions, _):
+                if case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions, _) = $0 {
                     for action in actions {
                         self.dispatch(action, isRedispatch: true)
                     }
-                    return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
-                case .stopFlow:
-                    return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
                 }
+                return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
             }
             .flatMap { [unowned self] in dispatcher($0, self.packages).receive(on: queue) } // Dispatch
             .subscribe(on: queue)
@@ -78,6 +75,7 @@ where StoreState: StateType,
     func reinit() -> Self {
         packages = packages.reinit()
         state = state.reinit()
+        middlewaresRepository = middlewaresRepository.reinit()
 
         return self
     }

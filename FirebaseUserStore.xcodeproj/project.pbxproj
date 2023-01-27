@@ -65,6 +65,7 @@
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
 		3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B843EE5297C264200436E3A /* InputTextFieldView.swift */; };
 		3B843EE8297E8AD600436E3A /* RoundedRectProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B843EE7297E8AD600436E3A /* RoundedRectProgressView.swift */; };
+		3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8785492983EBDB00F49DB2 /* Warning.swift */; };
 		3B920391292FC49500A1DD63 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA228BD6502006C2407 /* FirebaseAuth */; };
 		3B920392292FC49500A1DD63 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA428BD6502006C2407 /* FirebaseDatabase */; };
 		3B920393292FC49500A1DD63 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3B9DBAA628BD6502006C2407 /* FirebaseFirestore */; };
@@ -152,6 +153,7 @@
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
 		3B843EE5297C264200436E3A /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
 		3B843EE7297E8AD600436E3A /* RoundedRectProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectProgressView.swift; sourceTree = "<group>"; };
+		3B8785492983EBDB00F49DB2 /* Warning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Warning.swift; sourceTree = "<group>"; };
 		3BAC25FD28E5B8FA00E9D3C1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		3BB7861A294886D400012DB0 /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		3BC0A333292FEFAA008B348D /* LoginServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginServiceError.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			children = (
 				3BD6489A290D330C0029F4E9 /* Array.swift */,
 				3B40EBCE2976CDD800200BB5 /* String.swift */,
+				3B8785492983EBDB00F49DB2 /* Warning.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */,
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator+Link.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
+				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,

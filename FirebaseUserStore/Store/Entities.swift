@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-protocol Action {}
+protocol Action: Equatable {}
 
 protocol Mutation {}
 
