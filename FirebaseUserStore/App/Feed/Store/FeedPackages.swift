@@ -1,9 +1,10 @@
 import Combine
+import FirebaseAuth
 
 protocol FeedPackagesType: EnvironmentPackages {
     associatedtype PackageItemsService: ItemsServiceType
 
-    var itemsService: PackageItemsService { get }
+    var itemsService: PackageItemsService! { get }
     var sessionService: SessionService { get }
 }
 extension FeedPackagesType {
@@ -11,13 +12,27 @@ extension FeedPackagesType {
 }
 
 class FeedPackages: FeedPackagesType {
-    private(set) var itemsService = ItemsService()
+    private(set) var itemsService: ItemsService!
+    
+    init() {
+        itemsService = _itemsService
+    }
 
-    func reinit() {
-        self.itemsService = ItemsService()
+    func reinit() -> Self {
+        self.itemsService = _itemsService
+
+        return self
+    }
+
+    private var _itemsService: ItemsService {
+        if let userId = Auth.auth().currentUser?.uid {
+            return UserItemsService(userId: userId)
+        } else {
+            return PublicItemsService()
+        }
     }
 }
 
-class MockFeedPackages: FeedPackagesType {
-    lazy var itemsService = MockItemsService()
+class MockFeedPackages: FeedPackagesType, Unreinitable {
+    lazy var itemsService: MockItemsService! = MockItemsService()
 }

@@ -1,5 +1,5 @@
 import Foundation
 
-class RegisterationPackages: EnvironmentPackages {
+class RegisterationPackages: EnvironmentPackages, Unreinitable {
     lazy var registerationService = RegistrationService()
 }

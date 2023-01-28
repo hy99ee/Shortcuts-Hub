@@ -45,7 +45,8 @@ protocol EnvironmentType {
 }
 
 protocol EnvironmentPackages: Reinitable {}
-extension EnvironmentPackages {
+protocol Unreinitable {}
+extension Unreinitable {
     func reinit() -> Self { self }
 }
 

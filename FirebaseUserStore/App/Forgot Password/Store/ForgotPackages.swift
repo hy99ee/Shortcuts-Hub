@@ -1,5 +1,5 @@
 import Foundation
 
-class ForgotPackages: EnvironmentPackages {
+class ForgotPackages: EnvironmentPackages, Unreinitable {
     lazy var forgotService = ForgotPasswordService()
 }

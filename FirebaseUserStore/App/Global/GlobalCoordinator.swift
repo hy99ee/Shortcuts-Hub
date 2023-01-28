@@ -52,7 +52,7 @@ struct GlobalCoordinator: CoordinatorType {
         case .login:
             FeedCoordinator(store: storeRepository.feedStore.reinit())
         case .logout:
-            LoginCoordinator(store: storeRepository.loginStore.reinit())
+            FeedCoordinator(store: storeRepository.feedStore.reinit())
         default:
             EmptyView()
         }

@@ -23,12 +23,4 @@ extension FeedStore {
         print("===Action=== \(action)")
         return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
-//    static var count = 0
-//    static let middlewareUserValidation: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
-//        guard count == 3, packages.itemsService.userId != nil else {
-//            count += 1
-//            return Fail(error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions: [.showFeedError], type: .excludeRedispatch)).eraseToAnyPublisher()
-//        }
-//        return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
-//    }
 }
