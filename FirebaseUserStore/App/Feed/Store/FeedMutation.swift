@@ -6,6 +6,7 @@ enum FeedMutation: Mutation {
     case fetchItems(newItems: [Item])
     case clean
 
+    case login
     case detail(item: Item)
 
     case newItem(item: Item)

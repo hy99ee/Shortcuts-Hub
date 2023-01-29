@@ -1,6 +1,7 @@
 import Foundation
 
 enum ItemsServiceError: Error {
+    case unauth
     case firebaseError(_ error: Error)
     case invalidUserId
     case invalidSnapshot
@@ -15,6 +16,9 @@ enum ItemsServiceError: Error {
 extension ItemsServiceError: LocalizedError {
     public var errorDescription: String? {
         switch self {
+        case .unauth:
+            return nil
+
         case .invalidUserId:
             return NSLocalizedString(
                 "The provided password is not valid.",

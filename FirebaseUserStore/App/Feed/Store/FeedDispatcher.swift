@@ -97,7 +97,9 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+        guard packages.sessionService.state == .loggedIn else { return Just(FeedMutation.login).eraseToAnyPublisher() }
         guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
+
         return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))
             .eraseToAnyPublisher()
     }

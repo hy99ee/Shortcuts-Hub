@@ -22,9 +22,9 @@ where StoreState: StateType,
 
     let transition = PassthroughSubject<StoreTransition, Never>()
 
+    private(set) var packages: StorePackages
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher
-    private var packages: StorePackages
     private var middlewaresRepository: StoreMiddlewareRepository
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)

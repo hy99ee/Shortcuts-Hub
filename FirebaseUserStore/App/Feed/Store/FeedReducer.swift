@@ -23,6 +23,9 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     case .empty:
         emptyData()
     
+    case .login:
+        return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
+
     case let .detail(item):
         return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()
 
