@@ -36,7 +36,6 @@ struct FeedView: View {
                 FeedCollectionView(store: store, searchQuery: searchBinding)
             }
         }
-//        .toolbar { toolbarView() }
     }
 
     private func updateableErrorView() -> some View {
@@ -69,20 +68,6 @@ struct FeedView: View {
             Spacer()
         }
     }
-
-//    private func toolbarView() -> some View {
-//        return HStack {
-//            ImageView(systemName: "person", size: 18) {
-//                store.dispatch(.showAboutSheet)
-//            }
-//            .padding([.leading, .trailing], 8)
-//            ImageView(systemName: "plus", size: 20) {
-//                store.dispatch(.addItem)
-//            }
-//            .modifier(ProcessViewModifier(provider: store.state.processView))
-//            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
-//        }
-//    }
 }
 
 extension PresentationDetent {

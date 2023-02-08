@@ -11,6 +11,8 @@ struct LibraryView: View {
     @State private var isRefresh = false
     @State private var errorLibraryDelay = false
 
+    @State private var collectionRowStyle: CollectionRowStyle = .row3
+
     init(store: LibraryStore) {
         self._store = StateObject(wrappedValue: store)
 
@@ -33,7 +35,7 @@ struct LibraryView: View {
                     set: { searchQueryBublisher.send($0) }
                 )
                 SearchBar(searchQuery: searchBinding)
-                LibraryCollectionView(store: store, searchQuery: searchBinding)
+                LibraryCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
             }
         }
         .toolbar { toolbarView() }
@@ -71,16 +73,25 @@ struct LibraryView: View {
     }
 
     private func toolbarView() -> some View {
-        return HStack {
+        HStack {
             ImageView(systemName: "person", size: 18) {
                 store.dispatch(.showAboutSheet)
             }
             .padding([.leading, .trailing], 8)
+
             ImageView(systemName: "plus", size: 20) {
                 store.dispatch(.addItem)
             }
             .modifier(ProcessViewModifier(provider: store.state.processView))
             .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
+            .padding([.leading, .trailing], 8)
+
+            ImageView(systemName: collectionRowStyle.next().systemImage, size: collectionRowStyle.next().systemImageSize) {
+                withAnimation(.easeIn(duration: 0.6)) {
+                    collectionRowStyle = collectionRowStyle.next()
+                }
+            }
         }
     }
+
 }

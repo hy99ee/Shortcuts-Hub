@@ -47,6 +47,7 @@
 		3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA8F42992609D00E16151 /* LibraryMutation.swift */; };
 		3B5CA92B2992609D00E16151 /* LibraryPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA8F52992609D00E16151 /* LibraryPackages.swift */; };
 		3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA9432992693100E16151 /* LibraryCollectionView.swift */; };
+		3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */; };
 		3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */; };
 		3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */; };
 		3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4A2967366500F43A45 /* ForgotPackages.swift */; };
@@ -147,6 +148,7 @@
 		3B5CA8F42992609D00E16151 /* LibraryMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryMutation.swift; sourceTree = "<group>"; };
 		3B5CA8F52992609D00E16151 /* LibraryPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryPackages.swift; sourceTree = "<group>"; };
 		3B5CA9432992693100E16151 /* LibraryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionView.swift; sourceTree = "<group>"; };
+		3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRowStyle.swift; sourceTree = "<group>"; };
 		3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteModifier.swift; sourceTree = "<group>"; };
 		3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceError.swift; sourceTree = "<group>"; };
 		3B703D4A2967366500F43A45 /* ForgotPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPackages.swift; sourceTree = "<group>"; };
@@ -225,7 +227,6 @@
 		3B0E36BB293E2B57009A7DCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3BC63D3E29509E2F00DF54A8 /* FeedCollectionView.swift */,
 				3BE57E4C2943362E004B4423 /* FeedCellView.swift */,
 				3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */,
 				3B0E36BF293E2BA6009A7DCE /* InputPasswordView.swift */,
@@ -234,6 +235,7 @@
 				3BC63D402951B1C300DF54A8 /* SearchBar.swift */,
 				3B843EE5297C264200436E3A /* InputTextFieldView.swift */,
 				3B843EE7297E8AD600436E3A /* RoundedRectProgressView.swift */,
+				3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -568,6 +570,7 @@
 		3BE4C1E02985DC8D000B43BD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3BC63D3E29509E2F00DF54A8 /* FeedCollectionView.swift */,
 				3BD76ECE2899AF6C001D64E2 /* FeedView.swift */,
 			);
 			path = Views;
@@ -700,6 +703,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */,
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
 				3B5CA9212992609D00E16151 /* LibraryStore.swift in Sources */,
 				3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */,

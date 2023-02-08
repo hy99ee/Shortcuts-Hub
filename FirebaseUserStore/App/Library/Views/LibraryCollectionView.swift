@@ -6,8 +6,11 @@ struct LibraryCollectionView: View {
 
     @State private var isAnimating = false
 
-    private let columns = Array(repeating: GridItem(.flexible()), count: 3)
+    let cellStyle: CollectionRowStyle
+
+    private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
     private let progress = HDotsProgress()
+
 
     var body: some View {
         NavigationView {
@@ -15,7 +18,7 @@ struct LibraryCollectionView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title)
+                            FeedCellView(title: store.state.items[index].title, height: cellStyle.rowHeight)
                             .onTapGesture {
                                 store.dispatch(.click(store.state.items[index]))
                             }
