@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FeedCellView: View {
     let title: String
-    let delete: () -> ()
+    let delete: (() -> ())? = nil
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 12)
@@ -17,10 +17,12 @@ struct FeedCellView: View {
         .frame(height: 140)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
         .contextMenu {
-            Button(role: .destructive) {
-                delete()
-            } label: {
-                Label("Delete", systemImage: "trash")
+            if let delete {
+                Button(role: .destructive) {
+                    delete()
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
             }
         }
         

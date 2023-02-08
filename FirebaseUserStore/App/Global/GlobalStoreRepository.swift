@@ -14,4 +14,18 @@ final class GlobalStoreRepository {
         packages: FeedPackages(),
         middlewares: [FeedStore.middlewareFeedLogger, FeedStore.middlewareLocalSearch]
     )
+
+    lazy var loginStore = LoginStore(
+        state: LoginState(),
+        dispatcher: loginDispatcher,
+        reducer: loginReducer,
+        packages: LoginPackages()
+    )
+
+    lazy var libraryStore = LibraryStore(
+        state: LibraryState(),
+        dispatcher: libraryDispatcher,
+        reducer: libraryReducer,
+        packages: LibraryPackages()
+    )
 }

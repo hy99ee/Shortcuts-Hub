@@ -10,14 +10,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case let .click(item):
         return Just(FeedMutation.detail(item: item)).eraseToAnyPublisher()
 
-    case .addItem:
-        return mutationAddItem(packages: packages).withStatus(start: FeedMutation.progressButtonStatus(status: .start), finish: FeedMutation.progressButtonStatus(status: .stop))
-
     case let .addItems(items):
         return Just(FeedMutation.addItems(items: items)).eraseToAnyPublisher()
-
-    case let .removeItem(id):
-        return mutationRemoveItem(by: id, packages: packages)
 
     case let .search(text, local):
         return mutationSearchItems(by: text, local: local, packages: packages)
@@ -68,19 +62,19 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         .eraseToAnyPublisher()
         
     }
-    func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        packages.itemsService.setNewItemRequest()
-            .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
-            .map { FeedMutation.newItem(item: $0) }
-            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
-    func mutationRemoveItem(by id: UUID, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        packages.itemsService.removeItemRequest(id)
-            .map { FeedMutation.removeItem(id: $0) }
-            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
+//    func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+//        packages.itemsService.setNewItemRequest()
+//            .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
+//            .map { FeedMutation.newItem(item: $0) }
+//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+//            .eraseToAnyPublisher()
+//    }
+//    func mutationRemoveItem(by id: UUID, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+//        packages.itemsService.removeItemRequest(id)
+//            .map { FeedMutation.removeItem(id: $0) }
+//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+//            .eraseToAnyPublisher()
+//    }
     func mutationSearchItems(by text: String, local: Set<UUID>, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text)
 

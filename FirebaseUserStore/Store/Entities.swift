@@ -14,13 +14,17 @@ protocol Reinitable {
     func reinit() -> Self
 }
 
-protocol StateType: Reinitable {
+protocol ReinitableBySelf: Reinitable {}
+extension ReinitableBySelf {
+    func reinit() -> Self { self }
+}
+
+protocol StateType: ReinitableBySelf {
     var processView: ProcessViewProvider { get }
 }
 
 extension StateType {
     var processView: ProcessViewProvider { .shared }
-    func reinit() -> Self { self }
 }
 
 protocol TransitionType: Hashable, Identifiable {}
@@ -44,7 +48,13 @@ protocol EnvironmentType {
     associatedtype ServiceError: Error
 }
 
-protocol EnvironmentPackages: Reinitable {}
+protocol EnvironmentPackages: Reinitable {
+    var sessionService: SessionService { get }
+}
+extension EnvironmentPackages {
+    var sessionService: SessionService { SessionService.shared }
+}
+
 protocol Unreinitable {}
 extension Unreinitable {
     func reinit() -> Self { self }

@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum FeedLink: TransitionType {
+enum LibraryLink: TransitionType {
     case login
     case about(_ data: AboutViewData)
     case detail(_ item: Item)
@@ -25,24 +25,24 @@ enum FeedLink: TransitionType {
         }
     }
 
-    static func == (lhs: FeedLink, rhs: FeedLink) -> Bool {
+    static func == (lhs: LibraryLink, rhs: LibraryLink) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }
 
-struct FeedCoordinator: CoordinatorType {
+struct LibraryCoordinator: CoordinatorType {
     @State var path = NavigationPath()
-    @State var fullcover: FeedLink?
-    @State var sheet: FeedLink?
-    @State var alert: FeedLink?
+    @State var fullcover: LibraryLink?
+    @State var sheet: LibraryLink?
+    @State var alert: LibraryLink?
 
-    private var store: FeedStore
-    private var rootView: FeedView
-    let stateReceiver: AnyPublisher<FeedLink, Never>
+    private var store: LibraryStore
+    private var rootView: LibraryView
+    let stateReceiver: AnyPublisher<LibraryLink, Never>
 
-    init(store: FeedStore) {
+    init(store: LibraryStore) {
         self.store = store
-        self.rootView = FeedView(store: store)
+        self.rootView = LibraryView(store: store)
         self.stateReceiver = store.transition.eraseToAnyPublisher()
     }
     
@@ -57,11 +57,11 @@ struct FeedCoordinator: CoordinatorType {
                     .sheet(item: $sheet, content: sheetContent)
                     .alert(item: $alert, content: alertContent)
             }
-            .navigationDestination(for: FeedLink.self, destination: linkDestination)
+            .navigationDestination(for: LibraryLink.self, destination: linkDestination)
         }
     }
 
-    func transitionReceiver(_ link: FeedLink) {
+    func transitionReceiver(_ link: LibraryLink) {
         switch link {
         case .login:
             self.fullcover = link
@@ -74,7 +74,7 @@ struct FeedCoordinator: CoordinatorType {
         }
     }
 
-    @ViewBuilder private func linkDestination(link: FeedLink) -> some View {
+    @ViewBuilder private func linkDestination(link: LibraryLink) -> some View {
         switch link {
         case let .detail(item):
             Text(item.title)
@@ -83,7 +83,7 @@ struct FeedCoordinator: CoordinatorType {
         }
     }
     
-    @ViewBuilder private func fullcoverContent(link: FeedLink) -> some View {
+    @ViewBuilder private func fullcoverContent(link: LibraryLink) -> some View {
         switch link {
         case .login:
             LoginCoordinator(store: store.packages.loginStore).applyClose(.view)
@@ -92,7 +92,7 @@ struct FeedCoordinator: CoordinatorType {
         }
     }
 
-    @ViewBuilder private func sheetContent(link: FeedLink) -> some View {
+    @ViewBuilder private func sheetContent(link: LibraryLink) -> some View {
         switch link {
         case let .about(data):
             AboutView(aboutData: data).presentationDetents([.height(200), .medium])
@@ -101,7 +101,7 @@ struct FeedCoordinator: CoordinatorType {
         }
     }
 
-    private func alertContent(link: FeedLink) -> Alert {
+    private func alertContent(link: LibraryLink) -> Alert {
         switch link {
         case let .error(error):
             return Alert(title: Text("Something went wrong"),

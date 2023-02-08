@@ -2,7 +2,7 @@ import Combine
 import Firebase
 import FirebaseFirestore
 
-final class MockItemsService: ItemsServiceType {
+final class MockPublicItemsService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
 
     func fetchItems(_ query: ResponceType.DataType, filter: (Item) -> Bool) -> AnyPublisher<[Item], ItemsServiceError> {

@@ -2,13 +2,16 @@ import Combine
 import Firebase
 import FirebaseFirestore
 
-final class UserItemsService: ItemsService {
+final class UserItemsService: UserItemsServiceType {
+    typealias ServiceError = ItemsServiceError
+    typealias ResponceType = FetchedResponce
+
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
 
-    let userId: String
+    let userId: String?
 
-    init(userId: String) {
+    init(userId: String?) {
         self.userId = userId
     }
 
@@ -43,14 +46,15 @@ final class UserItemsService: ItemsService {
         .eraseToAnyPublisher()
     }
 
-    override func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in
                 Task { [weak self] in
                     guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
+                    guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
                     let collection = self.db.collection(Self.collectionName)
-                    let query = collection.whereField("userId", isEqualTo: self.userId)
+                    let query = collection.whereField("userId", isEqualTo: userId)
                     let countQuery = query.count
 
                     countQuery.getAggregation(source: .server) { snapshot, error in
@@ -63,13 +67,14 @@ final class UserItemsService: ItemsService {
         .eraseToAnyPublisher()
     }
 
-    override func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
+                guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
                 let collection = self.db.collection(Self.collectionName)
-                let query = collection.whereField("userId", isEqualTo: self.userId)
+                let query = collection.whereField("userId", isEqualTo: userId)
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
 
@@ -79,14 +84,15 @@ final class UserItemsService: ItemsService {
         .eraseToAnyPublisher()
     }
 
-    override func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
+    func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
-                guard let self else { return promise(.failure(.unknownError))}
+                guard let self else { return promise(.failure(.unknownError)) }
+                guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
                 let ref = self.db.collection(Self.collectionName)
                     .whereField("id", isEqualTo: id.uuidString)
-                    .whereField("userId", isEqualTo: self.userId)
+                    .whereField("userId", isEqualTo: userId)
                 
                 ref.getDocuments { snapshot, error in
                     if let _error = error {
@@ -113,13 +119,15 @@ final class UserItemsService: ItemsService {
         }.eraseToAnyPublisher()
     }
 
-    override func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError> {
+    func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.invalidUserId)) }
+                guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
+
                 let document = [
                     "id": UUID().uuidString,
-                    "userId": self.userId,
+                    "userId": userId,
                     "title": "item \(Int.random(in: 0..<10))",
                     "description": "description"
                 ]
@@ -128,21 +136,28 @@ final class UserItemsService: ItemsService {
                         promise(.failure(.firebaseError(error)))
                     }
                 }
-                guard let documentID = UUID(uuidString: document["id"] ?? "") else { return promise(.failure(.invalidUserId)) }
+                guard
+                    let id = document["id"],
+                    let documentID = UUID(uuidString: id)
+                else {
+                    return promise(.failure(.invalidUserId))
+                }
+
                 return promise(.success(documentID))
             }
         }.eraseToAnyPublisher()
     }
 
-    override func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
+    func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard
                     let self else { return promise(.failure(.invalidUserId)) }
+                guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
                 let ref = self.db.collection(Self.collectionName)
                     .whereField("id", isEqualTo: (id.uuidString))
-                    .whereField("userId", isEqualTo: self.userId)
+                    .whereField("userId", isEqualTo: userId)
                     
                 var documentID: String?
                 ref.getDocuments { snapshot, error in

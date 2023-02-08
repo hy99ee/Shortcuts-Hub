@@ -2,11 +2,45 @@ import Combine
 import Firebase
 import FirebaseFirestore
 
-final class PublicItemsService: ItemsService {
+final class PublicItemsService: ItemsServiceType {
+    typealias ServiceError = ItemsServiceError
+    typealias ResponceType = FetchedResponce
+    
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
     
-    override func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
+        Deferred {
+            Future { promise in
+                query.getDocuments { snapshot, error in
+                    if let _error = error {
+                        return promise(.failure(.firebaseError(_error)))
+                    }
+                    if let snapshot = snapshot {
+                        var items: [Item] = []
+                        for document in snapshot.documents {
+                            let data = document.data()
+                            
+                            items.append(
+                                Item(
+                                    id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
+                                    userId: data["userId"] as? String ?? "",
+                                    title: data["title"] as? String ?? "",
+                                    description: data["description"] as? String ?? "",
+                                    source: ""
+                                )
+                            )
+                        }
+                        return promise(.success(items.filter(filter)))
+                    }
+                }
+            }
+        }
+        .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in
                 Task { [weak self] in
@@ -25,7 +59,7 @@ final class PublicItemsService: ItemsService {
         .eraseToAnyPublisher()
     }
 
-    override func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -40,7 +74,7 @@ final class PublicItemsService: ItemsService {
         .eraseToAnyPublisher()
     }
 
-    override func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
+    func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -71,13 +105,5 @@ final class PublicItemsService: ItemsService {
                 }
             }
         }.eraseToAnyPublisher()
-    }
-
-    override func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError> {
-        Empty(completeImmediately: true).eraseToAnyPublisher()
-    }
-
-    override func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
-        Empty(completeImmediately: true).eraseToAnyPublisher()
     }
 }

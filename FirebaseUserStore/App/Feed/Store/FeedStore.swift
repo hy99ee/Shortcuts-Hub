@@ -1,26 +1,26 @@
 import Combine
 import Foundation
 
-typealias FeedStore = StateStore<FeedState, FeedDispatcher<ItemsService>>
-typealias MockFeedStore = StateStore<FeedState, FeedDispatcher<MockItemsService>>
+typealias FeedStore = StateStore<FeedState, FeedAction, FeedMutation, FeedPackages, FeedLink>
 
 extension FeedStore {
-    static let middleware1: FeedStore.MiddlewareStore.Middleware = { state, action in
-        print("---> FeedStore.middleware1: { print state items before mutation\nitems: \(state.items) <---}")
-        return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
-    }
-
-    static let middleware2: FeedStore.MiddlewareStore.Middleware = { _, action in
-        print("---> FeedStore.middleware2 { .addItem => .updateFeed } <---")
+    static let middlewareLocalSearch: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
         switch action {
-        case FeedAction.addItem:
-            return Fail(error: MiddlewareStore.MiddlewareRedispatch.redispatch(action: FeedAction.updateFeed)).eraseToAnyPublisher()
-        default: return Just(action).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
+        case let FeedAction.search(text, _):
+            if text.isEmpty { return Fail(error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions: [.updateFeed], type: .repeatRedispatch)).eraseToAnyPublisher()}
+            if state.items.isEmpty { return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher() }
+
+            let filteredItems = state.itemsWithFilter(text)
+            let filteredItemsIds = Set(filteredItems.map { $0.id })
+            return Fail(error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions:[.clean, .addItems(items: filteredItems), .search(text: text, local: filteredItemsIds)], type: .excludeRedispatch)).eraseToAnyPublisher()
+
+        default: return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
         }
     }
 
-    static let middleware3: FeedStore.MiddlewareStore.Middleware = { _, action in
-        print("---> FeedStore.middleware3: { .delay 3 seconds } <---")
-        return Just(action).delay(for: .seconds(3), scheduler: DispatchQueue.main).setFailureType(to: MiddlewareStore.MiddlewareRedispatch.self).eraseToAnyPublisher()
+    static let middlewareFeedLogger: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+        print("===State=== \(state)")
+        print("===Action=== \(action)")
+        return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
     }
 }

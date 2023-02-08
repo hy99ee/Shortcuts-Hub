@@ -1,23 +1,23 @@
 import SwiftUI
 import Combine
 
-struct FeedView: View {
-    @StateObject var store: FeedStore
+struct LibraryView: View {
+    @StateObject var store: LibraryStore
 
     private let searchQueryBublisher = CurrentValueSubject<String, Never>("")
     private var subscriptions = Set<AnyCancellable>()
 
     @State private var showLoader = false
     @State private var isRefresh = false
-    @State private var errorFeedDelay = false
+    @State private var errorLibraryDelay = false
 
-    init(store: FeedStore) {
+    init(store: LibraryStore) {
         self._store = StateObject(wrappedValue: store)
 
         searchQueryBublisher
             .removeDuplicates()
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
+            .sink { $0.isEmpty ? store.dispatch(.updateLibrary) : store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
 
@@ -33,10 +33,10 @@ struct FeedView: View {
                     set: { searchQueryBublisher.send($0) }
                 )
                 SearchBar(searchQuery: searchBinding)
-                FeedCollectionView(store: store, searchQuery: searchBinding)
+                LibraryCollectionView(store: store, searchQuery: searchBinding)
             }
         }
-//        .toolbar { toolbarView() }
+        .toolbar { toolbarView() }
     }
 
     private func updateableErrorView() -> some View {
@@ -45,17 +45,17 @@ struct FeedView: View {
             Text("Error").monospacedDigit().bold().foregroundColor(.red)
             ImageView(systemName: "arrow.triangle.2.circlepath") {
                 withAnimation {
-                    errorFeedDelay = true
+                    errorLibraryDelay = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        errorFeedDelay = false
+                        errorLibraryDelay = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            store.dispatch(.updateFeed)
+                            store.dispatch(.updateLibrary)
                         }
                     }
                 }
             }
             .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
-            .disabled(errorFeedDelay)
+            .disabled(errorLibraryDelay)
             .padding()
             
             Spacer()
@@ -70,21 +70,17 @@ struct FeedView: View {
         }
     }
 
-//    private func toolbarView() -> some View {
-//        return HStack {
-//            ImageView(systemName: "person", size: 18) {
-//                store.dispatch(.showAboutSheet)
-//            }
-//            .padding([.leading, .trailing], 8)
-//            ImageView(systemName: "plus", size: 20) {
-//                store.dispatch(.addItem)
-//            }
-//            .modifier(ProcessViewModifier(provider: store.state.processView))
-//            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
-//        }
-//    }
-}
-
-extension PresentationDetent {
-    static let bar = Self.fraction(0.2)
+    private func toolbarView() -> some View {
+        return HStack {
+            ImageView(systemName: "person", size: 18) {
+                store.dispatch(.showAboutSheet)
+            }
+            .padding([.leading, .trailing], 8)
+            ImageView(systemName: "plus", size: 20) {
+                store.dispatch(.addItem)
+            }
+            .modifier(ProcessViewModifier(provider: store.state.processView))
+            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
+        }
+    }
 }

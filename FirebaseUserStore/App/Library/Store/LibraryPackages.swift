@@ -1,17 +1,16 @@
 import Combine
 import FirebaseAuth
 
-protocol FeedPackagesType: EnvironmentPackages {
+protocol LibraryPackagesType: EnvironmentPackages {
     associatedtype PackageItemsService: ItemsServiceType
 
     var itemsService: PackageItemsService! { get }
     var loginStore: LoginStore { get }
 }
 
+class LibraryPackages: LibraryPackagesType {
+    private(set) var itemsService: UserItemsService!
 
-class FeedPackages: FeedPackagesType {
-    private(set) var itemsService: PublicItemsService!
-    
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,
@@ -31,11 +30,11 @@ class FeedPackages: FeedPackagesType {
     }
 
     private var _itemsService: PackageItemsService {
-        PublicItemsService()
+        UserItemsService(userId: Auth.auth().currentUser?.uid)
     }
 }
 
-class MockFeedPackages: FeedPackagesType, Unreinitable {
+class MockLibraryPackages: LibraryPackagesType, Unreinitable {
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,
@@ -43,5 +42,5 @@ class MockFeedPackages: FeedPackagesType, Unreinitable {
         packages: LoginPackages()
     )
 
-    lazy var itemsService: MockPublicItemsService! = MockPublicItemsService()
+    lazy var itemsService: MockLibraryService! = MockLibraryService()
 }

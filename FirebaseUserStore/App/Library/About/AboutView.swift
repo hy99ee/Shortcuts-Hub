@@ -1,6 +1,5 @@
 import SwiftUI
 import FirebaseAuth
-import FirebaseDatabase
 
 struct AboutViewData {
     let user: UserDetails

@@ -1,19 +1,19 @@
 import Foundation
 
-enum FeedAction: Action, Hashable {
-    case updateFeed
+enum LibraryAction: Action, Hashable {
+    case updateLibrary
 
     case click(_ item: Item)
 
     case addItems(items: [Item])
-//    case addItem
-//    case removeItem(id: UUID)
+    case addItem
+    case removeItem(id: UUID)
     case search(text: String, local: Set<UUID> = Set())
     case clean
 
     case showAboutSheet
     case showAlert(error: Error)
-    case showFeedError
+    case showLibraryError
 
     case logout
 
@@ -21,16 +21,16 @@ enum FeedAction: Action, Hashable {
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .updateFeed:
+        case .updateLibrary:
             hasher.combine(0)
         case .click:
             hasher.combine(1)
         case .addItems:
             hasher.combine(2)
-//        case .addItem:
-//            hasher.combine(3)
-//        case .removeItem:
-//            hasher.combine(4)
+        case .addItem:
+            hasher.combine(3)
+        case .removeItem:
+            hasher.combine(4)
         case .search:
             hasher.combine(5)
         case .clean:
@@ -39,7 +39,7 @@ enum FeedAction: Action, Hashable {
             hasher.combine(7)
         case .showAlert:
             hasher.combine(8)
-        case .showFeedError:
+        case .showLibraryError:
             hasher.combine(7)
         case .logout:
             hasher.combine(9)
@@ -48,7 +48,7 @@ enum FeedAction: Action, Hashable {
         }
     }
 
-    static func == (lhs: FeedAction, rhs: FeedAction) -> Bool {
+    static func == (lhs: LibraryAction, rhs: LibraryAction) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }
