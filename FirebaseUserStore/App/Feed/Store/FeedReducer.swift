@@ -7,17 +7,21 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     switch mutation {
     case let .fetchItemsPreloaders(count):
         state.showEmptyView = count == 0
-        state.itemsPreloadersCount = count
+        state.loadItems = []
         state.items = []
+
+        for index in 0..<count {
+            state.loadItems.append(LoaderItem(id: index))
+        }
 
     case let .fetchItems(items):
         let items = items.sorted(by: FeedState.sortingByModified)
         state.showEmptyView = items.isEmpty
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = items
 
     case .clean:
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
 
     case .empty:
@@ -62,13 +66,13 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     return Just(.state(state)).eraseToAnyPublisher()
     
     func emptyData() {
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
         state.showEmptyView = true
     }
 
     func errorData() {
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
         state.showErrorView = true
     }

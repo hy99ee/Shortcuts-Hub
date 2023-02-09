@@ -8,7 +8,7 @@ protocol LibraryPackagesType: EnvironmentPackages {
     var loginStore: LoginStore { get }
 }
 
-class LibraryPackages: LibraryPackagesType {
+class _LibraryPackages: LibraryPackagesType {
     private(set) var itemsService: UserItemsService!
 
     lazy var loginStore = LoginStore(
@@ -34,7 +34,7 @@ class LibraryPackages: LibraryPackagesType {
     }
 }
 
-class MockLibraryPackages: LibraryPackagesType, Unreinitable {
+class LibraryPackages: LibraryPackagesType, Unreinitable {
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,

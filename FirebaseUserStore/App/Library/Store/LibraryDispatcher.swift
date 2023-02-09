@@ -7,6 +7,9 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case .updateLibrary:
         return mutationFetchItems(packages: packages)
 
+    case .updateLocalLibrary:
+        return Just(LibraryMutation.refreshLibraryWithLocalItems).eraseToAnyPublisher()
+
     case let .click(item):
         return Just(LibraryMutation.detail(item: item)).eraseToAnyPublisher()
 
@@ -48,7 +51,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0) }
+            .flatMap { packages.itemsService.fetchItems($0, filter: { _ in true }) }
         
         return Publishers.Merge(
             fetchDocs
@@ -94,6 +97,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return fetchFromDocs
             .map { LibraryMutation.addItems(items: $0) }
             .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+            .merge(with: Just(LibraryMutation.clean).eraseToAnyPublisher())
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {

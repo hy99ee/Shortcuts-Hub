@@ -2,16 +2,11 @@ import SwiftUI
 import Combine
 
 struct LibraryState: StateType {
-    var itemsPreloadersCount = 0 {
+    var loadItems: [LoaderItem] = [] {
         didSet {
-            loadItems = []
-            for index in 0..<itemsPreloadersCount {
-                loadItems.append(LoaderItem(id: index))
-            }
+            showErrorView = false
         }
     }
-
-    var loadItems: [LoaderItem] = []
     var items: [Item] = [] {
         didSet {
             showErrorView = false

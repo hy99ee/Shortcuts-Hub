@@ -18,8 +18,13 @@ struct LibraryView: View {
 
         searchQueryBublisher
             .removeDuplicates()
-            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            .sink { $0.isEmpty ? store.dispatch(.updateLibrary) : store.dispatch(.search(text: $0)) }
+            .dropFirst()
+            .debounce(for: .seconds(searchQueryBublisher.value.isEmpty ? 0 : 1), scheduler: DispatchQueue.main)
+            .sink {
+                $0.isEmpty
+                ? store.dispatch(.updateLibrary)
+                : store.dispatch(.search(text: $0))
+            }
             .store(in: &subscriptions)
     }
 
@@ -32,11 +37,17 @@ struct LibraryView: View {
             } else {
                 let searchBinding = Binding<String>(
                     get: { searchQueryBublisher.value },
-                    set: { searchQueryBublisher.send($0) }
+                    set: {
+                        searchQueryBublisher.send($0)
+                        store.objectWillChange.send()
+                    }
                 )
                 SearchBar(searchQuery: searchBinding)
                 LibraryCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
             }
+        }
+        .onAppear {
+            store.dispatch(.updateLibrary)
         }
         .toolbar { toolbarView() }
     }

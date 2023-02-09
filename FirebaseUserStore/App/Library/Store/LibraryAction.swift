@@ -2,6 +2,7 @@ import Foundation
 
 enum LibraryAction: Action, Hashable {
     case updateLibrary
+    case updateLocalLibrary
 
     case click(_ item: Item)
 
@@ -23,28 +24,30 @@ enum LibraryAction: Action, Hashable {
         switch self {
         case .updateLibrary:
             hasher.combine(0)
-        case .click:
+        case .updateLocalLibrary:
             hasher.combine(1)
-        case .addItems:
+        case .click:
             hasher.combine(2)
-        case .addItem:
+        case .addItems:
             hasher.combine(3)
-        case .removeItem:
+        case .addItem:
             hasher.combine(4)
-        case .search:
+        case .removeItem:
             hasher.combine(5)
-        case .clean:
+        case .search:
             hasher.combine(6)
+        case .clean:
+            hasher.combine(7)
         case .showAboutSheet:
-            hasher.combine(7)
-        case .showAlert:
             hasher.combine(8)
-        case .showLibraryError:
-            hasher.combine(7)
-        case .logout:
+        case .showAlert:
             hasher.combine(9)
-        case .mockAction:
+        case .showLibraryError:
             hasher.combine(10)
+        case .logout:
+            hasher.combine(11)
+        case .mockAction:
+            hasher.combine(12)
         }
     }
 

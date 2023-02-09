@@ -28,9 +28,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case .showFeedError:
         return Just(FeedMutation.errorFeed).eraseToAnyPublisher()
 
-    case .logout:
-        return mutationLogout(packages: packages)
-
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
     }
@@ -42,7 +39,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0) }
+            .flatMap { packages.itemsService.fetchItems($0, filter: { _ in true }) }
         
         return Publishers.Merge(
             fetchDocs
@@ -62,19 +59,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         .eraseToAnyPublisher()
         
     }
-//    func mutationAddItem(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-//        packages.itemsService.setNewItemRequest()
-//            .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
-//            .map { FeedMutation.newItem(item: $0) }
-//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-//            .eraseToAnyPublisher()
-//    }
-//    func mutationRemoveItem(by id: UUID, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-//        packages.itemsService.removeItemRequest(id)
-//            .map { FeedMutation.removeItem(id: $0) }
-//            .catch { Just(FeedMutation.errorAlert(error: $0)) }
-//            .eraseToAnyPublisher()
-//    }
     func mutationSearchItems(by text: String, local: Set<UUID>, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text)
 
@@ -99,13 +83,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     }
     func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
         Just(FeedMutation.errorAlert(error: error))
-            .eraseToAnyPublisher()
-    }
-    func mutationLogout(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        Just(())
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
-            .handleEvents(receiveOutput: { packages.sessionService.logout() })
-            .map { FeedMutation.logout }
             .eraseToAnyPublisher()
     }
 }

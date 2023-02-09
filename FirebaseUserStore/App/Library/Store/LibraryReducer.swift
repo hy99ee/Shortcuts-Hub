@@ -7,17 +7,24 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     switch mutation {
     case let .fetchItemsPreloaders(count):
         state.showEmptyView = count == 0
-        state.itemsPreloadersCount = count
+        state.loadItems = []
         state.items = []
+
+        for index in 0..<count {
+            state.loadItems.append(LoaderItem(id: index))
+        }
 
     case let .fetchItems(items):
         let items = items.sorted(by: LibraryState.sortingByModified)
         state.showEmptyView = items.isEmpty
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = items
 
+    case .refreshLibraryWithLocalItems:
+        break
+
     case .clean:
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
 
     case .empty:
@@ -62,13 +69,13 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     return Just(.state(state)).eraseToAnyPublisher()
     
     func emptyData() {
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
         state.showEmptyView = true
     }
 
     func errorData() {
-        state.itemsPreloadersCount = 0
+        state.loadItems = []
         state.items = []
         state.showErrorView = true
     }

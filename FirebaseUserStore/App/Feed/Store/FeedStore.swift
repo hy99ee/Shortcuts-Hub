@@ -12,7 +12,7 @@ extension FeedStore {
 
             let filteredItems = state.itemsWithFilter(text)
             let filteredItemsIds = Set(filteredItems.map { $0.id })
-            return Fail(error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions:[.clean, .addItems(items: filteredItems), .search(text: text, local: filteredItemsIds)], type: .excludeRedispatch)).eraseToAnyPublisher()
+            return Fail(error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions: [.clean, .addItems(items: filteredItems), .search(text: text, local: filteredItemsIds)], type: .excludeRedispatch)).eraseToAnyPublisher()
 
         default: return Just(action).setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self).eraseToAnyPublisher()
         }

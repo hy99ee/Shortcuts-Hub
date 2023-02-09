@@ -13,7 +13,7 @@ struct FeedCollectionView: View {
 
     var body: some View {
         NavigationView {
-            if store.state.itemsPreloadersCount == 0 {
+            if store.state.loadItems.count == 0 {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in

@@ -2,15 +2,6 @@ import SwiftUI
 import Combine
 
 struct FeedState: StateType {
-    var itemsPreloadersCount = 0 {
-        didSet {
-            loadItems = []
-            for index in 0..<itemsPreloadersCount {
-                loadItems.append(LoaderItem(id: index))
-            }
-        }
-    }
-
     var loadItems: [LoaderItem] = []
     var items: [Item] = [] {
         didSet {

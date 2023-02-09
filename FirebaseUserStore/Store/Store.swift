@@ -73,9 +73,12 @@ where StoreState: StateType,
     }
 
     func reinit() -> Self {
-        packages = packages.reinit()
-        state = state.reinit()
-        middlewaresRepository = middlewaresRepository.reinit()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.packages = self.packages.reinit()
+            self.state = self.state.reinit()
+            self.middlewaresRepository = self.middlewaresRepository.reinit()
+        }
 
         return self
     }
