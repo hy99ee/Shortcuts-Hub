@@ -9,7 +9,7 @@ enum LibraryMutation: Mutation {
 
     case clean
 
-    case login
+
     case detail(item: Item)
 
     case newItem(item: Item)
@@ -17,7 +17,9 @@ enum LibraryMutation: Mutation {
     case removeItem(id: UUID)
     case empty
 
+    case userHasLogged
     case logout
+    case openLogin
 
     case errorAlert(error: Error)
     case errorLibrary

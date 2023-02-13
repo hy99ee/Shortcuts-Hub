@@ -26,6 +26,7 @@ final class GlobalStoreRepository {
         state: LibraryState(),
         dispatcher: libraryDispatcher,
         reducer: libraryReducer,
-        packages: LibraryPackages()
+        packages: LibraryPackages(),
+        middlewares: [LibraryStore.middlewareLocalSearch, LibraryStore.middlewareAuthCheck]
     )
 }

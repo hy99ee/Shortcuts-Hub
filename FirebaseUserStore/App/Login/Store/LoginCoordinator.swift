@@ -39,6 +39,8 @@ struct LoginCoordinator: CoordinatorType {
 
     @Binding private var parent: LibraryLink?
 
+    @Environment(\.presentationMode) var presentationMode
+
     private var store: LoginStore
     let stateReceiver: AnyPublisher<LoginLink, Never>
 
@@ -60,6 +62,15 @@ struct LoginCoordinator: CoordinatorType {
         NavigationStack(path: $path) {
             ZStack {
                 rootView
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(action: {
+                                presentationMode.wrappedValue.dismiss()
+                            }, label: {
+                                Text("Cancel")
+                            })
+                        }
+                    }
                     .sheet(item: $sheet, content: sheetContent)
                     .alert(item: $alert, content: alertContent)
                 

@@ -72,7 +72,7 @@ where StoreState: StateType,
                                     lastRedispatchActionCount += 1
                                     if lastRedispatchActionCount > 3 {
                                         fatalError("Repeat redispatch return with the same action > 3 times")
-                                    } else {
+                                    } else if lastRedispatchActionCount > 1 {
                                         String("Repeat redispatch return with the same action").withCString { messagePointer in
                                             runtimeReporter(messagePointer)
                                         }

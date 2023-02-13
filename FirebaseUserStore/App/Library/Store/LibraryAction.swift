@@ -16,6 +16,8 @@ enum LibraryAction: Action, Hashable {
     case showAlert(error: Error)
     case showLibraryError
 
+    case userHasLogged
+    case openLogin
     case logout
 
     case mockAction
@@ -46,8 +48,12 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(10)
         case .logout:
             hasher.combine(11)
-        case .mockAction:
+        case .userHasLogged:
             hasher.combine(12)
+        case .openLogin:
+            hasher.combine(13)
+        case .mockAction:
+            hasher.combine(13)
         }
     }
 

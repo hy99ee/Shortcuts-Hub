@@ -30,8 +30,11 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case .empty:
         emptyData()
     
-    case .login:
+    case .openLogin:
         return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
+
+    case .userHasLogged:
+        state.isLogin = true
 
     case let .detail(item):
         return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()

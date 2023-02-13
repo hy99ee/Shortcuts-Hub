@@ -13,6 +13,8 @@ struct LibraryState: StateType {
         }
     }
 
+    var isLogin = false
+
     var showEmptyView = false
     var showErrorView = false
 

@@ -39,6 +39,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case .logout:
         return mutationLogout(packages: packages)
+    
+    case .openLogin:
+        return Just(LibraryMutation.openLogin).eraseToAnyPublisher()
+
+    case .userHasLogged:
+        return Just(LibraryMutation.userHasLogged).eraseToAnyPublisher()
 
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -51,7 +57,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0, filter: { _ in true }) }
+            .flatMap { packages.itemsService.fetchItems($0) }
         
         return Publishers.Merge(
             fetchDocs
@@ -67,7 +73,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 .withStatus(start: LibraryMutation.progressViewStatus(status: .start), finish: LibraryMutation.progressViewStatus(status: .stop))
             , fetchFromDocs
                 .map { LibraryMutation.fetchItems(newItems: $0) }
-                .catch { Just(LibraryMutation.errorAlert(error: $0)) })
+                .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+        )
         .eraseToAnyPublisher()
         
     }
@@ -102,7 +109,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        guard packages.sessionService.state == .loggedIn else { return Just(LibraryMutation.login).eraseToAnyPublisher() }
+        guard packages.sessionService.state == .loggedIn else { return Just(LibraryMutation.openLogin).eraseToAnyPublisher() }
         guard let user = packages.sessionService.userDetails else { return Just(LibraryMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
 
         return Just(LibraryMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))

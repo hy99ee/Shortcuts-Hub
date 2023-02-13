@@ -86,7 +86,7 @@ struct LibraryCoordinator: CoordinatorType {
     @ViewBuilder private func fullcoverContent(link: LibraryLink) -> some View {
         switch link {
         case .login:
-            LoginCoordinator(store: store.packages.loginStore, parent: $fullcover).applyClose(.view)
+            LoginCoordinator(store: store.packages.loginStore, parent: $fullcover)
         default:
             EmptyView()
         }

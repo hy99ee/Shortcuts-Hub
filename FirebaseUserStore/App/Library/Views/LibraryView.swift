@@ -30,10 +30,12 @@ struct LibraryView: View {
 
     var body: some View {
         VStack {
-            if store.state.showEmptyView {
-                emptyView()
+            if !store.state.isLogin {
+                unloginView
+            } else if store.state.showEmptyView {
+                emptyView
             } else if store.state.showErrorView {
-                updateableErrorView()
+                updateableErrorView
             } else {
                 let searchBinding = Binding<String>(
                     get: { searchQueryBublisher.value },
@@ -49,10 +51,10 @@ struct LibraryView: View {
         .onAppear {
             store.dispatch(.updateLibrary)
         }
-        .toolbar { toolbarView() }
+        .toolbar { toolbarView }
     }
 
-    private func updateableErrorView() -> some View {
+    private var updateableErrorView: some View {
         VStack {
             Spacer()
             Text("Error").monospacedDigit().bold().foregroundColor(.red)
@@ -75,31 +77,41 @@ struct LibraryView: View {
         }
     }
 
-    private func emptyView() -> some View {
-        return VStack {
+    private var emptyView: some View {
+        VStack {
             Spacer()
             Text("Empty").bold()
             Spacer()
         }
     }
 
-    private func toolbarView() -> some View {
+    private var unloginView: some View {
+        VStack {
+            Spacer()
+            Text("Unlogin").bold()
+            Spacer()
+        }
+    }
+
+    private var toolbarView: some View {
         HStack {
             ImageView(systemName: "person", size: 18) {
                 store.dispatch(.showAboutSheet)
             }
             .padding([.leading, .trailing], 8)
 
-            ImageView(systemName: "plus", size: 20) {
-                store.dispatch(.addItem)
-            }
-            .modifier(ProcessViewModifier(provider: store.state.processView))
-            .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
-            .padding([.leading, .trailing], 8)
-
-            ImageView(systemName: collectionRowStyle.next().systemImage, size: collectionRowStyle.next().systemImageSize) {
-                withAnimation(.easeIn(duration: 0.6)) {
-                    collectionRowStyle = collectionRowStyle.next()
+            if store.state.isLogin {
+                ImageView(systemName: "plus", size: 20) {
+                    store.dispatch(.addItem)
+                }
+                .modifier(ProcessViewModifier(provider: store.state.processView))
+                .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
+                .padding([.leading, .trailing], 8)
+   
+                ImageView(systemName: collectionRowStyle.next().systemImage, size: collectionRowStyle.next().systemImageSize) {
+                    withAnimation(.easeIn(duration: 0.6)) {
+                        collectionRowStyle = collectionRowStyle.next()
+                    }
                 }
             }
         }
