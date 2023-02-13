@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, NoneTransition> = { _state, mutation in
+let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, CloseTransition> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .registrationCredentials(field):
@@ -24,7 +24,7 @@ let registerationReducer: ReducerType<RegisterationState, RegisterationMutation,
         return Publishers.Merge(Just(.state(state)), Just(.state(stateWithoutMessage)).delay(for: .seconds(3), scheduler: DispatchQueue.main)).eraseToAnyPublisher()
 
     case .close:
-        break
+        return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
     }
 
     return Just(.state(state)).eraseToAnyPublisher()

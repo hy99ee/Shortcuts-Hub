@@ -19,9 +19,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case .clean:
         return Just(FeedMutation.clean).eraseToAnyPublisher()
 
-    case .showAboutSheet:
-        return mutationShowAboutSheet(packages: packages)
-
     case let .showAlert(error):
         return mutationShowAlert(with: error)
     
@@ -72,13 +69,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return fetchFromDocs
             .map { FeedMutation.addItems(items: $0) }
             .catch { Just(FeedMutation.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
-    func mutationShowAboutSheet(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        guard packages.sessionService.state == .loggedIn else { return Just(FeedMutation.login).eraseToAnyPublisher() }
-        guard let user = packages.sessionService.userDetails else { return Just(FeedMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
-
-        return Just(FeedMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))
             .eraseToAnyPublisher()
     }
     func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {

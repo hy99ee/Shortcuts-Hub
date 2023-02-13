@@ -26,8 +26,9 @@ final class PublicItemsService: ItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
-                                    description: data["description"] as? String ?? "",
-                                    source: ""
+                                    aboutLink: data["description"] as? String ?? "",
+                                    source: "",
+                                    createdAt: Date()
                                 )
                             )
                         }
@@ -96,8 +97,9 @@ final class PublicItemsService: ItemsServiceType {
                                 id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
-                                description: data["description"] as? String ?? "",
-                                source: ""
+                                aboutLink: data["description"] as? String ?? "",
+                                source: "",
+                                createdAt: Date()
                             )
                         }
                         return promise(item != nil ? .success(item!) : .failure(.unknownError))

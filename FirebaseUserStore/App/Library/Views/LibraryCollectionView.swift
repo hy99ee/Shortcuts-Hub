@@ -18,7 +18,9 @@ struct LibraryCollectionView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title, height: cellStyle.rowHeight)
+                            FeedCellView(title: store.state.items[index].title, height: cellStyle.rowHeight) {
+                                store.dispatch(.removeItem(id: store.state.items[index].id))
+                            }
                             .onTapGesture {
                                 store.dispatch(.click(store.state.items[index]))
                             }
@@ -40,6 +42,7 @@ struct LibraryCollectionView: View {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(store.state.loadItems, id: \.id) { _ in
                             LoaderFeedCellView()
+                                .frame(height: cellStyle.rowHeight)
                                 .padding(3)
                         }
                     }

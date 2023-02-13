@@ -3,7 +3,7 @@ import SwiftUI
 struct FeedCellView: View {
     let title: String
     let height: CGFloat
-    let delete: (() -> ())? = nil
+    var delete: (() -> ())? = nil
 
     var body: some View {
         VStack {
@@ -46,7 +46,6 @@ struct LoaderFeedCellView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(.blue, lineWidth: 2)
         )
-        .frame(height: 140)
     }
 }
 

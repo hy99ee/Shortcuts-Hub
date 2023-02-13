@@ -3,7 +3,6 @@ import Foundation
 
 let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, mutation in
     var state = _state
-    var link: LoginLink?
 
     switch mutation {
     case let .showRegister(store):
@@ -13,10 +12,7 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
         return Just(.coordinate(destination: .forgot)).eraseToAnyPublisher()
 
     case .login:
-        break
-
-    case .create:
-        break
+        return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
 
     case let .progressLoginStatus(status):
         state.loginProgress.progressStatus = status

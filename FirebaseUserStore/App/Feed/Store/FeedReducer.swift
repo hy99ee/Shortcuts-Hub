@@ -26,9 +26,6 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
 
     case .empty:
         emptyData()
-    
-    case .login:
-        return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
 
     case let .detail(item):
         return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()
@@ -36,31 +33,14 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     case let .addItems(items):
         state.items.append(contentsOf: items)
 
-    case let .newItem(item):
-        state.items.append(item)
-        state.showEmptyView = false
-
-    case let .removeItem(id):
-        state.items.removeAll { $0.id == id }
-        if state.items.isEmpty { state.showEmptyView = true }
-
     case let .errorAlert(error):
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
 
     case .errorFeed:
         errorData()
 
-    case let .showAbout(data):
-        return Just(.coordinate(destination: .about(data))).eraseToAnyPublisher()
-
     case let .progressViewStatus(status):
         state.viewProgress.progressStatus = status
-
-    case let .progressButtonStatus(status):
-        state.buttonProgress.progressStatus = status
-
-    case .logout:
-        break
     }
 
     return Just(.state(state)).eraseToAnyPublisher()

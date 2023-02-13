@@ -33,6 +33,11 @@ enum NoneTransition : TransitionType {
 
     var id: String { String(describing: self) }
 }
+enum CloseTransition : TransitionType {
+    case close
+
+    var id: String { String(describing: self) }
+}
 
 protocol TransitionSender {
     associatedtype SenderTransitionType: TransitionType

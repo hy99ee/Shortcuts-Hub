@@ -3,8 +3,6 @@ import SwiftUI
 import Combine
 
 enum FeedLink: TransitionType {
-    case login
-    case about(_ data: AboutViewData)
     case detail(_ item: Item)
     case error(_ error: Error)
 
@@ -14,14 +12,10 @@ enum FeedLink: TransitionType {
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .login:
-            hasher.combine(0)
-        case .about:
-            hasher.combine(1)
         case .detail:
-            hasher.combine(2)
+            hasher.combine(0)
         case .error:
-            hasher.combine(3)
+            hasher.combine(1)
         }
     }
 
@@ -32,8 +26,6 @@ enum FeedLink: TransitionType {
 
 struct FeedCoordinator: CoordinatorType {
     @State var path = NavigationPath()
-    @State var fullcover: FeedLink?
-    @State var sheet: FeedLink?
     @State var alert: FeedLink?
 
     private var store: FeedStore
@@ -53,8 +45,6 @@ struct FeedCoordinator: CoordinatorType {
         NavigationStack(path: $path) {
             ZStack {
                 rootView
-                    .fullScreenCover(item: $fullcover, content: fullcoverContent)
-                    .sheet(item: $sheet, content: sheetContent)
                     .alert(item: $alert, content: alertContent)
             }
             .navigationDestination(for: FeedLink.self, destination: linkDestination)
@@ -63,10 +53,6 @@ struct FeedCoordinator: CoordinatorType {
 
     func transitionReceiver(_ link: FeedLink) {
         switch link {
-        case .login:
-            self.fullcover = link
-        case .about:
-            self.sheet = link
         case .detail:
             self.path.append(link)
         case .error:
@@ -78,24 +64,6 @@ struct FeedCoordinator: CoordinatorType {
         switch link {
         case let .detail(item):
             Text(item.title)
-        default:
-            EmptyView()
-        }
-    }
-    
-    @ViewBuilder private func fullcoverContent(link: FeedLink) -> some View {
-        switch link {
-        case .login:
-            LoginCoordinator(store: store.packages.loginStore).applyClose(.view)
-        default:
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder private func sheetContent(link: FeedLink) -> some View {
-        switch link {
-        case let .about(data):
-            AboutView(aboutData: data).presentationDetents([.height(200), .medium])
         default:
             EmptyView()
         }

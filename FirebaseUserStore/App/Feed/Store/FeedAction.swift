@@ -9,7 +9,6 @@ enum FeedAction: Action, Hashable {
     case search(text: String, local: Set<UUID> = Set())
     case clean
 
-    case showAboutSheet
     case showAlert(error: Error)
     case showFeedError
 
@@ -27,8 +26,6 @@ enum FeedAction: Action, Hashable {
             hasher.combine(5)
         case .clean:
             hasher.combine(6)
-        case .showAboutSheet:
-            hasher.combine(7)
         case .showAlert:
             hasher.combine(8)
         case .showFeedError:

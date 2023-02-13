@@ -12,11 +12,9 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     func sendPasswordResetRequest(to email: String) -> AnyPublisher<Void, ServiceError> {
         Deferred {
             Future { promise in
-                promise(.failure(.mockError))
                 Auth
                     .auth()
                     .sendPasswordReset(withEmail: email) { error in
-                        
                         if let err = error {
                             promise(.failure(.firebaseError(err)))
                         } else {

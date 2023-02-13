@@ -39,6 +39,7 @@ struct FeedCollectionView: View {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(store.state.loadItems, id: \.id) { _ in
                             LoaderFeedCellView()
+                                .frame(height: cellHeight)
                                 .padding(3)
                         }
                     }

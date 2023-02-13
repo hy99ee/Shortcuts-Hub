@@ -8,7 +8,7 @@ protocol LibraryPackagesType: EnvironmentPackages {
     var loginStore: LoginStore { get }
 }
 
-class _LibraryPackages: LibraryPackagesType {
+class LibraryPackages: LibraryPackagesType {
     private(set) var itemsService: UserItemsService!
 
     lazy var loginStore = LoginStore(
@@ -17,7 +17,6 @@ class _LibraryPackages: LibraryPackagesType {
         reducer: loginReducer,
         packages: LoginPackages()
     )
-
 
     init() {
         itemsService = _itemsService
@@ -34,7 +33,7 @@ class _LibraryPackages: LibraryPackagesType {
     }
 }
 
-class LibraryPackages: LibraryPackagesType, Unreinitable {
+class _LibraryPackages: LibraryPackagesType, Unreinitable {
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,

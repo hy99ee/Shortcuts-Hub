@@ -7,6 +7,8 @@ enum LoginLink: TransitionType {
     case register
     case error(_ error: Error)
 
+    case close
+
     var id: String {
         String(describing: self)
     }
@@ -19,6 +21,8 @@ enum LoginLink: TransitionType {
             hasher.combine(1)
         case .error:
             hasher.combine(2)
+        case .close:
+            hasher.combine(3)
         }
     }
 
@@ -28,20 +32,25 @@ enum LoginLink: TransitionType {
 }
 
 struct LoginCoordinator: CoordinatorType {
-    @State var path = NavigationPath()
-    @State var fullcover: LoginLink?
-    @State var sheet: LoginLink?
-    @State var alert: LoginLink?
+    @State private(set) var path = NavigationPath()
+    @State private(set) var fullcover: LoginLink?
+    @State private(set) var sheet: LoginLink?
+    @State private(set) var alert: LoginLink?
+
+    @Binding private var parent: LibraryLink?
 
     private var store: LoginStore
     let stateReceiver: AnyPublisher<LoginLink, Never>
+
     @ViewBuilder private var rootView: some View {
         LoginView().environmentObject(store)
     }
 
-    init(store: LoginStore) {
+    init(store: LoginStore, parent: Binding<LibraryLink?>) {
         self.store = store
         self.stateReceiver = store.transition.eraseToAnyPublisher()
+
+        self._parent = parent
     }
 
     var view: AnyView {
@@ -67,13 +76,15 @@ struct LoginCoordinator: CoordinatorType {
             self.path.append(link)
         case .error:
             self.alert = link
+        case .close:
+            self.parent = nil
         }
     }
 
     @ViewBuilder private func linkDestination(link: LoginLink) -> some View {
         switch link {
         case .register:
-            RegisterView(store: RegisterationStore(state: RegisterationState(), dispatcher: registerationDispatcher, reducer: registerationReducer, packages: RegisterationPackages()))
+            RegisterationCoordinator(store: store.packages.registerStore, parent: $parent)
         default:
             EmptyView()
         }
@@ -82,7 +93,7 @@ struct LoginCoordinator: CoordinatorType {
     @ViewBuilder private func sheetContent(link: LoginLink) -> some View {
         switch link {
         case .forgot:
-            ForgotPasswordView(store: ForgotStore(state: ForgotState(), dispatcher: forgotDispatcher, reducer: forgotReducer, packages: ForgotPackages()))
+            ForgotCoordinator(store: store.packages.forgotStore, parent: $sheet)
                 .presentationDetents([.height(200)])
         default:
             EmptyView()

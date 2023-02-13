@@ -23,9 +23,6 @@ struct GlobalCoordinator: CoordinatorType {
 
     let stateReceiver: AnyPublisher<GlobalLink, Never>
     private let sender: GlobalSender
-    
-//    private let galleryCoordinator: FeedCoordinator
-//    private let libraryCoordinator: LibraryCoordinator
 
     init() {
         sender = GlobalSender()

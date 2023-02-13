@@ -26,7 +26,7 @@
 		3B40EBCF2976CDD800200BB5 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B40EBCE2976CDD800200BB5 /* String.swift */; };
 		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
 		3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* LoginDispatcher.swift */; };
-		3B45AC08292BC884002531D8 /* LoginStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* LoginStore+Middleware.swift */; };
+		3B45AC08292BC884002531D8 /* LoginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* LoginStore.swift */; };
 		3B45AC0A292BC8AC002531D8 /* LoginAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC09292BC8AC002531D8 /* LoginAction.swift */; };
 		3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0B292BC8C7002531D8 /* LoginMutation.swift */; };
 		3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC0D292BC8DE002531D8 /* LoginState.swift */; };
@@ -52,7 +52,7 @@
 		3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */; };
 		3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4A2967366500F43A45 /* ForgotPackages.swift */; };
 		3B703D532967366500F43A45 /* ForgotMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4B2967366500F43A45 /* ForgotMutation.swift */; };
-		3B703D542967366500F43A45 /* ForgotStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4C2967366500F43A45 /* ForgotStore+Middleware.swift */; };
+		3B703D542967366500F43A45 /* ForgotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4C2967366500F43A45 /* ForgotStore.swift */; };
 		3B703D552967366500F43A45 /* ForgotState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4D2967366500F43A45 /* ForgotState.swift */; };
 		3B703D562967366500F43A45 /* ForgotDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */; };
 		3B703D572967366500F43A45 /* ForgotAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4F2967366500F43A45 /* ForgotAction.swift */; };
@@ -65,10 +65,10 @@
 		3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */; };
 		3B7A4B552954525E000AF26A /* MockPublicItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B542954525E000AF26A /* MockPublicItemsService.swift */; };
 		3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B5A29546583000AF26A /* FetchedResponce.swift */; };
-		3B7AE4C6296C4577002A9948 /* LoginCoordinator+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4C5296C4577002A9948 /* LoginCoordinator+Link.swift */; };
+		3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4C5296C4577002A9948 /* LoginCoordinator.swift */; };
 		3B7AE4D2296C6085002A9948 /* RegisterationPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */; };
 		3B7AE4D3296C6085002A9948 /* RegisterationMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */; };
-		3B7AE4D4296C6085002A9948 /* RegisterationStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */; };
+		3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CC296C6085002A9948 /* RegisterationStore.swift */; };
 		3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CD296C6085002A9948 /* RegisterationState.swift */; };
 		3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */; };
 		3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */; };
@@ -105,6 +105,8 @@
 		3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4A294241A4004B4423 /* ImageView.swift */; };
 		3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4C2943362E004B4423 /* FeedCellView.swift */; };
 		3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */; };
+		3BFAFF102999817600076F1D /* RegisterationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAFF0F2999817600076F1D /* RegisterationCoordinator.swift */; };
+		3BFAFF12299A298800076F1D /* ForgotCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFAFF11299A298800076F1D /* ForgotCoordinator.swift */; };
 		3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */; };
 /* End PBXBuildFile section */
 
@@ -127,7 +129,7 @@
 		3B40EBCE2976CDD800200BB5 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
 		3B45AC04292BC862002531D8 /* LoginDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDispatcher.swift; sourceTree = "<group>"; };
-		3B45AC07292BC884002531D8 /* LoginStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginStore+Middleware.swift"; sourceTree = "<group>"; };
+		3B45AC07292BC884002531D8 /* LoginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStore.swift; sourceTree = "<group>"; };
 		3B45AC09292BC8AC002531D8 /* LoginAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAction.swift; sourceTree = "<group>"; };
 		3B45AC0B292BC8C7002531D8 /* LoginMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginMutation.swift; sourceTree = "<group>"; };
 		3B45AC0D292BC8DE002531D8 /* LoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginState.swift; sourceTree = "<group>"; };
@@ -153,7 +155,7 @@
 		3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceError.swift; sourceTree = "<group>"; };
 		3B703D4A2967366500F43A45 /* ForgotPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPackages.swift; sourceTree = "<group>"; };
 		3B703D4B2967366500F43A45 /* ForgotMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotMutation.swift; sourceTree = "<group>"; };
-		3B703D4C2967366500F43A45 /* ForgotStore+Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ForgotStore+Middleware.swift"; sourceTree = "<group>"; };
+		3B703D4C2967366500F43A45 /* ForgotStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotStore.swift; sourceTree = "<group>"; };
 		3B703D4D2967366500F43A45 /* ForgotState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotState.swift; sourceTree = "<group>"; };
 		3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotDispatcher.swift; sourceTree = "<group>"; };
 		3B703D4F2967366500F43A45 /* ForgotAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotAction.swift; sourceTree = "<group>"; };
@@ -167,10 +169,10 @@
 		3B77A13528F44BDB007710E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3B7A4B542954525E000AF26A /* MockPublicItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPublicItemsService.swift; sourceTree = "<group>"; };
 		3B7A4B5A29546583000AF26A /* FetchedResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResponce.swift; sourceTree = "<group>"; };
-		3B7AE4C5296C4577002A9948 /* LoginCoordinator+Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginCoordinator+Link.swift"; sourceTree = "<group>"; };
+		3B7AE4C5296C4577002A9948 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationPackages.swift; sourceTree = "<group>"; };
 		3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationMutation.swift; sourceTree = "<group>"; };
-		3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegisterationStore+Middleware.swift"; sourceTree = "<group>"; };
+		3B7AE4CC296C6085002A9948 /* RegisterationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationStore.swift; sourceTree = "<group>"; };
 		3B7AE4CD296C6085002A9948 /* RegisterationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationState.swift; sourceTree = "<group>"; };
 		3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationDispatcher.swift; sourceTree = "<group>"; };
 		3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationAction.swift; sourceTree = "<group>"; };
@@ -206,6 +208,8 @@
 		3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserStoreApp.swift; sourceTree = "<group>"; };
 		3BFA9FA7288734CE00A7FF2C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BFA9FAA288734CE00A7FF2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3BFAFF0F2999817600076F1D /* RegisterationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterationCoordinator.swift; sourceTree = "<group>"; };
+		3BFAFF11299A298800076F1D /* ForgotCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotCoordinator.swift; sourceTree = "<group>"; };
 		3BFBA693290AC98000AE9B82 /* ItemsServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsServiceError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -341,13 +345,13 @@
 			isa = PBXGroup;
 			children = (
 				3B45AC04292BC862002531D8 /* LoginDispatcher.swift */,
-				3B45AC07292BC884002531D8 /* LoginStore+Middleware.swift */,
+				3B45AC07292BC884002531D8 /* LoginStore.swift */,
 				3B45AC09292BC8AC002531D8 /* LoginAction.swift */,
 				3B45AC0B292BC8C7002531D8 /* LoginMutation.swift */,
 				3B45AC0D292BC8DE002531D8 /* LoginState.swift */,
 				3B45AC0F292BC8F6002531D8 /* LoginReducer.swift */,
 				3B2F789F29377EB30035BAAF /* LoginPackages.swift */,
-				3B7AE4C5296C4577002A9948 /* LoginCoordinator+Link.swift */,
+				3B7AE4C5296C4577002A9948 /* LoginCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -360,8 +364,9 @@
 				3B703D4F2967366500F43A45 /* ForgotAction.swift */,
 				3B703D4B2967366500F43A45 /* ForgotMutation.swift */,
 				3B703D512967366500F43A45 /* ForgotReducer.swift */,
-				3B703D4C2967366500F43A45 /* ForgotStore+Middleware.swift */,
+				3B703D4C2967366500F43A45 /* ForgotStore.swift */,
 				3B703D4A2967366500F43A45 /* ForgotPackages.swift */,
+				3BFAFF11299A298800076F1D /* ForgotCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -400,11 +405,12 @@
 			children = (
 				3B7AE4CA296C6085002A9948 /* RegisterationPackages.swift */,
 				3B7AE4CB296C6085002A9948 /* RegisterationMutation.swift */,
-				3B7AE4CC296C6085002A9948 /* RegisterationStore+Middleware.swift */,
+				3B7AE4CC296C6085002A9948 /* RegisterationStore.swift */,
 				3B7AE4CD296C6085002A9948 /* RegisterationState.swift */,
 				3B7AE4CE296C6085002A9948 /* RegisterationDispatcher.swift */,
 				3B7AE4CF296C6085002A9948 /* RegisterationAction.swift */,
 				3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */,
+				3BFAFF0F2999817600076F1D /* RegisterationCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -720,7 +726,7 @@
 				3B00F002293F678C0056B5C9 /* LaoderItem.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */,
-				3B7AE4C6296C4577002A9948 /* LoginCoordinator+Link.swift in Sources */,
+				3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
 				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
@@ -732,8 +738,9 @@
 				3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */,
 				3B0E36C0293E2BA6009A7DCE /* InputPasswordView.swift in Sources */,
 				3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */,
+				3BFAFF102999817600076F1D /* RegisterationCoordinator.swift in Sources */,
 				3BC63D3F29509E2F00DF54A8 /* FeedCollectionView.swift in Sources */,
-				3B45AC08292BC884002531D8 /* LoginStore+Middleware.swift in Sources */,
+				3B45AC08292BC884002531D8 /* LoginStore.swift in Sources */,
 				3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */,
 				3B38A8C9297AD592008BD6E2 /* KeyboardModifier.swift in Sources */,
 				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
@@ -752,6 +759,7 @@
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
 				3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */,
+				3BFAFF12299A298800076F1D /* ForgotCoordinator.swift in Sources */,
 				3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */,
 				3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */,
 				3B7AE4D2296C6085002A9948 /* RegisterationPackages.swift in Sources */,
@@ -772,14 +780,14 @@
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
-				3B703D542967366500F43A45 /* ForgotStore+Middleware.swift in Sources */,
+				3B703D542967366500F43A45 /* ForgotStore.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */,
-				3B7AE4D4296C6085002A9948 /* RegisterationStore+Middleware.swift in Sources */,
+				3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */,
 				3B5CA9242992609D00E16151 /* LibraryReducer.swift in Sources */,
 				3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */,

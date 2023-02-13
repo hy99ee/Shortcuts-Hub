@@ -6,20 +6,14 @@ enum FeedMutation: Mutation {
     case fetchItems(newItems: [Item])
     case clean
 
-    case login
     case detail(item: Item)
 
-    case newItem(item: Item)
     case addItems(items: [Item])
-    case removeItem(id: UUID)
-    case empty
 
-    case logout
+    case empty
 
     case errorAlert(error: Error)
     case errorFeed
 
-    case showAbout(data: AboutViewData)
-    case progressButtonStatus(status: ProgressViewStatus)
     case progressViewStatus(status: ProgressViewStatus)
 }
