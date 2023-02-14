@@ -43,8 +43,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case .openLogin:
         return Just(LibraryMutation.openLogin).eraseToAnyPublisher()
 
-    case .userHasLogged:
-        return Just(LibraryMutation.userHasLogged).eraseToAnyPublisher()
+    case let .userLoginState(state):
+        return Just(LibraryMutation.changeUserLoginState(state)).eraseToAnyPublisher()
 
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -53,27 +53,38 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     // MARK: - Mutations
     func mutationFetchItems(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        let fetchDocs = packages.itemsService.fetchQuery().share()
+        let fetchDocs = Publishers.Zip(
+            Just(Date.now)
+                .setFailureType(to: ItemsServiceError.self),
+            packages.itemsService.fetchQuery()
+                .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
+        )
+        .share()
 
         let fetchFromDocs = fetchDocs
-            .map { $0.query }
+            .map { $0.1.query }
+            .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .flatMap { packages.itemsService.fetchItems($0) }
         
         return Publishers.Merge(
             fetchDocs
-                .map { docs in
+                .map { (date, docs) in
+                    let timeSpent = Date.now.timeIntervalSinceReferenceDate - date.timeIntervalSinceReferenceDate
+                    if timeSpent < 1 { return .fastUpdate }
+
                     if docs.count > 0 {
-                        return LibraryMutation.fetchItemsPreloaders(count: docs.count)
+                        return .fetchItemsPreloaders(count: docs.count)
                     } else {
-                        return LibraryMutation.empty
+                        return .empty
                     }
                 }
-                .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+                .catch { Just(.errorAlert(error: $0)) }
                 .eraseToAnyPublisher()
                 .withStatus(start: LibraryMutation.progressViewStatus(status: .start), finish: LibraryMutation.progressViewStatus(status: .stop))
             , fetchFromDocs
-                .map { LibraryMutation.fetchItems(newItems: $0) }
-                .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+                .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+                .map { .fetchItems(newItems: $0) }
+                .catch { Just(.errorAlert(error: $0)) }
         )
         .eraseToAnyPublisher()
         
@@ -81,14 +92,14 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     func mutationAddItem(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.setNewItemRequest()
             .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
-            .map { LibraryMutation.newItem(item: $0) }
-            .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+            .map { .newItem(item: $0) }
+            .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
     func mutationRemoveItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.removeItemRequest(id)
-            .map { LibraryMutation.removeItem(id: $0) }
-            .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+            .map { .removeItem(id: $0) }
+            .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
     func mutationSearchItems(by text: String, local: Set<UUID>, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
@@ -103,9 +114,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
         return fetchFromDocs
             .map { LibraryMutation.addItems(items: $0) }
-            .catch { Just(LibraryMutation.errorAlert(error: $0)) }
+            .catch { Just(.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
-            .merge(with: Just(LibraryMutation.clean).eraseToAnyPublisher())
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {

@@ -5,6 +5,8 @@ enum LibraryMutation: Mutation {
     case fetchItemsPreloaders(count: Int)
     case fetchItems(newItems: [Item])
 
+    case fastUpdate
+
     case refreshLibraryWithLocalItems
 
     case clean
@@ -17,7 +19,7 @@ enum LibraryMutation: Mutation {
     case removeItem(id: UUID)
     case empty
 
-    case userHasLogged
+    case changeUserLoginState(_ state: SessionState)
     case logout
     case openLogin
 

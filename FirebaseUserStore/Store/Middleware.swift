@@ -57,7 +57,6 @@ where StoreState: StateType,
                     .flatMap { $0(state, action, packages) }
                     .handleEvents(receiveOutput: { [weak self] _ in self?.index += 1 })
                     .sink(receiveCompletion: {[unowned self] in
-                        
                         switch $0 {
                         case .finished:
                             promise(.success(action))
@@ -71,8 +70,6 @@ where StoreState: StateType,
                                 if actions.contains(action) {
                                     lastRedispatchActionCount += 1
                                     if lastRedispatchActionCount > 3 {
-                                        fatalError("Repeat redispatch return with the same action > 3 times")
-                                    } else if lastRedispatchActionCount > 1 {
                                         String("Repeat redispatch return with the same action").withCString { messagePointer in
                                             runtimeReporter(messagePointer)
                                         }

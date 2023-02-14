@@ -20,6 +20,7 @@ extension ReinitableBySelf {
 }
 
 protocol StateType: ReinitableBySelf {
+    init()
     var processView: ProcessViewProvider { get }
 }
 

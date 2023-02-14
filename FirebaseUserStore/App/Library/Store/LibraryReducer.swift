@@ -20,6 +20,13 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.loadItems = []
         state.items = items
 
+    case .fastUpdate:
+        break
+
+//        
+//        state.loadItems.append(LoaderItem(id: 10))
+        
+
     case .refreshLibraryWithLocalItems:
         break
 
@@ -33,8 +40,8 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case .openLogin:
         return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
 
-    case .userHasLogged:
-        state.isLogin = true
+    case let .changeUserLoginState(status):
+        state.loginState = status
 
     case let .detail(item):
         return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()

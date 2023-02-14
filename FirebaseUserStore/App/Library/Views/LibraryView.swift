@@ -30,8 +30,10 @@ struct LibraryView: View {
 
     var body: some View {
         VStack {
-            if !store.state.isLogin {
-                unloginView
+            if store.state.loginState == .loading {
+                unknownUserView
+            } else if store.state.loginState == .loggedOut {
+                unloginUserView
             } else if store.state.showEmptyView {
                 emptyView
             } else if store.state.showErrorView {
@@ -49,7 +51,9 @@ struct LibraryView: View {
             }
         }
         .onAppear {
-            store.dispatch(.updateLibrary)
+            searchQueryBublisher.value.isEmpty
+            ? store.dispatch(.updateLibrary)
+            : store.dispatch(.search(text: searchQueryBublisher.value))
         }
         .toolbar { toolbarView }
     }
@@ -64,7 +68,9 @@ struct LibraryView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         errorLibraryDelay = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            store.dispatch(.updateLibrary)
+                            searchQueryBublisher.value.isEmpty
+                            ? store.dispatch(.updateLibrary)
+                            : store.dispatch(.search(text: searchQueryBublisher.value))
                         }
                     }
                 }
@@ -85,12 +91,16 @@ struct LibraryView: View {
         }
     }
 
-    private var unloginView: some View {
+    private var unloginUserView: some View {
         VStack {
             Spacer()
             Text("Unlogin").bold()
             Spacer()
         }
+    }
+
+    private var unknownUserView: some View {
+        EmptyView()
     }
 
     private var toolbarView: some View {
@@ -100,7 +110,7 @@ struct LibraryView: View {
             }
             .padding([.leading, .trailing], 8)
 
-            if store.state.isLogin {
+            if store.state.loginState == .loggedIn {
                 ImageView(systemName: "plus", size: 20) {
                     store.dispatch(.addItem)
                 }
@@ -116,5 +126,4 @@ struct LibraryView: View {
             }
         }
     }
-
 }

@@ -16,7 +16,7 @@ enum LibraryAction: Action, Hashable {
     case showAlert(error: Error)
     case showLibraryError
 
-    case userHasLogged
+    case userLoginState(_ state: SessionState)
     case openLogin
     case logout
 
@@ -48,7 +48,7 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(10)
         case .logout:
             hasher.combine(11)
-        case .userHasLogged:
+        case .userLoginState:
             hasher.combine(12)
         case .openLogin:
             hasher.combine(13)

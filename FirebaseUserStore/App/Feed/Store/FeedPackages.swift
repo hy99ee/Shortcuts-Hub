@@ -9,7 +9,7 @@ protocol FeedPackagesType: EnvironmentPackages {
 }
 
 
-class FeedPackages: FeedPackagesType {
+class _FeedPackages: FeedPackagesType {
     private(set) var itemsService: PublicItemsService!
     
     lazy var loginStore = LoginStore(
@@ -35,7 +35,7 @@ class FeedPackages: FeedPackagesType {
     }
 }
 
-class _FeedPackages: FeedPackagesType, Unreinitable {
+class FeedPackages: FeedPackagesType, Unreinitable {
     lazy var loginStore = LoginStore(
         state: LoginState(),
         dispatcher: loginDispatcher,

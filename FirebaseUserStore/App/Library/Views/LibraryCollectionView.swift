@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LibraryCollectionView: View {
     let store: LibraryStore
+
     @Binding var searchQuery: String
 
     @State private var isAnimating = false
@@ -14,7 +15,7 @@ struct LibraryCollectionView: View {
 
     var body: some View {
         NavigationView {
-            if store.state.loadItems.count == 0 {
+            if store.state.items.count != 0 {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
@@ -30,14 +31,12 @@ struct LibraryCollectionView: View {
                         }
                     }
                 }
-                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
+                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress))
                 .refreshable {
                     await asyncUpdate()
                 }
-                .onAppear {
-                    isAnimating = true
-                }
-            } else {
+                .onAppear { isAnimating = true }
+            } else if store.state.loadItems.count != 0 {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(store.state.loadItems, id: \.id) { _ in

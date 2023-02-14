@@ -2,22 +2,22 @@ import SwiftUI
 
 struct FeedCollectionView: View {
     let store: FeedStore
+
     @Binding var searchQuery: String
-
     @State private var isAnimating = false
+    let cellStyle: CollectionRowStyle
 
-    @State private var cellHeight: CGFloat = 130
-
-    private let columns = Array(repeating: GridItem(.flexible()), count: 2)
+    private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
     private let progress = HDotsProgress()
+
 
     var body: some View {
         NavigationView {
-            if store.state.loadItems.count == 0 {
+            if store.state.items.count != 0 {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title, height: cellHeight)
+                            FeedCellView(title: store.state.items[index].title, height: cellStyle.rowHeight)
                             .onTapGesture {
                                 store.dispatch(.click(store.state.items[index]))
                             }
@@ -27,19 +27,19 @@ struct FeedCollectionView: View {
                         }
                     }
                 }
-                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress, animation: .easeIn(duration: 0.5).repeatForever()))
+                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress))
                 .refreshable {
                     await asyncUpdate()
                 }
                 .onAppear {
                     isAnimating = true
                 }
-            } else {
+            } else if store.state.loadItems.count != 0 {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(store.state.loadItems, id: \.id) { _ in
                             LoaderFeedCellView()
-                                .frame(height: cellHeight)
+                                .frame(height: cellStyle.rowHeight)
                                 .padding(3)
                         }
                     }

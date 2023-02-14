@@ -13,7 +13,7 @@ struct LibraryState: StateType {
         }
     }
 
-    var isLogin = false
+    var loginState: SessionState = .loading
 
     var showEmptyView = false
     var showErrorView = false

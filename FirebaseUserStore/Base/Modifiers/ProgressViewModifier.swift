@@ -44,19 +44,35 @@ struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
 
 struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
     @State private var isAnimating = false
+//    @State var animation: Animation = .easeIn(duration: 0.5).repeatForever
+    @State var active: Bool = false
+
     @ObservedObject var provider: ProgressProvider
-    let animation: Animation
+//    let animation: Animation
 
     func body(content: Content) -> some View {
         content
             .opacity(isAnimating ? 0.5 : 1)
-            .onReceive(provider.objectWillChange) { _ in
-//                if self.provider.progressStatus == .stop {
-                    withAnimation(animation) {
-                        isAnimating.toggle()
-                    }
-//                }
+            .onChange(of: provider.progressStatus) {
+                if $0 == .start {
+                    active = true
+                } else {
+                    active = false
+                }
             }
+            .onChange(of: active) {
+                withAnimation($0
+                              ? .easeIn(duration: 0.5).repeatForever()
+                              : .easeIn(duration: 0.5)
+                ) {
+                    isAnimating.toggle()
+                }
+            }
+//            .onChange(of: animation) { newAnimation in
+//                withAnimation(newAnimation) {
+//                    isAnimating.toggle()
+//                }
+//            }
     }
 }
 

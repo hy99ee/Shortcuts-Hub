@@ -11,6 +11,8 @@ struct FeedView: View {
     @State private var isRefresh = false
     @State private var errorFeedDelay = false
 
+    @State private var collectionRowStyle: CollectionRowStyle = .row2
+
     init(store: FeedStore) {
         self._store = StateObject(wrappedValue: store)
 
@@ -33,7 +35,7 @@ struct FeedView: View {
                     set: { searchQueryBublisher.send($0) }
                 )
                 SearchBar(searchQuery: searchBinding)
-                FeedCollectionView(store: store, searchQuery: searchBinding)
+                FeedCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
             }
         }
     }
