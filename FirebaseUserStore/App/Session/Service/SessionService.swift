@@ -1,4 +1,5 @@
 import Foundation
+import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import Combine
@@ -46,6 +47,10 @@ final class SessionService: SessionServiceType, ObservableObject {
 
     func logout() {
         try? Auth.auth().signOut()
+    }
+
+    func deleteUser() {
+        Auth.auth().currentUser?.delete()
     }
 }
 

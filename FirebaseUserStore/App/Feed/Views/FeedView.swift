@@ -18,6 +18,7 @@ struct FeedView: View {
 
         searchQueryBublisher
             .removeDuplicates()
+            .dropFirst()
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
@@ -32,10 +33,20 @@ struct FeedView: View {
             } else {
                 let searchBinding = Binding<String>(
                     get: { searchQueryBublisher.value },
-                    set: { searchQueryBublisher.send($0) }
+                    set: {
+                        searchQueryBublisher.send($0)
+                        store.objectWillChange.send()
+                    }
                 )
                 SearchBar(searchQuery: searchBinding)
                 FeedCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
+            }
+        }
+        .onAppear {
+            if store.state.items.isEmpty {
+                searchQueryBublisher.value.isEmpty
+                ? store.dispatch(.updateFeed)
+                : store.dispatch(.search(text: searchQueryBublisher.value))
             }
         }
     }

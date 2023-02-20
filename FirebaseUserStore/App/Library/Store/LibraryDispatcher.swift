@@ -6,9 +6,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .updateLibrary:
         return mutationFetchItems(packages: packages)
-
-    case .updateLocalLibrary:
-        return Just(LibraryMutation.refreshLibraryWithLocalItems).eraseToAnyPublisher()
+            .merge(with: Just(LibraryMutation.setSearchFilter("")))
+            .eraseToAnyPublisher()
 
     case let .click(item):
         return Just(LibraryMutation.detail(item: item)).eraseToAnyPublisher()
@@ -17,13 +16,19 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return Just(LibraryMutation.addItems(items: items)).eraseToAnyPublisher()
 
     case .addItem:
-        return mutationAddItem(packages: packages).withStatus(start: LibraryMutation.progressButtonStatus(status: .start), finish: LibraryMutation.progressButtonStatus(status: .stop))
+        return mutationAddItem(packages: packages)
+            .withStatus(
+                start: LibraryMutation.progressButtonStatus(status: .start),
+                finish: LibraryMutation.progressButtonStatus(status: .stop)
+            )
 
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
 
     case let .search(text, local):
         return mutationSearchItems(by: text, local: local, packages: packages)
+            .merge(with: Just(LibraryMutation.setSearchFilter(text)))
+            .eraseToAnyPublisher()
 
     case .clean:
         return Just(LibraryMutation.clean).eraseToAnyPublisher()
@@ -39,6 +44,9 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case .logout:
         return mutationLogout(packages: packages)
+
+    case .deleteUser:
+        return mutationDeleteThisUser(packages: packages)
     
     case .openLogin:
         return Just(LibraryMutation.openLogin).eraseToAnyPublisher()
@@ -122,8 +130,16 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         guard packages.sessionService.state == .loggedIn else { return Just(LibraryMutation.openLogin).eraseToAnyPublisher() }
         guard let user = packages.sessionService.userDetails else { return Just(LibraryMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
 
-        return Just(LibraryMutation.showAbout(data: AboutViewData(user: user, logout: packages.sessionService.logout)))
-            .eraseToAnyPublisher()
+        return Just(
+            LibraryMutation.showAbout(
+                AboutViewData(
+                    user: user,
+                    logout: packages.sessionService.logout,
+                    deleteUser: packages.sessionService.deleteUser
+                )
+            )
+        )
+        .eraseToAnyPublisher()
     }
     func mutationShowAlert(with error: Error) -> AnyPublisher<LibraryMutation, Never> {
         Just(LibraryMutation.errorAlert(error: error))
@@ -133,7 +149,15 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         Just(())
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .handleEvents(receiveOutput: { packages.sessionService.logout() })
-            .map { LibraryMutation.logout }
+            .map { LibraryMutation.hasLogout }
+            .eraseToAnyPublisher()
+    }
+
+    func mutationDeleteThisUser(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
+        Just(())
+            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
+            .handleEvents(receiveOutput: { packages.sessionService.deleteUser() })
+            .map { LibraryMutation.hasDeletedUser }
             .eraseToAnyPublisher()
     }
 }

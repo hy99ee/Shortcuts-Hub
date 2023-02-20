@@ -3,12 +3,19 @@ import FirebaseAuth
 
 struct AboutViewData {
     let user: UserDetails
+
     let logout: () -> ()
+    let deleteUser: () -> ()
 }
 
 struct AboutView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    @State private var alertShow = false
+
     let user: UserDetails
+
     let logout: () -> ()
+    let deleteUser: () -> ()
 
     private let actions = ["Logout", "Remove account"]
     private let accountImageSize = 80.0
@@ -16,6 +23,7 @@ struct AboutView: View {
     init(aboutData: AboutViewData) {
         self.user = aboutData.user
         self.logout = aboutData.logout
+        self.deleteUser = aboutData.deleteUser
     }
 
     var body: some View {
@@ -47,17 +55,17 @@ struct AboutView: View {
             .padding()
 
             NavigationView {
-                
                 Form {
                     Section("account") {
                         Button {
                             logout()
+                            presentationMode.wrappedValue.dismiss()
                         } label: {
                             Text("Logout").foregroundColor(.primary)
                         }
 
                         Button {
-                            
+                            alertShow = true
                         } label: {
                             Text("Remove account").foregroundColor(.red)
                         }
@@ -65,6 +73,11 @@ struct AboutView: View {
                 }
                 .scrollDisabled(true)
             }
+        }.alert("Are you sure?", isPresented: $alertShow) {
+            Button("Yes", role: .destructive, action: {
+                deleteUser()
+                presentationMode.wrappedValue.dismiss()
+            })
         }
     }
 }
@@ -83,6 +96,6 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var mail = "mail@mail.com"
 
     static var previews: some View {
-        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}) )
+        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}, deleteUser: {}) )
     }
 }

@@ -5,6 +5,8 @@ class GlobalSender: TransitionSender {
     @ObservedObject var sessionService = SessionService.shared
     let transition = PassthroughSubject<GlobalLink, Never>()
 
+    let globalPackages = GlobalStoreRepository.shared
+
     private lazy var isFirstOpenKey = "isFirstOpen"
     private lazy var isFirstOpen = UserDefaults.standard.bool(forKey: isFirstOpenKey)
     
@@ -12,12 +14,28 @@ class GlobalSender: TransitionSender {
     
     init() {
         sessionService.$state
-//            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .removeDuplicates()
-            .map { sessionState -> GlobalLink in
-                if sessionState == .loading { return .progress }
-                return .gallery
+            .handleEvents(receiveOutput: {[weak self] in
+                switch $0 {
+                case .loggedIn:
+                    self?.globalPackages.libraryStore.reinit()
+                    self?.globalPackages.libraryStore.dispatch(.updateLibrary)
+
+                case .loggedOut:
+                    self?.globalPackages.libraryStore.reinit()
+
+                default: break
+                }
+            })
+            .map {
+                switch $0 {
+                case .loggedIn: return GlobalLink.library
+                case .loggedOut: return GlobalLink.gallery
+                case .loading: return GlobalLink.progress
+                }
             }
+            
 //            .flatMap { [weak self] state -> AnyPublisher<GlobalLink, Never> in
 //                guard let self else { return Empty().eraseToAnyPublisher() }
 //

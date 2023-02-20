@@ -72,13 +72,11 @@ where StoreState: StateType,
             .assign(to: &$state)
     }
 
+    @discardableResult
     func reinit() -> Self {
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self else { return }
-            self.packages = self.packages.reinit()
-            self.state = self.state.reinit()
-            self.middlewaresRepository = self.middlewaresRepository.reinit()
-//        }
+        self.packages = self.packages.reinit()
+        self.state = self.state.reinit()
+        self.middlewaresRepository = self.middlewaresRepository.reinit()
 
         return self
     }

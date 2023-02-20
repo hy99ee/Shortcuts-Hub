@@ -15,6 +15,8 @@ struct LibraryState: StateType {
 
     var loginState: SessionState = .loading
 
+    var searchFilter = ""
+
     var showEmptyView = false
     var showErrorView = false
 

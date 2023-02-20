@@ -23,12 +23,8 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case .fastUpdate:
         break
 
-//        
-//        state.loadItems.append(LoaderItem(id: 10))
-        
-
-    case .refreshLibraryWithLocalItems:
-        break
+    case let .setSearchFilter(text):
+        state.searchFilter = text
 
     case .clean:
         state.loadItems = []
@@ -50,7 +46,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.items.append(contentsOf: items)
 
     case let .newItem(item):
-        state.items.append(item)
+        if state.searchFilter.isEmpty || item.title.contains(state.searchFilter) {
+            state.items.append(item)
+        }
         state.showEmptyView = false
 
     case let .removeItem(id):
@@ -72,7 +70,10 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .progressButtonStatus(status):
         state.buttonProgress.progressStatus = status
 
-    case .logout:
+    case .hasLogout:
+        break
+
+    case .hasDeletedUser:
         break
     }
 

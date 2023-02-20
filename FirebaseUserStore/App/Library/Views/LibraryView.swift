@@ -4,7 +4,7 @@ import Combine
 struct LibraryView: View {
     @StateObject var store: LibraryStore
 
-    private let searchQueryBublisher = CurrentValueSubject<String, Never>("")
+    private let searchQueryBublisher: CurrentValueSubject<String, Never>
     private var subscriptions = Set<AnyCancellable>()
 
     @State private var showLoader = false
@@ -15,11 +15,12 @@ struct LibraryView: View {
 
     init(store: LibraryStore) {
         self._store = StateObject(wrappedValue: store)
+        self.searchQueryBublisher = CurrentValueSubject<String, Never>(store.state.searchFilter)
 
         searchQueryBublisher
             .removeDuplicates()
             .dropFirst()
-            .debounce(for: .seconds(searchQueryBublisher.value.isEmpty ? 0 : 1), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(store.state.searchFilter.isEmpty ? 0 : 1), scheduler: DispatchQueue.main)
             .sink {
                 $0.isEmpty
                 ? store.dispatch(.updateLibrary)
@@ -51,9 +52,11 @@ struct LibraryView: View {
             }
         }
         .onAppear {
-            searchQueryBublisher.value.isEmpty
-            ? store.dispatch(.updateLibrary)
-            : store.dispatch(.search(text: searchQueryBublisher.value))
+            if store.state.items.isEmpty {
+                searchQueryBublisher.value.isEmpty
+                ? store.dispatch(.updateLibrary)
+                : store.dispatch(.search(text: searchQueryBublisher.value))
+            }
         }
         .toolbar { toolbarView }
     }
@@ -111,13 +114,6 @@ struct LibraryView: View {
             .padding([.leading, .trailing], 8)
 
             if store.state.loginState == .loggedIn {
-                ImageView(systemName: "plus", size: 20) {
-                    store.dispatch(.addItem)
-                }
-                .modifier(ProcessViewModifier(provider: store.state.processView))
-                .modifier(ButtonProgressViewModifier(provider: store.state.buttonProgress, type: .clearView))
-                .padding([.leading, .trailing], 8)
-   
                 ImageView(systemName: collectionRowStyle.next().systemImage, size: collectionRowStyle.next().systemImageSize) {
                     withAnimation(.easeIn(duration: 0.6)) {
                         collectionRowStyle = collectionRowStyle.next()

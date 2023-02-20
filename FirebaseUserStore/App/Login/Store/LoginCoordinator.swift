@@ -69,6 +69,7 @@ struct LoginCoordinator: CoordinatorType {
                             }, label: {
                                 Text("Cancel")
                             })
+                            .modifier(ProcessViewModifier(provider: store.state.processView))
                         }
                     }
                     .sheet(item: $sheet, content: sheetContent)

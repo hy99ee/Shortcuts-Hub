@@ -36,8 +36,6 @@ struct GlobalCoordinator: CoordinatorType {
         rootView
     }
 
-    private let storeRepository = GlobalStoreRepository.shared
-
     func transitionReceiver(_ link: GlobalLink) {
         switch link {
         case .gallery, .library, .progress:
@@ -59,9 +57,9 @@ struct GlobalCoordinator: CoordinatorType {
     
     private var tabView: some View {
         TabView(selection: $root) {
-            gallery.tag(GlobalLink.gallery)
-            create.tag(GlobalLink.create)
-            library.tag(GlobalLink.library)
+            gallery.tag(GlobalLink.gallery).tabItem { tabLabel(for: .gallery) }
+            create.tag(GlobalLink.create).tabItem { tabLabel(for: .create) }
+            library.tag(GlobalLink.library).tabItem { tabLabel(for: .library) }
         }
         .onChange(of: root) {
             if $0 == .create {
@@ -74,28 +72,27 @@ struct GlobalCoordinator: CoordinatorType {
     }
 
     @ViewBuilder private var gallery: some View {
-        if root != .gallery { Text("").tabItem { tabLabel(for: .gallery) } }
-        else {
-            FeedCoordinator(store: storeRepository.feedStore.reinit())
-                .tabItem { tabLabel(for: .gallery) }
-        }
+        FeedCoordinator(store: sender.globalPackages.feedStore)
     }
 
     private var create: some View {
         Text("").tabItem { tabLabel(for: .create) }
     }
+    private var createSheetView: some View {
+        ImageView(systemName: "plus", size: 20) {
+            sender.globalPackages.libraryStore.dispatch(.addItem)
+        }
+        .modifier(ProcessViewModifier(provider: sender.globalPackages.libraryStore.state.processView))
+        .modifier(ButtonProgressViewModifier(provider: sender.globalPackages.libraryStore.state.buttonProgress, type: .clearView))
+    }
 
     @ViewBuilder private var library: some View {
-        if root != .library { Text("").tabItem { tabLabel(for: .library) } }
-        else {
-            LibraryCoordinator(store: storeRepository.libraryStore.reinit())
-                .tabItem { tabLabel(for: .library) }
-        }
+        LibraryCoordinator(store: sender.globalPackages.libraryStore)
     }
 
     @ViewBuilder private func sheetContent(link: GlobalLink) -> some View {
         switch link {
-        case .create: Text("Cteate").bold()
+        case .create: createSheetView
         case .promo: Text("Promo").bold()
         default: EmptyView()
         }

@@ -58,7 +58,7 @@ extension LibraryStore {
             return Fail(
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
                     actions: [.userLoginState(.loggedOut), .openLogin],
-                    type: .repeatRedispatch
+                    type: .excludeRedispatch
                 )
             ).eraseToAnyPublisher()
         }

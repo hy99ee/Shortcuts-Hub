@@ -7,7 +7,7 @@ enum LibraryMutation: Mutation {
 
     case fastUpdate
 
-    case refreshLibraryWithLocalItems
+    case setSearchFilter(_ text: String)
 
     case clean
 
@@ -20,13 +20,15 @@ enum LibraryMutation: Mutation {
     case empty
 
     case changeUserLoginState(_ state: SessionState)
-    case logout
     case openLogin
+
+    case hasLogout
+    case hasDeletedUser
 
     case errorAlert(error: Error)
     case errorLibrary
 
-    case showAbout(data: AboutViewData)
+    case showAbout(_ data: AboutViewData)
     case progressButtonStatus(status: ProgressViewStatus)
     case progressViewStatus(status: ProgressViewStatus)
 }

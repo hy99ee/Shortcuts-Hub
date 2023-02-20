@@ -2,7 +2,6 @@ import Foundation
 
 enum LibraryAction: Action, Hashable {
     case updateLibrary
-    case updateLocalLibrary
 
     case click(_ item: Item)
 
@@ -18,7 +17,9 @@ enum LibraryAction: Action, Hashable {
 
     case userLoginState(_ state: SessionState)
     case openLogin
+
     case logout
+    case deleteUser
 
     case mockAction
 
@@ -26,8 +27,6 @@ enum LibraryAction: Action, Hashable {
         switch self {
         case .updateLibrary:
             hasher.combine(0)
-        case .updateLocalLibrary:
-            hasher.combine(1)
         case .click:
             hasher.combine(2)
         case .addItems:
@@ -48,12 +47,14 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(10)
         case .logout:
             hasher.combine(11)
-        case .userLoginState:
+        case .deleteUser:
             hasher.combine(12)
+        case .userLoginState:
+            hasher.combine(13)
         case .openLogin:
-            hasher.combine(13)
+            hasher.combine(14)
         case .mockAction:
-            hasher.combine(13)
+            hasher.combine(15)
         }
     }
 
