@@ -24,7 +24,7 @@ where StoreState: StateType,
         case excludeRedispatch
     }
     enum MiddlewareRedispatch: Error {
-        case redispatch(actions: [StoreAction], type: RedispatchType)
+        case redispatch(actions: [StoreAction], type: RedispatchType = .repeatRedispatch)
     }
 
     private let middlewares: [Middleware]

@@ -20,11 +20,10 @@ struct LibraryView: View {
         searchQueryBublisher
             .removeDuplicates()
             .dropFirst()
+            .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
             .debounce(for: .seconds(store.state.searchFilter.isEmpty ? 0 : 1), scheduler: DispatchQueue.main)
-            .sink {
-                $0.isEmpty
-                ? store.dispatch(.updateLibrary)
-                : store.dispatch(.search(text: $0))
+            .sink { _ in
+                store.dispatch(.updateLibrary)
             }
             .store(in: &subscriptions)
     }
@@ -44,7 +43,7 @@ struct LibraryView: View {
                     get: { searchQueryBublisher.value },
                     set: {
                         searchQueryBublisher.send($0)
-                        store.objectWillChange.send()
+//                        store.objectWillChange.send()
                     }
                 )
                 SearchBar(searchQuery: searchBinding)
@@ -52,11 +51,11 @@ struct LibraryView: View {
             }
         }
         .onAppear {
-            if store.state.items.isEmpty {
-                searchQueryBublisher.value.isEmpty
-                ? store.dispatch(.updateLibrary)
-                : store.dispatch(.search(text: searchQueryBublisher.value))
-            }
+//            if store.state.items.isEmpty {
+//                searchQueryBublisher.value.isEmpty
+                store.dispatch(.updateLibrary)
+//                : store.dispatch(.search(text: searchQueryBublisher.value))
+//            }
         }
         .toolbar { toolbarView }
     }
@@ -71,9 +70,9 @@ struct LibraryView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         errorLibraryDelay = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            searchQueryBublisher.value.isEmpty
-                            ? store.dispatch(.updateLibrary)
-                            : store.dispatch(.search(text: searchQueryBublisher.value))
+//                            searchQueryBublisher.value.isEmpty
+                            store.dispatch(.updateLibrary)
+//                            : store.dispatch(.search(text: searchQueryBublisher.value))
                         }
                     }
                 }

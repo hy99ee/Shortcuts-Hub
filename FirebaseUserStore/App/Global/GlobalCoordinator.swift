@@ -50,8 +50,7 @@ struct GlobalCoordinator: CoordinatorType {
         case .progress:
             HDotsProgress().scaleEffect(2)
         default:
-            tabView
-                .sheet(item: $sheet, content: sheetContent)
+            tabView.sheet(item: $sheet, content: sheetContent)
         }
     }
     
@@ -68,6 +67,11 @@ struct GlobalCoordinator: CoordinatorType {
                 lastSelected = $0
             }
         }
+        .onChange(of: sheet) {
+            if $0 == nil {
+                sender.globalPackages.libraryStore.dispatch(.updateLibrary)
+            }
+        }
         
     }
 
@@ -79,11 +83,7 @@ struct GlobalCoordinator: CoordinatorType {
         Text("").tabItem { tabLabel(for: .create) }
     }
     private var createSheetView: some View {
-        ImageView(systemName: "plus", size: 20) {
-            sender.globalPackages.libraryStore.dispatch(.addItem)
-        }
-        .modifier(ProcessViewModifier(provider: sender.globalPackages.libraryStore.state.processView))
-        .modifier(ButtonProgressViewModifier(provider: sender.globalPackages.libraryStore.state.buttonProgress, type: .clearView))
+        CreateCoordinator(store: sender.globalPackages.createStore)
     }
 
     @ViewBuilder private var library: some View {

@@ -6,10 +6,10 @@ enum LibraryAction: Action, Hashable {
     case click(_ item: Item)
 
     case addItems(items: [Item])
-    case addItem
     case removeItem(id: UUID)
     case search(text: String, local: Set<UUID> = Set())
     case clean
+    case changeSearchField(_ newText: String)
 
     case showAboutSheet
     case showAlert(error: Error)
@@ -31,8 +31,6 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(2)
         case .addItems:
             hasher.combine(3)
-        case .addItem:
-            hasher.combine(4)
         case .removeItem:
             hasher.combine(5)
         case .search:
@@ -53,8 +51,10 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(13)
         case .openLogin:
             hasher.combine(14)
-        case .mockAction:
+        case .changeSearchField:
             hasher.combine(15)
+        case .mockAction:
+            hasher.combine(16)
         }
     }
 

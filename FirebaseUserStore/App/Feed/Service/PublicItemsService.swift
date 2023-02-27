@@ -26,8 +26,8 @@ final class PublicItemsService: ItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
-                                    aboutLink: data["description"] as? String ?? "",
-                                    source: "",
+                                    iconUrl: URL(string: data["icon"] as? String ?? ""),
+                                    description: data["description"] as? String ?? "",
                                     createdAt: Date()
                                 )
                             )
@@ -97,8 +97,8 @@ final class PublicItemsService: ItemsServiceType {
                                 id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
-                                aboutLink: data["description"] as? String ?? "",
-                                source: "",
+                                iconUrl: URL(string: data["icon"] as? String ?? ""),
+                                description: data["description"] as? String ?? "",
                                 createdAt: Date()
                             )
                         }

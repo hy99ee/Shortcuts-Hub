@@ -18,6 +18,15 @@
 		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
 		3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* FeedAction.swift */; };
 		3B1F669E28FC141F009225A4 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669D28FC141F009225A4 /* Entities.swift */; };
+		3B27A57A29A613D600CF9A5F /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A56D29A613D600CF9A5F /* CreateView.swift */; };
+		3B27A57B29A613D600CF9A5F /* CreateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A56F29A613D600CF9A5F /* CreateDispatcher.swift */; };
+		3B27A57C29A613D600CF9A5F /* CreateReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57029A613D600CF9A5F /* CreateReducer.swift */; };
+		3B27A57D29A613D600CF9A5F /* CreatePackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57129A613D600CF9A5F /* CreatePackages.swift */; };
+		3B27A57E29A613D600CF9A5F /* CreateMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57229A613D600CF9A5F /* CreateMutation.swift */; };
+		3B27A57F29A613D600CF9A5F /* CreateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57329A613D600CF9A5F /* CreateState.swift */; };
+		3B27A58029A613D600CF9A5F /* CreateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57429A613D600CF9A5F /* CreateAction.swift */; };
+		3B27A58129A613D600CF9A5F /* CreateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57529A613D600CF9A5F /* CreateStore.swift */; };
+		3B27A58229A613D600CF9A5F /* CreateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57629A613D600CF9A5F /* CreateCoordinator.swift */; };
 		3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F789F29377EB30035BAAF /* LoginPackages.swift */; };
 		3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2F78A12937880A0035BAAF /* FeedPackages.swift */; };
 		3B2F78A62938FBC40035BAAF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */; };
@@ -122,6 +131,15 @@
 		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		3B1F669528FC0C6C009225A4 /* FeedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAction.swift; sourceTree = "<group>"; };
 		3B1F669D28FC141F009225A4 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		3B27A56D29A613D600CF9A5F /* CreateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
+		3B27A56F29A613D600CF9A5F /* CreateDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDispatcher.swift; sourceTree = "<group>"; };
+		3B27A57029A613D600CF9A5F /* CreateReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateReducer.swift; sourceTree = "<group>"; };
+		3B27A57129A613D600CF9A5F /* CreatePackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePackages.swift; sourceTree = "<group>"; };
+		3B27A57229A613D600CF9A5F /* CreateMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMutation.swift; sourceTree = "<group>"; };
+		3B27A57329A613D600CF9A5F /* CreateState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateState.swift; sourceTree = "<group>"; };
+		3B27A57429A613D600CF9A5F /* CreateAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAction.swift; sourceTree = "<group>"; };
+		3B27A57529A613D600CF9A5F /* CreateStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateStore.swift; sourceTree = "<group>"; };
+		3B27A57629A613D600CF9A5F /* CreateCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCoordinator.swift; sourceTree = "<group>"; };
 		3B2F789F29377EB30035BAAF /* LoginPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPackages.swift; sourceTree = "<group>"; };
 		3B2F78A12937880A0035BAAF /* FeedPackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPackages.swift; sourceTree = "<group>"; };
 		3B2F78A52938FBC40035BAAF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -265,6 +283,38 @@
 				3B1F669428FC0C6C009225A4 /* Store.swift */,
 				3B1F669D28FC141F009225A4 /* Entities.swift */,
 				3BD6489C290E80040029F4E9 /* Middleware.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		3B27A56729A613D600CF9A5F /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				3B27A56C29A613D600CF9A5F /* Views */,
+				3B27A56E29A613D600CF9A5F /* Store */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		3B27A56C29A613D600CF9A5F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3B27A56D29A613D600CF9A5F /* CreateView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3B27A56E29A613D600CF9A5F /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B27A56F29A613D600CF9A5F /* CreateDispatcher.swift */,
+				3B27A57029A613D600CF9A5F /* CreateReducer.swift */,
+				3B27A57129A613D600CF9A5F /* CreatePackages.swift */,
+				3B27A57229A613D600CF9A5F /* CreateMutation.swift */,
+				3B27A57329A613D600CF9A5F /* CreateState.swift */,
+				3B27A57429A613D600CF9A5F /* CreateAction.swift */,
+				3B27A57529A613D600CF9A5F /* CreateStore.swift */,
+				3B27A57629A613D600CF9A5F /* CreateCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -418,6 +468,7 @@
 		3BD76ECB2899AF6C001D64E2 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				3B27A56729A613D600CF9A5F /* Create */,
 				3B5CA8D72992609D00E16151 /* Library */,
 				3BE2C2362985906700BD6BDB /* Feed */,
 				3B703D61296ACE3400F43A45 /* Global */,
@@ -713,6 +764,8 @@
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
 				3B5CA9212992609D00E16151 /* LibraryStore.swift in Sources */,
 				3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */,
+				3B27A58229A613D600CF9A5F /* CreateCoordinator.swift in Sources */,
+				3B27A57D29A613D600CF9A5F /* CreatePackages.swift in Sources */,
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */,
 				3B5CA9272992609D00E16151 /* LibraryAction.swift in Sources */,
@@ -729,11 +782,13 @@
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
 				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
+				3B27A58129A613D600CF9A5F /* CreateStore.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3B5CA9152992609D00E16151 /* AboutView.swift in Sources */,
 				3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */,
+				3B27A57C29A613D600CF9A5F /* CreateReducer.swift in Sources */,
 				3B7AE4DD296D6C4D002A9948 /* FeedCoordinator.swift in Sources */,
 				3B2F78A029377EB30035BAAF /* LoginPackages.swift in Sources */,
 				3B0E36C0293E2BA6009A7DCE /* InputPasswordView.swift in Sources */,
@@ -752,9 +807,11 @@
 				3B5CA9232992609D00E16151 /* LibraryDispatcher.swift in Sources */,
 				3B5CA91A2992609D00E16151 /* MockLibraryService.swift in Sources */,
 				3B703D532967366500F43A45 /* ForgotMutation.swift in Sources */,
+				3B27A58029A613D600CF9A5F /* CreateAction.swift in Sources */,
 				3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */,
 				3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */,
 				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
+				3B27A57F29A613D600CF9A5F /* CreateState.swift in Sources */,
 				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
@@ -763,6 +820,7 @@
 				3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */,
 				3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */,
 				3B7AE4D2296C6085002A9948 /* RegisterationPackages.swift in Sources */,
+				3B27A57A29A613D600CF9A5F /* CreateView.swift in Sources */,
 				3B843EE8297E8AD600436E3A /* RoundedRectProgressView.swift in Sources */,
 				3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */,
 				3B5CA9252992609D00E16151 /* LibraryState.swift in Sources */,
@@ -773,8 +831,10 @@
 				3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */,
 				3BB7861B294886D400012DB0 /* Progress.swift in Sources */,
 				3B7A4B552954525E000AF26A /* MockPublicItemsService.swift in Sources */,
+				3B27A57E29A613D600CF9A5F /* CreateMutation.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3BE4C1D8298592AE000B43BD /* PublicItemsService.swift in Sources */,
+				3B27A57B29A613D600CF9A5F /* CreateDispatcher.swift in Sources */,
 				3B703D6029698F6200F43A45 /* ProgressProvider.swift in Sources */,
 				3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */,
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,

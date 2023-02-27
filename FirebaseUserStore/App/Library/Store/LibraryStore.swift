@@ -10,8 +10,7 @@ extension LibraryStore {
             if text.isEmpty {
                 return Fail(
                     error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
-                        actions: [.updateLibrary],
-                        type: .repeatRedispatch
+                        actions: [.updateLibrary]
                     )
                 ).eraseToAnyPublisher()
             }
@@ -72,8 +71,21 @@ extension LibraryStore {
             ).eraseToAnyPublisher()
         }
 
-        return Just(action).setFailureType(
-            to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
-        .eraseToAnyPublisher()
+        return Just(action)
+            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
+    }
+
+    static let middlewareSearchCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+        if action == .updateLibrary && !state.searchFilter.isEmpty {
+            return Fail(
+                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                    actions: [.search(text: state.searchFilter)]
+                )
+            ).eraseToAnyPublisher()
+        }
+        return Just(action)
+            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
     }
 }

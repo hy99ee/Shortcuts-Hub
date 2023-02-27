@@ -32,8 +32,8 @@ final class UserItemsService: UserItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
-                                    aboutLink: data["description"] as? String ?? "",
-                                    source: "",
+                                    iconUrl: URL(string: data["icon"] as? String ?? ""),
+                                    description: data["description"] as? String ?? "",
                                     createdAt: Date()
                                 )
                             )
@@ -109,8 +109,8 @@ final class UserItemsService: UserItemsServiceType {
                                 id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
-                                aboutLink: data["description"] as? String ?? "",
-                                source: "",
+                                iconUrl: URL(string: data["icon"] as? String ?? ""),
+                                description: data["description"] as? String ?? "",
                                 createdAt: Date()
                             )
                         }
@@ -121,7 +121,7 @@ final class UserItemsService: UserItemsServiceType {
         }.eraseToAnyPublisher()
     }
 
-    func setNewItemRequest() -> AnyPublisher<UUID, ItemsServiceError> {
+    func uploadNewItem(_ item: Item) -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.invalidUserId)) }
@@ -130,8 +130,9 @@ final class UserItemsService: UserItemsServiceType {
                 let document = [
                     "id": UUID().uuidString,
                     "userId": userId,
-                    "title": "item \(Int.random(in: 0..<10))",
-                    "description": "description"
+                    "title": item.title,
+                    "icon": item.iconUrl?.absoluteString ?? "",
+                    "description": item.description
                 ]
                 self.db.collection(Self.collectionName).addDocument(data: document) { error in
                     if let error = error {
@@ -150,7 +151,7 @@ final class UserItemsService: UserItemsServiceType {
         }.eraseToAnyPublisher()
     }
 
-    func removeItemRequest(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
+    func removeItem(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard

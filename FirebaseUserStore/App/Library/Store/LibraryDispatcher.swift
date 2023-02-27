@@ -6,7 +6,6 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .updateLibrary:
         return mutationFetchItems(packages: packages)
-            .merge(with: Just(LibraryMutation.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .click(item):
@@ -15,23 +14,18 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case let .addItems(items):
         return Just(LibraryMutation.addItems(items: items)).eraseToAnyPublisher()
 
-    case .addItem:
-        return mutationAddItem(packages: packages)
-            .withStatus(
-                start: LibraryMutation.progressButtonStatus(status: .start),
-                finish: LibraryMutation.progressButtonStatus(status: .stop)
-            )
-
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
 
     case let .search(text, local):
         return mutationSearchItems(by: text, local: local, packages: packages)
-            .merge(with: Just(LibraryMutation.setSearchFilter(text)))
             .eraseToAnyPublisher()
 
     case .clean:
         return Just(LibraryMutation.clean).eraseToAnyPublisher()
+    
+    case let .changeSearchField(text):
+        return Just(LibraryMutation.setSearchFilter(text)).eraseToAnyPublisher()
 
     case .showAboutSheet:
         return mutationShowAboutSheet(packages: packages)
@@ -97,15 +91,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         .eraseToAnyPublisher()
         
     }
-    func mutationAddItem(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        packages.itemsService.setNewItemRequest()
-            .flatMap { packages.itemsService.fetchItem($0).eraseToAnyPublisher() }
-            .map { .newItem(item: $0) }
-            .catch { Just(.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
     func mutationRemoveItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        packages.itemsService.removeItemRequest(id)
+        packages.itemsService.removeItem(id)
             .map { .removeItem(id: $0) }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()

@@ -22,11 +22,20 @@ final class GlobalStoreRepository {
         packages: LoginPackages()
     )
 
+    private lazy var libraryPackages = LibraryPackages()
+
     lazy var libraryStore = LibraryStore(
         state: LibraryState(),
         dispatcher: libraryDispatcher,
         reducer: libraryReducer,
-        packages: LibraryPackages(),
-        middlewares: [LibraryStore.middlewareLocalSearch, LibraryStore.middlewareAuthCheck]
+        packages: libraryPackages,
+        middlewares: [LibraryStore.middlewareLocalSearch, LibraryStore.middlewareAuthCheck, LibraryStore.middlewareSearchCheck]
+    )
+
+    lazy var createStore = CreateStore(
+        state: CreateState(),
+        dispatcher: createDispatcher,
+        reducer: createReducer,
+        packages: libraryPackages
     )
 }
