@@ -17,8 +17,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
 
-    case let .search(text, local):
-        return mutationSearchItems(by: text, local: local, packages: packages)
+    case let .search(text):
+        return mutationSearchItems(by: text, packages: packages)
             .eraseToAnyPublisher()
 
     case .clean:
@@ -97,15 +97,11 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    func mutationSearchItems(by text: String, local: Set<UUID>, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
+    func mutationSearchItems(by text: String, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text)
 
         let fetchFromDocs = fetchDocs
-            .flatMap {
-                packages.itemsService.fetchItems($0.query) {
-                    $0.title.lowercased().contains(text.lowercased()) && !local.contains($0.id)
-                }
-            }
+            .flatMap { packages.itemsService.fetchItems($0.query) }
 
         return fetchFromDocs
             .map { LibraryMutation.addItems(items: $0) }

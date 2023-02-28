@@ -7,7 +7,7 @@ enum LibraryAction: Action, Hashable {
 
     case addItems(items: [Item])
     case removeItem(id: UUID)
-    case search(text: String, local: Set<UUID> = Set())
+    case search(text: String)
     case clean
     case changeSearchField(_ newText: String)
 

@@ -6,7 +6,7 @@ enum FeedAction: Action, Hashable {
     case click(_ item: Item)
 
     case addItems(items: [Item])
-    case search(text: String, local: Set<UUID> = Set())
+    case search(text: String)
     case clean
 
     case showAlert(error: Error)

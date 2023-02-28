@@ -9,7 +9,7 @@ final class PublicItemsService: ItemsServiceType {
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
     
-    func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 query.getDocuments { snapshot, error in
@@ -32,7 +32,7 @@ final class PublicItemsService: ItemsServiceType {
                                 )
                             )
                         }
-                        return promise(.success(items.filter(filter)))
+                        return promise(.success(items))
                     }
                 }
             }

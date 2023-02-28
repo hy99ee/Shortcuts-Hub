@@ -5,7 +5,7 @@ import FirebaseFirestore
 final class MockLibraryService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
 
-    func fetchItems(_ query: ResponceType.DataType, filter: (Item) -> Bool) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItems(_ query: ResponceType.DataType) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 let items = query.data.isEmpty ? mockItems : mockItems.filter { $0.title.contains(query.data) }

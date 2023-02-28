@@ -12,7 +12,7 @@ final class GlobalStoreRepository {
         dispatcher: feedDispatcher,
         reducer: feedReducer,
         packages: FeedPackages(),
-        middlewares: [FeedStore.middlewareFeedLogger, FeedStore.middlewareLocalSearch]
+        middlewares: [FeedStore.middlewareFeedLogger]
     )
 
     lazy var loginStore = LoginStore(
@@ -29,7 +29,7 @@ final class GlobalStoreRepository {
         dispatcher: libraryDispatcher,
         reducer: libraryReducer,
         packages: libraryPackages,
-        middlewares: [LibraryStore.middlewareLocalSearch, LibraryStore.middlewareAuthCheck, LibraryStore.middlewareSearchCheck]
+        middlewares: [LibraryStore.middlewareAuthCheck, LibraryStore.middlewareSearchCheck]
     )
 
     lazy var createStore = CreateStore(

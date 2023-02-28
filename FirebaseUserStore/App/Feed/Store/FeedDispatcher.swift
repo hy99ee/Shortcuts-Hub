@@ -13,8 +13,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case let .addItems(items):
         return Just(FeedMutation.addItems(items: items)).eraseToAnyPublisher()
 
-    case let .search(text, local):
-        return mutationSearchItems(by: text, local: local, packages: packages)
+    case let .search(text):
+        return mutationSearchItems(by: text, packages: packages)
 
     case .clean:
         return Just(FeedMutation.clean).eraseToAnyPublisher()
@@ -36,7 +36,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0, filter: { _ in true }) }
+            .flatMap { packages.itemsService.fetchItems($0) }
         
         return Publishers.Merge(
             fetchDocs
@@ -56,15 +56,11 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         .eraseToAnyPublisher()
         
     }
-    func mutationSearchItems(by text: String, local: Set<UUID>, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+    func mutationSearchItems(by text: String, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text)
 
         let fetchFromDocs = fetchDocs
-            .flatMap {
-                packages.itemsService.fetchItems($0.query) {
-                    $0.title.lowercased().contains(text.lowercased()) && !local.contains($0.id)
-                }
-            }
+            .flatMap { packages.itemsService.fetchItems($0.query) }
 
         return fetchFromDocs
             .map { FeedMutation.addItems(items: $0) }

@@ -1,6 +1,7 @@
 import Combine
 import Firebase
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class UserItemsService: UserItemsServiceType {
     typealias ServiceError = ItemsServiceError
@@ -15,18 +16,20 @@ final class UserItemsService: UserItemsServiceType {
         self.userId = userId
     }
 
-    func fetchItems(_ query: Query, filter: @escaping (Item) -> Bool = { _ in true }) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 query.getDocuments { snapshot, error in
                     if let _error = error {
                         return promise(.failure(.firebaseError(_error)))
                     }
-                    if let snapshot = snapshot {
-                        var items: [Item] = []
-                        for document in snapshot.documents {
-                            let data = document.data()
-
+                    guard let documents = snapshot?.documents else {
+                        return promise(.failure(.unknownError))
+                    }
+                    var items: [Item] = []
+                    documents
+                        .map { $0.data() }
+                        .forEach { data in
                             items.append(
                                 Item(
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
@@ -38,8 +41,8 @@ final class UserItemsService: UserItemsServiceType {
                                 )
                             )
                         }
-                        return promise(.success(items.filter(filter)))
-                    }
+                    return promise(.success(items))
+                    
                 }
             }
         }
