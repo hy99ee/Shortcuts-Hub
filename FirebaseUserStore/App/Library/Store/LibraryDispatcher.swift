@@ -6,26 +6,26 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .updateLibrary:
         return mutationFetchItems(packages: packages)
+            .merge(with: Just(LibraryMutation.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .click(item):
-        return Just(LibraryMutation.detail(item: item)).eraseToAnyPublisher()
+        return Just(.detail(item: item)).eraseToAnyPublisher()
 
     case let .addItems(items):
-        return Just(LibraryMutation.addItems(items: items)).eraseToAnyPublisher()
+        return Just(.addItems(items: items)).eraseToAnyPublisher()
 
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
 
     case let .search(text):
         return mutationSearchItems(by: text, packages: packages)
-            .eraseToAnyPublisher()
 
     case .clean:
-        return Just(LibraryMutation.clean).eraseToAnyPublisher()
+        return Just(.clean).eraseToAnyPublisher()
     
     case let .changeSearchField(text):
-        return Just(LibraryMutation.setSearchFilter(text)).eraseToAnyPublisher()
+        return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
     case .showAboutSheet:
         return mutationShowAboutSheet(packages: packages)
@@ -34,7 +34,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return mutationShowAlert(with: error)
     
     case .showLibraryError:
-        return Just(LibraryMutation.errorLibrary).eraseToAnyPublisher()
+        return Just(.errorLibrary).eraseToAnyPublisher()
 
     case .logout:
         return mutationLogout(packages: packages)
@@ -43,10 +43,10 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return mutationDeleteThisUser(packages: packages)
     
     case .openLogin:
-        return Just(LibraryMutation.openLogin).eraseToAnyPublisher()
+        return Just(.openLogin).eraseToAnyPublisher()
 
     case let .userLoginState(state):
-        return Just(LibraryMutation.changeUserLoginState(state)).eraseToAnyPublisher()
+        return Just(.changeUserLoginState(state)).eraseToAnyPublisher()
 
     case .mockAction:
         return Empty(completeImmediately: true).eraseToAnyPublisher()
@@ -85,7 +85,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 .withStatus(start: LibraryMutation.progressViewStatus(status: .start), finish: LibraryMutation.progressViewStatus(status: .stop))
             , fetchFromDocs
                 .delay(for: .seconds(1), scheduler: DispatchQueue.main)
-                .map { .fetchItems(newItems: $0) }
+                .map { .fetchedItems(newItems: $0) }
                 .catch { Just(.errorAlert(error: $0)) }
         )
         .eraseToAnyPublisher()
@@ -104,7 +104,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .flatMap { packages.itemsService.fetchItems($0.query) }
 
         return fetchFromDocs
-            .map { LibraryMutation.addItems(items: $0) }
+            .map { LibraryMutation.fetchedItems(newItems: $0) }
             .catch { Just(.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()

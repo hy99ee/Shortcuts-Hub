@@ -22,6 +22,8 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
 
     var createdAt: Date
     var modifiedAt: Date?
+
+    var tags: [String] { title.generateStringSequence() + description.generateStringSequence() }
 }
 
 var mockItems: [Item] = [

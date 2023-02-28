@@ -16,8 +16,8 @@ enum CollectionRowStyle: CaseIterable {
     var systemImageSize: CGFloat {
         switch self {
         case .row1: return 20
-        case .row2: return 19
-        case .row3: return 18
+        case .row2: return 17
+        case .row3: return 15
         }
     }
 
@@ -31,9 +31,9 @@ enum CollectionRowStyle: CaseIterable {
 
     var rowHeight: CGFloat {
         switch self {
-        case .row1: return 150
+        case .row1: return 50
         case .row2: return 120
-        case .row3: return 90
+        case .row3: return 80
         }
     }
 }

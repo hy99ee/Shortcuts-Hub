@@ -19,6 +19,8 @@ struct LibraryState: StateType {
 
     var showEmptyView = false
     var showErrorView = false
+    var isInitial = true
+
 
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()
@@ -37,9 +39,5 @@ struct LibraryState: StateType {
 extension LibraryState {
     static var sortingByModified: (Item, Item) -> Bool = {
         $0.modifiedAt ?? $0.createdAt < $1.modifiedAt ?? $1.createdAt
-    }
-
-    func itemsWithFilter(_ filter: String) -> [Item] {
-        items.filter { $0.title.lowercased().contains(filter.lowercased()) }
     }
 }

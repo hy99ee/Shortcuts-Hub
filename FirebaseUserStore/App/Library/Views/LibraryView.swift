@@ -1,6 +1,10 @@
 import SwiftUI
 import Combine
 
+enum SearchScope: String, CaseIterable {
+    case inbox, favorites
+}
+
 struct LibraryView: View {
     @StateObject var store: LibraryStore
 
@@ -10,24 +14,46 @@ struct LibraryView: View {
     @State private var showLoader = false
     @State private var isRefresh = false
     @State private var errorLibraryDelay = false
+    @State private var isEmptySearch = true
 
     @State private var collectionRowStyle: CollectionRowStyle = .row3
+
+    @State private var searchScope = SearchScope.inbox
+
+    var searchBinding: Binding<String> {
+        .init(
+            get: { searchQueryBublisher.value },
+            set: { searchQueryBublisher.send($0) }
+        )
+    }
 
     init(store: LibraryStore) {
         self._store = StateObject(wrappedValue: store)
         self.searchQueryBublisher = CurrentValueSubject<String, Never>(store.state.searchFilter)
 
-        searchQueryBublisher
+        let search = searchQueryBublisher
             .removeDuplicates()
             .dropFirst()
-            .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
-            .debounce(for: .seconds(store.state.searchFilter.isEmpty ? 0 : 1), scheduler: DispatchQueue.main)
-            .sink { _ in
-                store.dispatch(.updateLibrary)
+            .flatMap {
+                Just($0)
+                .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
+                .zip(store.objectWillChange)
+                .map { $0.0 }
             }
+            .share()
+        
+        search
+            .filter { !$0.isEmpty }
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
+            .sink { store.dispatch(.search(text: $0)) }
+            .store(in: &subscriptions)
+
+        search
+            .filter { $0.isEmpty }
+            .map { _ in }
+            .sink { store.dispatch(.updateLibrary) }
             .store(in: &subscriptions)
     }
-
     var body: some View {
         VStack {
             if store.state.loginState == .loading {
@@ -39,25 +65,17 @@ struct LibraryView: View {
             } else if store.state.showErrorView {
                 updateableErrorView
             } else {
-                let searchBinding = Binding<String>(
-                    get: { searchQueryBublisher.value },
-                    set: {
-                        searchQueryBublisher.send($0)
-//                        store.objectWillChange.send()
-                    }
-                )
-                SearchBar(searchQuery: searchBinding)
                 LibraryCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
             }
         }
         .onAppear {
-//            if store.state.items.isEmpty {
-//                searchQueryBublisher.value.isEmpty
-                store.dispatch(.updateLibrary)
-//                : store.dispatch(.search(text: searchQueryBublisher.value))
-//            }
+            if store.state.items.isEmpty { store.dispatch(.updateLibrary) }
         }
-        .toolbar { toolbarView }
+        .toolbar {
+            toolbarView
+                .searchable(text: searchBinding, placement: .navigationBarDrawer(displayMode: .always))
+                .onChange(of: searchScope) { _ in searchQueryBublisher.send(searchQueryBublisher.value) }
+        }
     }
 
     private var updateableErrorView: some View {
@@ -72,7 +90,6 @@ struct LibraryView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
 //                            searchQueryBublisher.value.isEmpty
                             store.dispatch(.updateLibrary)
-//                            : store.dispatch(.search(text: searchQueryBublisher.value))
                         }
                     }
                 }

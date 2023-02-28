@@ -79,7 +79,7 @@ final class UserItemsService: UserItemsServiceType {
 
                 let collection = self.db.collection(Self.collectionName)
                 let query = collection.whereField("userId", isEqualTo: userId)
-                    .whereField("title", isGreaterThanOrEqualTo: text)
+                    .whereField("tags", arrayContains: text)
                     .order(by: "title")
 
                 return promise(.success(FetchedResponce(query: query, count: 0)))
@@ -130,26 +130,22 @@ final class UserItemsService: UserItemsServiceType {
                 guard let self else { return promise(.failure(.invalidUserId)) }
                 guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
+                let documentId = UUID()
                 let document = [
-                    "id": UUID().uuidString,
+                    "id": documentId.uuidString,
                     "userId": userId,
                     "title": item.title,
                     "icon": item.iconUrl?.absoluteString ?? "",
-                    "description": item.description
+                    "description": item.description,
+                    "tags": item.tags
                 ]
                 self.db.collection(Self.collectionName).addDocument(data: document) { error in
                     if let error = error {
                         promise(.failure(.firebaseError(error)))
                     }
                 }
-                guard
-                    let id = document["id"],
-                    let documentID = UUID(uuidString: id)
-                else {
-                    return promise(.failure(.invalidUserId))
-                }
 
-                return promise(.success(documentID))
+                return promise(.success(documentId))
             }
         }.eraseToAnyPublisher()
     }

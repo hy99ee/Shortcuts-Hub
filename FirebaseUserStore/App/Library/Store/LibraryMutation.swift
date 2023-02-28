@@ -3,7 +3,7 @@ import Combine
 
 enum LibraryMutation: Mutation {
     case fetchItemsPreloaders(count: Int)
-    case fetchItems(newItems: [Item])
+    case fetchedItems(newItems: [Item])
 
     case fastUpdate
 

@@ -3,10 +3,11 @@ import SwiftUI
 
 let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { _state, mutation in
     var state = _state
+    state.isInitial = false
 
     switch mutation {
     case let .fetchItemsPreloaders(count):
-        state.showEmptyView = count == 0
+        state.showEmptyView = count == 0 && state.searchFilter.isEmpty
         state.loadItems = []
         state.items = []
 
@@ -14,9 +15,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
             state.loadItems.append(LoaderItem(id: index))
         }
 
-    case let .fetchItems(items):
+    case let .fetchedItems(items):
         let items = items.sorted(by: LibraryState.sortingByModified)
-        state.showEmptyView = items.isEmpty
+        state.showEmptyView = items.isEmpty && state.searchFilter.isEmpty
         state.loadItems = []
         state.items = items
 

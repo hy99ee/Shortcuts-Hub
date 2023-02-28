@@ -9,38 +9,6 @@ final class PublicItemsService: ItemsServiceType {
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
     
-    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
-        Deferred {
-            Future { promise in
-                query.getDocuments { snapshot, error in
-                    if let _error = error {
-                        return promise(.failure(.firebaseError(_error)))
-                    }
-                    if let snapshot = snapshot {
-                        var items: [Item] = []
-                        for document in snapshot.documents {
-                            let data = document.data()
-                            
-                            items.append(
-                                Item(
-                                    id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
-                                    userId: data["userId"] as? String ?? "",
-                                    title: data["title"] as? String ?? "",
-                                    iconUrl: URL(string: data["icon"] as? String ?? ""),
-                                    description: data["description"] as? String ?? "",
-                                    createdAt: Date()
-                                )
-                            )
-                        }
-                        return promise(.success(items))
-                    }
-                }
-            }
-        }
-        .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
-        .eraseToAnyPublisher()
-    }
-    
     func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in

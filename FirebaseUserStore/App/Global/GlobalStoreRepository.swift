@@ -29,7 +29,7 @@ final class GlobalStoreRepository {
         dispatcher: libraryDispatcher,
         reducer: libraryReducer,
         packages: libraryPackages,
-        middlewares: [LibraryStore.middlewareAuthCheck, LibraryStore.middlewareSearchCheck]
+        middlewares: [LibraryStore.middlewareAuthCheck]
     )
 
     lazy var createStore = CreateStore(

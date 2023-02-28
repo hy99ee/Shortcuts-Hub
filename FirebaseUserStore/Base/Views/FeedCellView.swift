@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FeedCellView: View {
     let title: String
-    let height: CGFloat
+    let cellStyle: CollectionRowStyle
     var delete: (() -> ())? = nil
 
     var body: some View {
@@ -16,7 +16,7 @@ struct FeedCellView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(.blue, lineWidth: 2)
         )
-        .frame(height: height)
+        .frame(height: cellStyle.rowHeight)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
         .contextMenu {
             if let delete {

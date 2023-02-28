@@ -11,7 +11,7 @@ struct FeedView: View {
     @State private var isRefresh = false
     @State private var errorFeedDelay = false
 
-    @State private var collectionRowStyle: CollectionRowStyle = .row2
+    @State private var collectionRowStyle: CollectionRowStyle = .row3
 
     init(store: FeedStore) {
         self._store = StateObject(wrappedValue: store)
