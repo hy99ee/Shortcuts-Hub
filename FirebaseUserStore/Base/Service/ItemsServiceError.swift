@@ -11,6 +11,8 @@ enum ItemsServiceError: Error {
 
     case unknownError
     case mockError
+
+    case none
 }
 
 extension ItemsServiceError: LocalizedError {
@@ -60,6 +62,9 @@ extension ItemsServiceError: LocalizedError {
                 "This is message for testing receive errors messages.",
                 comment: "Mock Error"
             )
+
+        case .none:
+            return ""
         }
     }
 }

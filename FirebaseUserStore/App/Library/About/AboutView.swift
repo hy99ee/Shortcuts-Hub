@@ -27,7 +27,7 @@ struct AboutView: View {
     }
 
     var body: some View {
-        VStack {
+        ScrollView(showsIndicators: false) {
             Text(
                 String(user.storage.firstName.first ?? Character(" ")) +
                 String(user.storage.lastName.first ?? Character(" "))
@@ -71,9 +71,11 @@ struct AboutView: View {
                         }
                     }
                 }
-                .scrollDisabled(true)
             }
-        }.alert("Are you sure?", isPresented: $alertShow) {
+            .frame(height: 400)
+            .cornerRadius(12)
+        }
+        .alert("Are you sure?", isPresented: $alertShow) {
             Button("Yes", role: .destructive, action: {
                 deleteUser()
                 presentationMode.wrappedValue.dismiss()

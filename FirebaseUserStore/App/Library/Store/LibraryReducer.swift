@@ -3,11 +3,9 @@ import SwiftUI
 
 let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { _state, mutation in
     var state = _state
-    state.isInitial = false
 
     switch mutation {
-    case let .fetchItemsPreloaders(count):
-        state.showEmptyView = count == 0 && state.searchFilter.isEmpty
+    case let .updateItemsPreloaders(count):
         state.loadItems = []
         state.items = []
 
@@ -17,9 +15,17 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .fetchedItems(items):
         let items = items.sorted(by: LibraryState.sortingByModified)
-        state.showEmptyView = items.isEmpty && state.searchFilter.isEmpty
+        state.showEmptyView = items.isEmpty
+                              && state.loadItems.isEmpty
+                              && state.searchFilter.isEmpty
+                              && state.viewProgress.progressStatus == .stop
         state.loadItems = []
         state.items = items
+
+    case let .fetchedNewItems(items):
+        let items = items.sorted(by: LibraryState.sortingByModified)
+        state.loadItems = []
+        state.items += items
 
     case .fastUpdate:
         break

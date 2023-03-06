@@ -2,12 +2,14 @@ import Foundation
 
 enum LibraryAction: Action, Hashable {
     case updateLibrary
+    case search(text: String)
+    case next(text: String = "")
 
     case click(_ item: Item)
 
     case addItems(items: [Item])
     case removeItem(id: UUID)
-    case search(text: String)
+
     case clean
     case changeSearchField(_ newText: String)
 
@@ -55,6 +57,8 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(15)
         case .mockAction:
             hasher.combine(16)
+        case .next:
+            hasher.combine(17)
         }
     }
 

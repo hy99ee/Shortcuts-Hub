@@ -36,7 +36,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItems($0) }
+            .flatMap { packages.itemsService.fetchItemsFromQuery($0) }
         
         return Publishers.Merge(
             fetchDocs
@@ -60,7 +60,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         let fetchDocs = packages.itemsService.searchQuery(text)
 
         let fetchFromDocs = fetchDocs
-            .flatMap { packages.itemsService.fetchItems($0.query) }
+            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
 
         return fetchFromDocs
             .map { FeedMutation.addItems(items: $0) }

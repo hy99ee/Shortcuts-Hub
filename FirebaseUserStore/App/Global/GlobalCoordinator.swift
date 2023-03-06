@@ -20,6 +20,7 @@ struct GlobalCoordinator: CoordinatorType {
     @State var sheet: GlobalLink?
     @State var root: GlobalLink = .progress
     @State private var lastSelected: GlobalLink = .gallery
+    @State private var isFirstLink = true
 
     let stateReceiver: AnyPublisher<GlobalLink, Never>
     private let sender: GlobalSender
@@ -32,16 +33,20 @@ struct GlobalCoordinator: CoordinatorType {
     var view: AnyView {
         AnyView(_view)
     }
-    @ViewBuilder private var _view: some View {
+
+    private var _view: some View {
         rootView
     }
 
     func transitionReceiver(_ link: GlobalLink) {
         switch link {
-        case .gallery, .library, .progress:
+        case .gallery, .library:
             root = link
+            lastSelected = link
         case .promo, .create:
             sheet = link
+        case .progress:
+            root = link
         }
     }
 
@@ -63,19 +68,17 @@ struct GlobalCoordinator: CoordinatorType {
         .onChange(of: root) {
             if $0 == .create {
                 sender.openCreate(last: lastSelected)
-            } else {
-                lastSelected = $0
             }
         }
         .onChange(of: sheet) {
             if $0 == nil {
-                sender.globalPackages.libraryStore.dispatch(.updateLibrary)
+//                sender.globalPackages.libraryStore.dispatch(.updateLibrary())
             }
         }
         
     }
 
-    @ViewBuilder private var gallery: some View {
+    private var gallery: some View {
         FeedCoordinator(store: sender.globalPackages.feedStore)
     }
 

@@ -19,8 +19,6 @@ struct LibraryState: StateType {
 
     var showEmptyView = false
     var showErrorView = false
-    var isInitial = true
-
 
     var viewProgress = ProgressViewProvider()
     var buttonProgress = ProgressViewProvider()

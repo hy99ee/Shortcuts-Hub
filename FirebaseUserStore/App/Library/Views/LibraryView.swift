@@ -1,10 +1,6 @@
 import SwiftUI
 import Combine
 
-enum SearchScope: String, CaseIterable {
-    case inbox, favorites
-}
-
 struct LibraryView: View {
     @StateObject var store: LibraryStore
 
@@ -14,11 +10,8 @@ struct LibraryView: View {
     @State private var showLoader = false
     @State private var isRefresh = false
     @State private var errorLibraryDelay = false
-    @State private var isEmptySearch = true
 
     @State private var collectionRowStyle: CollectionRowStyle = .row3
-
-    @State private var searchScope = SearchScope.inbox
 
     var searchBinding: Binding<String> {
         .init(
@@ -50,6 +43,7 @@ struct LibraryView: View {
 
         search
             .filter { $0.isEmpty }
+            .debounce(for: .milliseconds(250), scheduler: DispatchQueue.main)
             .map { _ in }
             .sink { store.dispatch(.updateLibrary) }
             .store(in: &subscriptions)
@@ -57,24 +51,24 @@ struct LibraryView: View {
     var body: some View {
         VStack {
             if store.state.loginState == .loading {
-                unknownUserView
+                unknownUserView.toolbar { toolbarView }
             } else if store.state.loginState == .loggedOut {
-                unloginUserView
+                unloginUserView.toolbar { toolbarView }
             } else if store.state.showEmptyView {
-                emptyView
+                emptyView.toolbar { toolbarView }
             } else if store.state.showErrorView {
-                updateableErrorView
+                updateableErrorView.toolbar { toolbarView }
             } else {
-                LibraryCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
+                LibraryCollectionView(store: store, cellStyle: collectionRowStyle, toolbarView: AnyView(toolbarView), searchBinding: searchBinding)
             }
         }
         .onAppear {
             if store.state.items.isEmpty { store.dispatch(.updateLibrary) }
         }
-        .toolbar {
-            toolbarView
-                .searchable(text: searchBinding, placement: .navigationBarDrawer(displayMode: .always))
-                .onChange(of: searchScope) { _ in searchQueryBublisher.send(searchQueryBublisher.value) }
+        .onChange(of: store.state.searchFilter) {
+            if $0 != searchQueryBublisher.value {
+                searchQueryBublisher.send($0)
+            }
         }
     }
 
@@ -88,7 +82,6 @@ struct LibraryView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         errorLibraryDelay = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-//                            searchQueryBublisher.value.isEmpty
                             store.dispatch(.updateLibrary)
                         }
                     }
@@ -130,7 +123,7 @@ struct LibraryView: View {
             .padding([.leading, .trailing], 8)
 
             if store.state.loginState == .loggedIn {
-                ImageView(systemName: collectionRowStyle.next().systemImage, size: collectionRowStyle.next().systemImageSize) {
+                ImageView(systemName: collectionRowStyle.systemImage, size: collectionRowStyle.systemImageSize) {
                     withAnimation(.easeIn(duration: 0.6)) {
                         collectionRowStyle = collectionRowStyle.next()
                     }

@@ -6,14 +6,28 @@ protocol ItemsServiceType {
     associatedtype ServiceError: Error
     associatedtype ResponceType: FetchedResponceType
 
-    func fetchItems(_ query: ResponceType.DataType) -> AnyPublisher<[Item], ItemsServiceError>
+    func fetchItemsFromQuery(_ query: ResponceType.DataType) -> AnyPublisher<[Item], ItemsServiceError>
+
     func fetchQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
     func searchQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
+    func nextQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
+
     func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError>
 }
 
+var ItemsServiceQueryLimit: Int { 30 }
+
+enum ItemsServicePaginationCursor {
+    case cursor(query: Query)
+    case end
+}
+
 extension ItemsServiceType {
-    func fetchItems(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
+    func nextQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError> {
+        fetchQuery()
+    }
+
+    func fetchItemsFromQuery(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 query.getDocuments { snapshot, error in

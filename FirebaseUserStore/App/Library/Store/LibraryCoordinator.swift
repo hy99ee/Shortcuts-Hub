@@ -66,8 +66,10 @@ struct LibraryCoordinator: CoordinatorType {
         case .login:
             self.fullcover = link
         case .about:
-            self.sheet = link
+            self.path.append(link)
         case .detail:
+//            break
+//            self.sheet = link
             self.path.append(link)
         case .error:
             self.alert = link
@@ -76,8 +78,10 @@ struct LibraryCoordinator: CoordinatorType {
 
     @ViewBuilder private func linkDestination(link: LibraryLink) -> some View {
         switch link {
+        case let .about(data):
+            AboutView(aboutData: data)
         case let .detail(item):
-            Text(item.title)
+            ItemDetailView()
         default:
             EmptyView()
         }
@@ -94,8 +98,8 @@ struct LibraryCoordinator: CoordinatorType {
 
     @ViewBuilder private func sheetContent(link: LibraryLink) -> some View {
         switch link {
-        case let .about(data):
-            AboutView(aboutData: data).presentationDetents([.height(200), .medium])
+        case let .detail(item):
+            ItemDetailView()
         default:
             EmptyView()
         }
@@ -111,4 +115,29 @@ struct LibraryCoordinator: CoordinatorType {
             return Alert(title: Text(""))
         }
     }
+}
+
+struct ItemDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
+
+    var body: some View {
+        VStack {
+            Rectangle()
+                .foregroundColor(.blue)
+//                .ignoresSafeArea()
+//            Spacer()
+        }
+        .navigationTitle("Detail")
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: {
+//                    presentationMode.wrappedValue.dismiss()
+//                }, label: {
+//                    Text("Cancel")
+//                })
+//            }
+//        }
+    }
+    
+    
 }

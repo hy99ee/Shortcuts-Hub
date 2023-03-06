@@ -28,14 +28,17 @@ where StoreState: StateType,
     }
 
     private let middlewares: [Middleware]
+    private let queue: DispatchQueue
     private var processMiddlewares: [Middleware]
     private var anyCancellables: Set<AnyCancellable> = []
     private var index = 0
     private var lastRedispatchActionCount = 0
 
-    init(middlewares: [Middleware]) {
+    init(middlewares: [Middleware], queue: DispatchQueue) {
         self.middlewares = middlewares
         self.processMiddlewares = middlewares
+
+        self.queue = queue
     }
 
     func reinit() -> Self {

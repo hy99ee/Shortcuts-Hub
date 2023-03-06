@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import Foundation
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     

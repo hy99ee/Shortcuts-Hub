@@ -38,7 +38,6 @@ struct FeedView: View {
                         store.objectWillChange.send()
                     }
                 )
-                SearchBar(searchQuery: searchBinding)
                 FeedCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
             }
         }

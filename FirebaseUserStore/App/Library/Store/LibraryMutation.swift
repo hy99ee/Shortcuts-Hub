@@ -2,8 +2,9 @@ import Foundation
 import Combine
 
 enum LibraryMutation: Mutation {
-    case fetchItemsPreloaders(count: Int)
+    case updateItemsPreloaders(count: Int)
     case fetchedItems(newItems: [Item])
+    case fetchedNewItems(_ items: [Item])
 
     case fastUpdate
 

@@ -13,7 +13,8 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
             set: { _ in self.provider.progressStatus = .stop }
         )
         content
-            .opacity(announcingResult.wrappedValue ? 0.5 : 1)
+//            .ignoresSafeArea()
+//            .opacity(announcingResult.wrappedValue ? 0.5 : 1)
             .overlay {
                 if announcingResult.wrappedValue {
                     ZStack {
@@ -52,6 +53,7 @@ struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>
 
     func body(content: Content) -> some View {
         content
+            .disabled(active)
             .opacity(isAnimating ? 0.5 : 1)
             .onChange(of: provider.progressStatus) {
                 if $0 == .start {
@@ -68,11 +70,6 @@ struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>
                     isAnimating.toggle()
                 }
             }
-//            .onChange(of: animation) { newAnimation in
-//                withAnimation(newAnimation) {
-//                    isAnimating.toggle()
-//                }
-//            }
     }
 }
 

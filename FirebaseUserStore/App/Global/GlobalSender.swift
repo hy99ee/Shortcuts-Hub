@@ -20,7 +20,6 @@ class GlobalSender: TransitionSender {
                 switch $0 {
                 case .loggedIn:
                     self?.globalPackages.libraryStore.reinit()
-                    self?.globalPackages.libraryStore.dispatch(.updateLibrary)
 
                 case .loggedOut:
                     self?.globalPackages.libraryStore.reinit()

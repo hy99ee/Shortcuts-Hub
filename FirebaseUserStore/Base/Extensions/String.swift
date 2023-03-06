@@ -50,6 +50,7 @@ extension String {
     }
     
     func generateStringSequence() -> [String] {
+        if self.isEmpty { return [] }
         var sequences: [String] = []
         for i in 1...self.suffix(5).count {
             sequences.append(String(self.prefix(i)))

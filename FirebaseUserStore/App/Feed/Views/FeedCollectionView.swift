@@ -17,7 +17,11 @@ struct FeedCollectionView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-                            FeedCellView(title: store.state.items[index].title, cellStyle: cellStyle)
+//                            FeedCellView(cellStyle: $cellStyle, title: store.state.items[index].title)
+                            Rectangle()
+                                .background(.red)
+                                .foregroundColor(.red)
+                                .cornerRadius(14)
                             .onTapGesture {
                                 store.dispatch(.click(store.state.items[index]))
                             }

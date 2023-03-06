@@ -40,7 +40,7 @@ where StoreState: StateType,
         self.dispatcher = dispatcher
         self.reducer = reducer
         self.packages = packages
-        self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares)
+        self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares, queue: queue)
     }
 
     func dispatch(_ action: StoreAction, isRedispatch: Bool = false) {
