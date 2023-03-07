@@ -18,8 +18,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case .cancelSearch:
         return Just(LibraryMutation.cancelSearch).eraseToAnyPublisher()
 
-    case let .next(text):
-        return mutationNextItems(by: text, packages: packages)
+    case .next:
+        return mutationNextItems(packages: packages)
             .merge(with: Just(LibraryMutation.setSearchFilter("")))
             .eraseToAnyPublisher()
 
@@ -28,6 +28,9 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case let .addItems(items):
         return Just(.addItems(items: items)).eraseToAnyPublisher()
+
+    case let .updateItem(id):
+        return mutationFetchItem(by: id, packages: packages)
 
     case let .removeItem(id):
         return mutationRemoveItem(by: id, packages: packages)
@@ -98,12 +101,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         )
         .eraseToAnyPublisher()
     }
-    func mutationNextItems(by text: String, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
+    func mutationNextItems(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         guard let lastCount = packages.itemsService.itemsServiceCursor?.count, lastCount > 0 else {
             return Empty().eraseToAnyPublisher()
         }
 
-        let fetchDocs = packages.itemsService.nextQuery(text)
+        let fetchDocs = packages.itemsService.nextQuery()
 
         let fetchFromDocs = fetchDocs
             .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
@@ -112,6 +115,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .map { .fetchedNewItems($0) }
             .catch { Just(.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    func mutationFetchItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
+        packages.itemsService.fetchItem(id)
+            .map { .newItem(item: $0) }
+            .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
     func mutationRemoveItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
@@ -124,7 +133,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         let fetchDocs = packages.itemsService.searchQuery(text.lowercased())
 
         let fetchFromDocs = fetchDocs
-            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
+            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query, isPaginatable: false) }
 
         return fetchFromDocs
             .map { LibraryMutation.searchItems($0) }

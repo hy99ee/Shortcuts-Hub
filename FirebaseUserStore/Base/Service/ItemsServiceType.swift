@@ -6,7 +6,7 @@ protocol ItemsServiceType {
     associatedtype ServiceError: Error
     associatedtype ResponceType: FetchedResponceType
 
-    func fetchItemsFromQuery(_ query: ResponceType.DataType) -> AnyPublisher<[Item], ItemsServiceError>
+    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool) -> AnyPublisher<[Item], ItemsServiceError>
 
     func fetchQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
     func searchQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
@@ -32,7 +32,7 @@ extension ItemsServiceType {
         fetchQuery()
     }
 
-    func fetchItemsFromQuery(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future { promise in
                 query.getDocuments { snapshot, error in

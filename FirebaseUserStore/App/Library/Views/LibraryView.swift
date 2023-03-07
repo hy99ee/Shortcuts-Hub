@@ -24,6 +24,7 @@ struct LibraryView: View {
 
         let search = searchQueryBublisher
             .removeDuplicates()
+            .dropFirst()
             .flatMap {
                 Just($0)
                 .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })

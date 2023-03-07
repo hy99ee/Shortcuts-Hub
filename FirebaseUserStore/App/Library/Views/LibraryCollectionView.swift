@@ -117,7 +117,7 @@ struct LibraryCollectionView: View {
     }
 
     private func asyncNext() async -> Void {
-        store.dispatch(.next(text: searchBinding))
+        store.dispatch(.next)
 
         try? await self.store.objectWillChange
             .filter { self.store.state.viewProgress.progressStatus == .stop }

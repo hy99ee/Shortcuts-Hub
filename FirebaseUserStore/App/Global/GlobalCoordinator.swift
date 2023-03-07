@@ -11,7 +11,10 @@ enum GlobalLink: TransitionType {
     case promo
 
     var id: String {
-        String(describing: self)
+        switch self {
+        case .gallery, .create, .library, .progress, .promo:
+            return String(describing: self)
+        }
     }
 }
 
@@ -21,6 +24,7 @@ struct GlobalCoordinator: CoordinatorType {
     @State var root: GlobalLink = .progress
     @State private var lastSelected: GlobalLink = .gallery
     @State private var isFirstLink = true
+    @State private var idForCreatingItem: UUID?
 
     let stateReceiver: AnyPublisher<GlobalLink, Never>
     private let sender: GlobalSender
@@ -71,8 +75,9 @@ struct GlobalCoordinator: CoordinatorType {
             }
         }
         .onChange(of: sheet) {
-            if $0 == nil {
-//                sender.globalPackages.libraryStore.dispatch(.updateLibrary())
+            if $0 == nil, let id = idForCreatingItem {
+                sender.globalPackages.libraryStore.dispatch(.updateItem(id: id))
+                idForCreatingItem = nil
             }
         }
         
@@ -82,15 +87,16 @@ struct GlobalCoordinator: CoordinatorType {
         FeedCoordinator(store: sender.globalPackages.feedStore)
     }
 
-    private var create: some View {
-        Text("").tabItem { tabLabel(for: .create) }
-    }
-    private var createSheetView: some View {
-        CreateCoordinator(store: sender.globalPackages.createStore)
+    private var library: some View {
+        LibraryCoordinator(store: sender.globalPackages.libraryStore)
     }
 
-    @ViewBuilder private var library: some View {
-        LibraryCoordinator(store: sender.globalPackages.libraryStore)
+    private var create: some View {
+        Text("")
+    }
+
+    private var createSheetView: some View {
+        CreateCoordinator(store: sender.globalPackages.createStore, newId: $idForCreatingItem)
     }
 
     @ViewBuilder private func sheetContent(link: GlobalLink) -> some View {

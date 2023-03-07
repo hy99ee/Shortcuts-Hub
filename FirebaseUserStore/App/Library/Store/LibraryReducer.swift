@@ -14,26 +14,25 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         }
 
     case let .fetchedItems(items):
-        let items = items.sorted(by: LibraryState.sortingByModified)
         state.showEmptyView = items.isEmpty
                               && state.loadItems != nil
                               && state.searchFilter.isEmpty
                               && state.viewProgress.progressStatus == .stop
         state.loadItems = nil
         state.searchedItems = nil
-        state.items = items
+        state.items = items.sorted(by: LibraryState.sortingByModified)
 
     case let .fetchedNewItems(items):
-        let items = items.sorted(by: LibraryState.sortingByModified)
+//        let items = items.sorted(by: LibraryState.sortingByModified)
         state.loadItems = nil
         state.searchedItems = nil
-        state.items += items
+        state.items += items.sorted(by: LibraryState.sortingByModified)
 
     case .fastUpdate:
         break
 
     case let .searchItems(items):
-        state.searchedItems = items
+        state.searchedItems = items.sorted(by: LibraryState.sortingByModified)
 
     case .cancelSearch:
         state.searchedItems = nil
@@ -58,9 +57,11 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.items.append(contentsOf: items)
 
     case let .newItem(item):
-        if state.searchFilter.isEmpty || item.title.contains(state.searchFilter) {
-            state.items.append(item)
+        if state.searchedItems != nil {
+            state.searchedItems!.append(item)
         }
+        state.items.append(item)
+
         state.showEmptyView = false
 
     case let .removeItem(id):

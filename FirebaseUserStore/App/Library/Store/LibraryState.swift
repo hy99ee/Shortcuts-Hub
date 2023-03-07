@@ -38,6 +38,6 @@ struct LibraryState: StateType {
 
 extension LibraryState {
     static var sortingByModified: (Item, Item) -> Bool = {
-        $0.modifiedAt ?? $0.createdAt < $1.modifiedAt ?? $1.createdAt
+        $0.modifiedAt ?? $0.createdAt > $1.modifiedAt ?? $1.createdAt
     }
 }

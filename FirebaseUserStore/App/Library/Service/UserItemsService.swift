@@ -17,7 +17,7 @@ final class UserItemsService: UserItemsServiceType {
         self.userId = userId
     }
 
-    func fetchItemsFromQuery(_ query: Query) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = true) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError)) }
@@ -28,12 +28,6 @@ final class UserItemsService: UserItemsServiceType {
                     }
                     guard let documents = snapshot?.documents else {
                         return promise(.failure(.unknownError))
-                    }
-
-                    if let lastDocument = documents.last {
-                        self.itemsServiceCursor = .init(snapshot: lastDocument, count: documents.count)
-                    } else {
-                        self.itemsServiceCursor = .init(snapshot: nil, count: 0)
                     }
 
                     var items: [Item] = []
@@ -47,10 +41,19 @@ final class UserItemsService: UserItemsServiceType {
                                     title: data["title"] as? String ?? "",
                                     iconUrl: URL(string: data["icon"] as? String ?? ""),
                                     description: data["description"] as? String ?? "",
-                                    createdAt: Date()
+                                    createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                                 )
                             )
                         }
+
+                    if isPaginatable {
+                        if let lastDocument = documents.last {
+                            self.itemsServiceCursor = .init(snapshot: lastDocument, count: documents.count)
+                        } else {
+                            self.itemsServiceCursor = .init(snapshot: nil, count: 0)
+                        }
+                    }
+
                     return promise(.success(items))
                     
                 }
@@ -104,7 +107,7 @@ final class UserItemsService: UserItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func nextQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func nextQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -118,10 +121,7 @@ final class UserItemsService: UserItemsServiceType {
                 if let last = self.itemsServiceCursor?.snapshot {
                     query = query.start(afterDocument: last)
                 }
-                
-                if !text.isEmpty {
-                    query = query.whereField("tags", arrayContains: text)
-                }
+
                 let countQuery = query.count
 
                 countQuery.getAggregation(source: .server) { snapshot, error in
@@ -159,10 +159,10 @@ final class UserItemsService: UserItemsServiceType {
                                 title: data["title"] as? String ?? "",
                                 iconUrl: URL(string: data["icon"] as? String ?? ""),
                                 description: data["description"] as? String ?? "",
-                                createdAt: Date()
+                                createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                             )
                         }
-                        return promise(item != nil ? .success(item!) : .failure(.unknownError))
+                        return promise(item != nil ? .success(item!) : .failure(.none))
                     }
                 }
             }
@@ -175,13 +175,14 @@ final class UserItemsService: UserItemsServiceType {
                 guard let self else { return promise(.failure(.invalidUserId)) }
                 guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
-                let documentId = UUID()
                 let document = [
-                    "id": documentId.uuidString,
+                    "id": item.id.uuidString,
                     "userId": userId,
                     "title": item.title,
                     "icon": item.iconUrl?.absoluteString ?? "",
                     "description": item.description,
+                    "createdAt": item.createdAt.timeIntervalSince1970.bitPattern,
+                    "modifiedAt": item.modifiedAt?.description ?? "",
                     "tags": item.tags
                 ]
                 self.db.collection(Self.collectionName).addDocument(data: document) { error in
@@ -190,7 +191,7 @@ final class UserItemsService: UserItemsServiceType {
                     }
                 }
 
-                return promise(.success(documentId))
+                return promise(.success(item.id))
             }
         }.eraseToAnyPublisher()
     }

@@ -2,7 +2,7 @@ import Foundation
 
 enum LibraryAction: Action, Hashable {
     case updateLibrary
-    case next(text: String = "")
+    case next
 
     case search(text: String)
     case cancelSearch
@@ -10,6 +10,7 @@ enum LibraryAction: Action, Hashable {
     case click(_ item: Item)
 
     case addItems(items: [Item])
+    case updateItem(id: UUID)
     case removeItem(id: UUID)
 
     case changeSearchField(_ newText: String)
@@ -34,6 +35,8 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(2)
         case .addItems:
             hasher.combine(3)
+        case .updateItem:
+            hasher.combine(33)
         case .removeItem:
             hasher.combine(5)
         case .search:
