@@ -1,18 +1,18 @@
 import SwiftUI
+import Combine
 
 struct LibraryCollectionView: View {
     let store: LibraryStore
-    let cellStyle: CollectionRowStyle
-    let toolbarView: AnyView
-    
+
     @Binding var searchBinding: String
     
     @State private var isAnimating = false
     @State private var isUpdating = false
+    @State private var cellStyle: CollectionRowStyle = .row3
 
     private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
     private let progress = HDotsProgress()
-    
+
     var body: some View {
         verticalGrid
     }
@@ -20,7 +20,18 @@ struct LibraryCollectionView: View {
     private var verticalGrid: some View {
         NavigationView {
                 ScrollView(showsIndicators: false) {
-                    if !store.state.items.isEmpty {
+                    if let searchItems = store.state.searchedItems {
+                        LazyVGrid(columns: columns, spacing: 12) {
+                            ForEach(0..<searchItems.count, id: \.self) { index in
+                                FeedCellView(title: searchItems[index].title, cellStyle: cellStyle) {
+                                    store.dispatch(.removeItem(id: searchItems[index].id))
+                                }
+                                .onTapGesture {
+                                    store.dispatch(.click(searchItems[index]))
+                                }
+                            }
+                        }
+                    } else if !store.state.items.isEmpty {
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
                                 FeedCellView(title: store.state.items[index].title, cellStyle: cellStyle) {
@@ -34,7 +45,7 @@ struct LibraryCollectionView: View {
                                 }
                                 .onAppear {
                                     if store.state.items.count >= ItemsServiceQueryLimit
-                                        && index >= store.state.items.count - 10
+                                        && index >= store.state.items.count - 1
                                         && !isUpdating {
                                         isUpdating = true
                                         Task {
@@ -46,9 +57,9 @@ struct LibraryCollectionView: View {
                         }
                         .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress))
                         .onAppear { isAnimating = true }
-                    } else if !store.state.loadItems.isEmpty {
+                    } else if let loadItems = store.state.loadItems {
                         LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(store.state.loadItems, id: \.id) { _ in
+                            ForEach(loadItems, id: \.id) { _ in
                                 LoaderFeedCellView()
                                     .frame(height: cellStyle.rowHeight)
                                     .padding(3)
@@ -56,17 +67,17 @@ struct LibraryCollectionView: View {
                         }
                         .modifier(StaticPreloaderViewModifier())
                         .onAppear { isAnimating = false }
-                    } else if store.state.items.isEmpty
-                                && !store.state.searchFilter.isEmpty
-                                && store.state.viewProgress.progressStatus == .stop {
-                            Text("Empty search")
+                    } else if let searchedItems = store.state.searchedItems, searchedItems.isEmpty {
+                        Text("Empty search")
                     }
                 }
                 .navigationTitle("Library")
                 .navigationBarItems(trailing: toolbarView)
-                .toolbarBackground(Color.white, for: .navigationBar)
                 .searchable(text: $searchBinding)
                 .disableAutocorrection(true)
+                .onSubmit(of: .search) {
+                    store.dispatch(.search(text: searchBinding))
+                }
                 .padding([.trailing, .leading], 12)
                 .refreshable {
                     await asyncUpdate()
@@ -74,32 +85,26 @@ struct LibraryCollectionView: View {
         }
     }
     
-    //    private var horizontalGrid: some View {
-    //        TabView(selection: $lastIndex) {
-    //            ForEach(0..<store.state.items.count, id: \.self) { index in
-    //                FeedCellView(title: store.state.items[index].title, cellStyle: cellStyle) {
-    //                    store.dispatch(.removeItem(id: store.state.items[index].id))
-    //                }
-    //                .padding([.leading])
-    //                .scaleEffect(0.9)
-    //            }
-    //        }
-    //
-    //        .shadow(color: .secondary, radius: 20)
-    //        .matchedGeometryEffect(id: lastIndex, in: morphSeamlessly)
-    //        .scaleEffect(scaleDetail)
-    //        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-    //        .onTapGesture {
-    //            withAnimation(.spring(response: 0.55, dampingFraction: 0.5, blendDuration: 0)) {
-    //                scaleDetail = 0
-    //            }
-    //        }
-    //        .onChange(of: lastIndex) { _ in
-    //            needScrollVertical = true
-    //        }
-    //        .padding([.trailing])
-    //    }
-    
+    private var toolbarView: some View {
+        HStack {
+            Button {
+                store.dispatch(.showAboutSheet)
+            } label: {
+                Image(systemName: "person")
+            }
+
+            if store.state.loginState == .loggedIn && !store.state.showEmptyView && !store.state.showErrorView {
+                Button {
+                    withAnimation(.easeIn(duration: 0.6)) {
+                        cellStyle = cellStyle.next()
+                    }
+                } label: {
+                    Image(systemName: cellStyle.systemImage)
+                }
+            }
+        }
+    }
+
     private func asyncUpdate() async -> Void {
         searchBinding.isEmpty ? store.dispatch(.updateLibrary) : store.dispatch(.search(text: searchBinding))
         
@@ -115,8 +120,8 @@ struct LibraryCollectionView: View {
         store.dispatch(.next(text: searchBinding))
 
         try? await self.store.objectWillChange
-            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .filter { self.store.state.viewProgress.progressStatus == .stop }
+            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .first()
             .handleEvents(receiveOutput: { _ in isUpdating = false })
             .eraseToAnyPublisher()

@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 struct LibraryState: StateType {
-    var loadItems: [LoaderItem] = [] {
+    var loadItems: [LoaderItem]? {
         didSet {
             showErrorView = false
         }
@@ -12,6 +12,8 @@ struct LibraryState: StateType {
             showErrorView = false
         }
     }
+
+    var searchedItems: [Item]?
 
     var loginState: SessionState = .loading
 

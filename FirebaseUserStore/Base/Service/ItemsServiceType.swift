@@ -17,6 +17,11 @@ protocol ItemsServiceType {
 
 var ItemsServiceQueryLimit: Int { 30 }
 
+struct ItemsServiceCursor {
+    let snapshot: QueryDocumentSnapshot?
+    let count: Int
+}
+
 enum ItemsServicePaginationCursor {
     case cursor(query: Query)
     case end

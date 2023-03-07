@@ -9,7 +9,7 @@ final class UserItemsService: UserItemsServiceType {
 
     private let db = Firestore.firestore()
     private static let collectionName = "Items"
-    private var lastQueryDocumentSnapshot: QueryDocumentSnapshot?
+    private(set) var itemsServiceCursor: ItemsServiceCursor?
 
     let userId: String?
 
@@ -30,7 +30,11 @@ final class UserItemsService: UserItemsServiceType {
                         return promise(.failure(.unknownError))
                     }
 
-                    self.lastQueryDocumentSnapshot = documents.last
+                    if let lastDocument = documents.last {
+                        self.itemsServiceCursor = .init(snapshot: lastDocument, count: documents.count)
+                    } else {
+                        self.itemsServiceCursor = .init(snapshot: nil, count: 0)
+                    }
 
                     var items: [Item] = []
                     documents
@@ -108,15 +112,11 @@ final class UserItemsService: UserItemsServiceType {
 
                 let collection = self.db.collection(Self.collectionName)
                 var query = collection
-//                    .order(by: "title")
-//                    .start(afterDocument: self.lastQueryDocumentSnapshot!)
                     .whereField("userId", isEqualTo: userId)
-//                    .limit(to: ItemsServiceQueryLimit)
+                    .limit(to: ItemsServiceQueryLimit)
 
-                if let last = self.lastQueryDocumentSnapshot {
+                if let last = self.itemsServiceCursor?.snapshot {
                     query = query.start(afterDocument: last)
-                } else {
-                    return promise(.failure(.none))
                 }
                 
                 if !text.isEmpty {

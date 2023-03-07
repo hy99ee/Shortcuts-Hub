@@ -20,10 +20,6 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         state.loadItems = []
         state.items = items
 
-    case .clean:
-        state.loadItems = []
-        state.items = []
-
     case .empty:
         emptyData()
 

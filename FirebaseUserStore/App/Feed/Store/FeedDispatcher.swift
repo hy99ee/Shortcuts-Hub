@@ -16,9 +16,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     case let .search(text):
         return mutationSearchItems(by: text, packages: packages)
 
-    case .clean:
-        return Just(FeedMutation.clean).eraseToAnyPublisher()
-
     case let .showAlert(error):
         return mutationShowAlert(with: error)
     

@@ -11,8 +11,6 @@ struct LibraryView: View {
     @State private var isRefresh = false
     @State private var errorLibraryDelay = false
 
-    @State private var collectionRowStyle: CollectionRowStyle = .row3
-
     var searchBinding: Binding<String> {
         .init(
             get: { searchQueryBublisher.value },
@@ -26,7 +24,6 @@ struct LibraryView: View {
 
         let search = searchQueryBublisher
             .removeDuplicates()
-            .dropFirst()
             .flatMap {
                 Just($0)
                 .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
@@ -34,7 +31,7 @@ struct LibraryView: View {
                 .map { $0.0 }
             }
             .share()
-        
+
         search
             .filter { !$0.isEmpty }
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
@@ -43,9 +40,8 @@ struct LibraryView: View {
 
         search
             .filter { $0.isEmpty }
-            .debounce(for: .milliseconds(250), scheduler: DispatchQueue.main)
             .map { _ in }
-            .sink { store.dispatch(.updateLibrary) }
+            .sink { store.dispatch(.cancelSearch) }
             .store(in: &subscriptions)
     }
     var body: some View {
@@ -59,7 +55,7 @@ struct LibraryView: View {
             } else if store.state.showErrorView {
                 updateableErrorView.toolbar { toolbarView }
             } else {
-                LibraryCollectionView(store: store, cellStyle: collectionRowStyle, toolbarView: AnyView(toolbarView), searchBinding: searchBinding)
+                LibraryCollectionView(store: store, searchBinding: searchBinding)
             }
         }
         .onAppear {
@@ -117,17 +113,10 @@ struct LibraryView: View {
 
     private var toolbarView: some View {
         HStack {
-            ImageView(systemName: "person", size: 18) {
+            Button {
                 store.dispatch(.showAboutSheet)
-            }
-            .padding([.leading, .trailing], 8)
-
-            if store.state.loginState == .loggedIn {
-                ImageView(systemName: collectionRowStyle.systemImage, size: collectionRowStyle.systemImageSize) {
-                    withAnimation(.easeIn(duration: 0.6)) {
-                        collectionRowStyle = collectionRowStyle.next()
-                    }
-                }
+            } label: {
+                Image(systemName: "person")
             }
         }
     }

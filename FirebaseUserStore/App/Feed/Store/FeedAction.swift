@@ -7,7 +7,6 @@ enum FeedAction: Action, Hashable {
 
     case addItems(items: [Item])
     case search(text: String)
-    case clean
 
     case showAlert(error: Error)
     case showFeedError
@@ -24,8 +23,6 @@ enum FeedAction: Action, Hashable {
             hasher.combine(2)
         case .search:
             hasher.combine(5)
-        case .clean:
-            hasher.combine(6)
         case .showAlert:
             hasher.combine(8)
         case .showFeedError:

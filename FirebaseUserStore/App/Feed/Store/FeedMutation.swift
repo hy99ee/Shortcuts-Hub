@@ -4,7 +4,6 @@ import Combine
 enum FeedMutation: Mutation {
     case fetchItemsPreloaders(count: Int)
     case fetchItems(newItems: [Item])
-    case clean
 
     case detail(item: Item)
 
