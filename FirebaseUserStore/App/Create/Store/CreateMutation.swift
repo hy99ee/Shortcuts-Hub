@@ -7,6 +7,6 @@ enum CreateMutation: Mutation {
 
     case setError(_ error: CreateState.CreateErrorType)
     
-    case progressButtonStatus(status: ProgressViewStatus)
-    case progressViewStatus(status: ProgressViewStatus)
+    case progressButton(status: ProgressViewStatus)
+    case progressView(status: ProgressViewStatus)
 }

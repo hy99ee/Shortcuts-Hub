@@ -2,17 +2,9 @@ import SwiftUI
 import Combine
 
 struct LoginState: StateType {
-    let loginProgress = ProgressViewProvider()
-    let registerProgress = ProgressViewProvider()
-    let forgotProgress = ProgressViewProvider()
+    var loginProgress: ProgressViewStatus = .stop
+    var registerProgress: ProgressViewStatus = .stop
+    var forgotProgress: ProgressViewStatus = .stop
 
-    let processView: ProcessViewProvider
-
-    init() {
-        processView = ProcessViewProvider(loginProgress, registerProgress, forgotProgress)
-    }
-
-    func reinit() -> Self {
-        LoginState()
-    }
+    var processView: ProcessViewStatus = .enable
 }

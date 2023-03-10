@@ -45,11 +45,8 @@ extension ItemsServiceError: LocalizedError {
                 comment: "Resource Not Found"
             )
             
-        case .firebaseError:
-            return NSLocalizedString(
-                "The specified item could not be found.",
-                comment: "Resource Not Found"
-            )
+        case let .firebaseError(error):
+            return error.localizedDescription
             
         case .unknownError:
             return NSLocalizedString(

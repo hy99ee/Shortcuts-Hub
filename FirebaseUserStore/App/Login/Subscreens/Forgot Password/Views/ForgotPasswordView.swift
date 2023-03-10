@@ -36,7 +36,7 @@ struct ForgotPasswordView: View {
         ButtonView(title: "Send Password Reset", disabled: .constant(!email.isEmail)) {
             store.dispatch(.clickForgot(email: email))
         }
-        .modifier(ButtonProgressViewModifier(provider: store.state.progress, type: .buttonView))
+//        .modifier(ButtonProgressViewModifier(provider: store.state.progress, type: .buttonView))
         .opacity(keyboardVisible ? 0 : 1)
         .onReceive(Publishers.keyboardVisible) { visible in
             if visible {

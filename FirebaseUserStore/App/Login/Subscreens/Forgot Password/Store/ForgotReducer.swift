@@ -5,7 +5,7 @@ let forgotReducer: ReducerType<ForgotState, ForgotMutation, CloseTransition> = {
     var state = _state
     switch mutation {
     case let .progressForgotStatus(status):
-        state.progress.progressStatus = status
+        state.progress = status
     
     case let .emailFieldStatus(status):
         if case let .unvalidWithMessage(message) = status {

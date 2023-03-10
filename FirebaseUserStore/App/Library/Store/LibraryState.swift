@@ -22,22 +22,13 @@ struct LibraryState: StateType {
     var showEmptyView = false
     var showErrorView = false
 
-    var viewProgress = ProgressViewProvider()
-    var buttonProgress = ProgressViewProvider()
-
-    let processView: ProcessViewProvider
-
-    init() {
-        processView = ProcessViewProvider(viewProgress, buttonProgress)
-    }
-
-    func reinit() -> Self {
-        LibraryState()
-    }
+    var viewProgress: ProgressViewStatus = .stop
+    var buttonProgress: ProgressViewStatus = .stop
+    var processView: ProcessViewStatus = .enable
 }
 
 extension LibraryState {
     static var sortingByModified: (Item, Item) -> Bool = {
-        $0.modifiedAt ?? $0.createdAt > $1.modifiedAt ?? $1.createdAt
+        $0.modifiedAt ?? $0.createdAt < $1.modifiedAt ?? $1.createdAt
     }
 }

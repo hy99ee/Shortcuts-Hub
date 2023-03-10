@@ -13,7 +13,7 @@ let registerationReducer: ReducerType<RegisterationState, RegisterationMutation,
         }
 
     case let .progressStatus(status):
-        state.progress.progressStatus = status
+        state.progress = status
         
     case let .errorAlert(error):
         state.registrationErrorMessage = error.localizedDescription

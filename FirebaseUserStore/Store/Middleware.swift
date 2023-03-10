@@ -23,6 +23,7 @@ where StoreState: StateType,
         case repeatRedispatch
         case excludeRedispatch
     }
+
     enum MiddlewareRedispatch: Error {
         case redispatch(actions: [StoreAction], type: RedispatchType = .repeatRedispatch)
     }

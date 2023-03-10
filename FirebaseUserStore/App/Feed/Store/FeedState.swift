@@ -12,22 +12,15 @@ struct FeedState: StateType {
     var showEmptyView = false
     var showErrorView = false
 
-    var viewProgress = ProgressViewProvider()
+    var viewProgress: ProgressViewStatus = .stop
+    var buttonProgress: ProgressViewStatus = .stop
 
-    let processView: ProcessViewProvider
-
-    init() {
-        processView = ProcessViewProvider(viewProgress)
-    }
-
-    func reinit() -> Self {
-        FeedState()
-    }
+    var processView: ProcessViewStatus = .enable
 }
 
 extension FeedState {
     static var sortingByModified: (Item, Item) -> Bool = {
-        $0.modifiedAt ?? $0.createdAt < $1.modifiedAt ?? $1.createdAt
+        $0.modifiedAt ?? $0.createdAt > $1.modifiedAt ?? $1.createdAt
     }
 
     func itemsWithFilter(_ filter: String) -> [Item] {

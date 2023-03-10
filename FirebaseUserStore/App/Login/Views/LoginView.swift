@@ -31,7 +31,7 @@ struct LoginView: View {
                 ButtonView(title: "Login", disabled: .constant((!email.isEmail || password.isEmpty))) {
                     store.dispatch(.clickLogin(user: LoginCredentials(email: email, password: password)))
                 }
-                .modifier(ButtonProgressViewModifier(provider: store.state.loginProgress, type: .buttonView))
+                .modifier(ButtonProgressViewModifier(progressStatus: store.state.loginProgress, type: .buttonView))
 
                 ButtonView(title: "Register",
                            background: .clear,
@@ -41,8 +41,7 @@ struct LoginView: View {
                 }
             }
         }
-//        .modifier(AlertShowViewModifier(provider: store.state.alert))
-        .modifier(ProcessViewModifier(provider: store.state.processView))
+        .modifier(ProcessViewModifier(process: store.state.processView))
         .padding(.horizontal, 15)
         .navigationTitle("Login")
     }

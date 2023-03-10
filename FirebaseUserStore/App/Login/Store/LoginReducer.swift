@@ -15,10 +15,12 @@ let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, 
         return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
 
     case let .progressLoginStatus(status):
-        state.loginProgress.progressStatus = status
+        state.loginProgress = status
+        state.processView = .define(with: state.loginProgress, state.registerProgress)
 
     case let .progressRegisterStatus(status):
-        state.registerProgress.progressStatus = status
+        state.registerProgress = status
+        state.processView = .define(with: state.loginProgress, state.registerProgress)
         
     case let .errorAlert(error):
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()

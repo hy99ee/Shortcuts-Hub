@@ -13,6 +13,6 @@ struct RegisterationState: StateType {
     var singUpButtonValid = false
     var registrationErrorMessage: String?
 
-    let progress = ProgressViewProvider()
-    lazy var processView = ProcessViewProvider(progress)
+    var progress: ProgressViewStatus = .stop
+    var processView: ProcessViewStatus = .enable
 }

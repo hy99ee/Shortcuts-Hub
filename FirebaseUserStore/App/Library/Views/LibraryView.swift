@@ -59,14 +59,7 @@ struct LibraryView: View {
                 LibraryCollectionView(store: store, searchBinding: searchBinding)
             }
         }
-        .onAppear {
-            if store.state.items.isEmpty { store.dispatch(.updateLibrary) }
-        }
-        .onChange(of: store.state.searchFilter) {
-            if $0 != searchQueryBublisher.value {
-                searchQueryBublisher.send($0)
-            }
-        }
+        .onAppear { store.dispatch(.initLibrary) }
     }
 
     private var updateableErrorView: some View {
@@ -84,7 +77,7 @@ struct LibraryView: View {
                     }
                 }
             }
-            .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
+            .modifier(ButtonProgressViewModifier(progressStatus: store.state.viewProgress, type: .clearView))
             .disabled(errorLibraryDelay)
             .padding()
             
@@ -109,7 +102,7 @@ struct LibraryView: View {
     }
 
     private var unknownUserView: some View {
-        EmptyView()
+        Text("")
     }
 
     private var toolbarView: some View {

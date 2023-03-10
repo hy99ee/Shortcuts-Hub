@@ -190,7 +190,7 @@ struct RegisterView: View {
         }
         .opacity(keyboardVisible ? 0 : 1)
         .padding(.bottom, keyboardVisible ? -300 : 0)
-        .modifier(ButtonProgressViewModifier(provider: store.state.progress, type: .buttonView))
+        .modifier(ButtonProgressViewModifier(progressStatus: store.state.progress, type: .buttonView))
     }
 
     private func onSubmitAction(field: RegistrationCredentialsField?) {

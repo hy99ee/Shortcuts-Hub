@@ -65,7 +65,7 @@ struct FeedView: View {
                     }
                 }
             }
-            .modifier(ButtonProgressViewModifier(provider: store.state.viewProgress, type: .clearView))
+            .modifier(ButtonProgressViewModifier(progressStatus: store.state.viewProgress, type: .clearView))
             .disabled(errorFeedDelay)
             .padding()
             

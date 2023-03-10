@@ -36,7 +36,8 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         errorData()
 
     case let .progressViewStatus(status):
-        state.viewProgress.progressStatus = status
+        state.viewProgress = status
+        state.processView = .define(with: state.viewProgress, state.buttonProgress)
     }
 
     return Just(.state(state)).eraseToAnyPublisher()

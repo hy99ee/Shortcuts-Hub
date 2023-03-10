@@ -4,7 +4,7 @@ import Firebase
 
 let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPackages> = { action, packages in
     switch action {
-    case .updateLibrary:
+    case .initLibrary, .updateLibrary:
         return mutationFetchItems(packages: packages)
             .merge(with: Just(.cancelSearch))
             .eraseToAnyPublisher()
@@ -12,7 +12,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case let .search(text):
         if text.isEmpty { return mutationFetchItems(packages: packages) }
         return mutationSearchItems(by: text, packages: packages)
-            .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
+            .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
             .eraseToAnyPublisher()
 
     case .cancelSearch:
@@ -93,7 +93,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 }
                 .catch { Just(.errorAlert(error: $0)) }
                 .eraseToAnyPublisher()
-                .withStatus(start: LibraryMutation.progressViewStatus(status: .start), finish: LibraryMutation.progressViewStatus(status: .stop))
+                .withStatus(start: LibraryMutation.progressView(status: .start), finish: LibraryMutation.progressView(status: .stop))
             , fetchFromDocs
                 .delay(for: .seconds(1), scheduler: DispatchQueue.main)
                 .map { .fetchedItems(newItems: $0) }
@@ -119,7 +119,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     }
     func mutationFetchItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.fetchItem(id)
-            .map { .newItem(item: $0) }
+            .map { .newItem(item: $0, lastDate: packages.itemsService.itemsServiceCursor?.date) }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
@@ -150,7 +150,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 AboutViewData(
                     user: user,
                     logout: packages.sessionService.logout,
-                    deleteUser: packages.sessionService.deleteUser
+                    delete: packages.sessionService.deleteUser
                 )
             )
         )

@@ -2,12 +2,8 @@ import SwiftUI
 import Combine
 
 struct ForgotState: StateType {
-    let progress = ProgressViewProvider()
-    let processView: ProcessViewProvider
+    var progress: ProgressViewStatus = .stop
+    var processView: ProcessViewStatus = .enable
 
     var emailErrorMessage: String?
-
-    init() {
-        processView = ProcessViewProvider(progress)
-    }
 }

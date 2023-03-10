@@ -4,6 +4,20 @@ import Foundation
 typealias LibraryStore = StateStore<LibraryState, LibraryAction, LibraryMutation, LibraryPackages, LibraryLink>
 
 extension LibraryStore {
+    func updatedSessionStatus(_ state: SessionState) {
+        switch state {
+        case .loggedIn:
+            self.reinit()
+            self.dispatch(.updateLibrary)
+
+        case .loggedOut:
+            self.reinit()
+
+        case .loading:
+            break
+        }
+    }
+
     static let middlewareAuthCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
         if action == .showAboutSheet || action == .openLogin {
             if state.loginState == .loading {
@@ -34,6 +48,20 @@ extension LibraryStore {
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
                     actions: [.userLoginState(.loggedIn), action],
                     type: .excludeRedispatch
+                )
+            ).eraseToAnyPublisher()
+        }
+
+        return Just(action)
+            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
+    }
+
+    static let middlewareUpdateCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+        if action == .initLibrary, !state.items.isEmpty {
+            return Fail(
+                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                    actions: []
                 )
             ).eraseToAnyPublisher()
         }

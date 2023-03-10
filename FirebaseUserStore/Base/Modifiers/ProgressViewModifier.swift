@@ -1,22 +1,14 @@
 import SwiftUI
 
-protocol ProgressViewProviderType: ObservableObject {
-    var progressStatus: ProgressViewStatus { get set }
-}
-
-struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
-    @ObservedObject var provider: ProgressProvider
+struct ProgressViewModifier: ViewModifier {
+    var progressStatus: ProgressViewStatus
+    var backgroundOpacity: Double = 0.5
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
         content
-//            .ignoresSafeArea()
-//            .opacity(announcingResult.wrappedValue ? 0.5 : 1)
+            .opacity(progressStatus == .start ? backgroundOpacity : 1)
             .overlay {
-                if announcingResult.wrappedValue {
+                if progressStatus == .start {
                     ZStack {
                         HDotsProgress()
                     }
@@ -25,15 +17,11 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
     }
 }
 
-struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
-    @ObservedObject var provider: ProgressProvider
+struct SimpleProgressViewModifier: ViewModifier {
+    var progressStatus: ProgressViewStatus
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
-        if announcingResult.wrappedValue {
+        if progressStatus == .start {
             content
                 .opacity(0.5)
                 .disabled(true)
@@ -43,19 +31,17 @@ struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
     }
 }
 
-struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+struct AnimationProgressViewModifier: ViewModifier {
     @State private var isAnimating = false
-//    @State var animation: Animation = .easeIn(duration: 0.5).repeatForever
     @State var active: Bool = false
 
-    @ObservedObject var provider: ProgressProvider
-//    let animation: Animation
+    let progressStatus: ProgressViewStatus
 
     func body(content: Content) -> some View {
         content
             .disabled(active)
             .opacity(isAnimating ? 0.5 : 1)
-            .onChange(of: provider.progressStatus) {
+            .onChange(of: progressStatus) {
                 if $0 == .start {
                     active = true
                 } else {
@@ -73,19 +59,19 @@ struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>
     }
 }
 
-struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+struct ButtonProgressViewModifier: ViewModifier {
     enum ModifierType {
         case clearView
         case buttonView
     }
     
-    @ObservedObject var provider: ProgressProvider
+    private let progressStatus: ProgressViewStatus
     private let backgroundColor: Color
     private let progressViewColor: Color
     private let scale: CGFloat
 
-    init(provider: ProgressProvider, type: ModifierType) {
-        self.provider = provider
+    init(progressStatus: ProgressViewStatus, type: ModifierType) {
+        self.progressStatus = progressStatus
 
         switch type {
         case .buttonView:
@@ -102,11 +88,7 @@ struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
     
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
-        if announcingResult.wrappedValue {
+        if progressStatus != .stop {
             content.overlay {
                 ZStack {
                     Color(.clear).background(backgroundColor)

@@ -23,7 +23,6 @@ struct GlobalCoordinator: CoordinatorType {
     @State var sheet: GlobalLink?
     @State var root: GlobalLink = .progress
     @State private var lastSelected: GlobalLink = .gallery
-    @State private var isFirstLink = true
     @State private var idForCreatingItem: UUID?
 
     let stateReceiver: AnyPublisher<GlobalLink, Never>
@@ -35,11 +34,7 @@ struct GlobalCoordinator: CoordinatorType {
     }
     
     var view: AnyView {
-        AnyView(_view)
-    }
-
-    private var _view: some View {
-        rootView
+        AnyView(rootView)
     }
 
     func transitionReceiver(_ link: GlobalLink) {

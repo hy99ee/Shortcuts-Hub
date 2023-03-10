@@ -10,7 +10,7 @@ protocol ItemsServiceType {
 
     func fetchQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
     func searchQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
-    func nextQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
+    func nextQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
 
     func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError>
 }
@@ -20,15 +20,19 @@ var ItemsServiceQueryLimit: Int { 30 }
 struct ItemsServiceCursor {
     let snapshot: QueryDocumentSnapshot?
     let count: Int
+
+    var date: Date? {
+        guard let dateFromSnapshot = snapshot?.data()["createdAt"] as? UInt64 else { return nil }
+        return Date(
+            timeIntervalSince1970:
+                TimeInterval(bitPattern: dateFromSnapshot)
+        )
+    }
 }
 
-enum ItemsServicePaginationCursor {
-    case cursor(query: Query)
-    case end
-}
 
 extension ItemsServiceType {
-    func nextQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError> {
+    func nextQuery() -> AnyPublisher<ResponceType, ItemsServiceError> {
         fetchQuery()
     }
 

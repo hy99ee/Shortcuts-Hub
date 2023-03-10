@@ -17,11 +17,7 @@ struct FeedCollectionView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(0..<store.state.items.count, id: \.self) { index in
-//                            FeedCellView(cellStyle: $cellStyle, title: store.state.items[index].title)
-                            Rectangle()
-                                .background(.red)
-                                .foregroundColor(.red)
-                                .cornerRadius(14)
+                            FeedCellView(title: store.state.items[index].title, cellStyle: cellStyle)
                             .onTapGesture {
                                 store.dispatch(.click(store.state.items[index]))
                             }
@@ -31,7 +27,7 @@ struct FeedCollectionView: View {
                         }
                     }
                 }
-                .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress))
+                .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                 .refreshable {
                     await asyncUpdate()
                 }
@@ -60,7 +56,7 @@ struct FeedCollectionView: View {
         searchQuery.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: searchQuery))
 
         try? await self.store.objectWillChange
-            .filter { self.store.state.viewProgress.progressStatus == .stop }
+            .filter { self.store.state.viewProgress == .stop }
             .eraseToAnyPublisher()
             .async()
     }

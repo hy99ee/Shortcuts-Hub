@@ -5,25 +5,25 @@ struct AboutViewData {
     let user: UserDetails
 
     let logout: () -> ()
-    let deleteUser: () -> ()
+    let delete: () -> ()
 }
 
 struct AboutView: View {
     @Environment(\.presentationMode) private var presentationMode
+
     @State private var alertShow = false
 
     let user: UserDetails
 
     let logout: () -> ()
-    let deleteUser: () -> ()
+    let delete: () -> ()
 
-    private let actions = ["Logout", "Remove account"]
     private let accountImageSize = 80.0
 
     init(aboutData: AboutViewData) {
         self.user = aboutData.user
         self.logout = aboutData.logout
-        self.deleteUser = aboutData.deleteUser
+        self.delete = aboutData.delete
     }
 
     var body: some View {
@@ -75,9 +75,10 @@ struct AboutView: View {
             .frame(height: 400)
             .cornerRadius(12)
         }
+        .navigationBarItems(trailing: AppearanceButton())
         .alert("Are you sure?", isPresented: $alertShow) {
             Button("Yes", role: .destructive, action: {
-                deleteUser()
+                delete()
                 presentationMode.wrappedValue.dismiss()
             })
         }
@@ -98,6 +99,6 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var mail = "mail@mail.com"
 
     static var previews: some View {
-        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}, deleteUser: {}) )
+        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}, delete: {}) )
     }
 }

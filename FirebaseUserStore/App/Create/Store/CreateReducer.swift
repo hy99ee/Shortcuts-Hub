@@ -15,11 +15,13 @@ let createReducer: ReducerType<CreateState, CreateMutation, CloseTransition> = {
     case let .setError(error):
         state.error = error
 
-    case .progressButtonStatus(status: let status):
-        break
+    case let .progressButton(status: status):
+        state.buttonProgress = status
+        state.processView = .define(with: state.viewProgress, state.buttonProgress)
 
-    case .progressViewStatus(status: let status):
-        break
+    case let .progressView(status: status):
+        state.viewProgress = status
+        state.processView = .define(with: state.viewProgress, state.buttonProgress)
     }
 
     return Just(.state(state)).eraseToAnyPublisher()

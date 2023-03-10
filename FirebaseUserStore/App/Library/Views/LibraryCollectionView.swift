@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 struct LibraryCollectionView: View {
-    let store: LibraryStore
+    @StateObject var store: LibraryStore
 
     @Binding var searchBinding: String
     
@@ -21,15 +21,22 @@ struct LibraryCollectionView: View {
         NavigationView {
                 ScrollView(showsIndicators: false) {
                     if let searchItems = store.state.searchedItems {
-                        LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(0..<searchItems.count, id: \.self) { index in
-                                FeedCellView(title: searchItems[index].title, cellStyle: cellStyle) {
-                                    store.dispatch(.removeItem(id: searchItems[index].id))
-                                }
-                                .onTapGesture {
-                                    store.dispatch(.click(searchItems[index]))
+                        if searchItems.isEmpty {
+                            Text("Empty search")
+                                .padding(30)
+                                .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
+                        } else {
+                            LazyVGrid(columns: columns, spacing: 12) {
+                                ForEach(0..<searchItems.count, id: \.self) { index in
+                                    FeedCellView(title: searchItems[index].title, cellStyle: cellStyle) {
+                                        store.dispatch(.removeItem(id: searchItems[index].id))
+                                    }
+                                    .onTapGesture {
+                                        store.dispatch(.click(searchItems[index]))
+                                    }
                                 }
                             }
+                            .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         }
                     } else if !store.state.items.isEmpty {
                         LazyVGrid(columns: columns, spacing: 12) {
@@ -55,7 +62,7 @@ struct LibraryCollectionView: View {
                                 }
                             }
                         }
-                        .modifier(AnimationProgressViewModifier(provider: store.state.viewProgress))
+                        .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         .onAppear { isAnimating = true }
                     } else if let loadItems = store.state.loadItems {
                         LazyVGrid(columns: columns, spacing: 12) {
@@ -67,8 +74,6 @@ struct LibraryCollectionView: View {
                         }
                         .modifier(StaticPreloaderViewModifier())
                         .onAppear { isAnimating = false }
-                    } else if let searchedItems = store.state.searchedItems, searchedItems.isEmpty {
-                        Text("Empty search")
                     }
                 }
                 .navigationTitle("Library")
@@ -109,8 +114,7 @@ struct LibraryCollectionView: View {
         searchBinding.isEmpty ? store.dispatch(.updateLibrary) : store.dispatch(.search(text: searchBinding))
         
         try? await self.store.objectWillChange
-//            .delay(for: .seconds(3), scheduler: DispatchQueue.main)
-            .filter { self.store.state.viewProgress.progressStatus == .stop }
+            .filter { self.store.state.viewProgress == .stop }
             .handleEvents(receiveOutput: { _ in isUpdating = false })
             .eraseToAnyPublisher()
             .async()
@@ -120,7 +124,7 @@ struct LibraryCollectionView: View {
         store.dispatch(.next)
 
         try? await self.store.objectWillChange
-            .filter { self.store.state.viewProgress.progressStatus == .stop }
+            .filter { self.store.state.viewProgress == .stop }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .first()
             .handleEvents(receiveOutput: { _ in isUpdating = false })

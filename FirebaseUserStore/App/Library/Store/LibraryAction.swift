@@ -1,6 +1,7 @@
 import Foundation
 
 enum LibraryAction: Action, Hashable {
+    case initLibrary
     case updateLibrary
     case next
 
@@ -29,6 +30,8 @@ enum LibraryAction: Action, Hashable {
 
     func hash(into hasher: inout Hasher) {
         switch self {
+        case .initLibrary:
+            hasher.combine(-1)
         case .updateLibrary:
             hasher.combine(0)
         case .click:

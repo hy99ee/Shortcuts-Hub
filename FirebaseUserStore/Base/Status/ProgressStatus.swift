@@ -1,4 +1,4 @@
-import SwiftUI
+import Foundation
 
 enum ProgressViewStatus {
     case start
@@ -8,8 +8,4 @@ enum ProgressViewStatus {
         if self == .stop { self = .start }
         else { self = .stop }
     }
-}
-
-class ProgressViewProvider: ProgressViewProviderType {
-    @Published var progressStatus: ProgressViewStatus = .stop
 }

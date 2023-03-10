@@ -33,6 +33,10 @@
 		3B1F669A28FC0C6C009225A4 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669428FC0C6C009225A4 /* Store.swift */; };
 		3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669528FC0C6C009225A4 /* FeedAction.swift */; };
 		3B1F669E28FC141F009225A4 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669D28FC141F009225A4 /* Entities.swift */; };
+		3B205AD029B77B8800F75C8B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B205ACF29B77B8800F75C8B /* Utilities.swift */; };
+		3B205AD229B77E0600F75C8B /* AppearanceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B205AD129B77E0600F75C8B /* AppearanceButton.swift */; };
+		3B205AD529B9D28800F75C8B /* ProgressStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B205AD429B9D28800F75C8B /* ProgressStatus.swift */; };
+		3B205AD729B9D29400F75C8B /* ProcessStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B205AD629B9D29400F75C8B /* ProcessStatus.swift */; };
 		3B27A57A29A613D600CF9A5F /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A56D29A613D600CF9A5F /* CreateView.swift */; };
 		3B27A57B29A613D600CF9A5F /* CreateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A56F29A613D600CF9A5F /* CreateDispatcher.swift */; };
 		3B27A57C29A613D600CF9A5F /* CreateReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B27A57029A613D600CF9A5F /* CreateReducer.swift */; };
@@ -81,8 +85,6 @@
 		3B703D562967366500F43A45 /* ForgotDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */; };
 		3B703D572967366500F43A45 /* ForgotAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D4F2967366500F43A45 /* ForgotAction.swift */; };
 		3B703D592967366500F43A45 /* ForgotReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D512967366500F43A45 /* ForgotReducer.swift */; };
-		3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5D29698EF200F43A45 /* ProcessProvider.swift */; };
-		3B703D6029698F6200F43A45 /* ProgressProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D5F29698F6200F43A45 /* ProgressProvider.swift */; };
 		3B703D63296ACE4A00F43A45 /* GlobalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */; };
 		3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7795492926222000A70A9A /* ProgressViewModifier.swift */; };
 		3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */; };
@@ -99,7 +101,6 @@
 		3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */; };
 		3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4DA296CB564002A9948 /* GlobalSender.swift */; };
 		3B7AE4DD296D6C4D002A9948 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */; };
-		3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */; };
 		3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F12924C8820008BD8E /* FeedStore.swift */; };
 		3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B81C4F329251FF70008BD8E /* SessionServiceError.swift */; };
 		3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B843EE5297C264200436E3A /* InputTextFieldView.swift */; };
@@ -142,6 +143,10 @@
 		3B1F669428FC0C6C009225A4 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		3B1F669528FC0C6C009225A4 /* FeedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAction.swift; sourceTree = "<group>"; };
 		3B1F669D28FC141F009225A4 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
+		3B205ACF29B77B8800F75C8B /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		3B205AD129B77E0600F75C8B /* AppearanceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceButton.swift; sourceTree = "<group>"; };
+		3B205AD429B9D28800F75C8B /* ProgressStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatus.swift; sourceTree = "<group>"; };
+		3B205AD629B9D29400F75C8B /* ProcessStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessStatus.swift; sourceTree = "<group>"; };
 		3B27A56D29A613D600CF9A5F /* CreateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 		3B27A56F29A613D600CF9A5F /* CreateDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDispatcher.swift; sourceTree = "<group>"; };
 		3B27A57029A613D600CF9A5F /* CreateReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateReducer.swift; sourceTree = "<group>"; };
@@ -189,8 +194,6 @@
 		3B703D4E2967366500F43A45 /* ForgotDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotDispatcher.swift; sourceTree = "<group>"; };
 		3B703D4F2967366500F43A45 /* ForgotAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotAction.swift; sourceTree = "<group>"; };
 		3B703D512967366500F43A45 /* ForgotReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotReducer.swift; sourceTree = "<group>"; };
-		3B703D5D29698EF200F43A45 /* ProcessProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessProvider.swift; sourceTree = "<group>"; };
-		3B703D5F29698F6200F43A45 /* ProgressProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressProvider.swift; sourceTree = "<group>"; };
 		3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalCoordinator.swift; sourceTree = "<group>"; };
 		3B7795492926222000A70A9A /* ProgressViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModifier.swift; sourceTree = "<group>"; };
 		3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatusPublisher.swift; sourceTree = "<group>"; };
@@ -208,7 +211,6 @@
 		3B7AE4D1296C6085002A9948 /* RegisterationReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterationReducer.swift; sourceTree = "<group>"; };
 		3B7AE4DA296CB564002A9948 /* GlobalSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSender.swift; sourceTree = "<group>"; };
 		3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
-		3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetShowViewModifier.swift; sourceTree = "<group>"; };
 		3B81C4F12924C8820008BD8E /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		3B81C4F329251FF70008BD8E /* SessionServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionServiceError.swift; sourceTree = "<group>"; };
 		3B843EE5297C264200436E3A /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				3B843EE5297C264200436E3A /* InputTextFieldView.swift */,
 				3B843EE7297E8AD600436E3A /* RoundedRectProgressView.swift */,
 				3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */,
+				3B205AD129B77E0600F75C8B /* AppearanceButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -307,6 +310,15 @@
 				3BD6489C290E80040029F4E9 /* Middleware.swift */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		3B205AD329B9D26E00F75C8B /* Status */ = {
+			isa = PBXGroup;
+			children = (
+				3B205AD429B9D28800F75C8B /* ProgressStatus.swift */,
+				3B205AD629B9D29400F75C8B /* ProcessStatus.swift */,
+			);
+			path = Status;
 			sourceTree = "<group>";
 		};
 		3B27A56729A613D600CF9A5F /* Create */ = {
@@ -344,6 +356,8 @@
 		3B40EBD02976CDE000200BB5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */,
+				3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */,
 				3BD6489A290D330C0029F4E9 /* Array.swift */,
 				3B40EBCE2976CDD800200BB5 /* String.swift */,
 				3B8785492983EBDB00F49DB2 /* Warning.swift */,
@@ -392,6 +406,7 @@
 		3B5CA8E62992609D00E16151 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B5CA8F32992609D00E16151 /* LibraryCoordinator.swift */,
 				3B5CA8E82992609D00E16151 /* LibraryView.swift */,
 				3B5CA9432992693100E16151 /* LibraryCollectionView.swift */,
 			);
@@ -406,7 +421,6 @@
 				3B5CA8EE2992609D00E16151 /* LibraryReducer.swift */,
 				3B5CA8EF2992609D00E16151 /* LibraryState.swift */,
 				3B5CA8F12992609D00E16151 /* LibraryAction.swift */,
-				3B5CA8F32992609D00E16151 /* LibraryCoordinator.swift */,
 				3B5CA8F42992609D00E16151 /* LibraryMutation.swift */,
 				3B5CA8F52992609D00E16151 /* LibraryPackages.swift */,
 			);
@@ -441,15 +455,6 @@
 				3BFAFF11299A298800076F1D /* ForgotCoordinator.swift */,
 			);
 			path = Store;
-			sourceTree = "<group>";
-		};
-		3B703D5A29698EB900F43A45 /* Providers */ = {
-			isa = PBXGroup;
-			children = (
-				3B703D5D29698EF200F43A45 /* ProcessProvider.swift */,
-				3B703D5F29698F6200F43A45 /* ProgressProvider.swift */,
-			);
-			path = Providers;
 			sourceTree = "<group>";
 		};
 		3B703D61296ACE3400F43A45 /* Global */ = {
@@ -602,13 +607,12 @@
 		3BD76EE72899AF6C001D64E2 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				3B205AD329B9D26E00F75C8B /* Status */,
 				3B40EBD02976CDE000200BB5 /* Extensions */,
-				3B703D5A29698EB900F43A45 /* Providers */,
 				3B7A4B5729545596000AF26A /* Service */,
 				3B0E36BB293E2B57009A7DCE /* Views */,
 				3BD76EE82899AF6C001D64E2 /* Modifiers */,
-				3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */,
-				3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */,
+				3B205ACF29B77B8800F75C8B /* Utilities.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -617,7 +621,6 @@
 			isa = PBXGroup;
 			children = (
 				3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */,
-				3B81C4EF2923D0160008BD8E /* SheetShowViewModifier.swift */,
 				3B7795492926222000A70A9A /* ProgressViewModifier.swift */,
 				3B4B8F5A293B922D007B4DC9 /* ProcessViewModifier.swift */,
 				3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */,
@@ -804,10 +807,10 @@
 				3B5CA9272992609D00E16151 /* LibraryAction.swift in Sources */,
 				3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */,
 				3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */,
-				3B81C4F02923D0160008BD8E /* SheetShowViewModifier.swift in Sources */,
 				3B1F669E28FC141F009225A4 /* Entities.swift in Sources */,
 				3B5CA91F2992609D00E16151 /* LibraryView.swift in Sources */,
 				3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */,
+				3B205AD229B77E0600F75C8B /* AppearanceButton.swift in Sources */,
 				3B703D552967366500F43A45 /* ForgotState.swift in Sources */,
 				3B00F002293F678C0056B5C9 /* LaoderItem.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
@@ -815,6 +818,7 @@
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
 				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
+				3B205AD729B9D29400F75C8B /* ProcessStatus.swift in Sources */,
 				3B27A58129A613D600CF9A5F /* CreateStore.swift in Sources */,
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
@@ -835,6 +839,7 @@
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
 				3B5CA9292992609D00E16151 /* LibraryCoordinator.swift in Sources */,
 				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
+				3B205AD529B9D28800F75C8B /* ProgressStatus.swift in Sources */,
 				3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */,
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B5CA9232992609D00E16151 /* LibraryDispatcher.swift in Sources */,
@@ -868,7 +873,6 @@
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3BE4C1D8298592AE000B43BD /* PublicItemsService.swift in Sources */,
 				3B27A57B29A613D600CF9A5F /* CreateDispatcher.swift in Sources */,
-				3B703D6029698F6200F43A45 /* ProgressProvider.swift in Sources */,
 				3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */,
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
@@ -879,13 +883,13 @@
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
-				3B703D5E29698EF200F43A45 /* ProcessProvider.swift in Sources */,
 				3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */,
 				3B5CA9242992609D00E16151 /* LibraryReducer.swift in Sources */,
 				3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */,
 				3B4B8F5B293B922D007B4DC9 /* ProcessViewModifier.swift in Sources */,
 				3B7AE4D3296C6085002A9948 /* RegisterationMutation.swift in Sources */,
+				3B205AD029B77B8800F75C8B /* Utilities.swift in Sources */,
 				3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */,
 				3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */,
 				3B703D63296ACE4A00F43A45 /* GlobalCoordinator.swift in Sources */,

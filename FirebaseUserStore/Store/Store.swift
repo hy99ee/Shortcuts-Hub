@@ -52,7 +52,7 @@ where StoreState: StateType,
                         self.dispatch(action, isRedispatch: true)
                     }
                 }
-                return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
+                return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>()
             }
             .flatMap { [unowned self] in dispatcher($0, self.packages).receive(on: queue) } // Dispatch
             .subscribe(on: queue)

@@ -18,15 +18,14 @@ protocol ReinitableBySelf: Reinitable {}
 extension ReinitableBySelf {
     func reinit() -> Self { self }
 }
-
-protocol StateType: ReinitableBySelf {
+protocol ReinitableByNewSelf: Reinitable {
     init()
-    var processView: ProcessViewProvider { get }
+}
+extension ReinitableByNewSelf {
+    func reinit() -> Self { Self() }
 }
 
-extension StateType {
-    var processView: ProcessViewProvider { .shared }
-}
+protocol StateType: ReinitableByNewSelf, Equatable {}
 
 protocol TransitionType: Hashable, Identifiable {}
 enum NoneTransition : TransitionType {

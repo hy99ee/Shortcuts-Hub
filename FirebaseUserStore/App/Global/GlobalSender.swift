@@ -17,15 +17,7 @@ class GlobalSender: TransitionSender {
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .handleEvents(receiveOutput: {[weak self] in
-                switch $0 {
-                case .loggedIn:
-                    self?.globalPackages.libraryStore.reinit()
-
-                case .loggedOut:
-                    self?.globalPackages.libraryStore.reinit()
-
-                default: break
-                }
+                self?.globalPackages.libraryStore.updatedSessionStatus($0)
             })
             .map {
                 switch $0 {
@@ -34,7 +26,6 @@ class GlobalSender: TransitionSender {
                 case .loading: return GlobalLink.progress
                 }
             }
-            
 //            .flatMap { [weak self] state -> AnyPublisher<GlobalLink, Never> in
 //                guard let self else { return Empty().eraseToAnyPublisher() }
 //

@@ -41,7 +41,7 @@ struct LoginCoordinator: CoordinatorType {
 
     @Environment(\.presentationMode) var presentationMode
 
-    private var store: LoginStore
+    @StateObject private var store: LoginStore
     let stateReceiver: AnyPublisher<LoginLink, Never>
 
     @ViewBuilder private var rootView: some View {
@@ -49,7 +49,7 @@ struct LoginCoordinator: CoordinatorType {
     }
 
     init(store: LoginStore, parent: Binding<LibraryLink?>) {
-        self.store = store
+        self._store = StateObject(wrappedValue: store)
         self.stateReceiver = store.transition.eraseToAnyPublisher()
 
         self._parent = parent
@@ -69,7 +69,7 @@ struct LoginCoordinator: CoordinatorType {
                             }, label: {
                                 Text("Cancel")
                             })
-                            .modifier(ProcessViewModifier(provider: store.state.processView))
+                            .modifier(ProcessViewModifier(process: store.state.processView))
                         }
                     }
                     .sheet(item: $sheet, content: sheetContent)

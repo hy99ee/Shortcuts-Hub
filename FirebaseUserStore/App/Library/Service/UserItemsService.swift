@@ -72,14 +72,22 @@ final class UserItemsService: UserItemsServiceType {
 
                     let collection = self.db.collection(Self.collectionName)
                     let query = collection
-//                        .order(by: "title")
                         .whereField("userId", isEqualTo: userId)
+                        .order(by: "createdAt", descending: true)
                         .limit(to: ItemsServiceQueryLimit)
 
                     let countQuery = query.count
 
                     countQuery.getAggregation(source: .server) { snapshot, error in
-                        guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
+                        guard let snapshot else {
+                            return promise(
+                                .failure(
+                                    error != nil
+                                    ? ServiceError.firebaseError(error!)
+                                    : ServiceError.unknownError
+                                )
+                            )
+                        }
                         return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
                     }
                 }
@@ -96,10 +104,9 @@ final class UserItemsService: UserItemsServiceType {
 
                 let collection = self.db.collection(Self.collectionName)
                 let query = collection
-//                    .order(by: "title")
+                    .order(by: "createdAt", descending: true)
                     .whereField("userId", isEqualTo: userId)
                     .whereField("tags", arrayContains: text)
-                    
 
                 return promise(.success(FetchedResponce(query: query, count: 0)))
             }
@@ -139,11 +146,11 @@ final class UserItemsService: UserItemsServiceType {
                 guard let self else { return promise(.failure(.unknownError)) }
                 guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
-                let ref = self.db.collection(Self.collectionName)
+                let query = self.db.collection(Self.collectionName)
                     .whereField("id", isEqualTo: id.uuidString)
                     .whereField("userId", isEqualTo: userId)
-                
-                ref.getDocuments { snapshot, error in
+
+                query.getDocuments { snapshot, error in
                     if let _error = error {
                         return promise(.failure(.firebaseError(_error)))
                     }

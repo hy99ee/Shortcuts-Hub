@@ -12,16 +12,8 @@ struct CreateState: StateType {
 
     var error: CreateErrorType?
 
-    var viewProgress = ProgressViewProvider()
-    var buttonProgress = ProgressViewProvider()
+    var viewProgress: ProgressViewStatus = .stop
+    var buttonProgress: ProgressViewStatus = .stop
 
-    let processView: ProcessViewProvider
-
-    init() {
-        processView = ProcessViewProvider(viewProgress, buttonProgress)
-    }
-
-    func reinit() -> Self {
-        CreateState()
-    }
+    var processView: ProcessViewStatus = .disable
 }

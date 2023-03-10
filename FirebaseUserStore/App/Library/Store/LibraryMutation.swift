@@ -14,7 +14,7 @@ enum LibraryMutation: Mutation {
 
     case detail(item: Item)
 
-    case newItem(item: Item)
+    case newItem(item: Item, lastDate: Date?)
     case addItems(items: [Item])
     case removeItem(id: UUID)
     case empty
@@ -29,6 +29,6 @@ enum LibraryMutation: Mutation {
     case errorLibrary
 
     case showAbout(_ data: AboutViewData)
-    case progressButtonStatus(status: ProgressViewStatus)
-    case progressViewStatus(status: ProgressViewStatus)
+    case progressButton(status: ProgressViewStatus)
+    case progressView(status: ProgressViewStatus)
 }

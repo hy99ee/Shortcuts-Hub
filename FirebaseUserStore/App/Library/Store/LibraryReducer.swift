@@ -17,22 +17,21 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.showEmptyView = items.isEmpty
                               && state.loadItems != nil
                               && state.searchFilter.isEmpty
-                              && state.viewProgress.progressStatus == .stop
+                              && state.viewProgress == .stop
         state.loadItems = nil
         state.searchedItems = nil
-        state.items = items.sorted(by: LibraryState.sortingByModified)
+        state.items = items
 
     case let .fetchedNewItems(items):
-//        let items = items.sorted(by: LibraryState.sortingByModified)
         state.loadItems = nil
         state.searchedItems = nil
-        state.items += items.sorted(by: LibraryState.sortingByModified)
+        state.items += items
 
     case .fastUpdate:
         break
 
     case let .searchItems(items):
-        state.searchedItems = items.sorted(by: LibraryState.sortingByModified)
+        state.searchedItems = items
 
     case .cancelSearch:
         state.searchedItems = nil
@@ -56,11 +55,12 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .addItems(items):
         state.items.append(contentsOf: items)
 
-    case let .newItem(item):
-        if state.searchedItems != nil {
-            state.searchedItems!.append(item)
+    case let .newItem(item, lastDate):
+        if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
+            state.searchedItems!.insert(item, at: 0)
         }
-        state.items.append(item)
+
+        state.items.insert(item, at: 0)
 
         state.showEmptyView = false
 
@@ -77,11 +77,13 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .showAbout(data):
         return Just(.coordinate(destination: .about(data))).eraseToAnyPublisher()
 
-    case let .progressViewStatus(status):
-        state.viewProgress.progressStatus = status
+    case let .progressView(status):
+        state.viewProgress = status
+        state.processView = .define(with: state.viewProgress, state.buttonProgress)
 
-    case let .progressButtonStatus(status):
-        state.buttonProgress.progressStatus = status
+    case let .progressButton(status):
+        state.buttonProgress = status
+        state.processView = .define(with: state.viewProgress, state.buttonProgress)
 
     case .hasLogout:
         break

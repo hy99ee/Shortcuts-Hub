@@ -49,6 +49,7 @@ struct LibraryCoordinator: CoordinatorType {
     var view: AnyView {
         AnyView(_view)
     }
+
     @ViewBuilder private var _view: some View {
         NavigationStack(path: $path) {
             ZStack {
