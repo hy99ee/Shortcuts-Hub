@@ -1,16 +1,31 @@
 import SwiftUI
 
 struct FeedCellView: View {
-    let title: String
+    let item: Item
     let cellStyle: CollectionRowStyle
     var delete: (() -> ())? = nil
 
     var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 12)
-                .foregroundColor(.blue)
-            Text(title)
-                .font(.title2)
+        ZStack {
+            VStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .foregroundColor(.blue)
+                Text(item.title)
+                    .font(.title2)
+            }
+
+            if let imageName = systemImageByItemStatus {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Image(systemName: imageName)
+                            .frame(width: 20, height: 20)
+//                            .foregroundColor(.random)
+                            .padding([.top, .trailing], 5)
+                    }
+                    Spacer()
+                }
+            }
         }
         .overlay(
             RoundedRectangle(cornerRadius: 12)
@@ -26,6 +41,14 @@ struct FeedCellView: View {
                     Label("Delete", systemImage: "trash")
                 }
             }
+        }
+    }
+
+    private var systemImageByItemStatus: String? {
+        switch item.validateByAdmin {
+        case .undefined: return "clock.arrow.circlepath"
+        case .decline: return "exclamationmark.circle"
+        default: return nil
         }
     }
 }

@@ -2,7 +2,10 @@ import Foundation
 
 enum ItemsServiceError: Error {
     case unauth
+
     case firebaseError(_ error: Error)
+    case appleError(_ error: Error)
+
     case invalidUserId
     case invalidSnapshot
     
@@ -46,6 +49,9 @@ extension ItemsServiceError: LocalizedError {
             )
             
         case let .firebaseError(error):
+            return error.localizedDescription
+
+        case let .appleError(error):
             return error.localizedDescription
             
         case .unknownError:

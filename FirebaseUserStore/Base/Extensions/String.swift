@@ -57,5 +57,4 @@ extension String {
         }
         return sequences
     }
-    
 }
