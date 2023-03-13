@@ -4,6 +4,7 @@ enum RegisterationAction: Action, Hashable {
     case click(field: RegistrationCredentialsField)
     case check(field: RegistrationCredentialsField, input: String)
     case clickRegisteration(user: RegistrationCredentials)
+    case cleanError
 
     func hash(into hasher: inout Hasher) {
         switch self {
@@ -13,6 +14,8 @@ enum RegisterationAction: Action, Hashable {
             hasher.combine(1)
         case .clickRegisteration:
             hasher.combine(2)
+        case .cleanError:
+            hasher.combine(3)
         }
     }
 

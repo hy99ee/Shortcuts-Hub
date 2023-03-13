@@ -6,7 +6,7 @@ struct LibraryCollectionView: View {
 
     @Binding var searchBinding: String
     
-    @State private var isAnimating = false
+    @State private var isAnimating = true
     @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row3
 
@@ -38,19 +38,39 @@ struct LibraryCollectionView: View {
                             }
                             .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         }
-                    } else if !store.state.items.isEmpty {
+                    } else if let loadItems = store.state.loadItems {
+                        LazyVGrid(columns: columns, spacing: 12) {
+                            ForEach(loadItems, id: \.id) { _ in
+                                LoaderFeedCellView()
+                                    .frame(height: cellStyle.rowHeight)
+                                    .padding(3)
+                            }
+                        }
+                        .modifier(StaticPreloaderViewModifier())
+                        .onAppear { isAnimating = false }
+                    } else {
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
-                                FeedCellView(title: store.state.items[index].title, cellStyle: cellStyle) {
-                                    store.dispatch(.removeItem(id: store.state.items[index].id))
-                                }
+                                FeedCellView(
+                                    title: store.state.items[index].title,
+                                    cellStyle: cellStyle,
+                                    delete: {
+                                        if let item = store.state.items.at(index) {
+                                            store.dispatch(.removeItem(id: item.id))
+                                        }
+                                    }
+                                )
                                 .padding(3)
                                 .opacity(isAnimating ? 1 : 0)
-                                .animation(.easeIn(duration: 0.7).delay(Double(index) * 0.03), value: isAnimating)
+                                .scaleEffect(isAnimating ? 1 : 0.9)
+                                .animation(.easeIn(duration: 0.7).delay((Double(index) + 0.5) * 0.03), value: isAnimating)
                                 .onTapGesture {
-                                    store.dispatch(.click(store.state.items[index]))
+                                    if let item = store.state.items.at(index) {
+                                        store.dispatch(.click(item))
+                                    }
                                 }
                                 .onAppear {
+                                    isAnimating = true
                                     if store.state.items.count >= ItemsServiceQueryLimit
                                         && index >= store.state.items.count - 1
                                         && !isUpdating {
@@ -62,18 +82,8 @@ struct LibraryCollectionView: View {
                                 }
                             }
                         }
+//                        .animation(.spring().speed(0.8), value: store.state.items)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-                        .onAppear { isAnimating = true }
-                    } else if let loadItems = store.state.loadItems {
-                        LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(loadItems, id: \.id) { _ in
-                                LoaderFeedCellView()
-                                    .frame(height: cellStyle.rowHeight)
-                                    .padding(3)
-                            }
-                        }
-                        .modifier(StaticPreloaderViewModifier())
-                        .onAppear { isAnimating = false }
                     }
                 }
                 .navigationTitle("Library")

@@ -15,7 +15,6 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .fetchedItems(items):
         state.showEmptyView = items.isEmpty
-                              && state.loadItems != nil
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
         state.loadItems = nil

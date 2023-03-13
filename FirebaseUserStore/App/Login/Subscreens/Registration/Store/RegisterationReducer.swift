@@ -15,13 +15,8 @@ let registerationReducer: ReducerType<RegisterationState, RegisterationMutation,
     case let .progressStatus(status):
         state.progress = status
         
-    case let .errorAlert(error):
-        state.registrationErrorMessage = error.localizedDescription
-
-        var stateWithoutMessage = state
-        stateWithoutMessage.registrationErrorMessage = nil
-
-        return Publishers.Merge(Just(.state(state)), Just(.state(stateWithoutMessage)).delay(for: .seconds(3), scheduler: DispatchQueue.main)).eraseToAnyPublisher()
+    case let .setErrorMessage(error):
+        state.registrationErrorMessage = error?.localizedDescription ?? nil
 
     case .close:
         return Just(.coordinate(destination: .close)).eraseToAnyPublisher()

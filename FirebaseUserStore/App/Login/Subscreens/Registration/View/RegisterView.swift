@@ -9,8 +9,6 @@ struct RegisterView: View {
 
     @FocusState private var focusedField: RegistrationCredentialsField?
     @State private var keyboardVisible = false
-    
-    private let animationTime = 2.0
 
     var interval: ClosedRange<Date> {
             let start = Date()
@@ -52,8 +50,8 @@ struct RegisterView: View {
                 errorButtonMessage = message
             }
         }
-        .onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+        .onAppear {
+            store.reinit()
         }
         
     }
@@ -67,7 +65,9 @@ struct RegisterView: View {
                 systemImage: "envelope",
                 errorMessage: createBindingUnvalidMessage(.email),
                 isValid: createBindingForTextField(.email),
-                unfocusHandler: { store.dispatch(.check(field: .email, input: newUser.email)) }
+                unfocusHandler: {
+                    store.dispatch(.check(field: .email, input: newUser.email))
+                }
             )
             .focused($focusedField, equals: .email)
             .textContentType(.emailAddress)
@@ -79,14 +79,16 @@ struct RegisterView: View {
                 keyboardType: .phonePad,
                 systemImage: "phone",
                 isValid: createBindingForTextField(.phone),
-                unfocusHandler: { store.dispatch(.check(field: .phone, input: newUser.phone)) },
+                unfocusHandler: {
+                    store.dispatch(.check(field: .phone, input: newUser.phone))
+                },
                 onChangeTextHandler: {
                     if $0.isPhone {
                         store.dispatch(.check(field: .phone, input: newUser.phone))
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) {
                             let focused = findNotEmptyNextFocus(for: .phone)
                             focusedField = focused == .phone ? nil : focused
-                        }
+//                        }
                     }
                 }
             )
@@ -136,7 +138,7 @@ struct RegisterView: View {
             .focused($focusedField, equals: .firstName)
             .textContentType(.name)
             .submitLabel(.next)
-            
+
             InputTextFieldView(
                 text: $newUser.lastName,
                 placeholder: "Last Name",
@@ -162,10 +164,10 @@ struct RegisterView: View {
         }
         .onChange(of: focusedField) { newFocus in
             switch newFocus {
-            case .none:
-                break
             case let .some(field):
                 store.dispatch(.click(field: field))
+            case .none:
+                break
             }
         }
     }
@@ -174,12 +176,17 @@ struct RegisterView: View {
         VStack {
             HStack {
                 Spacer()
-                ProgressWheel(total: 5 - animationTime).frame(width: 18, height: 18)
+                ProgressWheel(total: 3).frame(width: 18, height: 18)
             }
             HStack {
                 Text(errorButtonMessage!)
                     .font(.system(size: 13, design: .monospaced)).bold().foregroundColor(.red)
                 Spacer()
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                store.dispatch(.cleanError)
             }
         }
     }

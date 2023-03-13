@@ -18,6 +18,7 @@ struct RegisterationCoordinator: CoordinatorType {
     }
 
     func transitionReceiver(_ link: CloseTransition) {
+//        store.reinit()
         parent = nil
     }
 }

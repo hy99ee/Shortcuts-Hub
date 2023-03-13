@@ -14,6 +14,7 @@ struct LibraryState: StateType {
     }
 
     var searchedItems: [Item]?
+    var lastAdded: Item?
 
     var loginState: SessionState = .loading
 

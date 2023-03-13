@@ -39,17 +39,17 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             fetchDocs
                 .map { docs in
                     if docs.count > 0 {
-                        return FeedMutation.fetchItemsPreloaders(count: docs.count)
+                        return .fetchItemsPreloaders(count: docs.count)
                     } else {
-                        return FeedMutation.empty
+                        return .empty
                     }
                 }
-                .catch { Just(FeedMutation.errorAlert(error: $0)) }
+                .catch { Just(.errorAlert(error: $0)) }
                 .eraseToAnyPublisher()
-                .withStatus(start: FeedMutation.progressViewStatus(status: .start), finish: FeedMutation.progressViewStatus(status: .stop))
+                .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             , fetchFromDocs
-                .map { FeedMutation.fetchItems(newItems: $0) }
-                .catch { Just(FeedMutation.errorAlert(error: $0)) })
+                .map { .fetchItems(newItems: $0) }
+                .catch { Just(.errorAlert(error: $0)) })
         .eraseToAnyPublisher()
         
     }
@@ -60,8 +60,8 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
 
         return fetchFromDocs
-            .map { FeedMutation.addItems(items: $0) }
-            .catch { Just(FeedMutation.errorAlert(error: $0)) }
+            .map { .addItems(items: $0) }
+            .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
     func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {

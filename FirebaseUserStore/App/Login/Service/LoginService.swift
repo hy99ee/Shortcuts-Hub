@@ -6,11 +6,6 @@ protocol LoginServiceType: EnvironmentType {
     func login(with credentials: LoginCredentials) -> AnyPublisher<Void, ServiceError>
 }
 
-struct LoginCredentials {
-    var email: String
-    var password: String
-}
-
 final class LoginService: LoginServiceType {
     typealias ServiceError = LoginServiceError
     

@@ -54,7 +54,6 @@ final class SessionService: SessionServiceType, ObservableObject {
     }
 }
 
-var isError = true
 private extension SessionService {
     func setupObservations() {
         handler = Auth

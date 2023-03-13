@@ -68,7 +68,7 @@ struct InputTextFieldView: View {
                     Spacer()
                 }
             }
-            
+
             textViewByStyle
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,
                        minHeight: 44,
@@ -95,14 +95,8 @@ struct InputTextFieldView: View {
                 }
                 .onChange(of: isValid, perform: { isValid in
                     focused = isValid
-                    if errorMessage != nil && !isValid {
-                        withAnimation {
-                            isShowMessage = true
-                        }
-                    } else {
-                        withAnimation {
-                            isShowMessage = false
-                        }
+                    withAnimation {
+                        isShowMessage = errorMessage != nil && !isValid
                     }
                 })
                 .onChange(of: focused, perform: {
@@ -117,7 +111,11 @@ struct InputTextFieldView: View {
     }
 
     @ViewBuilder private var textViewByStyle: some View {
-        if isSecureField { SecureField(placeholder, text: $text) } else { TextField(placeholder, text: $text) }
+        if isSecureField {
+            SecureField(placeholder, text: $text)
+        } else {
+            TextField(placeholder, text: $text)
+        }
     }
 
 //    @State private var isBeginPhoneEditing = true

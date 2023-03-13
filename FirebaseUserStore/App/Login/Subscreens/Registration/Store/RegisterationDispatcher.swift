@@ -13,6 +13,9 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
     case let .clickRegisteration(user):
         return mutationRegisteration(user, packages: packages)
             .withStatus(start: RegisterationMutation.progressStatus(.start), finish: RegisterationMutation.progressStatus(.stop))
+
+    case .cleanError:
+        return Just(.setErrorMessage(nil)).eraseToAnyPublisher()
     }
 
 
@@ -21,7 +24,9 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
         packages.registerationService.register(with: user)
             .delay(for: .seconds(2), scheduler: DispatchQueue.main)
             .map { RegisterationMutation.close }
-            .catch { _ in Just(RegisterationMutation.errorAlert(error: RegistrationServiceError.undefined)) }
+            .catch { _ in
+                Just(RegisterationMutation.setErrorMessage(RegistrationServiceError.undefined))
+            }
             .eraseToAnyPublisher()
     }
 
@@ -29,17 +34,17 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
         Just({
             switch field {
             case .email:
-                return RegisterationMutation.registrationCredentials((credentials: .email, status: input.isEmail ? .valid : .unvalidWithMessage("Unvalid email format")))
+                return .registrationCredentials((credentials: .email, status: input.isEmail ? .valid : .unvalidWithMessage("Unvalid email format")))
             case .phone:
-                return RegisterationMutation.registrationCredentials((credentials: .phone, status: input.isPhone ? .valid : .unvalid))
+                return .registrationCredentials((credentials: .phone, status: input.isPhone ? .valid : .unvalid))
             case .password:
-                return RegisterationMutation.registrationCredentials((credentials: .password, status: input.passwordValidationMessage == nil ? .valid : .unvalidWithMessage(input.passwordValidationMessage!) ))
+                return .registrationCredentials((credentials: .password, status: input.passwordValidationMessage == nil ? .valid : .unvalidWithMessage(input.passwordValidationMessage!) ))
             case .conformPassword:
-                return RegisterationMutation.registrationCredentials((credentials: .conformPassword, status: input.conformPasswordValidationMessage == nil ? .valid : .unvalidWithMessage(input.conformPasswordValidationMessage!)))
+                return .registrationCredentials((credentials: .conformPassword, status: input.conformPasswordValidationMessage == nil ? .valid : .unvalidWithMessage(input.conformPasswordValidationMessage!)))
             case .firstName:
-                return RegisterationMutation.registrationCredentials((credentials: .firstName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid username format")))
+                return .registrationCredentials((credentials: .firstName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid username format")))
             case .lastName:
-                return RegisterationMutation.registrationCredentials((credentials: .lastName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid lastname format")))
+                return .registrationCredentials((credentials: .lastName, status: input.isUsername ? .valid : .unvalidWithMessage("Unvalid lastname format")))
             }
         }()).eraseToAnyPublisher()
     }

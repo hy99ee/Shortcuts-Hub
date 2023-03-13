@@ -1,51 +1,9 @@
 import Combine
-import Foundation
 import Firebase
 import FirebaseDatabase
 
-enum RegistrationCredentialsField: CaseIterable {
-    case email
-    case phone
-    case password
-    case conformPassword
-    case firstName
-    case lastName
-}
-struct RegistrationCredentials {
-    var email = ""
-    var phone = ""
-    var password = ""
-    var conformPassword = ""
-    var firstName = ""
-    var lastName = ""
-}
-extension RegistrationCredentials {
-    func credentialsField(_ field: RegistrationCredentialsField) -> String {
-        switch field {
-        case .email:
-            return self.email
-        case .phone:
-            return self.phone
-        case .password:
-            return self.password
-        case .conformPassword:
-            return self.conformPassword
-        case .firstName:
-            return self.firstName
-        case .lastName:
-            return self.lastName
-        }
-    }
-}
-
 protocol RegistrationServiceType: EnvironmentType {
     func register(with credentials: RegistrationCredentials) -> AnyPublisher<Void, ServiceError>
-}
-
-enum RegistrationKeys: String {
-    case firstName
-    case lastName
-    case phone
 }
 
 final class RegistrationService: RegistrationServiceType {
@@ -83,7 +41,7 @@ final class RegistrationService: RegistrationServiceType {
                     }
             }
         }
-        .receive(on: RunLoop.main)
+//        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 }

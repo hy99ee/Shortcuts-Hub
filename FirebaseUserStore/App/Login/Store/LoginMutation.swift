@@ -7,10 +7,11 @@ enum LoginMutation: Mutation {
     
     case login(user: LoginCredentials)
 
+    case registrationCredentials((credentials: LoginCredentialsField, status: InputTextFieldStatus))
+
     case progressLoginStatus(_ status: ProgressViewStatus)
     case progressRegisterStatus(_ status: ProgressViewStatus)
 
-    case errorAlert(error: Error)
-    case errorWithRegister
+    case setErrorMessage(_ error: Error?)
 }
 

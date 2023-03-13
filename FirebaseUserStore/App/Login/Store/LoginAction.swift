@@ -6,6 +6,11 @@ enum LoginAction: Action, Hashable {
     
     case clickLogin(user: LoginCredentials)
 
+    case click(field: LoginCredentialsField)
+    case check(field: LoginCredentialsField, input: String)
+
+    case cleanError
+
     func hash(into hasher: inout Hasher) {
         switch self {
         case .openRegister:
@@ -14,6 +19,12 @@ enum LoginAction: Action, Hashable {
             hasher.combine(1)
         case .clickLogin:
             hasher.combine(2)
+        case .click:
+            hasher.combine(3)
+        case .check:
+            hasher.combine(4)
+        case .cleanError:
+            hasher.combine(5)
         }
     }
 

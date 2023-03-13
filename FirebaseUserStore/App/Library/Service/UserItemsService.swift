@@ -7,8 +7,8 @@ final class UserItemsService: UserItemsServiceType {
     typealias ServiceError = ItemsServiceError
     typealias ResponceType = FetchedResponce
 
-    private let db = Firestore.firestore()
-    private static let collectionName = "Items"
+    let db = Firestore.firestore()
+    static let collectionName = "Items"
     private(set) var itemsServiceCursor: ItemsServiceCursor?
 
     let userId: String?

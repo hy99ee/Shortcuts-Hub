@@ -6,7 +6,7 @@ enum RegisterationMutation: Mutation {
 
     case progressStatus(_ status: ProgressViewStatus)
 
-    case errorAlert(error: Error)
+    case setErrorMessage(_ error: Error?)
 
     case close
 }

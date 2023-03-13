@@ -88,12 +88,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                     if docs.count > 0 {
                         return .updateItemsPreloaders(count: docs.count)
                     } else {
-                        return .empty
+                        return .fastUpdate
                     }
                 }
                 .catch { Just(.errorAlert(error: $0)) }
                 .eraseToAnyPublisher()
-                .withStatus(start: LibraryMutation.progressView(status: .start), finish: LibraryMutation.progressView(status: .stop))
+                .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
             , fetchFromDocs
                 .delay(for: .seconds(1), scheduler: DispatchQueue.main)
                 .map { .fetchedItems(newItems: $0) }
