@@ -11,11 +11,13 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var userId: String
 
     var title: String
-    var iconUrl: URL?
     var description: String
+
+    var iconUrl: String?
+    var originalUrl: String?
     var idioms: [SupportedIdioms] = []
 
-    var validateByAdmin: ItemValidateStatus = .undefined
+    var validateByAdmin: Int = ItemValidateStatus.undefined.rawValue
 
     var createdAt: Date
     var modifiedAt: Date?
@@ -23,8 +25,8 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var tags: [String] { title.generateStringSequence() + description.generateStringSequence() }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.id == rhs.id
-        }
+        lhs.id == rhs.id
+    }
 }
 
 enum SupportedIdioms: String, Codable {

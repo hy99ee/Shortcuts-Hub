@@ -45,7 +45,7 @@ struct FeedCellView: View {
     }
 
     private var systemImageByItemStatus: String? {
-        switch item.validateByAdmin {
+        switch ItemValidateStatus(rawValue: item.validateByAdmin) {
         case .undefined: return "clock.arrow.circlepath"
         case .decline: return "exclamationmark.circle"
         default: return nil

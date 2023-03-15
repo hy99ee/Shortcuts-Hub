@@ -55,8 +55,9 @@ extension ItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
-                                    iconUrl: URL(string: data["icon"] as? String ?? ""),
                                     description: data["description"] as? String ?? "",
+                                    iconUrl: data["icon"] as? String ?? "",
+                                    originalUrl: data["link"] as? String ?? "",
                                     createdAt: Date()
                                 )
                             )

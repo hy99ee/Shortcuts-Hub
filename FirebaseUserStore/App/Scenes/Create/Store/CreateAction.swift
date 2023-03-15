@@ -4,6 +4,8 @@ enum CreateAction {
     case linkRequest(_ link: String)
     case uploadNewItem(_ item: Item)
 
+    case clickLinkField
+
     case showError(_ error: CreateState.CreateErrorType)
 }
 
@@ -12,7 +14,8 @@ extension CreateAction: Action, Hashable {
         switch self {
         case .linkRequest: hasher.combine(0)
         case .uploadNewItem: hasher.combine(1)
-        case .showError: hasher.combine(2)
+        case .clickLinkField: hasher.combine(2)
+        case .showError: hasher.combine(3)
         }
     }
 

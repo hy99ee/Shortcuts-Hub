@@ -16,7 +16,7 @@ struct RegisterationCoordinator: CoordinatorType {
     var view: AnyView {
         AnyView(
             RegisterView(store: store)
-                .modifier(DismissingKeyboard())
+                .onAppear { store.reinit() }
         )
     }
 

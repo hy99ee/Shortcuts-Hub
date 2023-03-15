@@ -5,15 +5,17 @@ let createReducer: ReducerType<CreateState, CreateMutation, CreateLink> = { _sta
     var state = _state
 
     switch mutation {
-        
-    case let .setAppleItem(item):
-        return Just(.coordinate(destination: .createFromAppleItem(item))).eraseToAnyPublisher()
+    case let .setAppleItem(item, linkFromUser):
+        return Just(.coordinate(destination: .createFromAppleItem(item, linkFromUser: linkFromUser))).eraseToAnyPublisher()
 
-    case .itemUploaded:
-        return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
+    case let .itemUploaded(item):
+        return Just(.coordinate(destination: .itemCreated(item))).eraseToAnyPublisher()
 
     case let .setError(error):
-        state.error = error
+        return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
+
+    case let .linkFieldStatus(status):
+        state.linkField = status
 
     case let .progressButton(status: status):
         state.buttonProgress = status

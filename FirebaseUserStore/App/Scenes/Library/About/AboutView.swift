@@ -29,8 +29,8 @@ struct AboutView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             Text(
-                String(user.storage.firstName.first ?? Character(" ")) +
-                String(user.storage.lastName.first ?? Character(" "))
+                String(user.value.firstName.first ?? Character(" ")) +
+                String(user.value.lastName.first ?? Character(" "))
             )
             .font(.largeTitle)
             .frame(width: accountImageSize, height: accountImageSize, alignment: .center)
@@ -49,7 +49,7 @@ struct AboutView: View {
             .padding(.top, 30)
             
             VStack {
-                Text(user.storage.firstName).font(.title).fontWeight(.semibold)
+                Text(user.value.firstName).font(.title).fontWeight(.semibold)
                 Text(user.auth.email.0).font(.system(size: 14, weight: .semibold, design: .rounded)).foregroundColor(.secondary)
             }
             .padding()
@@ -99,6 +99,6 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var mail = "mail@mail.com"
 
     static var previews: some View {
-        AboutView(aboutData: AboutViewData(user: UserDetails(storage: UserStorageDetails(firstName: firstName, lastName: lastName, phone: "+12003004050"), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}, delete: {}) )
+        AboutView(aboutData: AboutViewData(user: UserDetails(value: DatabaseUser(firstName: firstName, lastName: lastName, phone: "+12003004050", savedIds: []), auth: UserAuthDetails(email: ("mockmail@mail.ru", isVerified: true))), logout: {}, delete: {}) )
     }
 }

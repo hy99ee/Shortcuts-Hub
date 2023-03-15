@@ -74,6 +74,7 @@ struct LoginCoordinator: CoordinatorType {
                     }
                     .sheet(item: $sheet, content: sheetContent)
                     .alert(item: $alert, content: alertContent)
+                    .onAppear { store.reinit() }
             }
             .navigationDestination(for: LoginLink.self, destination: linkDestination)
         }

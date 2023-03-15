@@ -40,9 +40,10 @@ final class UserItemsService: UserItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
-                                    iconUrl: URL(string: data["icon"] as? String ?? ""),
                                     description: data["description"] as? String ?? "",
-                                    validateByAdmin: ItemValidateStatus(rawValue: data["validation"] as? Int ?? 0)!,
+                                    iconUrl: data["icon"] as? String ?? "",
+                                    originalUrl: data["link"] as? String ?? "",
+                                    validateByAdmin: data["validation"] as? Int ?? 0,
                                     createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                                     
                                 )
@@ -63,6 +64,41 @@ final class UserItemsService: UserItemsServiceType {
             }
         }
         .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
+
+    func fetchSavedQuery(for user: DatabaseUser) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+        Deferred {
+            Future { promise in
+                Task { [weak self] in
+                    guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
+                    guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
+
+                    let collection = self.db.collection(Self.collectionName)
+                    let query = collection
+                        .whereField("id", in: user.savedIds)
+//                        .whereField("userId", isEqualTo: userId)
+//                        .order(by: "createdAt", descending: true)
+                    
+//                        .limit(to: ItemsServiceQueryLimit)
+
+                    let countQuery = query.count
+
+                    countQuery.getAggregation(source: .server) { snapshot, error in
+                        guard let snapshot else {
+                            return promise(
+                                .failure(
+                                    error != nil
+                                    ? ServiceError.firebaseError(error!)
+                                    : ServiceError.unknownError
+                                )
+                            )
+                        }
+                        return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
+                    }
+                }
+            }
+        }
         .eraseToAnyPublisher()
     }
 
@@ -167,9 +203,10 @@ final class UserItemsService: UserItemsServiceType {
                                 id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
-                                iconUrl: URL(string: data["icon"] as? String ?? ""),
                                 description: data["description"] as? String ?? "",
-                                validateByAdmin: ItemValidateStatus(rawValue: data["validation"] as? Int ?? 0)!,
+                                iconUrl: data["icon"] as? String ?? "",
+                                originalUrl: data["link"] as? String ?? "",
+                                validateByAdmin: data["validation"] as? Int ?? 0,
                                 createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                             )
                         }
@@ -229,7 +266,8 @@ final class UserItemsService: UserItemsServiceType {
                     "id": item.id.uuidString,
                     "userId": userId,
                     "title": item.title,
-                    "icon": item.iconUrl?.absoluteString ?? "",
+                    "icon": item.iconUrl ?? "",
+                    "link": item.originalUrl ?? "",
                     "description": item.description,
                     "createdAt": item.createdAt.timeIntervalSince1970.bitPattern,
                     "modifiedAt": item.modifiedAt?.description ?? "",

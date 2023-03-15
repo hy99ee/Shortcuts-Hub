@@ -22,7 +22,11 @@ let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMu
     //MARK: Mutations
     func mutationRegisteration(_ user: RegistrationCredentials, packages: RegisterationPackages) -> AnyPublisher<RegisterationMutation, Never> {
         packages.registerationService.register(with: user)
-            .delay(for: .seconds(2), scheduler: DispatchQueue.main)
+//            .flatMap()
+            .flatMap { _ in
+                packages.sessionService.syncNewUserWithDatabase(user)
+                    .mapError { _ in RegistrationServiceError.undefined }
+            }
             .map { RegisterationMutation.close }
             .catch { _ in
                 Just(RegisterationMutation.setErrorMessage(RegistrationServiceError.undefined))

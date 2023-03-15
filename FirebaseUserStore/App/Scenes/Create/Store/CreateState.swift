@@ -12,6 +12,7 @@ struct CreateState: StateType {
     var appleItem: AppleApiItem?
 
     var error: CreateErrorType?
+    var linkField: InputTextFieldStatus = .undefined
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

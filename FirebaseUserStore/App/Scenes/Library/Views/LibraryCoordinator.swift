@@ -80,7 +80,7 @@ struct LibraryCoordinator: CoordinatorType {
         case let .about(data):
             AboutView(aboutData: data)
         case let .detail(item):
-            ItemDetailView()
+            ItemDetailView(item: item)
         default:
             EmptyView()
         }
@@ -98,7 +98,7 @@ struct LibraryCoordinator: CoordinatorType {
     @ViewBuilder private func sheetContent(link: LibraryLink) -> some View {
         switch link {
         case let .detail(item):
-            ItemDetailView()
+            ItemDetailView(item: item)
         default:
             EmptyView()
         }
@@ -117,16 +117,38 @@ struct LibraryCoordinator: CoordinatorType {
 }
 
 struct ItemDetailView: View {
-    @Environment(\.presentationMode) var presentationMode
+//    @Environment(\.presentationMode) var presentationMode
+    let item: Item
+
+    @State private var image: Image?
 
     var body: some View {
-        VStack {
-            Rectangle()
-                .foregroundColor(.blue)
-//                .ignoresSafeArea()
-//            Spacer()
+        ScrollView(showsIndicators: false) {
+            Text(item.title).padding()
+            Text(item.description).padding()
+
+            if let link = item.originalUrl, !link.isEmpty {
+                Link(destination: URL(string: link)!) {
+                    Image(systemName: "link.circle.fill")
+                        .font(.largeTitle)
+                }
+                .padding()
+            }
+
+            if item.iconUrl != nil {
+                imageView
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(15)
+            }
         }
         .navigationTitle("Detail")
+        .onAppear {
+            if let stringUrl = item.iconUrl?
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+               let url = URL(string: stringUrl) {
+                downloadImage(from: url)
+            }
+        }
 //        .toolbar {
 //            ToolbarItem(placement: .navigationBarLeading) {
 //                Button(action: {
@@ -139,4 +161,30 @@ struct ItemDetailView: View {
     }
     
     
+    @ViewBuilder private var imageView: some View {
+        if image != nil {
+            image!.resizable()
+        } else {
+            ZStack {
+                Rectangle()
+                    .foregroundColor(.secondary.opacity(0.3))
+
+                HDotsProgress()
+            }
+        }
+    }
+
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+
+    func downloadImage(from url: URL) {
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+
+            if let image = UIImage(data: data) {
+                self.image = Image(uiImage: image)
+            }
+        }
+    }
 }

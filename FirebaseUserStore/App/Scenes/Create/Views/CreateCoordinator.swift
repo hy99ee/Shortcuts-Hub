@@ -2,8 +2,9 @@ import SwiftUI
 import Combine
 
 enum CreateLink: TransitionType {
-    case createFromAppleItem(_ item: AppleApiItem)
-    case close
+    case createFromAppleItem(_ item: AppleApiItem, linkFromUser: String)
+    case itemCreated(_ item: Item)
+    case error(_ error: Error)
 
     var id: String {
         String(describing: self)
@@ -13,8 +14,10 @@ enum CreateLink: TransitionType {
         switch self {
         case .createFromAppleItem:
             hasher.combine(0)
-        case .close:
+        case .error:
             hasher.combine(1)
+        case .itemCreated:
+            hasher.combine(2)
         }
     }
 
@@ -27,7 +30,12 @@ struct CreateCoordinator: CoordinatorType {
     private var store: CreateStore
     @Binding var id: UUID?
 
+    @State var creatingItem: Item = Item(id: UUID(), userId: "", title: "", description: "", createdAt: Date())
+
     @State var path = NavigationPath()
+    @State var sheet: CreateLink?
+    @State var alert: CreateLink?
+
     @Environment(\.presentationMode) var presentationMode
 
     let stateReceiver: AnyPublisher<CreateLink, Never>
@@ -48,6 +56,7 @@ struct CreateCoordinator: CoordinatorType {
         NavigationStack(path: $path) {
             VStack {
                 rootView
+                    .alert(item: $alert, content: alertContent)
             }
             .navigationDestination(for: CreateLink.self, destination: linkDestination)
         }
@@ -57,17 +66,31 @@ struct CreateCoordinator: CoordinatorType {
         switch link {
         case .createFromAppleItem:
             self.path.append(link)
-        case .close:
+        case .error:
+            self.alert = link
+        case let .itemCreated(item):
+            id = item.id
             presentationMode.wrappedValue.dismiss()
         }
     }
 
     @ViewBuilder private func linkDestination(link: CreateLink) -> some View {
         switch link {
-        case let .createFromAppleItem(item):
-            CreateView(store: store, initialItem: item, id: $id)
+        case let .createFromAppleItem(item, link):
+            CreateView(store: store, appleItem: item, originalLink: link)
         default:
             EmptyView()
+        }
+    }
+
+    private func alertContent(link: CreateLink) -> Alert {
+        switch link {
+        case let .error(error):
+            return Alert(title: Text("Something went wrong"),
+                  message: Text(error.localizedDescription),
+                  dismissButton: .default(Text("OK")))
+        default:
+            return Alert(title: Text(""))
         }
     }
 }

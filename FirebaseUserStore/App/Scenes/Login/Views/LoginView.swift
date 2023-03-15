@@ -11,6 +11,7 @@ struct LoginView: View {
 
     var body: some View {
         VStack(spacing: 16) {
+            Spacer()
             VStack(spacing: 16) {
                 InputTextFieldView(
                     text: $email,
@@ -84,12 +85,15 @@ struct LoginView: View {
                     store.dispatch(.openRegister(store: store))
                 }
             }
+            Spacer()
         }
         .onChange(of: store.state.loginErrorMessage) { message in
             withAnimation {
                 errorButtonMessage = message
             }
         }
+        .background(.opacity(0.001))
+        .modifier(DismissingKeyboard())
         .modifier(ProcessViewModifier(process: store.state.processView))
         .padding(.horizontal, 15)
         .navigationTitle("Login")

@@ -46,10 +46,8 @@ struct GlobalCoordinator: CoordinatorType {
             if sender.sessionService.state == .loggedIn {
                 sheet = link
             } else {
-                DispatchQueue.main.async {
-                    root = .library
-                    lastSelected = .library
-                }
+                sender.transition.send(.library)
+                sender.globalPackages.libraryStore.dispatch(.openLogin)
             }
         case .promo:
             sheet = link

@@ -1,28 +1,39 @@
 import SwiftUI
 import Combine
+import FirebaseAuth
 
 struct CreateView: View {
     let store: CreateStore
-    let initialItem: AppleApiItem
-    @Binding var id: UUID?
+    let appleItem: AppleApiItem
+    let originalLink: String
 
     @State private var titleField = ""
     @State private var descriptionField = ""
     @State private var image: Image?
-    
-    
-    
+
+    var userId: String? { Auth.auth().currentUser?.uid }
+
     var body: some View {
         VStack {
-            Text(initialItem.fields.name.value).bold()
-            Text(initialItem.created.deviceID)
-            Text(initialItem.fields.iconColor.type)
+            TextField("Enter title", text: $titleField)
+                .bold()
+
             imageView
                 .frame(width: 100, height: 100)
                 .cornerRadius(15)
 
-        }.onAppear {
-            if let stringUrl = initialItem.fields.icon.value.downloadURL
+            TextField("Enter description", text: $descriptionField)
+            .padding()
+
+            ButtonView(title: "Create") {
+                store.dispatch(.uploadNewItem(itemBySelf))
+            }
+            .padding()
+        }
+        .onAppear {
+            titleField = appleItem.fields.name.value
+            
+            if let stringUrl = appleItem.fields.icon.value.downloadURL
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                let url = URL(string: stringUrl) {
                 downloadImage(from: url)
@@ -36,7 +47,7 @@ struct CreateView: View {
         } else {
             ZStack {
                 Rectangle()
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.secondary.opacity(0.3))
 
                 HDotsProgress()
             }
@@ -54,7 +65,18 @@ struct CreateView: View {
             if let image = UIImage(data: data) {
                 self.image = Image(uiImage: image)
             }
-            
         }
+    }
+
+    var itemBySelf: Item {
+        Item(
+            id: UUID(),
+            userId: userId!,
+            title: titleField,
+            description: descriptionField,
+            iconUrl: appleItem.fields.icon.value.downloadURL,
+            originalUrl: originalLink,
+            createdAt: Date()
+        )
     }
 }

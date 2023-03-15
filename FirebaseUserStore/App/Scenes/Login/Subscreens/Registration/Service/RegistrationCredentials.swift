@@ -17,27 +17,3 @@ struct RegistrationCredentials {
     var firstName = ""
     var lastName = ""
 }
-extension RegistrationCredentials {
-    func credentialsField(_ field: RegistrationCredentialsField) -> String {
-        switch field {
-        case .email:
-            return self.email
-        case .phone:
-            return self.phone
-        case .password:
-            return self.password
-        case .conformPassword:
-            return self.conformPassword
-        case .firstName:
-            return self.firstName
-        case .lastName:
-            return self.lastName
-        }
-    }
-}
-
-enum RegistrationKeys: String {
-    case firstName
-    case lastName
-    case phone
-}

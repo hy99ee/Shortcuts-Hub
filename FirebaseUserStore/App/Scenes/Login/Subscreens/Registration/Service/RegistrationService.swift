@@ -18,30 +18,10 @@ final class RegistrationService: RegistrationServiceType {
                         if let err = error {
                             promise(.failure(.firebaseError(err)))
                         }
-                        if let uid = res?.user.uid {
-                            let values = [
-                                RegistrationKeys.firstName.rawValue: credentials.firstName,
-                                RegistrationKeys.lastName.rawValue: credentials.lastName,
-                                RegistrationKeys.phone.rawValue: credentials.phone
-                            ] as [String : Any]
-                            Database
-                                .database()
-                                .reference()
-                                .child("users")
-                                .child(uid)
-                                .updateChildValues(values) { error, ref in
-                                    if let err = error {
-                                        promise(.failure(.firebaseError(err)))
-                                    } else {
-                                        promise(.success(()))
-                                    }
-                                }
-                        }
-                        
+                        promise(.success(()))
                     }
             }
         }
-//        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 }

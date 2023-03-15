@@ -25,6 +25,7 @@ struct RegisterView: View {
             }
             singUpButtonView
         }
+        .modifier(DismissingKeyboard())
         .padding(15)
         .navigationTitle("Register")
         .onReceive(Publishers.keyboardVisible) { visible in
@@ -49,9 +50,6 @@ struct RegisterView: View {
             withAnimation {
                 errorButtonMessage = message
             }
-        }
-        .onAppear {
-            store.reinit()
         }
     }
 

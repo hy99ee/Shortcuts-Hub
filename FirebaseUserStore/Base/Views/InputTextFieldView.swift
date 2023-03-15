@@ -6,7 +6,6 @@ struct InputTextFieldView: View {
     private let placeholder: String
     private let keyboardType: UIKeyboardType
     private let systemImage: String?
-    private let withCleanButton: Bool
     @Binding var errorMessage: String?
     @Binding var isValid: Bool
 
@@ -15,6 +14,7 @@ struct InputTextFieldView: View {
     @FocusState private var focused: Bool
     private let textFieldLeading: CGFloat = 30
 
+    private let cleanHandler: (() -> ())?
     private let focusHandler: (() -> ())?
     private let unfocusHandler: (() -> ())?
     private let onChangeTextHandler: ((String) -> ())?
@@ -25,9 +25,9 @@ struct InputTextFieldView: View {
         placeholder: String,
         keyboardType: UIKeyboardType = .default,
         systemImage: String? = nil,
-        withCleanButton: Bool = false,
         errorMessage: Binding<String?> = .constant(nil),
         isValid: Binding<Bool> = .constant(true),
+        cleanHandler: (() -> ())? = nil,
         focusHandler: (() -> ())? = nil,
         unfocusHandler: (() -> ())? = nil,
         onChangeTextHandler: ((String) -> ())? = nil
@@ -37,9 +37,9 @@ struct InputTextFieldView: View {
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
-        self.withCleanButton = withCleanButton
         self._errorMessage = errorMessage
         self._isValid = isValid
+        self.cleanHandler = cleanHandler
         self.focusHandler = focusHandler
         self.unfocusHandler = unfocusHandler
         self.onChangeTextHandler = onChangeTextHandler
@@ -49,17 +49,16 @@ struct InputTextFieldView: View {
         text: Binding<String>,
         placeholder: String,
         keyboardType: UIKeyboardType,
-        systemImage: String?,
-        withCleanButton: Bool = false
+        systemImage: String?
     ) {
         self._text = text
         self.isSecureField = false
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.systemImage = systemImage
-        self.withCleanButton = withCleanButton
         self._isValid = .constant(true)
         self._errorMessage = .constant(nil)
+        self.cleanHandler = nil
         self.focusHandler = nil
         self.unfocusHandler = nil
         self.onChangeTextHandler = nil
@@ -74,22 +73,7 @@ struct InputTextFieldView: View {
                     Spacer()
                 }
             }
-
-            
-            HStack {
-                textView
-
-                if isShowCleanButton {
-                    Button {
-                        text = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 5)
-                }
-            }
-            
+            textView
         }
         .padding(3)
     }
@@ -98,7 +82,21 @@ struct InputTextFieldView: View {
         if isSecureField {
             SecureField(placeholder, text: $text)
         } else {
-            TextField(placeholder, text: $text)
+            HStack {
+                TextField(placeholder, text: $text)
+                if isShowCleanButton {
+                    Button {
+                        withAnimation {
+                            text = ""
+                            cleanHandler?()
+                        }
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.trailing, 5)
+                }
+            }
         }
     }
 
@@ -139,53 +137,13 @@ struct InputTextFieldView: View {
             .focused($focused)
             .onChange(of: text) { newValue in
                 onChangeTextHandler?(newValue)
-                if withCleanButton {
+                if cleanHandler != nil {
                     withAnimation {
                         isShowCleanButton = !newValue.isEmpty
                     }
                 }
             }
     }
-
-//    @State private var isBeginPhoneEditing = true
-//    private func phoneUdapter() {
-//        if text.isPhone {
-//            withAnimation {
-//                focused = false
-//            }
-//        }
-//    }
-//
-//    private func byPhoneTextModifier() {
-//        switch text.count {
-//        case 0:
-//            phonesChanges.updateValue(false, forKey: 1)
-//        case 1:
-//            if !(phonesChanges[1] ?? true) {
-//                text = "+7 (" + text
-//            }
-//            phonesChanges.updateValue(false, forKey: 8)
-//            phonesChanges.updateValue(true, forKey: 1)
-//        case 4:
-//            text = ""
-//        case 8:
-//            if !(phonesChanges[8] ?? true) {
-//                text = String(text.dropLast()) + ") - " + String(text.last!)
-//            }
-//            phonesChanges.updateValue(false, forKey: 13)
-//            phonesChanges.updateValue(true, forKey: 7)
-//        case 11:
-//            text = String(text.dropLast(4))
-//        case 15:
-//            if !(phonesChanges[13] ?? true) {
-//                text = String(text.dropLast()) + " - " + String(text.last!)
-//            }
-//            phonesChanges.updateValue(true, forKey: 13)
-//        case 17:
-//            text = String(text.dropLast(3))
-//        default: break
-//        }
-//    }
 }
 
 enum InputTextFieldStatus: Equatable {

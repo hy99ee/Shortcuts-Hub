@@ -52,6 +52,37 @@ final class SessionService: SessionServiceType, ObservableObject {
     func deleteUser() {
         Auth.auth().currentUser?.delete()
     }
+
+    func syncNewUserWithDatabase(_ credentials: RegistrationCredentials) -> AnyPublisher<Void, SessionServiceError> {
+        Deferred {
+            Future { promise in
+                let currentUser = Auth.auth().currentUser
+
+                guard let uid = currentUser?.uid else { return promise(.failure(.errorWithAuth)) }
+
+                let databaseUser = DatabaseUser(
+                    firstName: credentials.firstName,
+                    lastName: credentials.lastName,
+                    phone: credentials.phone,
+                    //                                savedIds: []
+                    savedIds: ["4716E007-FF50-41CC-ACA2-8960B549DACF"]
+                )
+                Database
+                    .database()
+                    .reference()
+                    .child("users")
+                    .child(uid)
+                    .updateChildValues(databaseUser.databaseFormat) { error, ref in
+                        if error != nil {
+                            return promise(.failure(.errorWithAuth))
+                        } else {
+                            return promise(.success(()))
+                        }
+                    }
+            }
+            
+        }.eraseToAnyPublisher()
+    }
 }
 
 private extension SessionService {
@@ -72,9 +103,10 @@ private extension SessionService {
                         .observe(.value) { [weak self] snapshot in
                             guard let self = self,
                                   let value = snapshot.value as? NSDictionary,
-                                  let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
-                                  let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let phone = value[RegistrationKeys.phone.rawValue] as? String,
+                                  let firstName = value[DatabaseUserKeys.firstName.rawValue] as? String,
+                                  let lastName = value[DatabaseUserKeys.lastName.rawValue] as? String,
+                                  let phone = value[DatabaseUserKeys.phone.rawValue] as? String,
+                                  let savedIds = value[DatabaseUserKeys.savedIds.rawValue] as? [String],
                                   let currentUser = currentUser else {
                                 self?.state = .loggedOut
                                 return
@@ -83,10 +115,12 @@ private extension SessionService {
                             DispatchQueue.main.async {
                                 self.state = .loggedIn
                                 self.userDetails = UserDetails(
-                                    storage: UserStorageDetails(
+                                    value: DatabaseUser(
                                         firstName: firstName,
                                         lastName: lastName,
-                                        phone: phone),
+                                        phone: phone,
+                                        savedIds: savedIds
+                                    ),
                                     auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
                                 )
                             }
@@ -97,7 +131,7 @@ private extension SessionService {
             }
     }
 
-    private func auth() -> AnyPublisher<UserDetails?, SessionServiceError>  {
+    func auth() -> AnyPublisher<UserDetails?, SessionServiceError>  {
         Deferred {
             Future { promise in
                 let currentUser = Auth.auth().currentUser
@@ -109,21 +143,23 @@ private extension SessionService {
                         .child("users")
                         .child(uid)
                         .observe(.value) { snapshot in
-                            
                             guard
                                   let value = snapshot.value as? NSDictionary,
-                                  let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
-                                  let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let phone = value[RegistrationKeys.phone.rawValue] as? String,
+                                  let firstName = value[DatabaseUserKeys.firstName.rawValue] as? String,
+                                  let lastName = value[DatabaseUserKeys.lastName.rawValue] as? String,
+                                  let phone = value[DatabaseUserKeys.phone.rawValue] as? String,
+                                  let savedIds = value[DatabaseUserKeys.savedIds.rawValue] as? [String],
                                   let currentUser = currentUser else {
                                 return promise(.success(nil))
                             }
-                            
+
                             let userDetails = UserDetails(
-                                storage: UserStorageDetails(
+                                value: DatabaseUser(
                                     firstName: firstName,
                                     lastName: lastName,
-                                    phone: phone),
+                                    phone: phone,
+                                    savedIds: savedIds
+                                ),
                                 auth: UserAuthDetails(email: (mail: currentUser.email ?? "", isVerified: currentUser.isEmailVerified))
                             )
                             promise(.success(userDetails))
@@ -135,13 +171,12 @@ private extension SessionService {
         }
         .eraseToAnyPublisher()
     }
-     
 }
 
 final class MockSessionService: SessionServiceType, ObservableObject {
     @Published var state: SessionState = .loggedOut
     @Published var userDetails: UserDetails? = UserDetails(
-        storage: UserStorageDetails(firstName: "Name", lastName: "Surname", phone: "89008007060"),
+        value: DatabaseUser(firstName: "Name", lastName: "Surname", phone: "89008007060", savedIds: []),
         auth: UserAuthDetails(email: (mail: "string@gmail.com", isVerified: false))
         )
 
@@ -160,14 +195,8 @@ enum SessionState {
 }
 
 struct UserDetails {
-    let storage: UserStorageDetails
+    let value: DatabaseUser
     let auth: UserAuthDetails
-}
-
-struct UserStorageDetails {
-    let firstName: String
-    let lastName: String
-    let phone: String
 }
 
 struct UserAuthDetails {
