@@ -128,6 +128,19 @@
 		3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE62899AF6C001D64E2 /* SessionService.swift */; };
 		3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */; };
 		3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD76EF928A1ABD2001D64E2 /* Item.swift */; };
+		3BDAAEB529C2535A0064F7D0 /* SavedItemsServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEA529C2535A0064F7D0 /* SavedItemsServiceType.swift */; };
+		3BDAAEB629C2535A0064F7D0 /* SavedItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEA629C2535A0064F7D0 /* SavedItemsService.swift */; };
+		3BDAAEB729C2535A0064F7D0 /* MockSavedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEA729C2535A0064F7D0 /* MockSavedService.swift */; };
+		3BDAAEB829C2535A0064F7D0 /* SavedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEA929C2535A0064F7D0 /* SavedCollectionView.swift */; };
+		3BDAAEB929C2535A0064F7D0 /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEAA29C2535A0064F7D0 /* SavedView.swift */; };
+		3BDAAEBA29C2535A0064F7D0 /* SavedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEAB29C2535A0064F7D0 /* SavedCoordinator.swift */; };
+		3BDAAEBB29C2535A0064F7D0 /* SavedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEAD29C2535A0064F7D0 /* SavedStore.swift */; };
+		3BDAAEBC29C2535A0064F7D0 /* SavedMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEAE29C2535A0064F7D0 /* SavedMutation.swift */; };
+		3BDAAEBD29C2535A0064F7D0 /* SavedReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEAF29C2535A0064F7D0 /* SavedReducer.swift */; };
+		3BDAAEBE29C2535A0064F7D0 /* SavedPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB029C2535A0064F7D0 /* SavedPackages.swift */; };
+		3BDAAEBF29C2535A0064F7D0 /* SavedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB129C2535A0064F7D0 /* SavedDispatcher.swift */; };
+		3BDAAEC029C2535A0064F7D0 /* SavedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB229C2535A0064F7D0 /* SavedAction.swift */; };
+		3BDAAEC129C2535A0064F7D0 /* SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB329C2535A0064F7D0 /* SavedState.swift */; };
 		3BE4C1D8298592AE000B43BD /* PublicItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE4C1D7298592AE000B43BD /* PublicItemsService.swift */; };
 		3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4A294241A4004B4423 /* ImageView.swift */; };
 		3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4C2943362E004B4423 /* FeedCellView.swift */; };
@@ -244,6 +257,19 @@
 		3BD76EE62899AF6C001D64E2 /* SessionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionService.swift; sourceTree = "<group>"; };
 		3BD76EE92899AF6C001D64E2 /* NavigationCloseViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationCloseViewModifier.swift; sourceTree = "<group>"; };
 		3BD76EF928A1ABD2001D64E2 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		3BDAAEA529C2535A0064F7D0 /* SavedItemsServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedItemsServiceType.swift; sourceTree = "<group>"; };
+		3BDAAEA629C2535A0064F7D0 /* SavedItemsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedItemsService.swift; sourceTree = "<group>"; };
+		3BDAAEA729C2535A0064F7D0 /* MockSavedService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSavedService.swift; sourceTree = "<group>"; };
+		3BDAAEA929C2535A0064F7D0 /* SavedCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCollectionView.swift; sourceTree = "<group>"; };
+		3BDAAEAA29C2535A0064F7D0 /* SavedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
+		3BDAAEAB29C2535A0064F7D0 /* SavedCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCoordinator.swift; sourceTree = "<group>"; };
+		3BDAAEAD29C2535A0064F7D0 /* SavedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedStore.swift; sourceTree = "<group>"; };
+		3BDAAEAE29C2535A0064F7D0 /* SavedMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedMutation.swift; sourceTree = "<group>"; };
+		3BDAAEAF29C2535A0064F7D0 /* SavedReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedReducer.swift; sourceTree = "<group>"; };
+		3BDAAEB029C2535A0064F7D0 /* SavedPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedPackages.swift; sourceTree = "<group>"; };
+		3BDAAEB129C2535A0064F7D0 /* SavedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedDispatcher.swift; sourceTree = "<group>"; };
+		3BDAAEB229C2535A0064F7D0 /* SavedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedAction.swift; sourceTree = "<group>"; };
+		3BDAAEB329C2535A0064F7D0 /* SavedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedState.swift; sourceTree = "<group>"; };
 		3BE4C1D7298592AE000B43BD /* PublicItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicItemsService.swift; sourceTree = "<group>"; };
 		3BE57E4A294241A4004B4423 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		3BE57E4C2943362E004B4423 /* FeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellView.swift; sourceTree = "<group>"; };
@@ -505,6 +531,7 @@
 		3B9B07E729BF2C1600CCEC10 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				3BDAAEA129C2535A0064F7D0 /* Saved */,
 				3BD76EDD2899AF6C001D64E2 /* Login */,
 				3B703D61296ACE3400F43A45 /* Global */,
 				3BE2C2362985906700BD6BDB /* Feed */,
@@ -673,6 +700,50 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		3BDAAEA129C2535A0064F7D0 /* Saved */ = {
+			isa = PBXGroup;
+			children = (
+				3BDAAEA429C2535A0064F7D0 /* Service */,
+				3BDAAEA829C2535A0064F7D0 /* Views */,
+				3BDAAEAC29C2535A0064F7D0 /* Store */,
+			);
+			path = Saved;
+			sourceTree = "<group>";
+		};
+		3BDAAEA429C2535A0064F7D0 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				3BDAAEA529C2535A0064F7D0 /* SavedItemsServiceType.swift */,
+				3BDAAEA629C2535A0064F7D0 /* SavedItemsService.swift */,
+				3BDAAEA729C2535A0064F7D0 /* MockSavedService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		3BDAAEA829C2535A0064F7D0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3BDAAEA929C2535A0064F7D0 /* SavedCollectionView.swift */,
+				3BDAAEAA29C2535A0064F7D0 /* SavedView.swift */,
+				3BDAAEAB29C2535A0064F7D0 /* SavedCoordinator.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3BDAAEAC29C2535A0064F7D0 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3BDAAEAD29C2535A0064F7D0 /* SavedStore.swift */,
+				3BDAAEAE29C2535A0064F7D0 /* SavedMutation.swift */,
+				3BDAAEAF29C2535A0064F7D0 /* SavedReducer.swift */,
+				3BDAAEB029C2535A0064F7D0 /* SavedPackages.swift */,
+				3BDAAEB129C2535A0064F7D0 /* SavedDispatcher.swift */,
+				3BDAAEB229C2535A0064F7D0 /* SavedAction.swift */,
+				3BDAAEB329C2535A0064F7D0 /* SavedState.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
 		3BE2C2362985906700BD6BDB /* Feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -838,6 +909,8 @@
 				3B27A57D29A613D600CF9A5F /* CreatePackages.swift in Sources */,
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */,
+				3BDAAEB529C2535A0064F7D0 /* SavedItemsServiceType.swift in Sources */,
+				3BDAAEC029C2535A0064F7D0 /* SavedAction.swift in Sources */,
 				3B5CA9272992609D00E16151 /* LibraryAction.swift in Sources */,
 				3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */,
 				3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */,
@@ -847,10 +920,13 @@
 				3B205AD229B77E0600F75C8B /* AppearanceButton.swift in Sources */,
 				3B703D552967366500F43A45 /* ForgotState.swift in Sources */,
 				3B00F002293F678C0056B5C9 /* LaoderItem.swift in Sources */,
+				3BDAAEB829C2535A0064F7D0 /* SavedCollectionView.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */,
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */,
+				3BDAAEB629C2535A0064F7D0 /* SavedItemsService.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
+				3BDAAEBA29C2535A0064F7D0 /* SavedCoordinator.swift in Sources */,
 				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
 				3B205AD729B9D29400F75C8B /* ProcessStatus.swift in Sources */,
 				3BAB792E29C1DA76003A0634 /* DatabaseUser.swift in Sources */,
@@ -858,6 +934,7 @@
 				3BD6489B290D330C0029F4E9 /* Array.swift in Sources */,
 				3B7AE4D5296C6085002A9948 /* RegisterationState.swift in Sources */,
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
+				3BDAAEB929C2535A0064F7D0 /* SavedView.swift in Sources */,
 				3B0976B529BDE2AD007665BB /* LoginCredentials.swift in Sources */,
 				3B5CA9152992609D00E16151 /* AboutView.swift in Sources */,
 				3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */,
@@ -874,8 +951,10 @@
 				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
 				3B5CA9292992609D00E16151 /* LibraryCoordinator.swift in Sources */,
+				3BDAAEBD29C2535A0064F7D0 /* SavedReducer.swift in Sources */,
 				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
 				3B205AD529B9D28800F75C8B /* ProgressStatus.swift in Sources */,
+				3BDAAEBB29C2535A0064F7D0 /* SavedStore.swift in Sources */,
 				3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */,
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
 				3B5CA9232992609D00E16151 /* LibraryDispatcher.swift in Sources */,
@@ -901,8 +980,10 @@
 				3B5CA9252992609D00E16151 /* LibraryState.swift in Sources */,
 				3BD76EF22899AF6C001D64E2 /* LoginService.swift in Sources */,
 				3B5CA9182992609D00E16151 /* UserItemsService.swift in Sources */,
+				3BDAAEBC29C2535A0064F7D0 /* SavedMutation.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3B0976B329BDE24E007665BB /* RegistrationCredentials.swift in Sources */,
+				3BDAAEB729C2535A0064F7D0 /* MockSavedService.swift in Sources */,
 				3B5CA92B2992609D00E16151 /* LibraryPackages.swift in Sources */,
 				3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */,
 				3BB7861B294886D400012DB0 /* Progress.swift in Sources */,
@@ -910,6 +991,7 @@
 				3B27A57E29A613D600CF9A5F /* CreateMutation.swift in Sources */,
 				3BD76EEC2899AF6C001D64E2 /* RegistrationService.swift in Sources */,
 				3BE4C1D8298592AE000B43BD /* PublicItemsService.swift in Sources */,
+				3BDAAEC129C2535A0064F7D0 /* SavedState.swift in Sources */,
 				3B27A57B29A613D600CF9A5F /* CreateDispatcher.swift in Sources */,
 				3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */,
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
@@ -921,6 +1003,7 @@
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
+				3BDAAEBF29C2535A0064F7D0 /* SavedDispatcher.swift in Sources */,
 				3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* FeedCellView.swift in Sources */,
 				3B5CA9242992609D00E16151 /* LibraryReducer.swift in Sources */,
@@ -938,6 +1021,7 @@
 				3B703D572967366500F43A45 /* ForgotAction.swift in Sources */,
 				3B45AC0A292BC8AC002531D8 /* LoginAction.swift in Sources */,
 				3B9B07E629BF2BBF00CCEC10 /* AppleApiItem.swift in Sources */,
+				3BDAAEBE29C2535A0064F7D0 /* SavedPackages.swift in Sources */,
 				3B40EBCF2976CDD800200BB5 /* String.swift in Sources */,
 				3B81C4F429251FF70008BD8E /* SessionServiceError.swift in Sources */,
 				3B0976B729BF2875007665BB /* CreateAppleLinkEnterView.swift in Sources */,

@@ -1,0 +1,24 @@
+import Foundation
+import Combine
+
+enum SavedMutation: Mutation {
+    case updateItemsPreloaders(count: Int)
+    case fetchedItems(newItems: [Item])
+    case fetchedNewItems(_ items: [Item])
+
+    case searchItems(_ items: [Item])
+    case cancelSearch
+    case setSearchFilter(_ text: String)
+
+    case fastUpdate
+
+    case detail(item: Item)
+
+    case empty
+
+    case errorAlert(error: Error)
+    case errorSaved
+
+    case progressButton(status: ProgressViewStatus)
+    case progressView(status: ProgressViewStatus)
+}
