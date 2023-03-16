@@ -6,15 +6,13 @@ enum LibraryAction: Action, Hashable {
     case next
 
     case search(text: String)
-    case cancelSearch
+    case changeSearchField(_ newText: String)
 
     case click(_ item: Item)
 
     case addItems(items: [Item])
     case updateItem(id: UUID)
     case removeItem(id: UUID)
-
-    case changeSearchField(_ newText: String)
 
     case showAboutSheet
     case showAlert(error: Error)
@@ -64,8 +62,6 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(16)
         case .next:
             hasher.combine(17)
-        case .cancelSearch:
-            hasher.combine(18)
         }
     }
 

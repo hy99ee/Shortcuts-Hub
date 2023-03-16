@@ -38,21 +38,16 @@ struct SavedView: View {
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .sink { store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
-
-        search
-            .filter { $0.isEmpty }
-            .map { _ in }
-            .sink { store.dispatch(.cancelSearch) }
-            .store(in: &subscriptions)
     }
     var body: some View {
         VStack {
-            if store.state.loginState == .loading {
-                unknownUserView
-            } else if store.state.showEmptyView {
+            if let showEmpty = store.state.showEmptyView, showEmpty {
                 emptyView
-            } else if store.state.showErrorView {
+            } else if let showError = store.state.showErrorView, showError {
                 updateableErrorView
+            } else if store.state.showErrorView == nil, store.state.showEmptyView == nil {
+                Text("")
+                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress))
             } else {
                 SavedCollectionView(store: store, searchBinding: searchBinding)
             }
@@ -99,7 +94,11 @@ struct SavedView: View {
         }
     }
 
-    private var unknownUserView: some View {
-        Text("")
+    private var loadingView: some View {
+        VStack {
+//            Spacer()
+            HDotsProgress()
+//            Spacer()
+        }
     }
 }

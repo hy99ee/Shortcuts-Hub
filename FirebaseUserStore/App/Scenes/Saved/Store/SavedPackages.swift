@@ -5,21 +5,22 @@ protocol SavedPackagesType: EnvironmentPackages {
     associatedtype PackageItemsService: ItemsServiceType
 
     var itemsService: PackageItemsService! { get }
-    var loginStore: LoginStore { get }
 }
 
 class SavedPackages: SavedPackagesType {
-    private(set) var itemsService: UserItemsService!
-
-    lazy var loginStore = LoginStore(
-        state: LoginState(),
-        dispatcher: loginDispatcher,
-        reducer: loginReducer,
-        packages: LoginPackages()
-    )
+    private(set) var itemsService: SavedItemsService!
+    private var subscriptions = Set<AnyCancellable>()
 
     init() {
         itemsService = _itemsService
+
+        sessionService.$userDetails
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [unowned self]  in
+                self.itemsService = SavedItemsService(user: $0.value)
+            }
+            .store(in: &subscriptions)
     }
 
     func reinit() -> Self {
@@ -29,17 +30,10 @@ class SavedPackages: SavedPackagesType {
     }
 
     private var _itemsService: PackageItemsService {
-        UserItemsService(userId: Auth.auth().currentUser?.uid)
+        SavedItemsService(user: sessionService.userDetails?.value)
     }
 }
 
 class _SavedPackages: SavedPackagesType, Unreinitable {
-    lazy var loginStore = LoginStore(
-        state: LoginState(),
-        dispatcher: loginDispatcher,
-        reducer: loginReducer,
-        packages: LoginPackages()
-    )
-
     lazy var itemsService: MockSavedService! = MockSavedService()
 }

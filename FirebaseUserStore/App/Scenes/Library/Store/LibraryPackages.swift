@@ -11,14 +11,10 @@ protocol LibraryPackagesType: EnvironmentPackages {
 class LibraryPackages: LibraryPackagesType {
     private(set) var itemsService: UserItemsService!
 
-    lazy var loginStore = LoginStore(
-        state: LoginState(),
-        dispatcher: loginDispatcher,
-        reducer: loginReducer,
-        packages: LoginPackages()
-    )
+    let loginStore: LoginStore
 
-    init() {
+    init(loginStore: LoginStore) {
+        self.loginStore = loginStore
         itemsService = _itemsService
     }
 

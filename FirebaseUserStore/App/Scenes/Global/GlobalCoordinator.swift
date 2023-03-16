@@ -4,6 +4,7 @@ import Combine
 enum GlobalLink: TransitionType {
     case gallery
     case create
+    case saved
     case library
 
     case progress
@@ -12,7 +13,7 @@ enum GlobalLink: TransitionType {
 
     var id: String {
         switch self {
-        case .gallery, .create, .library, .progress, .promo:
+        case .gallery, .create, .saved, .library, .progress, .promo:
             return String(describing: self)
         }
     }
@@ -30,7 +31,7 @@ struct GlobalCoordinator: CoordinatorType {
 
     init() {
         sender = GlobalSender()
-        stateReceiver = self.sender.transition.eraseToAnyPublisher()
+        stateReceiver = self.sender.transition.print("PPPP").eraseToAnyPublisher()
     }
     
     var view: AnyView {
@@ -39,7 +40,7 @@ struct GlobalCoordinator: CoordinatorType {
 
     func transitionReceiver(_ link: GlobalLink) {
         switch link {
-        case .gallery, .library:
+        case .gallery, .saved, .library:
             root = link
             lastSelected = link
         case .create:
@@ -69,16 +70,20 @@ struct GlobalCoordinator: CoordinatorType {
         TabView(selection: $root) {
             gallery.tag(GlobalLink.gallery).tabItem { tabLabel(for: .gallery) }
             create.tag(GlobalLink.create).tabItem { tabLabel(for: .create) }
+            saved.tag(GlobalLink.saved).tabItem { tabLabel(for: .saved) }
             library.tag(GlobalLink.library).tabItem { tabLabel(for: .library) }
         }
         .onChange(of: root) {
             if $0 == .create {
                 sender.openCreate(last: lastSelected)
+            } else {
+                lastSelected = root
             }
         }
         .onChange(of: sheet) {
             if $0 == nil, let id = idForCreatingItem {
                 sender.globalPackages.libraryStore.dispatch(.updateItem(id: id))
+                sender.globalPackages.savedStore.dispatch(.updateItem(id: id))
                 idForCreatingItem = nil
             }
         }
@@ -86,6 +91,10 @@ struct GlobalCoordinator: CoordinatorType {
 
     private var gallery: some View {
         FeedCoordinator(store: sender.globalPackages.feedStore)
+    }
+
+    private var saved: some View {
+        SavedCoordinator(store: sender.globalPackages.savedStore)
     }
 
     private var library: some View {
@@ -114,6 +123,8 @@ struct GlobalCoordinator: CoordinatorType {
             return Label("Gallery", systemImage: "sparkles.rectangle.stack")
         case .create:
             return Label("", systemImage: "plus.circle")
+        case .saved:
+            return Label("Saved", systemImage: "heart.rectangle")
         case .library:
             return Label("Library", systemImage: "person.crop.rectangle.fill")
         default:

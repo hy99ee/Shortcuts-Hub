@@ -35,6 +35,7 @@ struct SavedCollectionView: View {
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
                                     }
+                                    padding(3)
                                 }
                             }
                             .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
@@ -78,7 +79,7 @@ struct SavedCollectionView: View {
                                 }
                             }
                         }
-//                        .animation(.spring().speed(0.8), value: store.state.items)
+                        .animation(.spring().speed(0.8), value: store.state.items)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                     }
                 }

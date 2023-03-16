@@ -1,10 +1,3 @@
-//
-//  User.swift
-//  FirebaseUserStore
-//
-//  Created by hy99ee on 15.03.2023.
-//
-
 import Foundation
 enum DatabaseUserKeys: String {
     case firstName
@@ -13,11 +6,11 @@ enum DatabaseUserKeys: String {
     case savedIds
 }
 
-struct DatabaseUser {
+struct DatabaseUser: Equatable {
     let firstName: String
     let lastName: String
     let phone: String
-    let savedIds: [String]
+    var savedIds: [String]
 
     var databaseFormat: [String: Any] {
         [
@@ -27,4 +20,9 @@ struct DatabaseUser {
             DatabaseUserKeys.savedIds.rawValue: self.savedIds
         ]
     }
+}
+
+enum DatabaseUserMutation {
+    case addIds(_ id: String)
+    case removeIds(_ id: String)
 }

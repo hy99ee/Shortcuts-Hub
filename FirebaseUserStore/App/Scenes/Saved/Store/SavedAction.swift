@@ -6,11 +6,11 @@ enum SavedAction: Action, Hashable {
     case next
 
     case search(text: String)
-    case cancelSearch
+    case changeSearchField(_ newText: String)
+
+    case updateItem(id: UUID)
 
     case click(_ item: Item)
-
-    case changeSearchField(_ newText: String)
 
     case showAlert(error: Error)
     case showSavedError
@@ -20,25 +20,25 @@ enum SavedAction: Action, Hashable {
     func hash(into hasher: inout Hasher) {
         switch self {
         case .initSaved:
-            hasher.combine(-1)
-        case .updateSaved:
             hasher.combine(0)
+        case .updateSaved:
+            hasher.combine(1)
         case .click:
             hasher.combine(2)
         case .search:
-            hasher.combine(6)
+            hasher.combine(3)
         case .showAlert:
-            hasher.combine(9)
+            hasher.combine(4)
         case .showSavedError:
-            hasher.combine(10)
+            hasher.combine(5)
         case .changeSearchField:
-            hasher.combine(15)
+            hasher.combine(6)
         case .mockAction:
-            hasher.combine(16)
+            hasher.combine(7)
         case .next:
-            hasher.combine(17)
-        case .cancelSearch:
-            hasher.combine(18)
+            hasher.combine(8)
+        case .updateItem:
+            hasher.combine(9)
         }
     }
 

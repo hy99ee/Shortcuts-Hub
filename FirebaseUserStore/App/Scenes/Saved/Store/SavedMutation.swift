@@ -5,12 +5,12 @@ enum SavedMutation: Mutation {
     case updateItemsPreloaders(count: Int)
     case fetchedItems(newItems: [Item])
     case fetchedNewItems(_ items: [Item])
+    case fastUpdate
 
     case searchItems(_ items: [Item])
-    case cancelSearch
     case setSearchFilter(_ text: String)
 
-    case fastUpdate
+    case newItem(item: Item)
 
     case detail(item: Item)
 

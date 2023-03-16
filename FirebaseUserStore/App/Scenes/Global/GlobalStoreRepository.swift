@@ -22,7 +22,15 @@ final class GlobalStoreRepository {
         packages: LoginPackages()
     )
 
-    private lazy var libraryPackages = LibraryPackages()
+    lazy var savedStore = SavedStore(
+        state: SavedState(),
+        dispatcher: savedDispatcher,
+        reducer: savedReducer,
+        packages: SavedPackages(),
+        middlewares: [SavedStore.middlewareUpdateCheck]
+    )
+
+    private lazy var libraryPackages = LibraryPackages(loginStore: loginStore)
 
     lazy var libraryStore = LibraryStore(
         state: LibraryState(),

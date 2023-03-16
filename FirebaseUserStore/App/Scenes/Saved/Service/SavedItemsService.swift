@@ -77,7 +77,7 @@ final class SavedItemsService: SavedItemsServiceType {
                     let collection = self.db.collection(Self.collectionName)
                     let query = collection
                         .whereField("id", in: user.savedIds)
-                        .order(by: "createdAt", descending: true)
+//                        .order(by: "createdAt", descending: true)
 
                     let countQuery = query.count
 

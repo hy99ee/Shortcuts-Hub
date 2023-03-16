@@ -83,6 +83,45 @@ final class SessionService: SessionServiceType, ObservableObject {
             
         }.eraseToAnyPublisher()
     }
+
+    func updateDatabaseUser(with mutation: DatabaseUserMutation) -> AnyPublisher<Void, SessionServiceError> {
+        Deferred {
+            Future {[weak self] promise in
+                let currentUser = Auth.auth().currentUser
+                
+                guard
+                    let self,
+                    let uid = currentUser?.uid,
+                    let userDetails = self.userDetails
+                else { return promise(.failure(.errorWithAuth)) }
+
+                var databaseUser = userDetails.value
+                switch mutation {
+                case let .addIds(id):
+                    databaseUser.savedIds.append(id)
+                case let .removeIds(id):
+                    databaseUser.savedIds = databaseUser.savedIds.filter { $0 != id }
+                }
+
+                Database
+                    .database()
+                    .reference()
+                    .child("users")
+                    .child(uid)
+                    .updateChildValues(databaseUser.databaseFormat) { error, ref in
+                        if error != nil {
+                            return promise(.failure(.errorWithAuth))
+                        } else {
+                            self.userDetails = UserDetails(
+                                value: databaseUser,
+                                auth: userDetails.auth
+                            )
+                            return promise(.success(()))
+                        }
+                    }
+            }
+        }.eraseToAnyPublisher()
+    }
 }
 
 private extension SessionService {
@@ -194,11 +233,15 @@ enum SessionState {
     case loading
 }
 
-struct UserDetails {
+struct UserDetails: Equatable {
     let value: DatabaseUser
     let auth: UserAuthDetails
 }
 
-struct UserAuthDetails {
+struct UserAuthDetails: Equatable {
     let email: (String, isVerified: Bool)
+
+    static func == (lhs: UserAuthDetails, rhs: UserAuthDetails) -> Bool {
+        lhs.email == rhs.email
+    }
 }

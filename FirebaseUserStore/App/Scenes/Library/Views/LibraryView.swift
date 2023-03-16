@@ -39,11 +39,11 @@ struct LibraryView: View {
             .sink { store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
 
-        search
-            .filter { $0.isEmpty }
-            .map { _ in }
-            .sink { store.dispatch(.cancelSearch) }
-            .store(in: &subscriptions)
+//        search
+//            .filter { $0.isEmpty }
+//            .map { _ in }
+//            .sink { store.dispatch(.changeSearchField("")) }
+//            .store(in: &subscriptions)
     }
     var body: some View {
         VStack {

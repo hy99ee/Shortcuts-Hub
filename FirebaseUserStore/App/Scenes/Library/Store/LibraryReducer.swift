@@ -32,12 +32,12 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .searchItems(items):
         state.searchedItems = items
 
-    case .cancelSearch:
-        state.searchedItems = nil
-        state.searchFilter = ""
-
     case let .setSearchFilter(text):
         state.searchFilter = text
+
+        if text.isEmpty {
+            state.searchedItems = nil
+        }
 
     case .empty:
         emptyData()
@@ -54,7 +54,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .addItems(items):
         state.items.append(contentsOf: items)
 
-    case let .newItem(item, lastDate):
+    case let .newItem(item):
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
         }

@@ -7,14 +7,13 @@ enum LibraryMutation: Mutation {
     case fetchedNewItems(_ items: [Item])
 
     case searchItems(_ items: [Item])
-    case cancelSearch
     case setSearchFilter(_ text: String)
 
     case fastUpdate
 
     case detail(item: Item)
 
-    case newItem(item: Item, lastDate: Date?)
+    case newItem(item: Item)
     case addItems(items: [Item])
     case removeItem(id: UUID)
     case empty

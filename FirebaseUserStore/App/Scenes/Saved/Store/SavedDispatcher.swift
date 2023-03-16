@@ -6,7 +6,7 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
     switch action {
     case .initSaved, .updateSaved:
         return mutationFetchItems(packages: packages)
-            .merge(with: Just(.cancelSearch))
+            .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .search(text):
@@ -15,9 +15,6 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
             .eraseToAnyPublisher()
 
-    case .cancelSearch:
-        return Just(SavedMutation.cancelSearch).eraseToAnyPublisher()
-
     case .next:
         return mutationNextItems(packages: packages)
             .merge(with: Just(SavedMutation.setSearchFilter("")))
@@ -25,6 +22,9 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
 
     case let .click(item):
         return Just(.detail(item: item)).eraseToAnyPublisher()
+
+    case let .updateItem(id):
+        return mutationFetchItem(by: id, packages: packages)
     
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
@@ -93,7 +93,17 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
+    func mutationFetchItem(by id: UUID, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
+        packages.itemsService.fetchItem(id)
+            .flatMap { item in
+                packages.sessionService.updateDatabaseUser(with: .addIds(id.uuidString))
+                    .mapError { _ in ItemsServiceError.userDatabaseError }
+                    .map { _ in item }
+            }
+            .map { .newItem(item: $0) }
+            .catch { Just(.errorAlert(error: $0)) }
+            .eraseToAnyPublisher()
+    }
     func mutationSearchItems(by text: String, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text.lowercased())
 

@@ -6,7 +6,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .initLibrary, .updateLibrary:
         return mutationFetchItems(packages: packages)
-            .merge(with: Just(.cancelSearch))
+            .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .search(text):
@@ -14,9 +14,6 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return mutationSearchItems(by: text, packages: packages)
             .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
             .eraseToAnyPublisher()
-
-    case .cancelSearch:
-        return Just(LibraryMutation.cancelSearch).eraseToAnyPublisher()
 
     case .next:
         return mutationNextItems(packages: packages)
@@ -119,7 +116,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     }
     func mutationFetchItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.fetchItem(id)
-            .map { .newItem(item: $0, lastDate: packages.itemsService.itemsServiceCursor?.date) }
+            .flatMap { item in
+                packages.sessionService.updateDatabaseUser(with: .addIds(id.uuidString))
+                    .mapError { _ in ItemsServiceError.userDatabaseError }
+                    .map { _ in item }
+            }
+            .map { .newItem(item: $0) }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

@@ -5,6 +5,7 @@ enum ItemsServiceError: Error {
 
     case firebaseError(_ error: Error)
     case appleError(_ error: Error)
+    case userDatabaseError
 
     case invalidUserId
     case invalidSnapshot
@@ -53,6 +54,12 @@ extension ItemsServiceError: LocalizedError {
 
         case let .appleError(error):
             return error.localizedDescription
+
+        case .userDatabaseError:
+            return NSLocalizedString(
+                "Error with update user data",
+                comment: "Resource Not Found"
+            )
             
         case .unknownError:
             return NSLocalizedString(

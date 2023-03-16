@@ -10,7 +10,7 @@ class GlobalSender: TransitionSender {
     private lazy var isFirstOpenKey = "isFirstOpen"
     private lazy var isFirstOpen = UserDefaults.standard.bool(forKey: isFirstOpenKey)
     
-    var subscriptions = Set<AnyCancellable>()
+    private var subscriptions = Set<AnyCancellable>()
     
     init() {
         sessionService.$state
@@ -26,24 +26,6 @@ class GlobalSender: TransitionSender {
                 case .loading: return GlobalLink.progress
                 }
             }
-//            .flatMap { [weak self] state -> AnyPublisher<GlobalLink, Never> in
-//                guard let self else { return Empty().eraseToAnyPublisher() }
-//
-//                let sessionState = Just(state).share().eraseToAnyPublisher()
-//                if case GlobalLink.gallery = state {
-//                    return Publishers.Merge(
-//                        sessionState,
-//                        Just(GlobalLink.promo)
-//                            .handleEvents(receiveOutput: { _ in
-//                                self.isFirstOpen = false
-//                                UserDefaults.standard.set(self.isFirstOpen, forKey: self.isFirstOpenKey)
-//                            })
-//                            .delay(for: .seconds(3), scheduler: DispatchQueue.main)
-//                    ).eraseToAnyPublisher()
-//                }
-//
-//                return sessionState
-//            }
             .receive(on: DispatchQueue.main)
             .subscribe(on: DispatchQueue.main)
             .subscribe(transition)

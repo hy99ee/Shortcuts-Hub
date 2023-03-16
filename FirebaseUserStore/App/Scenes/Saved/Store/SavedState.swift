@@ -20,8 +20,8 @@ struct SavedState: StateType {
 
     var searchFilter = ""
 
-    var showEmptyView = false
-    var showErrorView = false
+    var showEmptyView: Bool?
+    var showErrorView: Bool?
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

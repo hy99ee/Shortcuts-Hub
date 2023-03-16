@@ -18,5 +18,18 @@ extension SavedStore {
         }
     }
 
+    static let middlewareUpdateCheck: SavedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+        if action == .initSaved, !state.items.isEmpty {
+            return Fail(
+                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                    actions: []
+                )
+            ).eraseToAnyPublisher()
+        }
+
+        return Just(action)
+            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
+    }
     
 }
