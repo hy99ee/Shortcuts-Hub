@@ -6,13 +6,23 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
     switch action {
     case .initSaved, .updateSaved:
         return mutationFetchItems(packages: packages)
+            .withStatus(
+                start: .progressView(status: .start),
+                finish: .progressView(status: .stop)
+            )
             .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
+        
+    case .initLocalSaved, .updateLocalSaved, .localSearch:
+        return Just(SavedMutation.fetchedItems(newItems: mockItems)).eraseToAnyPublisher()
 
     case let .search(text):
         if text.isEmpty { return mutationFetchItems(packages: packages) }
         return mutationSearchItems(by: text, packages: packages)
-            .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
+            .withStatus(
+                start: .progressView(status: .start),
+                finish: .progressView(status: .stop)
+            )
             .eraseToAnyPublisher()
 
     case .next:
@@ -23,9 +33,12 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
     case let .click(item):
         return Just(.detail(item: item)).eraseToAnyPublisher()
 
-    case let .updateItem(id):
-        return mutationFetchItem(by: id, packages: packages)
-    
+    case let .addItem(item):
+        return Just(.addItem(item)).eraseToAnyPublisher()
+
+    case let .removeItem(item):
+        return Just(.removeItem(item)).eraseToAnyPublisher()
+
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
@@ -42,40 +55,29 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
 
     // MARK: - Mutations
     func mutationFetchItems(packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
-        let fetchDocs = Publishers.Zip(
-            Just(Date.now)
-                .setFailureType(to: ItemsServiceError.self),
-            packages.itemsService.fetchQuery()
-                .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
-        )
-        .share()
+        var items = [Item]()
+        let itemsFromMultipleQuery = PassthroughSubject<SavedMutation, Never>()
 
-        let fetchFromDocs = fetchDocs
-            .map { $0.1.query }
+        packages.itemsService.fetchQuery()
+            .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .map { $0.query }
             .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .flatMap { packages.itemsService.fetchItemsFromQuery($0) }
-        
-        return Publishers.Merge(
-            fetchDocs
-                .map { (date, docs) in
-                    let timeSpent = Date.now.timeIntervalSinceReferenceDate - date.timeIntervalSinceReferenceDate
-                    if timeSpent < 1 { return .fastUpdate }
+            .sink(receiveCompletion: {
+                switch $0 {
+                case let .failure(error):
+                    itemsFromMultipleQuery.send(.errorAlert(error: error))
 
-                    if docs.count > 0 {
-                        return .updateItemsPreloaders(count: docs.count)
-                    } else {
-                        return .fastUpdate
-                    }
+                case .finished:
+                    itemsFromMultipleQuery.send(.fetchedItems(newItems: items.itemsByModified))
                 }
-                .catch { Just(.errorAlert(error: $0)) }
-                .eraseToAnyPublisher()
-                .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
-            , fetchFromDocs
-                .delay(for: .seconds(1), scheduler: DispatchQueue.main)
-                .map { .fetchedItems(newItems: $0) }
-                .catch { Just(.errorAlert(error: $0)) }
-        )
-        .eraseToAnyPublisher()
+            }, receiveValue: {
+                items.append(contentsOf: $0)
+            })
+            .store(in: &packages.subscriptions)
+
+        return itemsFromMultipleQuery
+            .eraseToAnyPublisher()
     }
     func mutationNextItems(packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
         guard let lastCount = packages.itemsService.itemsServiceCursor?.count, lastCount > 0 else {
@@ -93,27 +95,30 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    func mutationFetchItem(by id: UUID, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
-        packages.itemsService.fetchItem(id)
-            .flatMap { item in
-                packages.sessionService.updateDatabaseUser(with: .addIds(id.uuidString))
-                    .mapError { _ in ItemsServiceError.userDatabaseError }
-                    .map { _ in item }
-            }
-            .map { .newItem(item: $0) }
-            .catch { Just(.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
+
     func mutationSearchItems(by text: String, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
-        let fetchDocs = packages.itemsService.searchQuery(text.lowercased())
+        var items = [Item]()
+        let itemsFromMultipleQuery = PassthroughSubject<SavedMutation, Never>()
 
-        let fetchFromDocs = fetchDocs
-            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query, isPaginatable: false) }
+        packages.itemsService.searchQuery(text.lowercased())
+            .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .map { $0.query }
+            .delay(for: .milliseconds(500), scheduler: DispatchQueue.main)
+            .flatMap { packages.itemsService.fetchItemsFromQuery($0) }
+            .sink(receiveCompletion: {
+                switch $0 {
+                case let .failure(error):
+                    itemsFromMultipleQuery.send(.errorAlert(error: error))
 
-        return fetchFromDocs
-            .map { SavedMutation.searchItems($0) }
-            .catch { Just(.errorAlert(error: $0)) }
-            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+                case .finished:
+                    itemsFromMultipleQuery.send(.searchItems(items.itemsByModified))
+                }
+            }, receiveValue: {
+                items.append(contentsOf: $0)
+            })
+            .store(in: &packages.subscriptions)
+
+        return itemsFromMultipleQuery
             .eraseToAnyPublisher()
     }
 

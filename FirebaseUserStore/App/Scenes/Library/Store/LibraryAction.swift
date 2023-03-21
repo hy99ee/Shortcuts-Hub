@@ -10,9 +10,8 @@ enum LibraryAction: Action, Hashable {
 
     case click(_ item: Item)
 
-    case addItems(items: [Item])
-    case updateItem(id: UUID)
-    case removeItem(id: UUID)
+    case addItem(_ item: Item)
+    case removeItem(_ item: Item)
 
     case showAboutSheet
     case showAlert(error: Error)
@@ -34,9 +33,7 @@ enum LibraryAction: Action, Hashable {
             hasher.combine(0)
         case .click:
             hasher.combine(2)
-        case .addItems:
-            hasher.combine(3)
-        case .updateItem:
+        case .addItem:
             hasher.combine(33)
         case .removeItem:
             hasher.combine(5)

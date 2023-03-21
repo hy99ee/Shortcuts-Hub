@@ -9,29 +9,29 @@ protocol SavedPackagesType: EnvironmentPackages {
 
 class SavedPackages: SavedPackagesType {
     private(set) var itemsService: SavedItemsService!
-    private var subscriptions = Set<AnyCancellable>()
+    var subscriptions = Set<AnyCancellable>()
 
     init() {
-        itemsService = _itemsService
+//        itemsService = _itemsService
 
         sessionService.$userDetails
-            .compactMap { $0 }
+//            .dropFirst()
             .removeDuplicates()
-            .sink { [unowned self]  in
-                self.itemsService = SavedItemsService(user: $0.value)
+            .sink { [unowned self] in
+                self.itemsService = SavedItemsService(user: $0?.value)
             }
             .store(in: &subscriptions)
     }
 
     func reinit() -> Self {
-        self.itemsService = _itemsService
+//        self.itemsService = _itemsService
 
         return self
     }
-
-    private var _itemsService: PackageItemsService {
-        SavedItemsService(user: sessionService.userDetails?.value)
-    }
+//
+//    private var _itemsService: PackageItemsService {
+//        SavedItemsService(user: sessionService.userDetails?.value)
+//    }
 }
 
 class _SavedPackages: SavedPackagesType, Unreinitable {

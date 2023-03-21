@@ -21,7 +21,11 @@ let createDispatcher: DispatcherType<CreateAction, CreateMutation, LibraryPackag
     // MARK: - Mutations
     func mutationItemUpload(item: Item, _ packages: LibraryPackages) -> AnyPublisher<CreateMutation, Never> {
         packages.itemsService.uploadNewItem(item)
-            .map { _ in .itemUploaded(item) }
+            .flatMap { _ in
+                packages.sessionService.updateDatabaseUser(with: .add(item: item))
+                    .mapError { _ in ItemsServiceError.userDatabaseError }
+            }
+            .map { _ in .itemUploaded }
             .catch { _ in Just(.setError(.upload)) }
             .eraseToAnyPublisher()
     }

@@ -250,7 +250,7 @@ final class UserItemsService: UserItemsServiceType {
         }.eraseToAnyPublisher()
     }
 
-    func removeItem(_ id: UUID) -> AnyPublisher<UUID, ItemsServiceError> {
+    func removeItem(_ item: Item) -> AnyPublisher<UUID, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard
@@ -258,7 +258,7 @@ final class UserItemsService: UserItemsServiceType {
                 guard let userId = self.userId else { return promise(.failure(ServiceError.unauth)) }
 
                 let ref = self.db.collection(Self.collectionName)
-                    .whereField("id", isEqualTo: (id.uuidString))
+                    .whereField("id", isEqualTo: (item.id.uuidString))
                     .whereField("userId", isEqualTo: userId)
                     
                 var documentID: String?
@@ -268,7 +268,7 @@ final class UserItemsService: UserItemsServiceType {
                     guard let documentID = documentID else { return promise(.failure(.deleteItem)) }
 
                     self.db.collection(Self.collectionName).document(documentID).delete() {
-                        return promise($0 == nil ? .success(id) : .failure(.deleteItem))
+                        return promise($0 == nil ? .success(item.id) : .failure(.deleteItem))
                     }
                 }
             }

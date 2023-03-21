@@ -24,14 +24,13 @@ struct GlobalCoordinator: CoordinatorType {
     @State var sheet: GlobalLink?
     @State var root: GlobalLink = .progress
     @State private var lastSelected: GlobalLink = .gallery
-    @State private var idForCreatingItem: UUID?
 
     let stateReceiver: AnyPublisher<GlobalLink, Never>
     private let sender: GlobalSender
 
     init() {
         sender = GlobalSender()
-        stateReceiver = self.sender.transition.print("PPPP").eraseToAnyPublisher()
+        stateReceiver = self.sender.transition.eraseToAnyPublisher()
     }
     
     var view: AnyView {
@@ -80,13 +79,6 @@ struct GlobalCoordinator: CoordinatorType {
                 lastSelected = root
             }
         }
-        .onChange(of: sheet) {
-            if $0 == nil, let id = idForCreatingItem {
-                sender.globalPackages.libraryStore.dispatch(.updateItem(id: id))
-                sender.globalPackages.savedStore.dispatch(.updateItem(id: id))
-                idForCreatingItem = nil
-            }
-        }
     }
 
     private var gallery: some View {
@@ -106,7 +98,7 @@ struct GlobalCoordinator: CoordinatorType {
     }
 
     private var createSheetView: some View {
-        CreateCoordinator(store: sender.globalPackages.createStore, newId: $idForCreatingItem)
+        CreateCoordinator(store: sender.globalPackages.createStore)
     }
 
     @ViewBuilder private func sheetContent(link: GlobalLink) -> some View {

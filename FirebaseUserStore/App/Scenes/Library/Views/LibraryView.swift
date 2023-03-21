@@ -86,19 +86,11 @@ struct LibraryView: View {
     }
 
     private var emptyView: some View {
-//        VStack {
-//            Spacer()
-            Text("Empty").bold()
-//            Spacer()
-//        }
+        Text("Empty").bold()
     }
 
     private var unloginUserView: some View {
-        VStack {
-            Spacer()
-            Text("Unlogin").bold()
-            Spacer()
-        }
+        Text("Unlogin").bold()
     }
 
     private var unknownUserView: some View {

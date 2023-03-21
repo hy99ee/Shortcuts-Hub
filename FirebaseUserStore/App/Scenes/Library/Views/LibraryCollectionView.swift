@@ -6,7 +6,8 @@ struct LibraryCollectionView: View {
 
     @Binding var searchBinding: String
     
-    @State private var isAnimating = true
+    @State private var showSearch = false
+    @State private var isAnimating = false
     @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row3
 
@@ -29,20 +30,21 @@ struct LibraryCollectionView: View {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
                                     FeedCellView(item: searchItems[index], cellStyle: cellStyle) {
-                                        store.dispatch(.removeItem(id: searchItems[index].id))
+                                        store.dispatch(.removeItem(searchItems[index]))
                                     }
+                                    .padding(3)
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
                                     }
-                                    padding(3)
                                 }
+                                .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                             }
-                            .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
+                            .animation(.spring().speed(0.8), value: store.state.searchedItems)
                         }
                     } else if let loadItems = store.state.loadItems {
                         LazyVGrid(columns: columns, spacing: 12) {
-                            ForEach(loadItems, id: \.id) { _ in
-                                LoaderFeedCellView()
+                            ForEach(loadItems, id: \.id) {
+                                LoaderFeedCellView(loaderItem: $0)
                                     .frame(height: cellStyle.rowHeight)
                                     .padding(3)
                             }
@@ -57,7 +59,7 @@ struct LibraryCollectionView: View {
                                     cellStyle: cellStyle,
                                     delete: {
                                         if let item = store.state.items.at(index) {
-                                            store.dispatch(.removeItem(id: item.id))
+                                            store.dispatch(.removeItem(item))
                                         }
                                     }
                                 )
@@ -72,6 +74,7 @@ struct LibraryCollectionView: View {
                                 }
                                 .onAppear {
                                     isAnimating = true
+                                    showSearch = false
                                     if store.state.items.count >= ItemsServiceQueryLimit
                                         && index >= store.state.items.count - 1
                                         && !isUpdating {

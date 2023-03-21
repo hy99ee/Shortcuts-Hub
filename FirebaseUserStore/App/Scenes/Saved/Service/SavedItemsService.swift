@@ -18,7 +18,7 @@ final class SavedItemsService: SavedItemsServiceType {
         self.user = user
     }
 
-    func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = true) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError)) }
@@ -68,53 +68,60 @@ final class SavedItemsService: SavedItemsServiceType {
     }
 
     func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
-        Deferred {
-            Future { promise in
-                Task { [weak self] in
-                    guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
-                    guard let user = self.user else { return promise(.failure(ServiceError.unauth)) }
-
-                    let collection = self.db.collection(Self.collectionName)
-                    let query = collection
-                        .whereField("id", in: user.savedIds)
-//                        .order(by: "createdAt", descending: true)
-
-                    let countQuery = query.count
-
-                    countQuery.getAggregation(source: .server) { snapshot, error in
-                        guard let snapshot else {
-                            return promise(
-                                .failure(
-                                    error != nil
-                                    ? ServiceError.firebaseError(error!)
-                                    : ServiceError.unknownError
-                                )
-                            )
+        guard let user = self.user else { return Fail(error: ItemsServiceError.invalidUserId).eraseToAnyPublisher() }
+        
+        return Publishers.Sequence(sequence: user.savedIdWithLimitations)
+            .flatMap { savedIds in
+                Deferred {
+                    Future { promise in
+                        Task { [weak self] in
+                            guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
+//                            guard let user = self.user else { return promise(.failure(ServiceError.unauth)) }
+                            
+                            let collection = self.db.collection(Self.collectionName)
+                            let query = collection
+                                .whereField("id", in: savedIds)
+                            //                        .order(by: "createdAt", descending: true)
+                            
+                            let countQuery = query.count
+                            
+                            countQuery.getAggregation(source: .server) { snapshot, error in
+                                guard let snapshot else {
+                                    return promise(
+                                        .failure(
+                                            error != nil
+                                            ? ServiceError.firebaseError(error!)
+                                            : ServiceError.unknownError
+                                        )
+                                    )
+                                }
+                                return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
+                            }
                         }
-                        return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
                     }
                 }
             }
-        }
-        .eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
 
     func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
-        Deferred {
-            Future {[weak self] promise in
-                guard let self else { return promise(.failure(.unknownError))}
-                guard let user = self.user else { return promise(.failure(ServiceError.unauth)) }
+        guard let user = self.user else { return Fail(error: ItemsServiceError.invalidUserId).eraseToAnyPublisher() }
 
-                let collection = self.db.collection(Self.collectionName)
-                let query = collection
-                    .whereField("id", in: user.savedIds)
-                    .order(by: "createdAt", descending: true)
-                    .whereField("tags", arrayContains: text)
-
-                return promise(.success(FetchedResponce(query: query, count: 0)))
-            }
-        }
-        .eraseToAnyPublisher()
+        return Publishers.Sequence(sequence: user.savedIdWithLimitations)
+            .flatMap { savedIds in
+                Deferred {
+                    Future {[weak self] promise in
+                        guard let self else { return promise(.failure(.unknownError))}
+                        
+                        let collection = self.db.collection(Self.collectionName)
+                        let query = collection
+                            .whereField("id", in: savedIds)
+                            .whereField("tags", arrayContains: text)
+                        
+                        return promise(.success(FetchedResponce(query: query, count: 0)))
+                    }
+                }
+            }.eraseToAnyPublisher()
     }
 
     func nextQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {

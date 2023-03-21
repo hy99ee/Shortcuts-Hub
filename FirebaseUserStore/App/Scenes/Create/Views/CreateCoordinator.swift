@@ -3,7 +3,7 @@ import Combine
 
 enum CreateLink: TransitionType {
     case createFromAppleItem(_ item: AppleApiItem, linkFromUser: String)
-    case itemCreated(_ item: Item)
+    case itemCreated
     case error(_ error: Error)
 
     var id: String {
@@ -28,7 +28,6 @@ enum CreateLink: TransitionType {
 
 struct CreateCoordinator: CoordinatorType {
     private var store: CreateStore
-    @Binding var id: UUID?
 
     @State var creatingItem: Item = Item(id: UUID(), userId: "", title: "", description: "", createdAt: Date())
 
@@ -41,9 +40,8 @@ struct CreateCoordinator: CoordinatorType {
     let stateReceiver: AnyPublisher<CreateLink, Never>
     let rootView: CreateAppleLinkEnterView
 
-    init(store: CreateStore, newId id: Binding<UUID?>) {
+    init(store: CreateStore) {
         self.store = store
-        self._id = id
         self.stateReceiver = store.transition.eraseToAnyPublisher()
         self.rootView = CreateAppleLinkEnterView(store: store)
     }
@@ -68,8 +66,7 @@ struct CreateCoordinator: CoordinatorType {
             self.path.append(link)
         case .error:
             self.alert = link
-        case let .itemCreated(item):
-            id = item.id
+        case .itemCreated:
             presentationMode.wrappedValue.dismiss()
         }
     }

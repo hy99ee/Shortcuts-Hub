@@ -8,8 +8,8 @@ let createReducer: ReducerType<CreateState, CreateMutation, CreateLink> = { _sta
     case let .setAppleItem(item, linkFromUser):
         return Just(.coordinate(destination: .createFromAppleItem(item, linkFromUser: linkFromUser))).eraseToAnyPublisher()
 
-    case let .itemUploaded(item):
-        return Just(.coordinate(destination: .itemCreated(item))).eraseToAnyPublisher()
+    case .itemUploaded:
+        return Just(.coordinate(destination: .itemCreated)).eraseToAnyPublisher()
 
     case let .setError(error):
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()

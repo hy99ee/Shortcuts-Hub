@@ -3,7 +3,7 @@ import Combine
 
 enum CreateMutation: Mutation {
     case setAppleItem(_ item: AppleApiItem, linkFromUser: String)
-    case itemUploaded(_ item: Item)
+    case itemUploaded
 
     case setError(_ error: CreateState.CreateErrorType)
     case linkFieldStatus(_ status: InputTextFieldStatus)

@@ -6,7 +6,7 @@ struct SavedCollectionView: View {
 
     @Binding var searchBinding: String
     
-    @State private var isAnimating = true
+    @State private var isAnimating = false
     @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row3
 
@@ -32,13 +32,12 @@ struct SavedCollectionView: View {
                                         item: searchItems[index],
                                         cellStyle: cellStyle
                                     )
+                                    .padding(3)
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
                                     }
-                                    padding(3)
                                 }
                             }
-                            .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         }
                     } else if let loadItems = store.state.loadItems {
                         LazyVGrid(columns: columns, spacing: 12) {
@@ -66,17 +65,7 @@ struct SavedCollectionView: View {
                                         store.dispatch(.click(item))
                                     }
                                 }
-                                .onAppear {
-                                    isAnimating = true
-                                    if store.state.items.count >= ItemsServiceQueryLimit
-                                        && index >= store.state.items.count - 1
-                                        && !isUpdating {
-                                        isUpdating = true
-                                        Task {
-                                            await asyncNext()
-                                        }
-                                    }
-                                }
+                                .onAppear { isAnimating = true }
                             }
                         }
                         .animation(.spring().speed(0.8), value: store.state.items)

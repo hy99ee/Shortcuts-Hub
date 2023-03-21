@@ -27,7 +27,7 @@ final class GlobalStoreRepository {
         dispatcher: savedDispatcher,
         reducer: savedReducer,
         packages: SavedPackages(),
-        middlewares: [SavedStore.middlewareUpdateCheck]
+        middlewares: [SavedStore.middlewareUpdateCheck, SavedStore.middlewareLocalItems]
     )
 
     private lazy var libraryPackages = LibraryPackages(loginStore: loginStore)

@@ -23,14 +23,11 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     case let .click(item):
         return Just(.detail(item: item)).eraseToAnyPublisher()
 
-    case let .addItems(items):
-        return Just(.addItems(items: items)).eraseToAnyPublisher()
+    case let .addItem(item):
+        return Just(.addItem(item)).eraseToAnyPublisher()
 
-    case let .updateItem(id):
-        return mutationFetchItem(by: id, packages: packages)
-
-    case let .removeItem(id):
-        return mutationRemoveItem(by: id, packages: packages)
+    case let .removeItem(item):
+        return mutationRemoveItemFromDatabase(item, packages: packages)
     
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
@@ -114,23 +111,19 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    func mutationFetchItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        packages.itemsService.fetchItem(id)
-            .flatMap { item in
-                packages.sessionService.updateDatabaseUser(with: .addIds(id.uuidString))
+
+    func mutationRemoveItemFromDatabase(_ item: Item, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
+        packages.itemsService.removeItem(item)
+            .flatMap { _ in
+                packages.sessionService.updateDatabaseUser(with: .remove(item: item))
                     .mapError { _ in ItemsServiceError.userDatabaseError }
                     .map { _ in item }
             }
-            .map { .newItem(item: $0) }
+            .map { .removeItem($0) }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
-    func mutationRemoveItem(by id: UUID, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        packages.itemsService.removeItem(id)
-            .map { .removeItem(id: $0) }
-            .catch { Just(.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
+
     func mutationSearchItems(by text: String, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         let fetchDocs = packages.itemsService.searchQuery(text.lowercased())
 
@@ -144,8 +137,15 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
-        guard packages.sessionService.state == .loggedIn else { return Just(LibraryMutation.openLogin).eraseToAnyPublisher() }
-        guard let user = packages.sessionService.userDetails else { return Just(LibraryMutation.errorAlert(error: SessionServiceError.undefinedUserDetails)).eraseToAnyPublisher() }
+        guard packages.sessionService.state == .loggedIn else {
+            return Just(.openLogin)
+                .eraseToAnyPublisher()
+        }
+
+        guard let user = packages.sessionService.userDetails else {
+            return Just(.errorAlert(error: SessionServiceError.undefinedUserDetails))
+                .eraseToAnyPublisher()
+        }
 
         return Just(
             LibraryMutation.showAbout(

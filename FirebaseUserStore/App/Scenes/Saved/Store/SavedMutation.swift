@@ -10,7 +10,8 @@ enum SavedMutation: Mutation {
     case searchItems(_ items: [Item])
     case setSearchFilter(_ text: String)
 
-    case newItem(item: Item)
+    case addItem(_ item: Item)
+    case removeItem(_ item: Item)
 
     case detail(item: Item)
 

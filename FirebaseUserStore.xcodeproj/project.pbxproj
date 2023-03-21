@@ -91,7 +91,7 @@
 		3B703D63296ACE4A00F43A45 /* GlobalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */; };
 		3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7795492926222000A70A9A /* ProgressViewModifier.swift */; };
 		3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */; };
-		3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */; };
+		3B77A12D28F059FB007710E2 /* AsyncPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B77A12C28F059FB007710E2 /* AsyncPublisher.swift */; };
 		3B7A4B552954525E000AF26A /* MockPublicItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B542954525E000AF26A /* MockPublicItemsService.swift */; };
 		3B7A4B5B29546583000AF26A /* FetchedResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7A4B5A29546583000AF26A /* FetchedResponce.swift */; };
 		3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7AE4C5296C4577002A9948 /* LoginCoordinator.swift */; };
@@ -219,7 +219,7 @@
 		3B703D62296ACE4A00F43A45 /* GlobalCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalCoordinator.swift; sourceTree = "<group>"; };
 		3B7795492926222000A70A9A /* ProgressViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewModifier.swift; sourceTree = "<group>"; };
 		3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatusPublisher.swift; sourceTree = "<group>"; };
-		3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitPublisher.swift; sourceTree = "<group>"; };
+		3B77A12C28F059FB007710E2 /* AsyncPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncPublisher.swift; sourceTree = "<group>"; };
 		3B77A13528F44BDB007710E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3B7A4B542954525E000AF26A /* MockPublicItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPublicItemsService.swift; sourceTree = "<group>"; };
 		3B7A4B5A29546583000AF26A /* FetchedResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResponce.swift; sourceTree = "<group>"; };
@@ -396,7 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				3B77954E2926C5E300A70A9A /* ProgressStatusPublisher.swift */,
-				3B77A12C28F059FB007710E2 /* AwaitPublisher.swift */,
+				3B77A12C28F059FB007710E2 /* AsyncPublisher.swift */,
 				3BD6489A290D330C0029F4E9 /* Array.swift */,
 				3B40EBCE2976CDD800200BB5 /* String.swift */,
 				3B8785492983EBDB00F49DB2 /* Warning.swift */,
@@ -964,7 +964,7 @@
 				3B27A58029A613D600CF9A5F /* CreateAction.swift in Sources */,
 				3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */,
 				3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */,
-				3B77A12D28F059FB007710E2 /* AwaitPublisher.swift in Sources */,
+				3B77A12D28F059FB007710E2 /* AsyncPublisher.swift in Sources */,
 				3B27A57F29A613D600CF9A5F /* CreateState.swift in Sources */,
 				3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */,
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,

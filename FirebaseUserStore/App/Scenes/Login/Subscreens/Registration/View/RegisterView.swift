@@ -249,10 +249,6 @@ struct RegisterView: View {
         store.state.singUpButtonValid && store.state.registrationErrorMessage == nil
     }
 
-//    private var submitLabelOnKeyboard: SubmitLabel {
-//        store.state.fieldsStatus.map({ $0.value.isStateValidForAccept }).filter({ !$0 }).count <= 1 ? .join : .next
-//    }
-
     private func createBindingForTextField(_ field: RegistrationCredentialsField) -> Binding<Bool> {
         Binding(
             get: {

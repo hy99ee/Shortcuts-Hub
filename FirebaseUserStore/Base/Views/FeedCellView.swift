@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct FeedCellView: View {
+struct FeedCellView: View, Identifiable {
+    let id = UUID()
     let item: Item
     let cellStyle: CollectionRowStyle
     var delete: (() -> ())? = nil
@@ -54,6 +55,7 @@ struct FeedCellView: View {
 }
 
 struct LoaderFeedCellView: View {
+    var loaderItem: LoaderItem? = nil
     var body: some View {
         VStack {
             ZStack {

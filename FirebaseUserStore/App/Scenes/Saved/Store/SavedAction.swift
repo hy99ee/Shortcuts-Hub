@@ -2,13 +2,18 @@ import Foundation
 
 enum SavedAction: Action, Hashable {
     case initSaved
+    case initLocalSaved
     case updateSaved
+    case updateLocalSaved
     case next
 
     case search(text: String)
+    case localSearch(text: String)
+
     case changeSearchField(_ newText: String)
 
-    case updateItem(id: UUID)
+    case addItem(_ item: Item)
+    case removeItem(_ item: Item)
 
     case click(_ item: Item)
 
@@ -37,8 +42,16 @@ enum SavedAction: Action, Hashable {
             hasher.combine(7)
         case .next:
             hasher.combine(8)
-        case .updateItem:
+        case .removeItem:
             hasher.combine(9)
+        case .addItem:
+            hasher.combine(10)
+        case .initLocalSaved:
+            hasher.combine(11)
+        case .updateLocalSaved:
+            hasher.combine(12)
+        case .localSearch:
+            hasher.combine(13)
         }
     }
 

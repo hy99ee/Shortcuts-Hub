@@ -30,7 +30,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         break
 
     case let .searchItems(items):
-        state.searchedItems = items
+        state.searchedItems = !state.searchFilter.isEmpty ? items : nil
 
     case let .setSearchFilter(text):
         state.searchFilter = text
@@ -51,21 +51,21 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .detail(item):
         return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()
 
-    case let .addItems(items):
-        state.items.append(contentsOf: items)
+    case let .addItem(item):
+        state.items.insert(item, at: 0)
+        state.showEmptyView = false
 
-    case let .newItem(item):
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
         }
 
-        state.items.insert(item, at: 0)
-
-        state.showEmptyView = false
-
-    case let .removeItem(id):
-        state.items.removeAll { $0.id == id }
+    case let .removeItem(item):
+        state.items.removeAll { $0 == item }
         if state.items.isEmpty { state.showEmptyView = true }
+
+        if state.searchedItems != nil {
+            state.searchedItems!.removeAll { $0 == item }
+        }
 
     case let .errorAlert(error):
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()

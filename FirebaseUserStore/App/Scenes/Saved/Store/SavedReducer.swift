@@ -30,7 +30,7 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
         break
 
     case let .searchItems(items):
-        state.searchedItems = items
+        state.searchedItems = !state.searchFilter.isEmpty ? items : nil
 
     case let .setSearchFilter(text):
         state.searchFilter = text
@@ -38,12 +38,21 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
             state.searchedItems = nil
         }
 
-    case let .newItem(item):
+    case let .addItem(item):
+        state.items.insert(item, at: 0)
+        state.showEmptyView = false
+
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
         }
-        state.items.insert(item, at: 0)
-        state.showEmptyView = false
+
+    case let .removeItem(item):
+        state.items.removeAll { $0 == item }
+        if state.items.isEmpty { state.showEmptyView = true }
+
+        if state.searchedItems != nil {
+            state.searchedItems!.removeAll { $0 == item }
+        }
     
     case .empty:
         emptyData()

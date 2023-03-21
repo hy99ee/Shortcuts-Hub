@@ -21,6 +21,7 @@ final class SessionService: SessionServiceType, ObservableObject {
     static let shared = SessionService()
     @Published var state: SessionState = .loading
     @Published var userDetails: UserDetails?
+    @Published var mutation: DatabaseUserMutation?
     
     private var handler: AuthStateDidChangeListenerHandle?
     private var subscriptions = Set<AnyCancellable>()
@@ -64,8 +65,8 @@ final class SessionService: SessionServiceType, ObservableObject {
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     phone: credentials.phone,
-                    //                                savedIds: []
-                    savedIds: ["4716E007-FF50-41CC-ACA2-8960B549DACF"]
+                    savedIds: []
+//                    savedIds: ["4716E007-FF50-41CC-ACA2-8960B549DACF"]
                 )
                 Database
                     .database()
@@ -97,10 +98,10 @@ final class SessionService: SessionServiceType, ObservableObject {
 
                 var databaseUser = userDetails.value
                 switch mutation {
-                case let .addIds(id):
-                    databaseUser.savedIds.append(id)
-                case let .removeIds(id):
-                    databaseUser.savedIds = databaseUser.savedIds.filter { $0 != id }
+                case let .add(item):
+                    databaseUser.savedIds.append(item.id.uuidString)
+                case let .remove(item):
+                    databaseUser.savedIds = databaseUser.savedIds.filter { $0 != item.id.uuidString }
                 }
 
                 Database
@@ -116,6 +117,7 @@ final class SessionService: SessionServiceType, ObservableObject {
                                 value: databaseUser,
                                 auth: userDetails.auth
                             )
+                            self.mutation = mutation
                             return promise(.success(()))
                         }
                     }
@@ -166,6 +168,7 @@ private extension SessionService {
                         }
                 } else {
                     self.state = .loggedOut
+                    self.userDetails = nil
                 }
             }
     }
