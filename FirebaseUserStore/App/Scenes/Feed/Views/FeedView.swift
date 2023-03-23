@@ -4,53 +4,55 @@ import Combine
 struct FeedView: View {
     @StateObject var store: FeedStore
 
-    private let searchQueryBublisher = CurrentValueSubject<String, Never>("")
+    private let searchQueryBublisher: CurrentValueSubject<String, Never>
     private var subscriptions = Set<AnyCancellable>()
 
     @State private var showLoader = false
     @State private var isRefresh = false
     @State private var errorFeedDelay = false
 
-    @State private var collectionRowStyle: CollectionRowStyle = .row3
+    var searchBinding: Binding<String> {
+        .init(
+            get: { searchQueryBublisher.value },
+            set: { searchQueryBublisher.send($0) }
+        )
+    }
 
     init(store: FeedStore) {
         self._store = StateObject(wrappedValue: store)
+        self.searchQueryBublisher = CurrentValueSubject<String, Never>(store.state.searchFilter)
 
-        searchQueryBublisher
+        let search = searchQueryBublisher
             .removeDuplicates()
             .dropFirst()
+            .flatMap {
+                Just($0)
+                .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
+                .zip(store.objectWillChange)
+                .map { $0.0 }
+            }
+            .share()
+
+        search
+            .filter { !$0.isEmpty }
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            .sink { $0.isEmpty ? store.dispatch(.updateFeed) : store.dispatch(.search(text: $0)) }
+            .sink { store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
-
     var body: some View {
         VStack {
             if store.state.showEmptyView {
-                emptyView()
+                emptyView.toolbar { toolbarView }
             } else if store.state.showErrorView {
-                updateableErrorView()
+                updateableErrorView.toolbar { toolbarView }
             } else {
-                let searchBinding = Binding<String>(
-                    get: { searchQueryBublisher.value },
-                    set: {
-                        searchQueryBublisher.send($0)
-                        store.objectWillChange.send()
-                    }
-                )
-                FeedCollectionView(store: store, searchQuery: searchBinding, cellStyle: collectionRowStyle)
+                FeedCollectionView(store: store, searchBinding: searchBinding)
             }
         }
-        .onAppear {
-            if store.state.items.isEmpty {
-                searchQueryBublisher.value.isEmpty
-                ? store.dispatch(.updateFeed)
-                : store.dispatch(.search(text: searchQueryBublisher.value))
-            }
-        }
+        .onAppear { store.dispatch(.initFeed) }
     }
 
-    private func updateableErrorView() -> some View {
+    private var updateableErrorView: some View {
         VStack {
             Spacer()
             Text("Error").monospacedDigit().bold().foregroundColor(.red)
@@ -73,14 +75,25 @@ struct FeedView: View {
         }
     }
 
-    private func emptyView() -> some View {
-        return VStack {
-            Spacer()
-            Text("Empty").bold()
-            Spacer()
+    private var emptyView: some View {
+        Text("Empty").bold()
+    }
+
+    private var unloginUserView: some View {
+        Text("Unlogin").bold()
+    }
+
+    private var unknownUserView: some View {
+        Text("")
+    }
+
+    private var toolbarView: some View {
+        HStack {
+
         }
     }
 }
+
 
 extension PresentationDetent {
     static let bar = Self.fraction(0.2)

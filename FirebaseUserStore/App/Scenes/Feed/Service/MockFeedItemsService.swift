@@ -2,10 +2,11 @@ import Combine
 import Firebase
 import FirebaseFirestore
 
-final class MockPublicItemsService: ItemsServiceType {
+final class MockFeedItemsService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
+    typealias OutputType = Item
 
-    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool = false) -> AnyPublisher<[Item], ItemsServiceError> {
+    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool = false) -> AnyPublisher<[OutputType], ItemsServiceError> {
         Deferred {
             Future { promise in
                 let items = query.data.isEmpty ? mockItems : mockItems.filter { $0.title.contains(query.data) }

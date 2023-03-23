@@ -4,7 +4,7 @@ import Firebase
 
 let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
     switch action {
-    case .updateFeed:
+    case .initFeed, .updateFeed:
         return mutationFetchItems(packages: packages)
 
     case let .click(item):
@@ -12,6 +12,9 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 
     case let .addItems(items):
         return Just(FeedMutation.addItems(items: items)).eraseToAnyPublisher()
+
+    case let .changeSearchField(text):
+        return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
     case let .search(text):
         return mutationSearchItems(by: text, packages: packages)
@@ -26,7 +29,6 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return Empty(completeImmediately: true).eraseToAnyPublisher()
     }
 
-
     // MARK: - Mutations
     func mutationFetchItems(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         let fetchDocs = packages.itemsService.fetchQuery().share()
@@ -39,7 +41,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
             fetchDocs
                 .map { docs in
                     if docs.count > 0 {
-                        return .fetchItemsPreloaders(count: docs.count)
+                        return .updateItemsPreloaders(count: docs.count)
                     } else {
                         return .empty
                     }
@@ -48,7 +50,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
                 .eraseToAnyPublisher()
                 .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             , fetchFromDocs
-                .map { .fetchItems(newItems: $0) }
+                .map { .updateItems($0) }
                 .catch { Just(.errorAlert(error: $0)) })
         .eraseToAnyPublisher()
         

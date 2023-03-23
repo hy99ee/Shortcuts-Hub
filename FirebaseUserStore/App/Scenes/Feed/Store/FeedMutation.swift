@@ -2,8 +2,14 @@ import Foundation
 import Combine
 
 enum FeedMutation: Mutation {
-    case fetchItemsPreloaders(count: Int)
-    case fetchItems(newItems: [Item])
+    case updateItemsPreloaders(count: Int)
+    case updateItems(_ newItems: [Item])
+    case appendItems(_ items: [Item])
+
+    case searchItems(_ items: [Item])
+    case setSearchFilter(_ text: String)
+
+    case fastUpdate
 
     case detail(item: Item)
 

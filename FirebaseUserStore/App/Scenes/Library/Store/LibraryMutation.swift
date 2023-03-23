@@ -3,8 +3,8 @@ import Combine
 
 enum LibraryMutation: Mutation {
     case updateItemsPreloaders(count: Int)
-    case fetchedItems(newItems: [Item])
-    case fetchedNewItems(_ items: [Item])
+    case updateItems(_ newItems: [Item])
+    case appendItems(_ items: [Item])
 
     case searchItems(_ items: [Item])
     case setSearchFilter(_ text: String)

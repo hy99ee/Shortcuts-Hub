@@ -5,21 +5,39 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     var state = _state
 
     switch mutation {
-    case let .fetchItemsPreloaders(count):
-        state.showEmptyView = count == 0
+    case let .updateItemsPreloaders(count):
         state.loadItems = []
         state.items = []
 
         for index in 0..<count {
-            state.loadItems.append(LoaderItem(id: index))
+            state.loadItems!.append(LoaderItem(id: index))
         }
 
-    case let .fetchItems(items):
-        let items = items.sorted(by: FeedState.sortingByModified)
+    case let .updateItems(items):
         state.showEmptyView = items.isEmpty
-        state.loadItems = []
+                              && state.searchFilter.isEmpty
+                              && state.viewProgress == .stop
+        state.loadItems = nil
+        state.searchedItems = nil
         state.items = items
 
+    case let .appendItems(items):
+        state.loadItems = nil
+        state.searchedItems = nil
+        state.items += items
+
+    case .fastUpdate:
+        break
+
+    case let .searchItems(items):
+        state.searchedItems = !state.searchFilter.isEmpty ? items : nil
+
+    case let .setSearchFilter(text):
+        state.searchFilter = text
+
+        if text.isEmpty {
+            state.searchedItems = nil
+        }
     case .empty:
         emptyData()
 

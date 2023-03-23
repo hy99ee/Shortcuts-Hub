@@ -13,7 +13,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
             state.loadItems!.append(LoaderItem(id: index))
         }
 
-    case let .fetchedItems(items):
+    case let .updateItems(items):
         state.showEmptyView = items.isEmpty
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
@@ -21,7 +21,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.searchedItems = nil
         state.items = items
 
-    case let .fetchedNewItems(items):
+    case let .appendItems(items):
         state.loadItems = nil
         state.searchedItems = nil
         state.items += items

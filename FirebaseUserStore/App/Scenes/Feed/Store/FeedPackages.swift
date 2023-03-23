@@ -10,7 +10,7 @@ protocol FeedPackagesType: EnvironmentPackages {
 
 
 class FeedPackages: FeedPackagesType {
-    private(set) var itemsService: PublicItemsService!
+    private(set) var itemsService: FeedItemsService!
     
     lazy var loginStore = LoginStore(
         state: LoginState(),
@@ -31,7 +31,7 @@ class FeedPackages: FeedPackagesType {
     }
 
     private var _itemsService: PackageItemsService {
-        PublicItemsService()
+        FeedItemsService()
     }
 }
 
@@ -43,5 +43,5 @@ class _FeedPackages: FeedPackagesType, Unreinitable {
         packages: LoginPackages()
     )
 
-    lazy var itemsService: MockPublicItemsService! = MockPublicItemsService()
+    lazy var itemsService: MockFeedItemsService! = MockFeedItemsService()
 }

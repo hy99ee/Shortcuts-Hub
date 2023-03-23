@@ -5,8 +5,9 @@ import FirebaseFirestore
 protocol ItemsServiceType {
     associatedtype ServiceError: Error
     associatedtype ResponceType: FetchedResponceType
+    associatedtype OutputType: Identifiable
 
-    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool) -> AnyPublisher<[Item], ItemsServiceError>
+    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool) -> AnyPublisher<[OutputType], ItemsServiceError>
 
     func fetchQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
     func searchQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>

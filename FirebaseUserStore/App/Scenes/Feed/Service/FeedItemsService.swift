@@ -2,12 +2,61 @@ import Combine
 import Firebase
 import FirebaseFirestore
 
-final class PublicItemsService: ItemsServiceType {
+final class FeedItemsService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
     typealias ResponceType = FetchedResponce
     
     private let db = Firestore.firestore()
-    private static let collectionName = "Items"
+    private static let collectionName = "Sections"
+
+    func fetchSectionsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[IdsSection], ItemsServiceError> {
+        Deferred {
+            Future { promise in
+                query.getDocuments { snapshot, error in
+                    if let _error = error {
+                        return promise(.failure(.firebaseError(_error)))
+                    }
+                    guard let documents = snapshot?.documents else {
+                        return promise(.failure(.unknownError))
+                    }
+                    var sections: [IdsSection] = []
+                    documents
+                        .map { $0.data() }
+                        .forEach { data in
+                            sections.append(
+                                IdsSection(
+                                    id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
+                                    title: data["title"] as? String ?? "",
+                                    subtitle: data["subtitle"] as? String ?? "",
+                                    itemsIds: data["ids"] as? [String] ?? []
+                                )
+                            )
+                        }
+
+                    return promise(.success(sections))
+                }
+            }
+        }
+        .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
+
+    func fetchItemsFromSection(_ sections: IdsSection) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+        Deferred {
+            Future { promise in
+                Task { [weak self] in
+                    guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
+
+                    let collection = self.db.collection(Self.collectionName)
+                    let query = collection
+                        .whereField("id", in: sections.itemsIds)
+
+                    return promise(.success(FetchedResponce(query: query, count: 0)))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
     
     func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {

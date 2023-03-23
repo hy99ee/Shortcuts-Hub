@@ -90,7 +90,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 .withStatus(start: .progressView(status: .start), finish: .progressView(status: .stop))
             , fetchFromDocs
                 .delay(for: .seconds(1), scheduler: DispatchQueue.main)
-                .map { .fetchedItems(newItems: $0) }
+                .map { .updateItems($0) }
                 .catch { Just(.errorAlert(error: $0)) }
         )
         .eraseToAnyPublisher()
@@ -106,7 +106,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
 
         return fetchFromDocs
-            .map { .fetchedNewItems($0) }
+            .map { .appendItems($0) }
             .catch { Just(.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()

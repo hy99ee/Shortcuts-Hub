@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FeedCellView: View, Identifiable {
+struct ItemCellView: View, Identifiable {
     let id = UUID()
     let item: Item
     let cellStyle: CollectionRowStyle

@@ -2,19 +2,25 @@ import SwiftUI
 import Combine
 
 struct FeedState: StateType {
-    var loadItems: [LoaderItem] = []
+    var loadItems: [LoaderItem]? {
+        didSet {
+            showErrorView = false
+        }
+    }
     var items: [Item] = [] {
         didSet {
             showErrorView = false
         }
     }
 
+    var searchedItems: [Item]?
+    var searchFilter = ""
+
     var showEmptyView = false
     var showErrorView = false
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop
-
     var processView: ProcessViewStatus = .enable
 }
 

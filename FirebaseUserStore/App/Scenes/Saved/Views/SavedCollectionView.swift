@@ -28,7 +28,7 @@ struct SavedCollectionView: View {
                         } else {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
-                                    FeedCellView(
+                                    ItemCellView(
                                         item: searchItems[index],
                                         cellStyle: cellStyle
                                     )
@@ -52,7 +52,7 @@ struct SavedCollectionView: View {
                     } else {
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
-                                FeedCellView(
+                                ItemCellView(
                                     item: store.state.items[index],
                                     cellStyle: cellStyle
                                 )

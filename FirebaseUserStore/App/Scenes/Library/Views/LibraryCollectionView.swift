@@ -29,7 +29,7 @@ struct LibraryCollectionView: View {
                         } else {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
-                                    FeedCellView(item: searchItems[index], cellStyle: cellStyle) {
+                                    ItemCellView(item: searchItems[index], cellStyle: cellStyle) {
                                         store.dispatch(.removeItem(searchItems[index]))
                                     }
                                     .padding(3)
@@ -54,7 +54,7 @@ struct LibraryCollectionView: View {
                     } else {
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
-                                FeedCellView(
+                                ItemCellView(
                                     item: store.state.items[index],
                                     cellStyle: cellStyle,
                                     delete: {

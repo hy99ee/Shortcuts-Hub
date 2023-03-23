@@ -1,12 +1,15 @@
 import Foundation
 
 enum FeedAction: Action, Hashable {
+    case initFeed
     case updateFeed
 
     case click(_ item: Item)
 
     case addItems(items: [Item])
+
     case search(text: String)
+    case changeSearchField(_ newText: String)
 
     case showAlert(error: Error)
     case showFeedError
@@ -15,6 +18,8 @@ enum FeedAction: Action, Hashable {
 
     func hash(into hasher: inout Hasher) {
         switch self {
+        case .initFeed:
+            hasher.combine(-1)
         case .updateFeed:
             hasher.combine(0)
         case .click:
@@ -29,6 +34,8 @@ enum FeedAction: Action, Hashable {
             hasher.combine(7)
         case .mockAction:
             hasher.combine(10)
+        case .changeSearchField:
+            hasher.combine(11)
         }
     }
 
