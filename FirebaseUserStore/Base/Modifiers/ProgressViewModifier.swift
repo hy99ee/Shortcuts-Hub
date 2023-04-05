@@ -1,21 +1,14 @@
 import SwiftUI
 
-protocol ProgressViewProviderType: ObservableObject {
-    var progressStatus: ProgressViewStatus { get set }
-}
-
-struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
-    @ObservedObject var provider: ProgressProvider
+struct ProgressViewModifier: ViewModifier {
+    var progressStatus: ProgressViewStatus
+    var backgroundOpacity: Double = 0.5
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
         content
-            .opacity(announcingResult.wrappedValue ? 0.5 : 1)
+            .opacity(progressStatus == .start ? backgroundOpacity : 1)
             .overlay {
-                if announcingResult.wrappedValue {
+                if progressStatus == .start {
                     ZStack {
                         HDotsProgress()
                     }
@@ -24,15 +17,11 @@ struct ProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewMod
     }
 }
 
-struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
-    @ObservedObject var provider: ProgressProvider
+struct SimpleProgressViewModifier: ViewModifier {
+    var progressStatus: ProgressViewStatus
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
-        if announcingResult.wrappedValue {
+        if progressStatus == .start {
             content
                 .opacity(0.5)
                 .disabled(true)
@@ -42,37 +31,47 @@ struct SimpleProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
     }
 }
 
-struct AnimationProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+struct AnimationProgressViewModifier: ViewModifier {
     @State private var isAnimating = false
-    @ObservedObject var provider: ProgressProvider
-    let animation: Animation
+    @State var active: Bool = false
+
+    let progressStatus: ProgressViewStatus
 
     func body(content: Content) -> some View {
         content
+            .disabled(active)
             .opacity(isAnimating ? 0.5 : 1)
-            .onReceive(provider.objectWillChange) { _ in
-//                if self.provider.progressStatus == .stop {
-                    withAnimation(animation) {
-                        isAnimating.toggle()
-                    }
-//                }
+            .onChange(of: progressStatus) {
+                if $0 == .start {
+                    active = true
+                } else {
+                    active = false
+                }
+            }
+            .onChange(of: active) {
+                withAnimation($0
+                              ? .easeIn(duration: 0.5).repeatForever()
+                              : .easeIn(duration: 0.5)
+                ) {
+                    isAnimating.toggle()
+                }
             }
     }
 }
 
-struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: ViewModifier {
+struct ButtonProgressViewModifier: ViewModifier {
     enum ModifierType {
         case clearView
         case buttonView
     }
     
-    @ObservedObject var provider: ProgressProvider
+    private let progressStatus: ProgressViewStatus
     private let backgroundColor: Color
     private let progressViewColor: Color
     private let scale: CGFloat
 
-    init(provider: ProgressProvider, type: ModifierType) {
-        self.provider = provider
+    init(progressStatus: ProgressViewStatus, type: ModifierType) {
+        self.progressStatus = progressStatus
 
         switch type {
         case .buttonView:
@@ -89,11 +88,7 @@ struct ButtonProgressViewModifier<ProgressProvider: ProgressViewProviderType>: V
     
 
     func body(content: Content) -> some View {
-        let announcingResult = Binding<Bool>(
-            get: { self.provider.progressStatus != .stop },
-            set: { _ in self.provider.progressStatus = .stop }
-        )
-        if announcingResult.wrappedValue {
+        if progressStatus != .stop {
             content.overlay {
                 ZStack {
                     Color(.clear).background(backgroundColor)

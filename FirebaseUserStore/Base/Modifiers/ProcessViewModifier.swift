@@ -1,15 +1,15 @@
 import SwiftUI
 
-protocol ProcessViewProviderType: ObservableObject {
-    var processViewStatus: Bool { get set }
+protocol ProcessViewProviderType {
+    var processViewStatus: ProcessViewStatus { get set }
 }
 
-struct ProcessViewModifier<ProcessProvider: ProcessViewProviderType>: ViewModifier {
-    @ObservedObject var provider: ProcessProvider
+struct ProcessViewModifier: ViewModifier {
+    var process: ProcessViewStatus
 
     func body(content: Content) -> some View {
         content
-            .disabled(provider.processViewStatus)
+            .disabled(process.isDisable)
         
     }
 }

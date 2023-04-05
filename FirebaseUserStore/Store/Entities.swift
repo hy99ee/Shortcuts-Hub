@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-protocol Action {}
+protocol Action: Equatable {}
 
 protocol Mutation {}
 
@@ -10,17 +10,31 @@ enum EquivocalMutation<State, Transition> where State: StateType, Transition: Tr
     case coordinate(destination: Transition)
 }
 
-protocol StateType {
-    var processView: ProcessViewProvider { get }
+protocol Reinitable {
+    func reinit() -> Self
 }
 
-extension StateType {
-    var processView: ProcessViewProvider { .shared }
+protocol ReinitableBySelf: Reinitable {}
+extension ReinitableBySelf {
+    func reinit() -> Self { self }
 }
+protocol ReinitableByNewSelf: Reinitable {
+    init()
+}
+extension ReinitableByNewSelf {
+    func reinit() -> Self { Self() }
+}
+
+protocol StateType: ReinitableByNewSelf, Equatable {}
 
 protocol TransitionType: Hashable, Identifiable {}
 enum NoneTransition : TransitionType {
     case none
+
+    var id: String { String(describing: self) }
+}
+enum CloseTransition : TransitionType {
+    case close
 
     var id: String { String(describing: self) }
 }
@@ -39,7 +53,17 @@ protocol EnvironmentType {
     associatedtype ServiceError: Error
 }
 
-protocol EnvironmentPackages {}
+protocol EnvironmentPackages: Reinitable {
+    var sessionService: SessionService { get }
+}
+extension EnvironmentPackages {
+    var sessionService: SessionService { SessionService.shared }
+}
+
+protocol Unreinitable {}
+extension Unreinitable {
+    func reinit() -> Self { self }
+}
 
 extension NavigationPath {
     static let coordinatorsShared = NavigationPath()

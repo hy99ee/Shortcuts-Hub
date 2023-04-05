@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import Foundation
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -15,12 +16,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct Firebase_User_Account_ManagementApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
-    private let storeRepository = GlobalStoreRepository.shared
+    var utilities = Utilities.shared
 
     var body: some Scene {
         WindowGroup {
             GlobalCoordinator()
+                .onAppear {
+                    utilities.overrideDisplayMode()
+                }
         }
     }
 }

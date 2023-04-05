@@ -6,6 +6,11 @@ protocol FetchedResponceType {
     var count: Int { get }
 }
 
+struct FetchedSectionResponce: FetchedResponceType {
+    let query: [Query]
+    let count: Int
+}
+
 struct FetchedResponce: FetchedResponceType {
     let query: Query
     let count: Int

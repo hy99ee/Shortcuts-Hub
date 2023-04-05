@@ -7,7 +7,7 @@ final class StateStore<
     StoreMutation,
     StorePackages,
     StoreTransition
->: ObservableObject, TransitionSender
+>: ObservableObject, TransitionSender, Reinitable
 where StoreState: StateType,
       StoreAction: Action,
       StoreMutation: Mutation,
@@ -22,9 +22,9 @@ where StoreState: StateType,
 
     let transition = PassthroughSubject<StoreTransition, Never>()
 
+    private(set) var packages: StorePackages
     private let reducer: StoreReducer
     private let dispatcher: StoreDispatcher
-    private let packages: StorePackages
     private var middlewaresRepository: StoreMiddlewareRepository
 
     private let queue = DispatchQueue(label: "com.state", qos: .userInitiated)
@@ -40,22 +40,19 @@ where StoreState: StateType,
         self.dispatcher = dispatcher
         self.reducer = reducer
         self.packages = packages
-        self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares)
+        self.middlewaresRepository = MiddlewareRepository(middlewares: middlewares, queue: queue)
     }
 
     func dispatch(_ action: StoreAction, isRedispatch: Bool = false) {
         middlewaresRepository.dispatch(state: state, action: action, packages: packages, isRedispatch: isRedispatch) // Middleware
             .subscribe(on: queue)
             .catch {[unowned self] in
-                switch $0 {
-                case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions, _):
+                if case let StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(actions, _) = $0 {
                     for action in actions {
                         self.dispatch(action, isRedispatch: true)
                     }
-                    return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
-                case .stopFlow:
-                    return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>(completeImmediately: true)
                 }
+                return Empty<StoreAction, StoreMiddlewareRepository.MiddlewareRedispatch>()
             }
             .flatMap { [unowned self] in dispatcher($0, self.packages).receive(on: queue) } // Dispatch
             .subscribe(on: queue)
@@ -73,5 +70,14 @@ where StoreState: StateType,
                 }
             })
             .assign(to: &$state)
+    }
+
+    @discardableResult
+    func reinit() -> Self {
+        self.packages = self.packages.reinit()
+        self.state = self.state.reinit()
+        self.middlewaresRepository = self.middlewaresRepository.reinit()
+
+        return self
     }
 }
