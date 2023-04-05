@@ -57,6 +57,8 @@
 		3B40EBCF2976CDD800200BB5 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B40EBCE2976CDD800200BB5 /* String.swift */; };
 		3B433E5F29CB062C007C8A26 /* ItemsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E5E29CB062C007C8A26 /* ItemsSectionView.swift */; };
 		3B433E6129CB44EE007C8A26 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6029CB44EE007C8A26 /* Section.swift */; };
+		3B433E6B29DB1618007C8A26 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6A29DB1618007C8A26 /* CacheAsyncImage.swift */; };
+		3B433E6D29DC3CA2007C8A26 /* OffsetObservingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */; };
 		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
 		3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* LoginDispatcher.swift */; };
 		3B45AC08292BC884002531D8 /* LoginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* LoginStore.swift */; };
@@ -187,6 +189,8 @@
 		3B40EBCE2976CDD800200BB5 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		3B433E5E29CB062C007C8A26 /* ItemsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsSectionView.swift; sourceTree = "<group>"; };
 		3B433E6029CB44EE007C8A26 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		3B433E6A29DB1618007C8A26 /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
+		3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetObservingScrollView.swift; sourceTree = "<group>"; };
 		3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
 		3B45AC04292BC862002531D8 /* LoginDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDispatcher.swift; sourceTree = "<group>"; };
 		3B45AC07292BC884002531D8 /* LoginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStore.swift; sourceTree = "<group>"; };
@@ -340,7 +344,6 @@
 				3B1F669528FC0C6C009225A4 /* FeedAction.swift */,
 				3B81C4F12924C8820008BD8E /* FeedStore.swift */,
 				3B2F78A12937880A0035BAAF /* FeedPackages.swift */,
-				3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -405,6 +408,8 @@
 				3BD6489A290D330C0029F4E9 /* Array.swift */,
 				3B40EBCE2976CDD800200BB5 /* String.swift */,
 				3B8785492983EBDB00F49DB2 /* Warning.swift */,
+				3B433E6A29DB1618007C8A26 /* CacheAsyncImage.swift */,
+				3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -763,6 +768,7 @@
 		3BE4C1E02985DC8D000B43BD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B7AE4DC296D6C4D002A9948 /* FeedCoordinator.swift */,
 				3BC63D3E29509E2F00DF54A8 /* FeedCollectionView.swift */,
 				3BD76ECE2899AF6C001D64E2 /* FeedView.swift */,
 			);
@@ -1008,10 +1014,12 @@
 				3B703D542967366500F43A45 /* ForgotStore.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
 				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,
+				3B433E6D29DC3CA2007C8A26 /* OffsetObservingScrollView.swift in Sources */,
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
 				3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
 				3BDAAEBF29C2535A0064F7D0 /* SavedDispatcher.swift in Sources */,
+				3B433E6B29DB1618007C8A26 /* CacheAsyncImage.swift in Sources */,
 				3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* ItemCellView.swift in Sources */,
 				3B5CA9242992609D00E16151 /* LibraryReducer.swift in Sources */,

@@ -11,7 +11,7 @@ extension FeedStore {
     }
 
     static let middlewareUpdateCheck: FeedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
-        if action == .initFeed, !state.items.isEmpty {
+        if action == .initFeed, !state.sections.isEmpty {
             return Fail(
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
                     actions: []

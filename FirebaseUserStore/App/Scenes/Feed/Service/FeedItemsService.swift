@@ -7,7 +7,8 @@ final class FeedItemsService: ItemsServiceType {
     typealias ResponceType = FetchedResponce
     
     private let db = Firestore.firestore()
-    private static let collectionName = "Sections"
+    private static let collectionItemsName = "Items"
+    private static let collectionSectionName = "Sections"
 
     func fetchSectionsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[IdsSection], ItemsServiceError> {
         Deferred {
@@ -20,6 +21,7 @@ final class FeedItemsService: ItemsServiceType {
                         return promise(.failure(.unknownError))
                     }
                     var sections: [IdsSection] = []
+
                     documents
                         .map { $0.data() }
                         .forEach { data in
@@ -28,6 +30,7 @@ final class FeedItemsService: ItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     title: data["title"] as? String ?? "",
                                     subtitle: data["subtitle"] as? String ?? "",
+                                    titleIcons: (data["title_icons"] as? [String] ?? []).compactMap { URL(string: $0) },
                                     itemsIds: data["ids"] as? [String] ?? []
                                 )
                             )
@@ -47,7 +50,7 @@ final class FeedItemsService: ItemsServiceType {
                 Task { [weak self] in
                     guard let self else { return promise(.failure(ServiceError.invalidUserId)) }
 
-                    let collection = self.db.collection(Self.collectionName)
+                    let collection = self.db.collection(Self.collectionItemsName)
                     let query = collection
                         .whereField("id", in: sections.itemsIds)
 
@@ -64,7 +67,7 @@ final class FeedItemsService: ItemsServiceType {
                 Task { [weak self] in
                     guard let self else { return promise(.failure(.unknownError)) }
 
-                    let collection = self.db.collection(Self.collectionName)
+                    let collection = self.db.collection(Self.collectionSectionName)
                     let countQuery = collection.count
 
                     countQuery.getAggregation(source: .server) { snapshot, error in
@@ -82,7 +85,7 @@ final class FeedItemsService: ItemsServiceType {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
 
-                let query = self.db.collection(Self.collectionName)
+                let query = self.db.collection(Self.collectionItemsName)
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
 
@@ -97,7 +100,7 @@ final class FeedItemsService: ItemsServiceType {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
 
-                let ref = self.db.collection(Self.collectionName)
+                let ref = self.db.collection(Self.collectionItemsName)
                     .whereField("id", isEqualTo: id.uuidString)
                 
                 ref.getDocuments { snapshot, error in

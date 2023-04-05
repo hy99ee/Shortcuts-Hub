@@ -7,7 +7,7 @@ struct FeedState: StateType {
             showErrorView = false
         }
     }
-    var items: [Item] = [] {
+    var sections: [IdsSection] = [] {
         didSet {
             showErrorView = false
         }
@@ -29,7 +29,7 @@ extension FeedState {
         $0.modifiedAt ?? $0.createdAt > $1.modifiedAt ?? $1.createdAt
     }
 
-    func itemsWithFilter(_ filter: String) -> [Item] {
-        items.filter { $0.title.lowercased().contains(filter.lowercased()) }
+    func itemsWithFilter(_ filter: String) -> [IdsSection] {
+        sections.filter { $0.title.lowercased().contains(filter.lowercased()) }
     }
 }

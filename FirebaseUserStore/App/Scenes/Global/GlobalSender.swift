@@ -22,7 +22,7 @@ class GlobalSender: TransitionSender {
             })
             .map {
                 switch $0 {
-                case .loggedIn: return GlobalLink.library
+                case .loggedIn: return GlobalLink.gallery
                 case .loggedOut: return GlobalLink.gallery
                 case .loading: return GlobalLink.progress
                 }

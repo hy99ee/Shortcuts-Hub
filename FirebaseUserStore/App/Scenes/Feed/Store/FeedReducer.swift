@@ -5,26 +5,26 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     var state = _state
 
     switch mutation {
-    case let .updateItemsPreloaders(count):
+    case let .updateSectionsPreloaders(count):
         state.loadItems = []
-        state.items = []
+        state.sections = []
 
         for index in 0..<count {
             state.loadItems!.append(LoaderItem(id: index))
         }
 
-    case let .updateItems(items):
-        state.showEmptyView = items.isEmpty
+    case let .updateSections(sections):
+        state.showEmptyView = sections.isEmpty
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
         state.loadItems = nil
         state.searchedItems = nil
-        state.items = items
+        state.sections = sections
 
-    case let .appendItems(items):
+    case let .appendSections(sections):
         state.loadItems = nil
         state.searchedItems = nil
-        state.items += items
+        state.sections += sections
 
     case .fastUpdate:
         break
@@ -38,14 +38,12 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         if text.isEmpty {
             state.searchedItems = nil
         }
+
     case .empty:
         emptyData()
 
-    case let .detail(item):
-        return Just(.coordinate(destination: .detail(item))).eraseToAnyPublisher()
-
-    case let .addItems(items):
-        state.items.append(contentsOf: items)
+    case let .detail(section):
+        return Just(.coordinate(destination: .section(section))).eraseToAnyPublisher()
 
     case let .errorAlert(error):
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
@@ -62,13 +60,13 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     
     func emptyData() {
         state.loadItems = []
-        state.items = []
+        state.sections = []
         state.showEmptyView = true
     }
 
     func errorData() {
         state.loadItems = []
-        state.items = []
+        state.sections = []
         state.showErrorView = true
     }
 }

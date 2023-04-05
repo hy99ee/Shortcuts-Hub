@@ -4,9 +4,9 @@ enum FeedAction: Action, Hashable {
     case initFeed
     case updateFeed
 
-    case click(_ item: Item)
+    case click(_ section: IdsSection)
 
-    case addItems(items: [Item])
+    case addSections(_ sections: [IdsSection])
 
     case search(text: String)
     case changeSearchField(_ newText: String)
@@ -24,7 +24,7 @@ enum FeedAction: Action, Hashable {
             hasher.combine(0)
         case .click:
             hasher.combine(1)
-        case .addItems:
+        case .addSections:
             hasher.combine(2)
         case .search:
             hasher.combine(5)

@@ -5,19 +5,20 @@ import Firebase
 let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
     switch action {
     case .initFeed, .updateFeed:
-        return mutationFetchItems(packages: packages)
+        return mutationFetchSections(packages: packages)
 
-    case let .click(item):
-        return Just(FeedMutation.detail(item: item)).eraseToAnyPublisher()
+    case let .click(section):
+        return Just(FeedMutation.detail(section: section)).eraseToAnyPublisher()
 
-    case let .addItems(items):
-        return Just(FeedMutation.addItems(items: items)).eraseToAnyPublisher()
+    case let .addSections(sections):
+        return Just(FeedMutation.appendSections(sections)).eraseToAnyPublisher()
 
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
     case let .search(text):
-        return mutationSearchItems(by: text, packages: packages)
+//        return mutationSearchItems(by: text, packages: packages)
+        return Just(FeedMutation.empty).eraseToAnyPublisher()
 
     case let .showAlert(error):
         return mutationShowAlert(with: error)
@@ -30,18 +31,18 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
     }
 
     // MARK: - Mutations
-    func mutationFetchItems(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+    func mutationFetchSections(packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
         let fetchDocs = packages.itemsService.fetchQuery().share()
 
         let fetchFromDocs = fetchDocs
             .map { $0.query }
-            .flatMap { packages.itemsService.fetchItemsFromQuery($0) }
+            .flatMap { packages.itemsService.fetchSectionsFromQuery($0) }
         
         return Publishers.Merge(
             fetchDocs
                 .map { docs in
                     if docs.count > 0 {
-                        return .updateItemsPreloaders(count: docs.count)
+                        return .updateSectionsPreloaders(count: docs.count)
                     } else {
                         return .empty
                     }
@@ -50,22 +51,22 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
                 .eraseToAnyPublisher()
                 .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             , fetchFromDocs
-                .map { .updateItems($0) }
+                .map { .updateSections($0) }
                 .catch { Just(.errorAlert(error: $0)) })
         .eraseToAnyPublisher()
         
     }
-    func mutationSearchItems(by text: String, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
-        let fetchDocs = packages.itemsService.searchQuery(text)
-
-        let fetchFromDocs = fetchDocs
-            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
-
-        return fetchFromDocs
-            .map { .addItems(items: $0) }
-            .catch { Just(.errorAlert(error: $0)) }
-            .eraseToAnyPublisher()
-    }
+//    func mutationSearchItems(by text: String, packages: FeedPackages) -> AnyPublisher<FeedMutation, Never> {
+//        let fetchDocs = packages.itemsService.searchQuery(text)
+//
+//        let fetchFromDocs = fetchDocs
+//            .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
+//
+//        return fetchFromDocs
+//            .map { .addItems(items: $0) }
+//            .catch { Just(.errorAlert(error: $0)) }
+//            .eraseToAnyPublisher()
+//    }
     func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
         Just(FeedMutation.errorAlert(error: error))
             .eraseToAnyPublisher()

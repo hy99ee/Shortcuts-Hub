@@ -1,12 +1,13 @@
 import Foundation
 
-struct IdsSection: Identifiable {
+struct IdsSection: Identifiable, Equatable {
     let id: UUID
 
     let title: String
     let subtitle: String?
+    var titleIcons: [URL]
 
-    let itemsIds: [String]
+    var itemsIds: [String]
 }
 
 struct ItemsSection: Identifiable {
