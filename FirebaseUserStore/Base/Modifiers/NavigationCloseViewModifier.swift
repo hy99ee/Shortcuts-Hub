@@ -63,12 +63,63 @@ struct NavigationBindingCloseViewModifier: ViewModifier {
     }
 }
 
+struct OnCloseViewModifier: ViewModifier {
+    let onClose: () -> ()
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+
+            VStack {
+                HStack {
+                    Spacer()
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.gray)
+                        .onTapGesture {
+                            onClose()
+                        }
+                        .padding()
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
+struct CloseToolbarViewModifier: ViewModifier {
+    let onClose: () -> ()
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.gray)
+                    .onTapGesture {
+                        onClose()
+                    }
+                    
+            }
+    }
+}
+
 enum CloseButtonSite {
     case tollbar
     case view
 }
 
 extension View {
+    @ViewBuilder func closeToolbar(_ onClose: @escaping () -> ()) -> some View {
+        self.modifier(CloseToolbarViewModifier(onClose: onClose))
+    }
+
+    @ViewBuilder func applyClose(_ onClose: @escaping () -> ()) -> some View {
+        self.modifier(OnCloseViewModifier(onClose: onClose))
+    }
+
     @ViewBuilder func applyClose(_ style: CloseButtonSite = .tollbar) -> some View {
         switch style {
         case .tollbar:
@@ -78,16 +129,16 @@ extension View {
         }
     }
 
-    @ViewBuilder func applyClose<T>(onClose: Binding<T?>, _ style: CloseButtonSite = .tollbar) -> some View {
+    @ViewBuilder func applyClose<T>(closeBinding: Binding<T?>, _ style: CloseButtonSite = .tollbar) -> some View {
         switch style {
         case .tollbar:
             self.modifier(NavigationCloseToolbarViewModifier())
         case .view:
-            let closeBinding = Binding<Bool>(
-                get: { onClose.wrappedValue != nil },
-                set: { _ in onClose.wrappedValue = nil }
+            let _closeBinding = Binding<Bool>(
+                get: { closeBinding.wrappedValue != nil },
+                set: { _ in closeBinding.wrappedValue = nil }
             )
-            self.modifier(NavigationBindingCloseViewModifier(onClose: closeBinding))
+            self.modifier(NavigationBindingCloseViewModifier(onClose: _closeBinding))
         }
     }
 }

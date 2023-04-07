@@ -59,6 +59,8 @@
 		3B433E6129CB44EE007C8A26 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6029CB44EE007C8A26 /* Section.swift */; };
 		3B433E6B29DB1618007C8A26 /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6A29DB1618007C8A26 /* CacheAsyncImage.swift */; };
 		3B433E6D29DC3CA2007C8A26 /* OffsetObservingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */; };
+		3B433E6F29DEFBF4007C8A26 /* DetailSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E6E29DEFBF4007C8A26 /* DetailSectionView.swift */; };
+		3B433E7129DF2E6F007C8A26 /* TimerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B433E7029DF2E6F007C8A26 /* TimerModifier.swift */; };
 		3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */; };
 		3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC04292BC862002531D8 /* LoginDispatcher.swift */; };
 		3B45AC08292BC884002531D8 /* LoginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B45AC07292BC884002531D8 /* LoginStore.swift */; };
@@ -191,6 +193,8 @@
 		3B433E6029CB44EE007C8A26 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		3B433E6A29DB1618007C8A26 /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
 		3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetObservingScrollView.swift; sourceTree = "<group>"; };
+		3B433E6E29DEFBF4007C8A26 /* DetailSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSectionView.swift; sourceTree = "<group>"; };
+		3B433E7029DF2E6F007C8A26 /* TimerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModifier.swift; sourceTree = "<group>"; };
 		3B45AC02292BC658002531D8 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
 		3B45AC04292BC862002531D8 /* LoginDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDispatcher.swift; sourceTree = "<group>"; };
 		3B45AC07292BC884002531D8 /* LoginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStore.swift; sourceTree = "<group>"; };
@@ -330,6 +334,7 @@
 				3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */,
 				3B205AD129B77E0600F75C8B /* AppearanceButton.swift */,
 				3B433E5E29CB062C007C8A26 /* ItemsSectionView.swift */,
+				3B433E6E29DEFBF4007C8A26 /* DetailSectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -696,6 +701,7 @@
 				3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */,
 				3B38A8C8297AD592008BD6E2 /* KeyboardModifier.swift */,
 				3B9B07EA29BF5B2E00CCEC10 /* DissmissingKeyboard.swift */,
+				3B433E7029DF2E6F007C8A26 /* TimerModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -915,6 +921,7 @@
 			files = (
 				3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */,
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
+				3B433E7129DF2E6F007C8A26 /* TimerModifier.swift in Sources */,
 				3B5CA9212992609D00E16151 /* LibraryStore.swift in Sources */,
 				3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */,
 				3B27A58229A613D600CF9A5F /* CreateCoordinator.swift in Sources */,
@@ -922,6 +929,7 @@
 				3B45AC0E292BC8DE002531D8 /* LoginState.swift in Sources */,
 				3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */,
 				3BDAAEB529C2535A0064F7D0 /* SavedItemsServiceType.swift in Sources */,
+				3B433E6F29DEFBF4007C8A26 /* DetailSectionView.swift in Sources */,
 				3BDAAEC029C2535A0064F7D0 /* SavedAction.swift in Sources */,
 				3B5CA9272992609D00E16151 /* LibraryAction.swift in Sources */,
 				3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */,

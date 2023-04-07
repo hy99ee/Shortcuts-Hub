@@ -66,19 +66,49 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var rootView: some View {
         if custom == nil {
             feedView
+                .transition(
+                    .scale(scale: 1.2, anchor: .top)
+                    .combined(with: .opacity)
+                )
                 .environmentObject(NamespaceWrapper(open))
-                .padding(custom == nil ? 10 : 0)
-                .disabled(custom != nil)
+                .padding(custom == nil ? 15 : 0)
+                .animationAdapted(animationDuration: 1)
         } else {
-            FeedDetailView(link: $custom)
-                .environmentObject(NamespaceWrapper(open))
+            if case let custom, let custom {
+                if case let FeedLink.section(section) = custom {
+                    DetailSectionView(section: section, onClose: {
+                        withAnimation(
+                            .interactiveSpring(
+                                response: 0.6,
+                                dampingFraction: 0.7,
+                                blendDuration: 0.7
+                            )
+                        ) {
+                            self.custom = nil
+                        }
+                    })
+                    .matchedGeometryEffect(id: section.id, in: open)
+                    .environmentObject(NamespaceWrapper(open))
+                    .transition(
+                        .scale(scale: 0.8, anchor: .top)
+                        .combined(with: .opacity)
+                    )
+                    .animationAdapted(animationDuration: 0.8)
+                }
+            }
         }
     }
 
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.spring()) {
+            withAnimation(
+                .interactiveSpring(
+                    response: 0.6,
+                    dampingFraction: 0.7,
+                    blendDuration: 0.7
+                )
+            ) {
                 custom = link
             }
         case .error:
@@ -95,8 +125,6 @@ struct FeedCoordinator: CoordinatorType {
         }
     }
 
-
-
     private func alertContent(link: FeedLink) -> Alert {
         switch link {
         case let .error(error):
@@ -106,101 +134,5 @@ struct FeedCoordinator: CoordinatorType {
         default:
             return Alert(title: Text(""))
         }
-    }
-}
-
-
-struct FeedDetailView: View {
-    @Binding var link: FeedLink?
-    @State var detailScale: CGFloat = 1
-    @State private var lastOffsetY: Double = 0
-    @State private var animation = true
-
-    @EnvironmentObject var namespaceWrapper: NamespaceWrapper
-
-    var body: some View {
-        if case let link, let link {
-            if case let FeedLink.section(section) = link {
-                OffsetObservingScrollView(scale: $detailScale) {
-                    VStack {
-                        ItemsSectionView(section: section, isDetail: true)
-                            .frame(height: 470)
-                        
-                        detailContent(section: section)
-                            .onTapGesture {
-                                withAnimation(.spring()) {
-                                    self.link = nil
-                                }
-                            }
-                    }
-                }
-                .edgesIgnoringSafeArea(.horizontal)
-                .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace, anchor: .center)
-                .onChange(of: detailScale) {
-                    if $0 < 0.9 {
-                        withAnimation(.spring()) {
-                            self.link = nil
-                            detailScale = 1
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private func detailContent(section: IdsSection) -> some View {
-        ZStack {
-            Rectangle()
-                
-                .cornerRadius(10)
-
-            ScrollView {
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-            }
-            .foregroundColor(.blue)
-        }
-        .animation(.spring(), value: animation)
-        .transition(.scale)
-//        .ignoresSafeArea()
-//        .applyClose(.view)
     }
 }
