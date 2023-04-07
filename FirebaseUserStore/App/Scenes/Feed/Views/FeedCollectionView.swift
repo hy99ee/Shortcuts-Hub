@@ -19,9 +19,11 @@ struct FeedCollectionView: View {
             ScrollView(showsIndicators: false) {
                 if store.state.sections.count > 0 {
                     ForEach(store.state.sections) { section in
-                        ItemsSectionView(section: section)
+                        ItemsSectionView.createSectionView(section: section)
+                            .frame(height: 480)
                             .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace)
-                            .animation(.spring().speed(0.8), value: store.state.sections)
+                            .cornerRadius(9)
+                            .padding(.vertical)
                             .onTapGesture { store.dispatch(.click(section)) }
                     }
                     .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
@@ -29,6 +31,7 @@ struct FeedCollectionView: View {
                     progress
                 }
             }
+            .animationAdapted(animationDuration: 0.5)
 //            .navigationTitle("Feed")
             .navigationBarItems(trailing: toolbarView)
 //            .padding([.trailing, .leading], 12)

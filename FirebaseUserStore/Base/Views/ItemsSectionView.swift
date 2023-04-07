@@ -3,24 +3,33 @@ import SwiftUI
 class OffsetCounter: ObservableObject {
     @Published var offset: CGFloat = 50
 
-    lazy var timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in self.offset += 5 }
+    let maximumTime: CGFloat
+    lazy var maximumTimer = Timer.scheduledTimer(withTimeInterval: maximumTime, repeats: true) { _ in
+        self.offset = 50
+    }
+    lazy var timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+        self.offset += 5
+    }
 
-    init() { timer.fire() }
+    init(max maximumTime: CGFloat = 20) {
+        self.maximumTime = maximumTime
+        timer.fire()
+        maximumTimer.fire()
+    }
 }
-
 
 struct ItemsSectionView: View {
     @State private var icons: [CacheAsyncImage<Image, Color>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
-    @State private var isDetail: Bool
 
     private static let offserCounter = OffsetCounter()
 
-    let pagingLimits = 16
-    
-    init(section: IdsSection, isDetail: Bool = false) {
+    private var iconWidth: CGFloat = 120
+    private var iconHeight: CGFloat = 180
+
+    fileprivate init(section: IdsSection) {
         self.title = section.title
         self.subtitle = section.subtitle
         self.icons = section.titleIcons.map {
@@ -33,7 +42,6 @@ struct ItemsSectionView: View {
                 placeholder: { Color.red }
             )
         }
-        self.isDetail = isDetail
     }
     
     var body: some View {
@@ -44,15 +52,13 @@ struct ItemsSectionView: View {
                 .onTapGesture { }
         } else {
             sectionView
-                .padding(.vertical, 8)
                 .background(.gray.opacity(0.3))
-                .cornerRadius(8)
         }
     }
 
     private var sectionView: some View {
-        VStack(alignment: .leading, spacing: 14.0) {
-            VStack(spacing: 10.0) {
+        VStack(alignment: .leading, spacing: 8) {
+            VStack(spacing: 6) {
                 Text(title)
                     .font(.title3)
                     .foregroundColor(.gray)
@@ -67,6 +73,7 @@ struct ItemsSectionView: View {
                 }
             }
             .padding(.leading, 20)
+            .padding(.top, 14)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 6.0) {
@@ -102,8 +109,6 @@ struct ItemsSectionView: View {
             .disabled(true)
         }
     }
-    private var iconWidth: CGFloat { isDetail ? 120 : 120 }
-    private var iconHeight: CGFloat { isDetail ? 180 : 180 }
 }
 
 fileprivate extension View {
@@ -129,26 +134,19 @@ extension ButtonStyle where Self == ScaleButtonStyle {
     }
 }
 
-//struct DownloadableImage: View {
-//    let url: URL
-//    @State private var image: Image?
-//
-//    var body: some View {
-//
-//    }
-//
-//    // MARK: Image request
-//    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-//        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-//    }
-//
-//    func downloadImage(from url: URL) -> Image? {
-//        getData(from: url) { data, response, error in
-//            guard let data = data, error == nil else { return }
-//
-//            if let image = UIImage(data: data) {
-//                return Image(uiImage: image)
-//            }
-//        }
-//    }
-//}
+extension ItemsSectionView {
+    @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
+        if section.titleIcons.count > 1 {
+            ItemsSectionView(section: section)
+        } else {
+            CacheAsyncImage<Image, Color>(
+                url: section.titleIcons.first!,
+                content: { image in
+                    guard let image = image.image else { return nil }
+                    return image.resizable(resizingMode: .stretch)
+                },
+                placeholder: { Color.red }
+            )
+        }
+    }
+}
