@@ -11,22 +11,25 @@ struct DetailSectionView: View {
 
     var body: some View {
         OffsetObservingScrollView(scale: $detailScale) {
+            Color.clear
+                .frame(height: abs(offset / 2))
+
             VStack {
                 ItemsSectionView.createSectionView(section: section)
                     .frame(height: 480)
-                    .closeToolbar(onClose)
                     .ignoresSafeArea()
 
                 detailContent(section: section)
             }
+            .cornerRadius(150 - detailScale * 140)
             .offset(y: offset)
         }
+        .closeToolbar(onClose)
         .padding(.vertical)
-        .cornerRadius(9)
         .edgesIgnoringSafeArea(.horizontal)
         .onChange(of: detailScale) {
-            let offset = 2000 - $0 * 2000
-            self.offset = -offset
+            let offset = 25 - $0 * 25
+            self.offset = -abs(offset * 100)
             print(offset)
             if $0 < 0.92 {
                 onClose()

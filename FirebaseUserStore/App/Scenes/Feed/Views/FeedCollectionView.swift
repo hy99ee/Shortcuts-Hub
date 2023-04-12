@@ -21,7 +21,7 @@ struct FeedCollectionView: View {
                     ForEach(store.state.sections) { section in
                         ItemsSectionView.createSectionView(section: section)
                             .frame(height: 480)
-                            .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace)
+                            .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace, anchor: .top)
                             .cornerRadius(9)
                             .padding(.vertical)
                             .onTapGesture { store.dispatch(.click(section)) }

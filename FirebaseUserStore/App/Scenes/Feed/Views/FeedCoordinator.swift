@@ -37,6 +37,8 @@ struct FeedCoordinator: CoordinatorType {
     @State var alert: FeedLink?
     @State var custom: FeedLink?
 
+    @State var openDetail = false
+
     @Namespace var open
 
     private let store: FeedStore
@@ -64,53 +66,56 @@ struct FeedCoordinator: CoordinatorType {
     }
 
     @ViewBuilder private var rootView: some View {
-        if custom == nil {
+        ZStack {
             feedView
-                .transition(
-                    .scale(scale: 1.2, anchor: .top)
-                    .combined(with: .opacity)
-                )
+                .scaleEffect(custom == nil ? 1 : 1.1)
+                .opacity(openDetail ? 0 : 1)
                 .environmentObject(NamespaceWrapper(open))
-                .padding(custom == nil ? 15 : 0)
-                .animationAdapted(animationDuration: 1)
-        } else {
-            if case let custom, let custom {
-                if case let FeedLink.section(section) = custom {
-                    DetailSectionView(section: section, onClose: {
-                        withAnimation(
-                            .interactiveSpring(
-                                response: 0.6,
-                                dampingFraction: 0.7,
-                                blendDuration: 0.7
-                            )
-                        ) {
-                            self.custom = nil
+                .padding([.horizontal], custom == nil ? 20 : 0)
+            
+            if custom != nil {
+                if case let custom, let custom {
+                    if case let FeedLink.section(section) = custom {
+                        ZStack {
+                            Rectangle()
+                                .fill(.thinMaterial)
+                                .ignoresSafeArea()
+//                                .blur(radius: 20)
+                            
+                            DetailSectionView(section: section, onClose: {
+//                                withAnimation(.spring()) {
+//                                    openDetail = false
+//                                }
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    withAnimation(.spring()) {
+                                        openDetail = false
+                                        self.custom = nil
+                                    }
+//                                }
+                            })
+                            .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
+                            .environmentObject(NamespaceWrapper(open))
+                            .transition(.identity)
+                            .animationAdapted(animationDuration: 0.8)
                         }
-                    })
-                    .matchedGeometryEffect(id: section.id, in: open)
-                    .environmentObject(NamespaceWrapper(open))
-                    .transition(
-                        .scale(scale: 0.8, anchor: .top)
-                        .combined(with: .opacity)
-                    )
-                    .animationAdapted(animationDuration: 0.8)
+                        
+                    }
                 }
             }
         }
+//        .animationAdapted(animationDuration: 1)
     }
 
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(
-                .interactiveSpring(
-                    response: 0.6,
-                    dampingFraction: 0.7,
-                    blendDuration: 0.7
-                )
-            ) {
+            withAnimation(.spring().speed(1.4)) {
+                openDetail = true
+            }
+            withAnimation(.spring()) {
                 custom = link
             }
+            
         case .error:
             self.alert = link
         }
