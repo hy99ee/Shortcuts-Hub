@@ -1,8 +1,11 @@
+import Combine
 import SwiftUI
 
 struct PositionObservingView<Content: View>: View {
     var coordinateSpace: CoordinateSpace
+
     @StateObject private var scrollViewManager = ScrollViewManager()
+
     @Binding var offset: CGPoint
     @Binding var scale: CGFloat
 
@@ -11,17 +14,20 @@ struct PositionObservingView<Content: View>: View {
     var body: some View {
         content()
             .scaleEffect(scale)
-            .background(GeometryReader { geometry in
-                Color.clear.preference(
-                    key: PreferenceKey.self,
-                    value: geometry.frame(in: coordinateSpace).origin
-                )
-            })
+            .background(
+                GeometryReader { geometry in
+                    Color.clear.preference(
+                        key: PreferenceKey.self,
+                        value: geometry.frame(in: coordinateSpace).origin
+                    )
+                }
+            )
             .onPreferenceChange(PreferenceKey.self) { position in
                 scrollViewManager.currentOffset = position
             }
             .onReceive(scrollViewManager.$offsetAtScrollEnd) { _ in
                 withAnimation(.spring()) {
+                    offset = .zero
                     scale = 1
                 }
             }
@@ -31,7 +37,6 @@ struct PositionObservingView<Content: View>: View {
     }
 }
 
-import Combine
 private extension PositionObservingView {
     class ScrollViewManager: ObservableObject {
         @Published var currentOffset: CGPoint = .zero
@@ -42,7 +47,7 @@ private extension PositionObservingView {
         init() {
             cancellable = AnyCancellable($currentOffset
                 .map { $0.y }
-                .debounce(for: 0.3, scheduler: DispatchQueue.main)
+                .debounce(for: 0.18, scheduler: DispatchQueue.main)
                 .dropFirst()
                 .assign(to: \.offsetAtScrollEnd, on: self)
             )
@@ -89,6 +94,11 @@ struct OffsetObservingScrollView<Content: View>: View {
                 let scale = newOffset.y < lastOffsetY ? scale + newOffset.y / 20_000 : scale - newOffset.y / 20_000
                 self.scale = scale > 1 ? 1 : scale
                 lastOffsetY = newOffset.y
+            } else {
+                if scale < 1 {
+                    let scale = scale + newOffset.y / 20_000
+                    self.scale = scale > 1 ? 1 : scale
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-struct FeedState: StateType {
+struct FeedState: StateType, ReinitableByNewSelf {
     var loadItems: [LoaderItem]? {
         didSet {
             showErrorView = false

@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-struct LoginState: StateType {
+struct LoginState: StateType, ReinitableByNewSelf {
     var fieldsStatus: [LoginCredentialsField: InputTextFieldStatus] = {
         LoginCredentialsField.allCases.reduce([LoginCredentialsField: InputTextFieldStatus](), { _partialResult, registrationCredentialsField in
             var partialResult = _partialResult

@@ -65,7 +65,7 @@ struct NavigationBindingCloseViewModifier: ViewModifier {
 
 struct OnCloseViewModifier: ViewModifier {
     let onClose: () -> ()
-    
+
     func body(content: Content) -> some View {
         ZStack {
             content
@@ -85,6 +85,24 @@ struct OnCloseViewModifier: ViewModifier {
                 Spacer()
             }
         }
+    }
+}
+
+struct CloseBindingToolbarViewModifier: ViewModifier {
+    @Binding var onClose: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(.gray)
+                    .onTapGesture {
+                        onClose = true
+                    }
+                    
+            }
     }
 }
 
@@ -129,15 +147,29 @@ extension View {
         }
     }
 
-    @ViewBuilder func applyClose<T>(closeBinding: Binding<T?>, _ style: CloseButtonSite = .tollbar) -> some View {
+    @ViewBuilder func applyClose<T>(
+        closeBinding: Binding<T?>,
+        _ style: CloseButtonSite = .tollbar,
+        animation: Animation? = nil
+    ) -> some View {
+        let _closeBinding = Binding<Bool>(
+            get: { closeBinding.wrappedValue != nil },
+            set: { _ in
+                switch animation {
+                case .none:
+                    closeBinding.wrappedValue = nil
+                case .some(let animation):
+                    withAnimation(animation) {
+                        closeBinding.wrappedValue = nil
+                    }
+                }
+            }
+        )
+
         switch style {
         case .tollbar:
-            self.modifier(NavigationCloseToolbarViewModifier())
+            self.modifier(CloseBindingToolbarViewModifier(onClose: _closeBinding))
         case .view:
-            let _closeBinding = Binding<Bool>(
-                get: { closeBinding.wrappedValue != nil },
-                set: { _ in closeBinding.wrappedValue = nil }
-            )
             self.modifier(NavigationBindingCloseViewModifier(onClose: _closeBinding))
         }
     }

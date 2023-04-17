@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-struct RegisterationState: StateType {
+struct RegisterationState: StateType, ReinitableByNewSelf {
     var fieldsStatus: [RegistrationCredentialsField: InputTextFieldStatus] = {
         RegistrationCredentialsField.allCases.reduce([RegistrationCredentialsField: InputTextFieldStatus](), { _partialResult, registrationCredentialsField in
             var partialResult = _partialResult

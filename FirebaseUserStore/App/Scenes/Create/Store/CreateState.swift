@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-struct CreateState: StateType {
+struct CreateState: StateType, ReinitableByNewSelf {
     enum CreateErrorType: Error {
         case link
         case upload

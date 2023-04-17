@@ -68,42 +68,33 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var rootView: some View {
         ZStack {
             feedView
-                .scaleEffect(custom == nil ? 1 : 1.1)
+                .scaleEffect(custom == nil ? 1 : 1.2)
                 .opacity(openDetail ? 0 : 1)
                 .environmentObject(NamespaceWrapper(open))
                 .padding([.horizontal], custom == nil ? 20 : 0)
+                .disabled(custom != nil)
             
-            if custom != nil {
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
                         ZStack {
                             Rectangle()
                                 .fill(.thinMaterial)
                                 .ignoresSafeArea()
-//                                .blur(radius: 20)
-                            
-                            DetailSectionView(section: section, onClose: {
-//                                withAnimation(.spring()) {
-//                                    openDetail = false
-//                                }
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    withAnimation(.spring()) {
-                                        openDetail = false
-                                        self.custom = nil
-                                    }
-//                                }
-                            })
-                            .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
-                            .environmentObject(NamespaceWrapper(open))
-                            .transition(.identity)
-                            .animationAdapted(animationDuration: 0.8)
+
+                            FeedDetailSectionCoordinator(store: store.packages.makeFeedSectionDetailStore(section), parent: self.$custom)
+                                .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
+                                .environmentObject(NamespaceWrapper(open))
+                                .transition(.identity)
+                                .animationAdapted(animationDuration: 0.8)
                         }
-                        
                     }
                 }
+        }
+        .onChange(of: custom) { newValue in
+            withAnimation(.spring()) {
+                openDetail = newValue != nil
             }
         }
-//        .animationAdapted(animationDuration: 1)
     }
 
     func transitionReceiver(_ link: FeedLink) {

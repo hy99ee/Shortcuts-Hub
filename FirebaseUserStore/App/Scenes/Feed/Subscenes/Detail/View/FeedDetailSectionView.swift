@@ -1,9 +1,11 @@
 import SwiftUI
 
-struct DetailSectionView: View {
-    let section: IdsSection
-    let onClose: () -> ()
-    @State var detailScale: CGFloat = 1
+struct FeedDetailSectionView: View {
+    @StateObject var store: FeedDetailSectionStore
+//struct DetailSectionView: View {
+//    let section: IdsSection
+//    let onClose: () -> ()
+    @State private var detailScale: CGFloat = 1
     @State private var offset: CGFloat = .zero
     @State private var animation = true
 
@@ -15,24 +17,23 @@ struct DetailSectionView: View {
                 .frame(height: abs(offset / 2))
 
             VStack {
-                ItemsSectionView.createSectionView(section: section)
+                ItemsSectionView.createSectionView(section: store.state.idsSection)
                     .frame(height: 480)
                     .ignoresSafeArea()
 
-                detailContent(section: section)
+                detailContent(section: store.state.idsSection)
             }
             .cornerRadius(150 - detailScale * 140)
             .offset(y: offset)
         }
-        .closeToolbar(onClose)
         .padding(.vertical)
         .edgesIgnoringSafeArea(.horizontal)
         .onChange(of: detailScale) {
             let offset = 25 - $0 * 25
             self.offset = -abs(offset * 100)
             print(offset)
-            if $0 < 0.92 {
-                onClose()
+            if $0 < 0.9 {
+                store.dispatch(.close)
             }
         }
     }

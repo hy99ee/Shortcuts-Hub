@@ -5,20 +5,29 @@ protocol FeedPackagesType: EnvironmentPackages {
     associatedtype PackageItemsService: ItemsServiceType
 
     var itemsService: PackageItemsService! { get }
-    var loginStore: LoginStore { get }
+
+//    func getFeedSectionDetailStore(_ section: IdsSection) -> FeedDetailSectionStore
 }
 
 
 class FeedPackages: FeedPackagesType {
     private(set) var itemsService: FeedItemsService!
-    
-    lazy var loginStore = LoginStore(
-        state: LoginState(),
-        dispatcher: loginDispatcher,
-        reducer: loginReducer,
-        packages: LoginPackages()
-    )
 
+//    private lazy var feedSectionDetailStore = FeedDetailSectionStore(
+//        state: FeedDetailSectionState(),
+//        dispatcher: feedFeedDetailSectionSectionDispatcher,
+//        reducer: feedDetailSectionReducer,
+//        packages: FeedDetailSectionPackages()
+//    )
+
+    func makeFeedSectionDetailStore(_ section: IdsSection) -> FeedDetailSectionStore {
+        FeedDetailSectionStore(
+            state: FeedDetailSectionState(section: section),
+            dispatcher: feedFeedDetailSectionSectionDispatcher,
+            reducer: feedDetailSectionReducer,
+            packages: FeedDetailSectionPackages()
+        )
+    }
 
     init() {
         itemsService = _itemsService
@@ -36,12 +45,5 @@ class FeedPackages: FeedPackagesType {
 }
 
 class _FeedPackages: FeedPackagesType, Unreinitable {
-    lazy var loginStore = LoginStore(
-        state: LoginState(),
-        dispatcher: loginDispatcher,
-        reducer: loginReducer,
-        packages: LoginPackages()
-    )
-
     lazy var itemsService: MockFeedItemsService! = MockFeedItemsService()
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-struct LibraryState: StateType {
+struct LibraryState: StateType, ReinitableByNewSelf {
     var loadItems: [LoaderItem]? {
         didSet {
             showErrorView = false

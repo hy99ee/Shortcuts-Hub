@@ -25,7 +25,7 @@ extension ReinitableByNewSelf {
     func reinit() -> Self { Self() }
 }
 
-protocol StateType: ReinitableByNewSelf, Equatable {}
+protocol StateType: Reinitable, Equatable {}
 
 protocol TransitionType: Hashable, Identifiable {}
 enum NoneTransition : TransitionType {
