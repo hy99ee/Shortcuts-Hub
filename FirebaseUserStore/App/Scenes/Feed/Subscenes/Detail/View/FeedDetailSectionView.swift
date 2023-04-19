@@ -19,7 +19,7 @@ struct FeedDetailSectionView: View {
                     .frame(height: 480)
                     .ignoresSafeArea()
 
-                detailContent(section: store.state.idsSection)
+                detailContent(items: store.state.itemsFromSection)
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             }
             .cornerRadius(150 - detailScale * 140)
@@ -37,11 +37,12 @@ struct FeedDetailSectionView: View {
         }
     }
 
-    private func detailContent(section: IdsSection) -> some View {
-        ZStack {
-            ScrollView {
-                Text("LOADING SUCCESS")
+    private func detailContent(items: [Item]) -> some View {
+        ScrollView {
+            ForEach(items) {
+                ItemCellView(item: $0, cellStyle: .row1)
             }
         }
+        .frame(minHeight: 100)
     }
 }

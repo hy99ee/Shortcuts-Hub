@@ -7,7 +7,7 @@ struct FeedDetailSectionState: StateType {
     }
     
     let idsSection: IdsSection
-    var itemsSection: ItemsSection?
+    var itemsFromSection: [Item] = []
 
     var viewProgress: ProgressViewStatus = .stop
     var processView: ProcessViewStatus = .enable

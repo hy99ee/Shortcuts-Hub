@@ -25,7 +25,8 @@ class FeedPackages: FeedPackagesType {
             state: FeedDetailSectionState(section: section),
             dispatcher: feedFeedDetailSectionSectionDispatcher,
             reducer: feedDetailSectionReducer,
-            packages: FeedDetailSectionPackages()
+            packages: FeedDetailSectionPackages(),
+            middlewares: [FeedDetailSectionStore.middlewareFetch]
         )
     }
 

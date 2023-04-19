@@ -4,9 +4,8 @@ import Foundation
 let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSectionMutation, CloseTransition> = { _state, mutation in
     var state = _state
     switch mutation {
-    case .fetchedSection:
-//        state.itemsSection = section
-        break
+    case let .fetchedSection(items):
+        state.itemsFromSection = items
 
     case let .progressViewStatus(status):
         state.viewProgress = status
