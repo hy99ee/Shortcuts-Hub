@@ -9,7 +9,7 @@ struct FeedDetailSectionState: StateType {
     let idsSection: IdsSection
     var itemsSection: ItemsSection?
 
-    var progress: ProgressViewStatus = .stop
+    var viewProgress: ProgressViewStatus = .stop
     var processView: ProcessViewStatus = .enable
 
     static func == (lhs: FeedDetailSectionState, rhs: FeedDetailSectionState) -> Bool {

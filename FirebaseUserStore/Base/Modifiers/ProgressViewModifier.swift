@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProgressViewModifier: ViewModifier {
     var progressStatus: ProgressViewStatus
-    var backgroundOpacity: Double = 0.5
+    let backgroundOpacity: Double
 
     func body(content: Content) -> some View {
         content

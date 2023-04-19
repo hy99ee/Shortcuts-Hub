@@ -119,21 +119,6 @@ fileprivate extension View {
     }
 }
 
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-         configuration.label
-             .scaleEffect(configuration.isPressed ? 0.95 : 1)
-             .animation(.linear(duration: 0.2), value: configuration.isPressed)
-             .brightness(configuration.isPressed ? -0.05 : 0)
-     }
-}
-
-extension ButtonStyle where Self == ScaleButtonStyle {
-    static var scale: ScaleButtonStyle {
-        ScaleButtonStyle()
-    }
-}
-
 extension ItemsSectionView {
     @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
         if section.titleIcons.count > 1 {

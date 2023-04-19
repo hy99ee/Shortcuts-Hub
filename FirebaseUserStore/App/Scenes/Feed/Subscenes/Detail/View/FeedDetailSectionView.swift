@@ -2,9 +2,7 @@ import SwiftUI
 
 struct FeedDetailSectionView: View {
     @StateObject var store: FeedDetailSectionStore
-//struct DetailSectionView: View {
-//    let section: IdsSection
-//    let onClose: () -> ()
+
     @State private var detailScale: CGFloat = 1
     @State private var offset: CGFloat = .zero
     @State private var animation = true
@@ -22,6 +20,7 @@ struct FeedDetailSectionView: View {
                     .ignoresSafeArea()
 
                 detailContent(section: store.state.idsSection)
+                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             }
             .cornerRadius(150 - detailScale * 140)
             .offset(y: offset)
@@ -40,51 +39,9 @@ struct FeedDetailSectionView: View {
 
     private func detailContent(section: IdsSection) -> some View {
         ZStack {
-            Rectangle()
-
             ScrollView {
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
-                VStack {
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                    Text("Heeloo")
-                }
+                Text("LOADING SUCCESS")
             }
-            .foregroundColor(.blue)
         }
     }
 }

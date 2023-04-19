@@ -3,6 +3,7 @@ import Combine
 
 struct FeedDetailSectionCoordinator: CoordinatorType {
     @Binding private var parent: FeedLink?
+    @State private var isOpen = false
 
     private var store: FeedDetailSectionStore
     let stateReceiver: AnyPublisher<CloseTransition, Never>
@@ -15,8 +16,21 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
 
     var view: AnyView {
         AnyView(
-            FeedDetailSectionView(store: store)
-                .applyClose(closeBinding: $parent, .tollbar, animation: .spring())
+            ZStack {
+                Rectangle()
+                    .fill(.thinMaterial)
+                    .cornerRadius(isOpen ? 0 : 40)
+                
+                FeedDetailSectionView(store: store)
+                    .transition(.identity)
+                    .applyClose(closeBinding: $parent, .tollbar, animation: .spring().speed(1.3))
+                    .onAppear {
+                        store.dispatch(.initDetail)
+                        withAnimation(.spring()) {
+                            isOpen = true
+                        }
+                    }
+            }
         )
     }
 

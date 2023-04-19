@@ -4,9 +4,11 @@ import Combine
 struct FeedCollectionView: View {
     @StateObject var store: FeedStore
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
-    
+
     @State private var isAnimating = false
     @State private var isUpdating = false
+    @State private var clickedSectionIdScale: UUID?
+    @State private var clickedSectionIdOpacity: UUID?
 
     private let progress = HDotsProgress()
 
@@ -15,32 +17,48 @@ struct FeedCollectionView: View {
     }
 
     private var verticalGrid: some View {
-//        NavigationView {
-            ScrollView(showsIndicators: false) {
-                if store.state.sections.count > 0 {
-                    ForEach(store.state.sections) { section in
-                        ItemsSectionView.createSectionView(section: section)
-                            .frame(height: 480)
-                            .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace, anchor: .top)
-                            .cornerRadius(9)
-                            .padding(.vertical)
-                            .onTapGesture { store.dispatch(.click(section)) }
-                    }
-                    .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-                } else {
-                    progress
+        ScrollView(showsIndicators: false) {
+            if store.state.sections.count > 0 {
+                ForEach(store.state.sections) { section in
+                    ItemsSectionView.createSectionView(section: section)
+                        .frame(height: 480)
+                        .matchedGeometryEffect(id: section.id, in: namespaceWrapper.namespace, anchor: .top)
+                        .cornerRadius(9)
+                        .padding(.vertical)
+                        .scaleEffect(section.id == clickedSectionIdScale ? 0.95 : 1)
+                        .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
+                        .onTapGesture {
+                            withAnimation(.easeIn(duration: 0.15)) {
+                                clickedSectionIdScale = section.id
+                                
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                clickedSectionIdOpacity = section.id
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                                store.dispatch(.click(section))
+                                
+                                withAnimation(.spring().speed(2)) {
+                                    clickedSectionIdScale = nil
+                                }
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                clickedSectionIdOpacity = nil
+                            }
+                        }
                 }
+                .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
+            } else {
+                progress
             }
-            .animationAdapted(animationDuration: 0.5)
-//            .navigationTitle("Feed")
-            .navigationBarItems(trailing: toolbarView)
-//            .padding([.trailing, .leading], 12)
-            .refreshable {
-                await asyncUpdate()
-            }
-//        }
+        }
+        .animationAdapted(animationDuration: 0.5)
+        .navigationBarItems(trailing: toolbarView)
+        .refreshable {
+            await asyncUpdate()
+        }
     }
-
+    
     private var toolbarView: some View {
         HStack {
         }

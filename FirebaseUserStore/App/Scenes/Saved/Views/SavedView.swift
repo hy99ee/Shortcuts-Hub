@@ -47,7 +47,7 @@ struct SavedView: View {
                 updateableErrorView
             } else if store.state.showErrorView == nil, store.state.showEmptyView == nil {
                 Text("")
-                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress))
+                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             } else {
                 SavedCollectionView(store: store, searchBinding: searchBinding)
             }

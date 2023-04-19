@@ -37,8 +37,6 @@ struct FeedCoordinator: CoordinatorType {
     @State var alert: FeedLink?
     @State var custom: FeedLink?
 
-    @State var openDetail = false
-
     @Namespace var open
 
     private let store: FeedStore
@@ -68,44 +66,28 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var rootView: some View {
         ZStack {
             feedView
-                .scaleEffect(custom == nil ? 1 : 1.2)
-                .opacity(openDetail ? 0 : 1)
                 .environmentObject(NamespaceWrapper(open))
-                .padding([.horizontal], custom == nil ? 20 : 0)
+                .padding([.horizontal], custom == nil ? 24 : 0)
                 .disabled(custom != nil)
             
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
-                        ZStack {
-                            Rectangle()
-                                .fill(.thinMaterial)
-                                .ignoresSafeArea()
-
-                            FeedDetailSectionCoordinator(store: store.packages.makeFeedSectionDetailStore(section), parent: self.$custom)
-                                .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
-                                .environmentObject(NamespaceWrapper(open))
-                                .transition(.identity)
-                                .animationAdapted(animationDuration: 0.8)
-                        }
+                        FeedDetailSectionCoordinator(store: store.packages.makeFeedSectionDetailStore(section), parent: self.$custom)
+                            .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
+                            .environmentObject(NamespaceWrapper(open))
+                            .animationAdapted(animationDuration: 0.7)
+                            .transition(.asymmetric(insertion: .scale(scale: 0.95), removal: .identity))
                     }
                 }
-        }
-        .onChange(of: custom) { newValue in
-            withAnimation(.spring()) {
-                openDetail = newValue != nil
-            }
         }
     }
 
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.spring().speed(1.4)) {
-                openDetail = true
-            }
-            withAnimation(.spring()) {
+            withAnimation(.spring().speed(1.3)) {
                 custom = link
-            }
+            } 
             
         case .error:
             self.alert = link
