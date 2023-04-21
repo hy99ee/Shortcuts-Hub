@@ -1,24 +1,29 @@
 import SwiftUI
 
-struct CacheAsyncImage<I, P>: View where I: View, P: View {
+struct CacheAsyncImage<I, P, E>: View where I: View,
+                                            P: View,
+                                            E: View {
     private let url: URL
     private let scale: CGFloat
     private let transaction: Transaction
     private let content: (AsyncImagePhase) -> I?
     @ViewBuilder private var placeholder: () -> P
+    @ViewBuilder private var errorView: () -> E
 
     init(
         url: URL,
         scale: CGFloat = 1.0,
         transaction: Transaction = Transaction(),
         content: @escaping (AsyncImagePhase) -> I?,
-        @ViewBuilder placeholder: @escaping () -> P
+        @ViewBuilder placeholder: @escaping () -> P,
+        @ViewBuilder errorView: @escaping () -> E
     ){
         self.url = url
         self.scale = scale
         self.transaction = transaction
         self.content = content
         self.placeholder = placeholder
+        self.errorView = errorView
     }
     
     var body: some View {
@@ -43,11 +48,16 @@ struct CacheAsyncImage<I, P>: View where I: View, P: View {
         }
     }
 
-    private func cacheAndRender(phase: AsyncImagePhase) -> some View {
-        if case .success (let image) = phase {
+    private func cacheAndRender(phase: AsyncImagePhase) -> AnyView {
+        switch phase {
+        case .empty:
+            return AnyView(placeholder())
+        case .success(let image):
             ImageCache[url] = image
+            return AnyView(content(phase))
+        case .failure:
+            return AnyView(errorView())
         }
-        return content(phase)
     }
 }
 

@@ -23,7 +23,7 @@ struct FeedDetailSectionView: View {
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             }
             .cornerRadius(150 - detailScale * 140)
-            .offset(y: offset)
+            .offset(y: offset)   
         }
         .padding(.vertical)
         .edgesIgnoringSafeArea(.horizontal)
@@ -39,8 +39,15 @@ struct FeedDetailSectionView: View {
 
     private func detailContent(items: [Item]) -> some View {
         ScrollView {
-            ForEach(items) {
-                ItemCellView(item: $0, cellStyle: .row1)
+            if items.count > 0 {
+                ForEach(items) {
+                    ItemListView(item: $0)
+                }
+            } else {
+                Text("Empty")
+                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    .foregroundColor(.secondary)
+                    .padding(.top, 30)
             }
         }
         .frame(minHeight: 100)

@@ -9,7 +9,6 @@ let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionActi
 
     case let .updateWithSection(section):
         return mutationFetchSections(section: section, packages: packages)
-            .delay(for: .seconds(3), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
             .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             .eraseToAnyPublisher()

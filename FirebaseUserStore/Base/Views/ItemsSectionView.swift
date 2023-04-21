@@ -19,7 +19,7 @@ class OffsetCounter: ObservableObject {
 }
 
 struct ItemsSectionView: View {
-    @State private var icons: [CacheAsyncImage<Image, Color>]
+    @State private var icons: [CacheAsyncImage<Image, Color, Color>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
@@ -39,7 +39,8 @@ struct ItemsSectionView: View {
                     guard let image = image.image else { return nil }
                     return image.resizable(resizingMode: .stretch)
                 },
-                placeholder: { Color.red }
+                placeholder: { Color.secondary },
+                errorView: { Color.red }
             )
         }
     }
@@ -124,13 +125,14 @@ extension ItemsSectionView {
         if section.titleIcons.count > 1 {
             ItemsSectionView(section: section)
         } else {
-            CacheAsyncImage<Image, Color>(
+            CacheAsyncImage<Image, Color, Color>(
                 url: section.titleIcons.first!,
                 content: { image in
                     guard let image = image.image else { return nil }
                     return image.resizable(resizingMode: .stretch)
                 },
-                placeholder: { Color.red }
+                placeholder: { Color.secondary },
+                errorView: { Color.red }
             )
         }
     }
