@@ -8,26 +8,23 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
         return mutationFetchSections(packages: packages)
 
     case let .click(section):
-        return Just(FeedMutation.detail(section: section)).eraseToAnyPublisher()
+        return Just(.detail(section: section)).eraseToAnyPublisher()
 
     case let .addSections(sections):
-        return Just(FeedMutation.appendSections(sections)).eraseToAnyPublisher()
+        return Just(.appendSections(sections)).eraseToAnyPublisher()
 
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
     case let .search(text):
 //        return mutationSearchItems(by: text, packages: packages)
-        return Just(FeedMutation.empty).eraseToAnyPublisher()
+        return Just(.empty).eraseToAnyPublisher()
 
     case let .showAlert(error):
         return mutationShowAlert(with: error)
     
     case .showFeedError:
-        return Just(FeedMutation.errorFeed).eraseToAnyPublisher()
-
-    case .mockAction:
-        return Empty(completeImmediately: true).eraseToAnyPublisher()
+        return Just(.errorFeed).eraseToAnyPublisher()
     }
 
     // MARK: - Mutations

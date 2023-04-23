@@ -5,49 +5,19 @@ struct FeedView: View {
     @StateObject var store: FeedStore
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
-//    private let searchQueryBublisher: CurrentValueSubject<String, Never>
-//    private var subscriptions = Set<AnyCancellable>()
-
     @State private var showLoader = false
     @State private var isRefresh = false
     @State private var errorFeedDelay = false
 
-//    var searchBinding: Binding<String> {
-//        .init(
-//            get: { searchQueryBublisher.value },
-//            set: { searchQueryBublisher.send($0) }
-//        )
-//    }
-
-//    init(store: FeedStore) {
-//        self._store = StateObject(wrappedValue: store)
-//        self.searchQueryBublisher = CurrentValueSubject<String, Never>(store.state.searchFilter)
-//
-//        let search = searchQueryBublisher
-//            .removeDuplicates()
-//            .dropFirst()
-//            .flatMap {
-//                Just($0)
-//                .handleEvents(receiveOutput: { store.dispatch(.changeSearchField($0)) })
-//                .zip(store.objectWillChange)
-//                .map { $0.0 }
-//            }
-//            .share()
-//
-//        search
-//            .filter { !$0.isEmpty }
-//            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-//            .sink { store.dispatch(.search(text: $0)) }
-//            .store(in: &subscriptions)
-//    }
     var body: some View {
         VStack {
             if store.state.showEmptyView {
-                emptyView.toolbar { toolbarView }
+                emptyView.toolbar { emptyToolbarView }
             } else if store.state.showErrorView {
-                updateableErrorView.toolbar { toolbarView }
+                updateableErrorView.toolbar { errorToolbarView }
             } else {
                 FeedCollectionView(store: store)
+                    .toolbar { toolbarView }
                     .environmentObject(namespaceWrapper)
             }
         }
@@ -87,6 +57,18 @@ struct FeedView: View {
 
     private var unknownUserView: some View {
         Text("")
+    }
+
+    private var emptyToolbarView: some View {
+        HStack {
+
+        }
+    }
+
+    private var errorToolbarView: some View {
+        HStack {
+
+        }
     }
 
     private var toolbarView: some View {

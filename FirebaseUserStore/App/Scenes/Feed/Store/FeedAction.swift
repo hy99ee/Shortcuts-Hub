@@ -14,28 +14,16 @@ enum FeedAction: Action, Hashable {
     case showAlert(error: Error)
     case showFeedError
 
-    case mockAction
-
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .initFeed:
-            hasher.combine(-1)
-        case .updateFeed:
-            hasher.combine(0)
-        case .click:
-            hasher.combine(1)
-        case .addSections:
-            hasher.combine(2)
-        case .search:
-            hasher.combine(5)
-        case .showAlert:
-            hasher.combine(8)
-        case .showFeedError:
-            hasher.combine(7)
-        case .mockAction:
-            hasher.combine(10)
-        case .changeSearchField:
-            hasher.combine(11)
+        case .initFeed: hasher.combine(0)
+        case .updateFeed: hasher.combine(1)
+        case .click: hasher.combine(2)
+        case .addSections: hasher.combine(3)
+        case .search: hasher.combine(4)
+        case .showAlert: hasher.combine(5)
+        case .showFeedError: hasher.combine(6)
+        case .changeSearchField: hasher.combine(7)
         }
     }
 

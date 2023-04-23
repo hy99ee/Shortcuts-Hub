@@ -12,10 +12,8 @@ enum FeedLink: TransitionType {
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .section:
-            hasher.combine(0)
-        case .error:
-            hasher.combine(1)
+        case .section: hasher.combine(0)
+        case .error: hasher.combine(1)
         }
     }
 
@@ -54,29 +52,30 @@ struct FeedCoordinator: CoordinatorType {
     }
 
     @ViewBuilder private var _view: some View {
-        NavigationStack(path: $path) {
-            ZStack {
-                rootView
-                    .alert(item: $alert, content: alertContent)
-            }
-            .navigationDestination(for: FeedLink.self, destination: linkDestination)
-        }
+        rootView
+            .alert(item: $alert, content: alertContent)
     }
 
     @ViewBuilder private var rootView: some View {
         ZStack {
-            feedView
-                .environmentObject(NamespaceWrapper(open))
-                .padding([.horizontal], custom == nil ? 24 : 0)
-                .disabled(custom != nil)
+            NavigationStack(path: $path) {
+                feedView
+                    .environmentObject(NamespaceWrapper(open))
+                    .padding([.horizontal], custom == nil ? 24 : 0)
+                    .disabled(custom != nil)
+                    .navigationDestination(for: FeedLink.self, destination: linkDestination)
+            }
             
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
-                        FeedDetailSectionCoordinator(store: store.packages.makeFeedSectionDetailStore(section), parent: self.$custom)
-                            .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
-                            .environmentObject(NamespaceWrapper(open))
-                            .animationAdapted(animationDuration: 0.7)
-                            .transition(.asymmetric(insertion: .scale(scale: 0.95), removal: .identity))
+                        FeedDetailSectionCoordinator(
+                            store: store.packages.makeFeedSectionDetailStore(section),
+                            parent: self.$custom
+                        )
+                        .matchedGeometryEffect(id: section.id, in: open, anchor: .top)
+                        .environmentObject(NamespaceWrapper(open))
+                        .animationAdapted(animationDuration: 0.7)
+                        .transition(.asymmetric(insertion: .scale(scale: 0.95), removal: .identity))
                     }
                 }
         }

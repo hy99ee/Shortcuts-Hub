@@ -13,6 +13,9 @@ let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionActi
             .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             .eraseToAnyPublisher()
 
+    case let .openItem(item):
+        return Just(.openItemFromSection(item)).eraseToAnyPublisher()
+
     case .close:
         return Just(FeedDetailSectionMutation.close).eraseToAnyPublisher()
     }

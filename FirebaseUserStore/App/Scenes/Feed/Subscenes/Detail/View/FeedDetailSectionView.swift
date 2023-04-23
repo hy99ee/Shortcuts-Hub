@@ -40,8 +40,11 @@ struct FeedDetailSectionView: View {
     private func detailContent(items: [Item]) -> some View {
         ScrollView {
             if items.count > 0 {
-                ForEach(items) {
-                    ItemListView(item: $0)
+                ForEach(items) { item in
+                    ItemListView(item: item)
+                        .onTapGesture {
+                            store.dispatch(.openItem(item))
+                        }
                 }
             } else {
                 Text("Empty")

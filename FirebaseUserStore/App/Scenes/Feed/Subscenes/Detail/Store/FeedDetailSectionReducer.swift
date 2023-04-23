@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSectionMutation, CloseTransition> = { _state, mutation in
+let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSectionMutation, FeedDetailLink> = { _state, mutation in
     var state = _state
     switch mutation {
     case let .fetchedSection(items):
@@ -10,6 +10,9 @@ let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSect
     case let .progressViewStatus(status):
         state.viewProgress = status
         state.processView = .define(with: state.viewProgress)
+
+    case let .openItemFromSection(item):
+        return Just(.coordinate(destination: .open(item))).eraseToAnyPublisher()
 
     case .close:
         return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
