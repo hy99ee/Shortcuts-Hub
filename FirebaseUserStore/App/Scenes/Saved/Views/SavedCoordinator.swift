@@ -66,15 +66,15 @@ struct SavedCoordinator: CoordinatorType {
     @ViewBuilder private func linkDestination(link: SavedLink) -> some View {
         switch link {
         case let .detail(item):
-            ItemDetailView(
-                item: item,
-                isSaved: Binding(
-                    get: {
-                        ItemDetailView.IsSaved(item.isSaved)
-                    }, set: { _ in
-                        
-                    }
-                )
+            DetailItemCoordinator(
+                item: Binding(get: {
+                    store.state.items.first(where: { $0 == item })!
+                }, set: { newItem in
+                    print("IS SAVED ITEM FROM SECTION: \(newItem)")
+//                    if let index = store.state.itemsFromSection.firstIndex(where: { $0 == item }) {
+//                        store.state.itemsFromSection[index] = newItem
+//                    }
+                })
             )
         default:
             EmptyView()

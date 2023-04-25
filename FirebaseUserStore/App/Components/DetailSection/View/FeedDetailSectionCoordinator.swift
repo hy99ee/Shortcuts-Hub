@@ -80,31 +80,17 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
     @ViewBuilder private func linkDestination(link: FeedDetailLink) -> some View {
         switch link {
         case let .open(item):
-            openItem(item)
+            DetailItemCoordinator(
+                item: Binding(get: {
+                    item
+                }, set: { newItem in
+                    if let index = store.state.itemsFromSection.firstIndex(where: { $0 == item }) {
+                        store.dispatch(.replaceItem(newItem, index: index))
+                    }
+                })
+            )
         default:
             EmptyView()
-        }
-    }
-
-    @State private var isSavedOpenItem:ItemDetailView.IsSaved = .unsaved
-    private func openItem(_ item: Item) -> some View {
-        ItemDetailView(
-            item: item,
-            isSaved: Binding(
-                get: {
-                    isSavedOpenItem
-                }, set: {
-                    switch $0 {
-                    case .saved: store.dispatch(.addToSaved(item: item))
-                    case .unsaved: store.dispatch(.removeFromSaved(item: item))
-                    }
-                }
-            )
-        )
-        .onReceive(store.$state) { state in
-            if let openedItem = state.itemsFromSection.first(where: { $0 == item }) {
-                isSavedOpenItem = ItemDetailView.IsSaved(openedItem.isSaved)
-            }
         }
     }
 }

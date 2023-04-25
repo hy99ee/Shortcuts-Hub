@@ -31,6 +31,15 @@
 		3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */; };
 		3B0E36C0293E2BA6009A7DCE /* InputPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E36BF293E2BA6009A7DCE /* InputPasswordView.swift */; };
 		3B13791B29F135BE00D25F55 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13791A29F135BE00D25F55 /* ItemListView.swift */; };
+		3B13796D29F7C04C00D25F55 /* DetailItemCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796029F7C04C00D25F55 /* DetailItemCoordinator.swift */; };
+		3B13796E29F7C04C00D25F55 /* DetailItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796129F7C04C00D25F55 /* DetailItemView.swift */; };
+		3B13797129F7C04C00D25F55 /* DetailItemMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796629F7C04C00D25F55 /* DetailItemMutation.swift */; };
+		3B13797229F7C04C00D25F55 /* DetailItemPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796729F7C04C00D25F55 /* DetailItemPackages.swift */; };
+		3B13797329F7C04C00D25F55 /* DetailItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796829F7C04C00D25F55 /* DetailItemStore.swift */; };
+		3B13797429F7C04C00D25F55 /* DetailItemState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796929F7C04C00D25F55 /* DetailItemState.swift */; };
+		3B13797529F7C04C00D25F55 /* DetailItemDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796A29F7C04C00D25F55 /* DetailItemDispatcher.swift */; };
+		3B13797629F7C04C00D25F55 /* DetailItemReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796B29F7C04C00D25F55 /* DetailItemReducer.swift */; };
+		3B13797729F7C04C00D25F55 /* DetailItemAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B13796C29F7C04C00D25F55 /* DetailItemAction.swift */; };
 		3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */; };
 		3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669128FC0C6C009225A4 /* FeedState.swift */; };
 		3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* FeedMutation.swift */; };
@@ -177,6 +186,15 @@
 		3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		3B0E36BF293E2BA6009A7DCE /* InputPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPasswordView.swift; sourceTree = "<group>"; };
 		3B13791A29F135BE00D25F55 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
+		3B13796029F7C04C00D25F55 /* DetailItemCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemCoordinator.swift; sourceTree = "<group>"; };
+		3B13796129F7C04C00D25F55 /* DetailItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemView.swift; sourceTree = "<group>"; };
+		3B13796629F7C04C00D25F55 /* DetailItemMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemMutation.swift; sourceTree = "<group>"; };
+		3B13796729F7C04C00D25F55 /* DetailItemPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemPackages.swift; sourceTree = "<group>"; };
+		3B13796829F7C04C00D25F55 /* DetailItemStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemStore.swift; sourceTree = "<group>"; };
+		3B13796929F7C04C00D25F55 /* DetailItemState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemState.swift; sourceTree = "<group>"; };
+		3B13796A29F7C04C00D25F55 /* DetailItemDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemDispatcher.swift; sourceTree = "<group>"; };
+		3B13796B29F7C04C00D25F55 /* DetailItemReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemReducer.swift; sourceTree = "<group>"; };
+		3B13796C29F7C04C00D25F55 /* DetailItemAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemAction.swift; sourceTree = "<group>"; };
 		3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDispatcher.swift; sourceTree = "<group>"; };
 		3B1F669128FC0C6C009225A4 /* FeedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
 		3B1F669228FC0C6C009225A4 /* FeedMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedMutation.swift; sourceTree = "<group>"; };
@@ -365,9 +383,42 @@
 		3B13795C29F7BB2A00D25F55 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3B13795E29F7C04C00D25F55 /* DetailItem */,
 				3B433E8929E6CD88007C8A26 /* DetailSection */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		3B13795E29F7C04C00D25F55 /* DetailItem */ = {
+			isa = PBXGroup;
+			children = (
+				3B13795F29F7C04C00D25F55 /* View */,
+				3B13796529F7C04C00D25F55 /* Store */,
+			);
+			path = DetailItem;
+			sourceTree = "<group>";
+		};
+		3B13795F29F7C04C00D25F55 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3B13796029F7C04C00D25F55 /* DetailItemCoordinator.swift */,
+				3B13796129F7C04C00D25F55 /* DetailItemView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3B13796529F7C04C00D25F55 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B13796629F7C04C00D25F55 /* DetailItemMutation.swift */,
+				3B13796729F7C04C00D25F55 /* DetailItemPackages.swift */,
+				3B13796829F7C04C00D25F55 /* DetailItemStore.swift */,
+				3B13796929F7C04C00D25F55 /* DetailItemState.swift */,
+				3B13796A29F7C04C00D25F55 /* DetailItemDispatcher.swift */,
+				3B13796B29F7C04C00D25F55 /* DetailItemReducer.swift */,
+				3B13796C29F7C04C00D25F55 /* DetailItemAction.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		3B1F668F28FC0C6C009225A4 /* Store */ = {
@@ -1016,6 +1067,7 @@
 				3B7AE4DB296CB564002A9948 /* GlobalSender.swift in Sources */,
 				3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */,
 				3B1F669E28FC141F009225A4 /* Entities.swift in Sources */,
+				3B13797329F7C04C00D25F55 /* DetailItemStore.swift in Sources */,
 				3B5CA91F2992609D00E16151 /* LibraryView.swift in Sources */,
 				3BFBA694290AC98000AE9B82 /* ItemsServiceError.swift in Sources */,
 				3B205AD229B77E0600F75C8B /* AppearanceButton.swift in Sources */,
@@ -1050,11 +1102,13 @@
 				3BC63D3F29509E2F00DF54A8 /* FeedCollectionView.swift in Sources */,
 				3B45AC08292BC884002531D8 /* LoginStore.swift in Sources */,
 				3B433E6129CB44EE007C8A26 /* Section.swift in Sources */,
+				3B13797429F7C04C00D25F55 /* DetailItemState.swift in Sources */,
 				3B81C4F22924C8820008BD8E /* FeedStore.swift in Sources */,
 				3B38A8C9297AD592008BD6E2 /* KeyboardModifier.swift in Sources */,
 				3BD6489D290E80040029F4E9 /* Middleware.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
 				3B5CA9292992609D00E16151 /* LibraryCoordinator.swift in Sources */,
+				3B13797729F7C04C00D25F55 /* DetailItemAction.swift in Sources */,
 				3BDAAEBD29C2535A0064F7D0 /* SavedReducer.swift in Sources */,
 				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
 				3B433E9B29E6CD88007C8A26 /* FeedDetailSectionServiceError.swift in Sources */,
@@ -1069,6 +1123,7 @@
 				3B9B07EB29BF5B2E00CCEC10 /* DissmissingKeyboard.swift in Sources */,
 				3B703D532967366500F43A45 /* ForgotMutation.swift in Sources */,
 				3B27A58029A613D600CF9A5F /* CreateAction.swift in Sources */,
+				3B13797129F7C04C00D25F55 /* DetailItemMutation.swift in Sources */,
 				3B433EA329E6CD88007C8A26 /* FeedDetailSectionDispatcher.swift in Sources */,
 				3B77954A2926222000A70A9A /* ProgressViewModifier.swift in Sources */,
 				3B843EE6297C264200436E3A /* InputTextFieldView.swift in Sources */,
@@ -1079,6 +1134,7 @@
 				3B433E9C29E6CD88007C8A26 /* FeedDetailSectionService.swift in Sources */,
 				3B433E5F29CB062C007C8A26 /* ItemsSectionView.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
+				3B13796D29F7C04C00D25F55 /* DetailItemCoordinator.swift in Sources */,
 				3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */,
 				3BFAFF12299A298800076F1D /* ForgotCoordinator.swift in Sources */,
 				3B7AE4D7296C6085002A9948 /* RegisterationAction.swift in Sources */,
@@ -1093,6 +1149,7 @@
 				3BDAAEBC29C2535A0064F7D0 /* SavedMutation.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3B0976B329BDE24E007665BB /* RegistrationCredentials.swift in Sources */,
+				3B13797629F7C04C00D25F55 /* DetailItemReducer.swift in Sources */,
 				3BDAAEB729C2535A0064F7D0 /* MockSavedService.swift in Sources */,
 				3B5CA92B2992609D00E16151 /* LibraryPackages.swift in Sources */,
 				3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */,
@@ -1106,6 +1163,7 @@
 				3B45AC0C292BC8C7002531D8 /* LoginMutation.swift in Sources */,
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
+				3B13797229F7C04C00D25F55 /* DetailItemPackages.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3B703D542967366500F43A45 /* ForgotStore.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,
@@ -1118,6 +1176,8 @@
 				3BDAAEBF29C2535A0064F7D0 /* SavedDispatcher.swift in Sources */,
 				3B433E6B29DB1618007C8A26 /* CacheAsyncImage.swift in Sources */,
 				3B7AE4D4296C6085002A9948 /* RegisterationStore.swift in Sources */,
+				3B13796E29F7C04C00D25F55 /* DetailItemView.swift in Sources */,
+				3B13797529F7C04C00D25F55 /* DetailItemDispatcher.swift in Sources */,
 				3BE57E4D2943362E004B4423 /* ItemCellView.swift in Sources */,
 				3B5CA9242992609D00E16151 /* LibraryReducer.swift in Sources */,
 				3B7AE4D6296C6085002A9948 /* RegisterationDispatcher.swift in Sources */,

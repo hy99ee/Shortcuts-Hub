@@ -5,7 +5,7 @@ import SwiftUI
 let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionAction, FeedDetailSectionMutation, FeedDetailSectionPackages> = { action, packages in
     switch action {
     case .initDetail:
-        return Just(FeedDetailSectionMutation.close).eraseToAnyPublisher()
+        return Just(.close).eraseToAnyPublisher()
 
     case let .updateFeedWithSection(section):
         return mutationFetchSections(section: section, packages)
@@ -13,17 +13,14 @@ let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionActi
             .withStatus(start: .progressViewStatus(status: .start), finish: .progressViewStatus(status: .stop))
             .eraseToAnyPublisher()
 
+    case let .replaceItem(item, index):
+        return Just(.replaceItemInSection(item, by: index)).eraseToAnyPublisher()
+
     case let .open(item):
         return Just(.openItemFromSection(item)).eraseToAnyPublisher()
 
-    case let .addToSaved(item):
-        return mutationItemAddToSaved(item: item, packages).eraseToAnyPublisher()
-
-    case let .removeFromSaved(item):
-        return mutationItemRemoveFromSaved(item: item, packages).eraseToAnyPublisher()
-
     case .close:
-        return Just(FeedDetailSectionMutation.close).eraseToAnyPublisher()
+        return Just(.close).eraseToAnyPublisher()
     }
 
     // MARK: - Mutations
@@ -40,20 +37,6 @@ let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionActi
                 .catch { _ in Just(.close) }
                 .eraseToAnyPublisher()
         
-    }
-
-    func mutationItemAddToSaved(item: Item, _ packages: FeedDetailSectionPackages) -> AnyPublisher<FeedDetailSectionMutation, Never> {
-        packages.sessionService.updateDatabaseUser(with: .add(item: item))
-            .map { _ in .itemSaved(item) }
-            .catch { _ in Just(.close) }
-            .eraseToAnyPublisher()
-    }
-    
-    func mutationItemRemoveFromSaved(item: Item, _ packages: FeedDetailSectionPackages) -> AnyPublisher<FeedDetailSectionMutation, Never> {
-        packages.sessionService.updateDatabaseUser(with: .remove(item: item))
-            .map { _ in .itemUnsaved(item) }
-            .catch { _ in Just(.close) }
-            .eraseToAnyPublisher()
     }
 }
 

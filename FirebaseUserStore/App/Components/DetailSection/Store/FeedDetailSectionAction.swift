@@ -3,10 +3,8 @@ import Foundation
 enum FeedDetailSectionAction: Action, Hashable {
     case initDetail
     case updateFeedWithSection(_ section: IdsSection)
-
+    case replaceItem(_ item: Item, index: Int)
     case open(item: Item)
-    case addToSaved(item: Item)
-    case removeFromSaved(item: Item)
 
     case close
 

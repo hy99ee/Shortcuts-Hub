@@ -104,6 +104,37 @@ struct ButtonProgressViewModifier: ViewModifier {
     }
 }
 
+struct ButtonClearProgressViewModifier: ViewModifier {
+    private let progressStatus: ProgressViewStatus
+    private let backgroundColor: Color
+    private let progressViewColor: Color
+    private let scale: CGFloat
+
+    init(progressStatus: ProgressViewStatus) {
+        self.progressStatus = progressStatus
+
+        self.backgroundColor = Color(UIColor.systemBackground)
+        self.progressViewColor = .blue
+        self.scale = 1.1
+    }
+    
+
+    func body(content: Content) -> some View {
+        if progressStatus != .stop {
+            ZStack {
+                Color(.clear).background(backgroundColor).opacity(0.001)
+                
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
+                    .scaleEffect(scale)
+            }
+
+        } else {
+            content
+        }
+    }
+}
+
 struct StaticPreloaderViewModifier: ViewModifier {
     @State private var isAnimating = false
 

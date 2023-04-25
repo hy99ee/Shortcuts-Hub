@@ -80,15 +80,15 @@ struct LibraryCoordinator: CoordinatorType {
         case let .about(data):
             AboutView(aboutData: data)
         case let .detail(item):
-            ItemDetailView(
-                item: item,
-                isSaved: Binding(
-                    get: {
-                        ItemDetailView.IsSaved(item.isSaved)
-                    }, set: { _ in
-                        
-                    }
-                )
+            DetailItemCoordinator(
+                item: Binding(get: {
+                    store.state.items.first(where: { $0 == item })!
+                }, set: { newItem in
+                    print("IS SAVED ITEM FROM SECTION: \(newItem)")
+//                    if let index = store.state.itemsFromSection.firstIndex(where: { $0 == item }) {
+//                        store.state.itemsFromSection[index] = newItem
+//                    }
+                })
             )
         default:
             EmptyView()
@@ -123,88 +123,3 @@ struct LibraryCoordinator: CoordinatorType {
     }
 }
 
-struct ItemDetailView: View {
-    enum IsSaved: String {
-        case saved = "heart.fill"
-        case unsaved = "heart"
-
-        init(_ isSaved: Bool) {
-            self = isSaved ? .saved : .unsaved
-        }
-
-        mutating func toggle() {
-            self = self == .saved ? .unsaved : .saved
-        }
-    }
-
-    let item: Item
-    @Binding var isSaved: IsSaved
-
-    @State private var image: Image?
-
-    var body: some View {
-        ScrollView(showsIndicators: false) {
-            Text(item.title).padding()
-            Text(item.description).padding()
-
-            if let link = item.originalUrl, !link.isEmpty {
-                Link(destination: URL(string: link)!) {
-                    Image(systemName: "link.circle.fill")
-                        .font(.largeTitle)
-                }
-                .padding()
-            }
-
-            if item.iconUrl != nil {
-                imageView
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(15)
-            }
-        }
-        .navigationTitle("Detail")
-        .onAppear {
-            if let stringUrl = item.iconUrl?
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-               let url = URL(string: stringUrl) {
-                downloadImage(from: url)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    isSaved.toggle()
-                }, label: {
-                    Image(systemName: isSaved.rawValue)
-                })
-            }
-        }
-    }
-    
-    
-    @ViewBuilder private var imageView: some View {
-        if image != nil {
-            image!.resizable()
-        } else {
-            ZStack {
-                Rectangle()
-                    .foregroundColor(.secondary.opacity(0.3))
-
-                HDotsProgress()
-            }
-        }
-    }
-
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-
-    func downloadImage(from url: URL) {
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-
-            if let image = UIImage(data: data) {
-                self.image = Image(uiImage: image)
-            }
-        }
-    }
-}
