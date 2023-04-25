@@ -362,6 +362,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3B13795C29F7BB2A00D25F55 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				3B433E8929E6CD88007C8A26 /* DetailSection */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		3B1F668F28FC0C6C009225A4 /* Store */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,19 +452,18 @@
 		3B433E7729E6CB17007C8A26 /* Subscenes */ = {
 			isa = PBXGroup;
 			children = (
-				3B433E8929E6CD88007C8A26 /* Detail */,
 			);
 			path = Subscenes;
 			sourceTree = "<group>";
 		};
-		3B433E8929E6CD88007C8A26 /* Detail */ = {
+		3B433E8929E6CD88007C8A26 /* DetailSection */ = {
 			isa = PBXGroup;
 			children = (
 				3B433E8A29E6CD88007C8A26 /* View */,
 				3B433E8D29E6CD88007C8A26 /* Service */,
 				3B433E9129E6CD88007C8A26 /* Store */,
 			);
-			path = Detail;
+			path = DetailSection;
 			sourceTree = "<group>";
 		};
 		3B433E8A29E6CD88007C8A26 /* View */ = {
@@ -639,6 +646,7 @@
 		3BD76ECB2899AF6C001D64E2 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				3B13795C29F7BB2A00D25F55 /* Components */,
 				3B9B07E729BF2C1600CCEC10 /* Scenes */,
 				3BD76EFB28A1AC79001D64E2 /* Model */,
 				3BD76EE42899AF6C001D64E2 /* Session */,

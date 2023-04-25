@@ -17,6 +17,7 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var originalUrl: String?
     var idioms: [SupportedIdioms] = []
 
+    var isSaved = false
     var validateByAdmin: Int = ItemValidateStatus.undefined.rawValue
 
     var createdAt: Date

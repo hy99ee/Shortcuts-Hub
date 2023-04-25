@@ -66,7 +66,16 @@ struct SavedCoordinator: CoordinatorType {
     @ViewBuilder private func linkDestination(link: SavedLink) -> some View {
         switch link {
         case let .detail(item):
-            ItemDetailView(item: item)
+            ItemDetailView(
+                item: item,
+                isSaved: Binding(
+                    get: {
+                        ItemDetailView.IsSaved(item.isSaved)
+                    }, set: { _ in
+                        
+                    }
+                )
+            )
         default:
             EmptyView()
         }
@@ -74,8 +83,6 @@ struct SavedCoordinator: CoordinatorType {
 
     @ViewBuilder private func sheetContent(link: SavedLink) -> some View {
         switch link {
-        case let .detail(item):
-            ItemDetailView(item: item)
         default:
             EmptyView()
         }

@@ -14,9 +14,7 @@ final class FeedDetailSectionService: FeedDetailSectionServiceType {
 
     func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[Item], ItemsServiceError> {
         Deferred {
-            Future {[weak self] promise in
-                guard let self else { return promise(.failure(.unknownError)) }
-
+            Future { promise in
                 query.getDocuments { snapshot, error in
                     if let _error = error {
                         return promise(.failure(.firebaseError(_error)))

@@ -8,7 +8,7 @@ extension FeedDetailSectionStore {
         if action == .initDetail {
             return Fail(
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
-                    actions: [.updateWithSection(state.idsSection)]
+                    actions: [.updateFeedWithSection(state.idsSection)]
                 )
             ).eraseToAnyPublisher()
         }

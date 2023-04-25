@@ -80,7 +80,16 @@ struct LibraryCoordinator: CoordinatorType {
         case let .about(data):
             AboutView(aboutData: data)
         case let .detail(item):
-            ItemDetailView(item: item)
+            ItemDetailView(
+                item: item,
+                isSaved: Binding(
+                    get: {
+                        ItemDetailView.IsSaved(item.isSaved)
+                    }, set: { _ in
+                        
+                    }
+                )
+            )
         default:
             EmptyView()
         }
@@ -97,8 +106,6 @@ struct LibraryCoordinator: CoordinatorType {
 
     @ViewBuilder private func sheetContent(link: LibraryLink) -> some View {
         switch link {
-        case let .detail(item):
-            ItemDetailView(item: item)
         default:
             EmptyView()
         }
@@ -117,8 +124,21 @@ struct LibraryCoordinator: CoordinatorType {
 }
 
 struct ItemDetailView: View {
-//    @Environment(\.presentationMode) var presentationMode
+    enum IsSaved: String {
+        case saved = "heart.fill"
+        case unsaved = "heart"
+
+        init(_ isSaved: Bool) {
+            self = isSaved ? .saved : .unsaved
+        }
+
+        mutating func toggle() {
+            self = self == .saved ? .unsaved : .saved
+        }
+    }
+
     let item: Item
+    @Binding var isSaved: IsSaved
 
     @State private var image: Image?
 
@@ -149,15 +169,15 @@ struct ItemDetailView: View {
                 downloadImage(from: url)
             }
         }
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarLeading) {
-//                Button(action: {
-//                    presentationMode.wrappedValue.dismiss()
-//                }, label: {
-//                    Text("Cancel")
-//                })
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    isSaved.toggle()
+                }, label: {
+                    Image(systemName: isSaved.rawValue)
+                })
+            }
+        }
     }
     
     

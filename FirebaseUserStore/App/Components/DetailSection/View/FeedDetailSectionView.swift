@@ -43,7 +43,7 @@ struct FeedDetailSectionView: View {
                 ForEach(items) { item in
                     ItemListView(item: item)
                         .onTapGesture {
-                            store.dispatch(.openItem(item))
+                            store.dispatch(.open(item: item))
                         }
                 }
             } else {

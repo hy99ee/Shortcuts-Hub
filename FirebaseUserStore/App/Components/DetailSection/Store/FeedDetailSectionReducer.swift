@@ -14,6 +14,28 @@ let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSect
     case let .openItemFromSection(item):
         return Just(.coordinate(destination: .open(item))).eraseToAnyPublisher()
 
+    case let .itemSaved(item):
+        state.itemsFromSection = state.itemsFromSection.map {
+            if $0 == item {
+                var savedItem = $0
+                savedItem.isSaved = true
+                return savedItem
+            } else {
+                return $0
+            }
+        }
+
+    case let .itemUnsaved(item):
+        state.itemsFromSection = state.itemsFromSection.map {
+            if $0 == item {
+                var unsavedItem = $0
+                unsavedItem.isSaved = false
+                return unsavedItem
+            } else {
+                return $0
+            }
+        }
+
     case .close:
         return Just(.coordinate(destination: .close)).eraseToAnyPublisher()
     }
