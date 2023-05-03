@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1005332675252-s8om501vk14ei1ndet03ifd4ph8vgivc.apps.googleusercontent.com</string>
+	<string>201017023885-9m7bsh3ifa2kag5cqkt92vso430njgbi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1005332675252-s8om501vk14ei1ndet03ifd4ph8vgivc</string>
+	<string>com.googleusercontent.apps.201017023885-9m7bsh3ifa2kag5cqkt92vso430njgbi</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCNXKgD40RSYkMm8ZnKFdTh_yMOxdl8uU0</string>
+	<string>AIzaSyCzcIOAh6I0Ob6hJgmPpbvmpkUYhVcE6Ew</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1005332675252</string>
+	<string>201017023885</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.hy99ee.LuckyLunch</string>
+	<string>com.hy99ee.store</string>
 	<key>PROJECT_ID</key>
-	<string>luckylunch-hy99ee</string>
+	<string>store-hy99ee</string>
 	<key>STORAGE_BUCKET</key>
-	<string>luckylunch-hy99ee.appspot.com</string>
+	<string>store-hy99ee.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1005332675252:ios:c0b31d50d668bb0009f5e1</string>
+	<string>1:201017023885:ios:835138f1cb3837dea431c4</string>
+	<key>DATABASE_URL</key>
+	<string>https://store-hy99ee-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

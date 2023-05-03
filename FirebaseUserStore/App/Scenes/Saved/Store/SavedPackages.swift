@@ -1,7 +1,7 @@
 import Combine
 import FirebaseAuth
 
-protocol SavedPackagesType: EnvironmentPackages {
+protocol SavedPackagesType: EnvironmentPackages, Unreinitable {
     associatedtype PackageItemsService: ItemsServiceType
 
     var itemsService: PackageItemsService! { get }
@@ -12,28 +12,15 @@ class SavedPackages: SavedPackagesType {
     var subscriptions = Set<AnyCancellable>()
 
     init() {
-//        itemsService = _itemsService
-
         sessionService.$userDetails
-//            .dropFirst()
             .removeDuplicates()
             .sink { [unowned self] in
-                self.itemsService = SavedItemsService(user: $0?.value)
+                self.itemsService = SavedItemsService(savedIds: $0.savedIds)
             }
             .store(in: &subscriptions)
     }
-
-    func reinit() -> Self {
-//        self.itemsService = _itemsService
-
-        return self
-    }
-//
-//    private var _itemsService: PackageItemsService {
-//        SavedItemsService(user: sessionService.userDetails?.value)
-//    }
 }
 
-class _SavedPackages: SavedPackagesType, Unreinitable {
+class _SavedPackages: SavedPackagesType {
     lazy var itemsService: MockSavedService! = MockSavedService()
 }

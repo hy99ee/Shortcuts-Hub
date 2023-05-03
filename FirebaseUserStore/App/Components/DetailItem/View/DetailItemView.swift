@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ItemDetailView: View {
     @StateObject var store: DetailItemStore
-    @Binding var updateItem: Item
 
     @State private var image: Image?
     @State private var savedImageSystemName: String = Self.imageSystemNameByStoreOperation()
@@ -20,7 +19,7 @@ struct ItemDetailView: View {
                 .padding()
             }
 
-            if store.state.item.iconUrl != nil {
+            if store.state.item.icon != nil {
                 imageView
                     .frame(width: 100, height: 100)
                     .cornerRadius(15)
@@ -29,26 +28,23 @@ struct ItemDetailView: View {
         .onReceive(store.$state) {
             savedImageSystemName = Self.imageSystemNameByIsSaved($0.item.isSaved)
         }
-        .onChange(of: store.state.item.isSaved, perform: {
-            updateItem.isSaved = $0
-        })
         .onAppear {
             savedImageSystemName = Self.imageSystemNameByIsSaved(store.state.item.isSaved)
 
-            if let stringUrl = store.state.item.iconUrl?
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-               let url = URL(string: stringUrl) {
-                downloadImage(from: url)
+            if let iconData = store.state.item.icon, let image = UIImage(data: iconData) {
+                self.image = Image(uiImage: image)
             }
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    store.dispatch(store.state.item.isSaved ? .removeFromSaved : .addToSaved)
-                }, label: {
-                    Image(systemName: savedImageSystemName)
-                })
-                .modifier(ButtonClearProgressViewModifier(progressStatus: store.state.viewProgress))
+            if store.state.item.userId != store.packages.sessionService.userDetails.auth?.id {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        store.dispatch(store.state.item.isSaved ? .removeFromSaved : .addToSaved)
+                    }, label: {
+                        Image(systemName: savedImageSystemName)
+                    })
+                    .modifier(ButtonClearProgressViewModifier(progressStatus: store.state.viewProgress))
+                }
             }
         }
     }

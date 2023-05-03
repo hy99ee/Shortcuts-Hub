@@ -33,17 +33,15 @@ class GlobalSender: TransitionSender {
             .store(in: &subscriptions)
 
         sessionService.$mutation
-            .removeDuplicates()
+//            .removeDuplicates()
             .compactMap { $0 }
             .sink {[weak self] in
                 switch $0 {
                 case let .add(item):
                     self?.globalPackages.savedStore.dispatch(.addItem(item))
-                    self?.globalPackages.libraryStore.dispatch(.addItem(item))
 
                 case let .remove(item):
                     self?.globalPackages.savedStore.dispatch(.removeItem(item))
-                    self?.globalPackages.libraryStore.dispatch(.removeItem(item))
                 }
             }
             .store(in: &subscriptions)

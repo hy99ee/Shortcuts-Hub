@@ -132,7 +132,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
         return fetchFromDocs
             .map { LibraryMutation.searchItems($0) }
-            .catch { Just(.errorAlert(error: $0)) }
+            .catch { Just(LibraryMutation.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -142,7 +142,9 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                 .eraseToAnyPublisher()
         }
 
-        guard let user = packages.sessionService.userDetails else {
+        guard packages.sessionService.userDetails.auth != nil,
+              packages.sessionService.userDetails.value != nil
+        else {
             return Just(.errorAlert(error: SessionServiceError.undefinedUserDetails))
                 .eraseToAnyPublisher()
         }
@@ -150,7 +152,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return Just(
             LibraryMutation.showAbout(
                 AboutViewData(
-                    user: user,
+                    user: packages.sessionService.userDetails,
                     logout: packages.sessionService.logout,
                     delete: packages.sessionService.deleteUser
                 )

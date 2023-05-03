@@ -10,12 +10,7 @@ let feedDetailItemReducer: ReducerType<DetailItemState, DetailItemMutation, Erro
         state.processView = .define(with: state.viewProgress)
         
     case let .itemsSavedStatusChanged(operation):
-        var _item = state.item
-        let isSaved = operation == .saved
-        _item.isSaved = isSaved
-//        state.isSaved = DetailItemState.IsSaved(isSaved)
-        state.item = _item
-        
+        print("Success operation: \(operation)")
         
     case let .error(operation, error):
         return Just(.coordinate(destination: .error(error: error))).eraseToAnyPublisher()

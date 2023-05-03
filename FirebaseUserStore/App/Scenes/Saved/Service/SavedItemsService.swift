@@ -12,10 +12,10 @@ final class SavedItemsService: SavedItemsServiceType {
     private(set) var itemsServiceCursor: ItemsServiceCursor?
     private let appleApiPath = "https://www.icloud.com/shortcuts/api/records/"
 
-    let user: DatabaseUser?
+    let savedIds: [String]
 
-    init(user: DatabaseUser?) {
-        self.user = user
+    init(savedIds: [String]) {
+        self.savedIds = savedIds
     }
 
     func fetchItemsFromQuery(_ query: Query, isPaginatable: Bool = false) -> AnyPublisher<[Item], ItemsServiceError> {
@@ -41,7 +41,7 @@ final class SavedItemsService: SavedItemsServiceType {
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
-                                    iconUrl: data["icon"] as? String ?? "",
+                                    icon: data["icon"] as? Data ?? Data(),
                                     originalUrl: data["link"] as? String ?? "",
                                     validateByAdmin: data["validation"] as? Int ?? 0,
                                     createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
@@ -68,9 +68,7 @@ final class SavedItemsService: SavedItemsServiceType {
     }
 
     func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
-        guard let user = self.user else { return Fail(error: ItemsServiceError.invalidUserId).eraseToAnyPublisher() }
-        
-        return Publishers.Sequence(sequence: user.savedIdWithLimitations)
+        Publishers.Sequence(sequence: savedIdsWithLimitations)
             .flatMap { savedIds in
                 Deferred {
                     Future { promise in
@@ -105,9 +103,7 @@ final class SavedItemsService: SavedItemsServiceType {
     }
 
     func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
-        guard let user = self.user else { return Fail(error: ItemsServiceError.invalidUserId).eraseToAnyPublisher() }
-
-        return Publishers.Sequence(sequence: user.savedIdWithLimitations)
+        Publishers.Sequence(sequence: savedIdsWithLimitations)
             .flatMap { savedIds in
                 Deferred {
                     Future {[weak self] promise in
@@ -127,12 +123,11 @@ final class SavedItemsService: SavedItemsServiceType {
     func nextQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
-                guard let self else { return promise(.failure(.unknownError))}
-                guard let user = self.user else { return promise(.failure(ServiceError.unauth)) }
+                guard let self else { return promise(.failure(.unknownError)) }
 
                 let collection = self.db.collection(Self.collectionName)
                 var query = collection
-                    .whereField("id", in: user.savedIds)
+                    .whereField("id", in: self.savedIdsWithLimitations)
                     .limit(to: ItemsServiceQueryLimit)
 
                 if let last = self.itemsServiceCursor?.snapshot {
@@ -154,7 +149,6 @@ final class SavedItemsService: SavedItemsServiceType {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError)) }
-                guard self.user != nil else { return promise(.failure(ServiceError.unauth)) }
 
                 let query = self.db.collection(Self.collectionName)
                     .whereField("id", isEqualTo: id.uuidString)
@@ -174,7 +168,7 @@ final class SavedItemsService: SavedItemsServiceType {
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
                                 description: data["description"] as? String ?? "",
-                                iconUrl: data["icon"] as? String ?? "",
+                                icon: data["icon"] as? Data ?? Data(),
                                 originalUrl: data["link"] as? String ?? "",
                                 validateByAdmin: data["validation"] as? Int ?? 0,
                                 createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
@@ -185,5 +179,9 @@ final class SavedItemsService: SavedItemsServiceType {
                 }
             }
         }.eraseToAnyPublisher()
+    }
+
+    private var savedIdsWithLimitations: [[String]] {
+        savedIds.chunked(into: 9)
     }
 }

@@ -4,6 +4,7 @@ enum SessionServiceError: Error {
     case errorWithAuth
     case errorWithCreateNewUser
     case undefinedUserDetails
+    case unowned
 }
 
 extension SessionServiceError: LocalizedError {
@@ -12,6 +13,7 @@ extension SessionServiceError: LocalizedError {
         case .errorWithAuth: return "Error with login"
         case .errorWithCreateNewUser: return "Error with create new user"
         case .undefinedUserDetails: return "User is undefined"
+        case .unowned: return "Unowned error"
         }
     }
 }

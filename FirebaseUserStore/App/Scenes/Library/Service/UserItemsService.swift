@@ -41,7 +41,7 @@ final class UserItemsService: UserItemsServiceType {
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
-                                    iconUrl: data["icon"] as? String ?? "",
+                                    icon: data["icon"] as? Data ?? Data(),
                                     originalUrl: data["link"] as? String ?? "",
                                     validateByAdmin: data["validation"] as? Int ?? 0,
                                     createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
@@ -169,7 +169,7 @@ final class UserItemsService: UserItemsServiceType {
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
                                 description: data["description"] as? String ?? "",
-                                iconUrl: data["icon"] as? String ?? "",
+                                icon: data["icon"] as? Data ?? Data(),
                                 originalUrl: data["link"] as? String ?? "",
                                 validateByAdmin: data["validation"] as? Int ?? 0,
                                 createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
@@ -220,8 +220,7 @@ final class UserItemsService: UserItemsServiceType {
         }.eraseToAnyPublisher()
     }
 
-    
-    func uploadNewItem(_ item: Item) -> AnyPublisher<UUID, ItemsServiceError> {
+    func uploadNewItem(_ item: Item) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.invalidUserId)) }
@@ -231,7 +230,7 @@ final class UserItemsService: UserItemsServiceType {
                     "id": item.id.uuidString,
                     "userId": userId,
                     "title": item.title,
-                    "icon": item.iconUrl ?? "",
+                    "icon": item.icon ?? Data(),
                     "link": item.originalUrl ?? "",
                     "description": item.description,
                     "createdAt": item.createdAt.timeIntervalSince1970.bitPattern,
@@ -245,12 +244,12 @@ final class UserItemsService: UserItemsServiceType {
                     }
                 }
 
-                return promise(.success(item.id))
+                return promise(.success(item))
             }
         }.eraseToAnyPublisher()
     }
 
-    func removeItem(_ item: Item) -> AnyPublisher<UUID, ItemsServiceError> {
+    func removeItem(_ item: Item) -> AnyPublisher<Item, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard
@@ -268,7 +267,7 @@ final class UserItemsService: UserItemsServiceType {
                     guard let documentID = documentID else { return promise(.failure(.deleteItem)) }
 
                     self.db.collection(Self.collectionName).document(documentID).delete() {
-                        return promise($0 == nil ? .success(item.id) : .failure(.deleteItem))
+                        return promise($0 == nil ? .success(item) : .failure(.deleteItem))
                     }
                 }
             }

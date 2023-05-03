@@ -3,8 +3,8 @@ import Combine
 
 enum SavedMutation: Mutation {
     case updateItemsPreloaders(count: Int)
-    case fetchedItems(newItems: [Item])
-    case fetchedNewItems(_ items: [Item])
+    case updateItems(_ items: [Item])
+    case appendItems(_ items: [Item])
     case fastUpdate
 
     case searchItems(_ items: [Item])

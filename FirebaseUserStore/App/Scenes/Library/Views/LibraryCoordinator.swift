@@ -80,16 +80,7 @@ struct LibraryCoordinator: CoordinatorType {
         case let .about(data):
             AboutView(aboutData: data)
         case let .detail(item):
-            DetailItemCoordinator(
-                item: Binding(get: {
-                    store.state.items.first(where: { $0 == item })!
-                }, set: { newItem in
-                    print("IS SAVED ITEM FROM SECTION: \(newItem)")
-//                    if let index = store.state.itemsFromSection.firstIndex(where: { $0 == item }) {
-//                        store.state.itemsFromSection[index] = newItem
-//                    }
-                })
-            )
+            DetailItemCoordinator(item: item)
         default:
             EmptyView()
         }

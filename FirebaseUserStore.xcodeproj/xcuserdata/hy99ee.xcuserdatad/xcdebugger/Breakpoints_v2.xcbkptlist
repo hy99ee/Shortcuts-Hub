@@ -20,5 +20,133 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E0C43CF3-788A-4F28-9241-D4B74284720A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FirebaseUserStore/App/Scenes/Library/Views/LibraryCoordinator.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "transitionReceiver(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A285C30D-8D67-47ED-974F-BD027E45F35D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FirebaseUserStore/App/Scenes/Library/Store/LibraryStore.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "middlewareAuthCheck"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "A285C30D-8D67-47ED-974F-BD027E45F35D - 6d8ac9db366f56be"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages) -&gt; Combine.AnyPublisher&lt;FirebaseUserStore.LibraryAction, FirebaseUserStore.MiddlewareRepository&lt;FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages&gt;.MiddlewareRedispatch&gt; in variable initialization expression of static FirebaseUserStore.StateStore&lt; where &#x3c4;_0_0 == FirebaseUserStore.LibraryState, &#x3c4;_0_1 == FirebaseUserStore.LibraryAction, &#x3c4;_0_2 == FirebaseUserStore.LibraryMutation, &#x3c4;_0_3 == FirebaseUserStore.LibraryPackages, &#x3c4;_0_4 == FirebaseUserStore.LibraryLink&gt;.middlewareAuthCheck : (FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages) -&gt; Combine.AnyPublisher&lt;FirebaseUserStore.LibraryAction, FirebaseUserStore.MiddlewareRepository&lt;FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages&gt;.MiddlewareRedispatch&gt;"
+                  moduleName = "FirebaseUserStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Scenes/Library/Store/LibraryStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "320">
+               </Location>
+               <Location
+                  uuid = "A285C30D-8D67-47ED-974F-BD027E45F35D - f8783c1a518d0481"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages) -&gt; Combine.AnyPublisher&lt;FirebaseUserStore.LibraryAction, FirebaseUserStore.MiddlewareRepository&lt;FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages&gt;.MiddlewareRedispatch&gt; in variable initialization expression of static FirebaseUserStore.StateStore&lt; where A == FirebaseUserStore.LibraryState, B == FirebaseUserStore.LibraryAction, C == FirebaseUserStore.LibraryMutation, D == FirebaseUserStore.LibraryPackages, E == FirebaseUserStore.LibraryLink&gt;.middlewareAuthCheck : (FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages) -&gt; Combine.AnyPublisher&lt;FirebaseUserStore.LibraryAction, FirebaseUserStore.MiddlewareRepository&lt;FirebaseUserStore.LibraryState, FirebaseUserStore.LibraryAction, FirebaseUserStore.LibraryPackages&gt;.MiddlewareRedispatch&gt;"
+                  moduleName = "FirebaseUserStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/App/Scenes/Library/Store/LibraryStore.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "320">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "71DAA673-F5E0-4BCA-9965-C0FDADD7F3B7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FirebaseUserStore/Base/Database/LocalDatabase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "init(userDetails:mutation:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "71DAA673-F5E0-4BCA-9965-C0FDADD7F3B7 - 4e7628fb5e2d84f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FirebaseUserStore.LocalDatabase.init(userDetails: SwiftUI.Binding&lt;Swift.Optional&lt;FirebaseUserStore.UserDetails&gt;&gt;, mutation: SwiftUI.Binding&lt;Swift.Optional&lt;FirebaseUserStore.DatabaseUserMutation&gt;&gt;) -&gt; FirebaseUserStore.LocalDatabase"
+                  moduleName = "FirebaseUserStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/Base/Database/LocalDatabase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "276">
+               </Location>
+               <Location
+                  uuid = "71DAA673-F5E0-4BCA-9965-C0FDADD7F3B7 - 3966dd97701cf597"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FirebaseUserStore.LocalDatabase.init(userDetails: SwiftUI.Binding&lt;FirebaseUserStore.UserDetails&gt;, mutation: SwiftUI.Binding&lt;Swift.Optional&lt;FirebaseUserStore.DatabaseUserMutation&gt;&gt;) -&gt; FirebaseUserStore.LocalDatabase"
+                  moduleName = "FirebaseUserStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hy99ee/Mirror/xcode/my/FirebaseUserStore/FirebaseUserStore/Base/Database/LocalDatabase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "276">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DF7C2051-5F4F-4214-ABA6-695F5B51949B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FirebaseUserStore/App/Scenes/Global/GlobalSender.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "init()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

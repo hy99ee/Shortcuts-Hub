@@ -10,10 +10,6 @@ protocol Reinitable {
     func reinit() -> Self
 }
 
-protocol ReinitableBySelf: Reinitable {}
-extension ReinitableBySelf {
-    func reinit() -> Self { self }
-}
 protocol ReinitableByNewSelf: Reinitable {
     init()
 }

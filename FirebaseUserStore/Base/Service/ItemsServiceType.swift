@@ -57,7 +57,7 @@ extension ItemsServiceType {
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
-                                    iconUrl: data["icon"] as? String ?? "",
+                                    icon: data["icon"] as? Data ?? Data(),
                                     originalUrl: data["link"] as? String ?? "",
                                     createdAt: Date()
                                 )

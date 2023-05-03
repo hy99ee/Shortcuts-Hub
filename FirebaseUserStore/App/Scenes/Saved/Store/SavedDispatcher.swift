@@ -4,7 +4,7 @@ import Firebase
 
 let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> = { action, packages in
     switch action {
-    case .initSaved, .updateSaved:
+    case .initSaved, .updateSaved, .initLocalSaved, .updateLocalSaved:
         return mutationFetchItems(packages: packages)
             .withStatus(
                 start: .progressView(status: .start),
@@ -13,10 +13,10 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
         
-    case .initLocalSaved, .updateLocalSaved, .localSearch:
-        return Just(SavedMutation.fetchedItems(newItems: mockItems)).eraseToAnyPublisher()
+//    case .initLocalSaved, .updateLocalSaved:
+//        return Just(SavedMutation.updateItems(packages.database)).eraseToAnyPublisher()
 
-    case let .search(text):
+    case .search(let text), .localSearch(let text):
         if text.isEmpty { return mutationFetchItems(packages: packages) }
         return mutationSearchItems(by: text, packages: packages)
             .withStatus(
@@ -24,6 +24,10 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
                 finish: .progressView(status: .stop)
             )
             .eraseToAnyPublisher()
+
+//    case let .localSearch(text):
+//        if text.isEmpty { return Just(SavedMutation.updateItems(packages.database)).eraseToAnyPublisher() }
+//        return Just(SavedMutation.updateItems(packages.database.filter { $0.tags.contains(text) })).eraseToAnyPublisher()
 
     case .next:
         return mutationNextItems(packages: packages)
@@ -69,7 +73,7 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
                     itemsFromMultipleQuery.send(.errorAlert(error: error))
 
                 case .finished:
-                    itemsFromMultipleQuery.send(.fetchedItems(newItems: items.itemsByModified))
+                    itemsFromMultipleQuery.send(.updateItems(items.itemsByModified))
                 }
             }, receiveValue: {
                 items.append(contentsOf: $0)
@@ -79,6 +83,7 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
         return itemsFromMultipleQuery
             .eraseToAnyPublisher()
     }
+
     func mutationNextItems(packages: SavedPackages) -> AnyPublisher<SavedMutation, Never> {
         guard let lastCount = packages.itemsService.itemsServiceCursor?.count, lastCount > 0 else {
             return Empty().eraseToAnyPublisher()
@@ -90,8 +95,8 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .flatMap { packages.itemsService.fetchItemsFromQuery($0.query) }
 
         return fetchFromDocs
-            .map { .fetchedNewItems($0) }
-            .catch { Just(.errorAlert(error: $0)) }
+            .map { SavedMutation.appendItems($0) }
+            .catch { Just(SavedMutation.errorAlert(error: $0)) }
             .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

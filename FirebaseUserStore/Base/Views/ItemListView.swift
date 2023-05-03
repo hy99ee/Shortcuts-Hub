@@ -3,12 +3,13 @@ import SwiftUI
 struct ItemListView: View, Identifiable {
     let id = UUID()
     let item: Item
+
+    private let iconString = "https://dev1-images.wallpaperscraft.com/image/dynamic/890_360x720.jpg"
     
     var body: some View {
         VStack {
             HStack {
-                if let iconString = "https://dev1-images.wallpaperscraft.com/image/dynamic/890_360x720.jpg",
-                   let iconUrl = URL(string: iconString) {
+                if let iconUrl = URL(string: iconString) {
                     CacheAsyncImage<Image, Color, Color>(
                         url: iconUrl,
                         content: { image in

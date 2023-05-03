@@ -9,7 +9,7 @@ struct CreateView: View {
 
     @State private var titleField = ""
     @State private var descriptionField = ""
-    @State private var image: Image?
+    @State private var image: UIImage?
 
     var userId: String? { Auth.auth().currentUser?.uid }
 
@@ -26,6 +26,7 @@ struct CreateView: View {
             .padding()
 
             ButtonView(title: "Create") {
+                guard image != nil else { return }
                 store.dispatch(.uploadNewItem(itemBySelf))
             }
             .padding()
@@ -42,8 +43,8 @@ struct CreateView: View {
     }
 
     @ViewBuilder private var imageView: some View {
-        if image != nil {
-            image!.resizable()
+        if let uiImage = self.image {
+            Image(uiImage: uiImage).resizable()
         } else {
             ZStack {
                 Rectangle()
@@ -62,9 +63,7 @@ struct CreateView: View {
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
 
-            if let image = UIImage(data: data) {
-                self.image = Image(uiImage: image)
-            }
+            self.image = UIImage(data: data)
         }
     }
 
@@ -74,7 +73,7 @@ struct CreateView: View {
             userId: userId!,
             title: titleField,
             description: descriptionField,
-            iconUrl: appleItem.fields.icon.value.downloadURL,
+            icon: image?.pngData(),
             originalUrl: originalLink,
             createdAt: Date()
         )

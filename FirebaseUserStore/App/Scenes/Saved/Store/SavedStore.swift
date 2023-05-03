@@ -34,7 +34,7 @@ extension SavedStore {
     }
 
     static let middlewareLocalItems: SavedStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
-        guard packages.itemsService?.user == nil else {
+        guard packages.itemsService?.savedIds == nil else {
             return Just(action)
                 .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
                 .eraseToAnyPublisher()
@@ -55,7 +55,7 @@ extension SavedStore {
                 )
             ).eraseToAnyPublisher()
 
-        case .search(text: let text):
+        case let .search(text: text):
             return Fail(
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
                     actions: [.search(text: text)]

@@ -80,15 +80,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
     @ViewBuilder private func linkDestination(link: FeedDetailLink) -> some View {
         switch link {
         case let .open(item):
-            DetailItemCoordinator(
-                item: Binding(get: {
-                    item
-                }, set: { newItem in
-                    if let index = store.state.itemsFromSection.firstIndex(where: { $0 == item }) {
-                        store.dispatch(.replaceItem(newItem, index: index))
-                    }
-                })
-            )
+            DetailItemCoordinator(item: item)
         default:
             EmptyView()
         }

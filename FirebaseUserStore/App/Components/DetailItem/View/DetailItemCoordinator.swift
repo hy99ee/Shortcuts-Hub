@@ -5,26 +5,25 @@ struct DetailItemCoordinator: CoordinatorType {
     @State var alert: ErrorTransition?
     let stateReceiver: AnyPublisher<ErrorTransition, Never>
 
-    @Binding private var itemFromParent: Item
     private var store: DetailItemStore
 
-    init(item: Binding<Item>) {
+    init(item: Item) {
         self.store = DetailItemStore(
-            state: DetailItemState(item: item.wrappedValue),
+            state: DetailItemState(item: item),
             dispatcher: feedDetailItemDispatcher,
             reducer: feedDetailItemReducer,
             packages: DetailItemPackages(),
             middlewares: [DetailItemStore.middlewareOperation]
         )
 
-        self._itemFromParent = item
-        self.stateReceiver = store.transition.print("TRANSITION GET").eraseToAnyPublisher()
+        self.stateReceiver = store.transition.eraseToAnyPublisher()
     }
 
     var view: AnyView {
         AnyView(
-            ItemDetailView(store: store, updateItem: $itemFromParent)
+            ItemDetailView(store: store)
                 .alert(item: $alert, content: alertContent)
+                .toolbar(.hidden, for: .tabBar)
         )
     }
 
