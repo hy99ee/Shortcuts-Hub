@@ -29,12 +29,24 @@ struct LibraryCollectionView: View {
                         } else {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
-                                    ItemCellView(item: searchItems[index], cellStyle: cellStyle) {
-                                        store.dispatch(.removeItem(searchItems[index]))
-                                    }
+                                    ItemCellView(
+                                        item: searchItems[index],
+                                        cellStyle: cellStyle,
+                                        isFromSelf: true
+                                    )
                                     .padding(3)
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
+                                    }
+                                    .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    .contextMenu {
+                                        Button(role: .destructive) {
+                                            if let item = searchItems.at(index) {
+                                                store.dispatch(.removeItem(item))
+                                            }
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
                                     }
                                 }
                                 .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
@@ -57,11 +69,7 @@ struct LibraryCollectionView: View {
                                 ItemCellView(
                                     item: store.state.items[index],
                                     cellStyle: cellStyle,
-                                    delete: {
-                                        if let item = store.state.items.at(index) {
-                                            store.dispatch(.removeItem(item))
-                                        }
-                                    }
+                                    isFromSelf: true
                                 )
                                 .padding(3)
                                 .opacity(isAnimating ? 1 : 0)
@@ -70,6 +78,16 @@ struct LibraryCollectionView: View {
                                 .onTapGesture {
                                     if let item = store.state.items.at(index) {
                                         store.dispatch(.click(item))
+                                    }
+                                }
+                                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        if let item = store.state.items.at(index) {
+                                            store.dispatch(.removeItem(item))
+                                        }
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
                                     }
                                 }
                                 .onAppear {

@@ -14,16 +14,7 @@ enum LoginLink: TransitionType {
     }
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .forgot:
-            hasher.combine(0)
-        case .register:
-            hasher.combine(1)
-        case .error:
-            hasher.combine(2)
-        case .close:
-            hasher.combine(3)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: LoginLink, rhs: LoginLink) -> Bool {

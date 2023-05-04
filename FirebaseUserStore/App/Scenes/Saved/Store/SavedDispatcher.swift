@@ -37,6 +37,12 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
     case let .click(item):
         return Just(.detail(item: item)).eraseToAnyPublisher()
 
+    case let .addItemToSaved(item):
+        return mutationAddItemToSaved(item, packages: packages)
+
+    case let .removeItemFromSaved(item):
+        return mutationRemoveItemFromSaved(item, packages: packages)
+
     case let .addItem(item):
         return Just(.addItem(item)).eraseToAnyPublisher()
 
@@ -124,6 +130,20 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
             .store(in: &packages.subscriptions)
 
         return itemsFromMultipleQuery
+            .eraseToAnyPublisher()
+    }
+
+    func mutationAddItemToSaved(_ item: Item, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never>  {
+        packages.sessionService.updateDatabaseUser(with: .add(item: item))
+            .map { SavedMutation.addItem(item) }
+            .catch { Just(SavedMutation.errorAlert(error: $0)) }
+            .eraseToAnyPublisher()
+    }
+
+    func mutationRemoveItemFromSaved(_ item: Item, packages: SavedPackages) -> AnyPublisher<SavedMutation, Never>  {
+        packages.sessionService.updateDatabaseUser(with: .remove(item: item))
+            .map { SavedMutation.removeItem(item) }
+            .catch { Just(SavedMutation.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }
 

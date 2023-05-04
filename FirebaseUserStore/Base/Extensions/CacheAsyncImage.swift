@@ -57,6 +57,8 @@ struct CacheAsyncImage<I, P, E>: View where I: View,
             return AnyView(content(phase))
         case .failure:
             return AnyView(errorView())
+        @unknown default:
+            return AnyView(placeholder())
         }
     }
 }

@@ -31,9 +31,9 @@ enum CollectionRowStyle: CaseIterable {
 
     var rowHeight: CGFloat {
         switch self {
-        case .row1: return 50
-        case .row2: return 120
-        case .row3: return 80
+        case .row1: return 100
+        case .row2: return 140
+        case .row3: return 100
         }
     }
 }

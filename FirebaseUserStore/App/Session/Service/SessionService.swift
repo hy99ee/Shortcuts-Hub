@@ -62,7 +62,7 @@ final class SessionService: SessionServiceType, ObservableObject {
     }
 
     private var userDetailBinding: Binding<UserDetails> {
-        Binding<UserDetails>{
+        Binding<UserDetails> {
             self.userDetails
         } set: { newValue in
             self.userDetails = newValue
@@ -70,7 +70,7 @@ final class SessionService: SessionServiceType, ObservableObject {
     }
 
     private var mutationBinding: Binding<DatabaseUserMutation?> {
-        Binding<DatabaseUserMutation?>{
+        Binding<DatabaseUserMutation?> {
             self.mutation
         } set: { newValue in
             self.mutation = newValue
@@ -102,6 +102,11 @@ private extension SessionService {
                                   let phone = value[DatabaseUserKeys.phone.rawValue] as? String
                             else {
                                 self?.state = .loggedOut
+                                self?.userDetails = UserDetails(
+                                    value: nil,
+                                    auth: nil,
+                                    savedIds: []
+                                )
                                 return
                             }
                             let savedIds = value[DatabaseUserKeys.savedIds.rawValue] as? [String] ?? [String]()
@@ -124,7 +129,11 @@ private extension SessionService {
                         }
                 } else {
                     self.state = .loggedOut
-                    self.userDetails.reset()
+                    self.userDetails = UserDetails(
+                        value: nil,
+                        auth: nil,
+                        savedIds: localDatabase.savedIds
+                    )
                 }
             }
     }
@@ -140,12 +149,6 @@ struct UserDetails: Equatable {
     var value: DatabaseUser?
     var auth: UserAuthDetails?
     var savedIds: [String] = []
-
-    mutating func reset() {
-        value = nil
-        auth = nil
-        savedIds = []
-    }
 }
 
 struct UserAuthDetails: Equatable {

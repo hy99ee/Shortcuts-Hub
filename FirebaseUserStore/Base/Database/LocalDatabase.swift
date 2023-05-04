@@ -21,7 +21,7 @@ struct UserDefault<T> {
 }
 
 protocol LocalDatabaseType {
-//    var databaseItems: [UUID] { get }
+    var savedIds: [String] { get }
 
     func updateUserData(with mutation: DatabaseUserMutation) -> AnyPublisher<Void, SessionServiceError>
 }

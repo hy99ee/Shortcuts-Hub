@@ -15,16 +15,7 @@ enum FeedAction: Action, Hashable {
     case showFeedError
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .initFeed: hasher.combine(0)
-        case .updateFeed: hasher.combine(1)
-        case .click: hasher.combine(2)
-        case .addSections: hasher.combine(3)
-        case .search: hasher.combine(4)
-        case .showAlert: hasher.combine(5)
-        case .showFeedError: hasher.combine(6)
-        case .changeSearchField: hasher.combine(7)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: FeedAction, rhs: FeedAction) -> Bool {

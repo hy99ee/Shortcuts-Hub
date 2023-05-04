@@ -7,16 +7,7 @@ enum RegisterationAction: Action, Hashable {
     case cleanError
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .click:
-            hasher.combine(0)
-        case .check:
-            hasher.combine(1)
-        case .clickRegisteration:
-            hasher.combine(2)
-        case .cleanError:
-            hasher.combine(3)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: RegisterationAction, rhs: RegisterationAction) -> Bool {

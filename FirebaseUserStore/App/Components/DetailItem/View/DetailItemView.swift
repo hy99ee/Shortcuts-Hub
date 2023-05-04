@@ -4,7 +4,6 @@ struct ItemDetailView: View {
     @StateObject var store: DetailItemStore
 
     @State private var image: Image?
-    @State private var savedImageSystemName: String = Self.imageSystemNameByStoreOperation()
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -25,12 +24,7 @@ struct ItemDetailView: View {
                     .cornerRadius(15)
             }
         }
-        .onReceive(store.$state) {
-            savedImageSystemName = Self.imageSystemNameByIsSaved($0.item.isSaved)
-        }
         .onAppear {
-            savedImageSystemName = Self.imageSystemNameByIsSaved(store.state.item.isSaved)
-
             if let iconData = store.state.item.icon, let image = UIImage(data: iconData) {
                 self.image = Image(uiImage: image)
             }
@@ -38,12 +32,8 @@ struct ItemDetailView: View {
         .toolbar {
             if store.state.item.userId != store.packages.sessionService.userDetails.auth?.id {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        store.dispatch(store.state.item.isSaved ? .removeFromSaved : .addToSaved)
-                    }, label: {
-                        Image(systemName: savedImageSystemName)
-                    })
-                    .modifier(ButtonClearProgressViewModifier(progressStatus: store.state.viewProgress))
+                    togleFavoritesButton
+                        .modifier(ButtonClearProgressViewModifier(progressStatus: store.state.viewProgress))
                 }
             }
         }
@@ -63,30 +53,11 @@ struct ItemDetailView: View {
         }
     }
 
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-
-    func downloadImage(from url: URL) {
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-
-            if let image = UIImage(data: data) {
-                self.image = Image(uiImage: image)
-            }
-        }
-    }
-
-    static private func imageSystemNameByIsSaved(_ isSaved: Bool) -> String {
-        Self.imageSystemNameByStoreOperation(isSaved ? .saved : .unsaved)
-    }
-    
-    static private func imageSystemNameByStoreOperation(_ operation: DetailItemStore.Operation = .unsaved) -> String {
-        switch operation {
-        case .saved:
-            return "heart.fill"
-        case .unsaved:
-            return "heart"
-        }
+    private var togleFavoritesButton: Button<Image> {
+        Button(action: {
+            store.dispatch(store.state.item.isSaved ? .removeFromSaved : .addToSaved)
+        }, label: {
+            Image(systemName: store.state.item.isSaved ? "heart.fill" : "heart")
+        })
     }
 }

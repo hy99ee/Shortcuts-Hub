@@ -35,9 +35,14 @@ extension LibraryStore {
         }
 
         guard packages.sessionService.state == .loggedIn else {
+            var actions: [LibraryAction] = [.userLoginState(.loggedOut)]
+            if action != .initLibrary {
+                actions.append(.openLogin)
+            }
+
             return Fail(
                 error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
-                    actions: [.userLoginState(.loggedOut), .openLogin],
+                    actions: actions,
                     type: .excludeRedispatch
                 )
             ).eraseToAnyPublisher()

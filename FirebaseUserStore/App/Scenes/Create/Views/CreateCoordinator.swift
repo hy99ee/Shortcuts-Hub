@@ -11,14 +11,7 @@ enum CreateLink: TransitionType {
     }
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .createFromAppleItem:
-            hasher.combine(0)
-        case .error:
-            hasher.combine(1)
-        case .itemCreated:
-            hasher.combine(2)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: CreateLink, rhs: CreateLink) -> Bool {

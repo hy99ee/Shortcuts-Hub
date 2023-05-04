@@ -13,16 +13,7 @@ enum LibraryLink: TransitionType {
     }
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .login:
-            hasher.combine(0)
-        case .about:
-            hasher.combine(1)
-        case .detail:
-            hasher.combine(2)
-        case .error:
-            hasher.combine(3)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: LibraryLink, rhs: LibraryLink) -> Bool {

@@ -11,11 +11,7 @@ enum FeedDetailLink: TransitionType {
     }
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .open: hasher.combine(0)
-        case .error: hasher.combine(1)
-        case .close: hasher.combine(2)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: FeedDetailLink, rhs: FeedDetailLink) -> Bool {
@@ -46,6 +42,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
                 ZStack {
                     Rectangle()
                         .fill(.thinMaterial)
+                        .opacity(0.001)
                         .cornerRadius(isOpen ? 0 : 40)
                     
                     FeedDetailSectionView(store: store)

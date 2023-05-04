@@ -11,10 +11,7 @@ enum FeedLink: TransitionType {
     }
 
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .section: hasher.combine(0)
-        case .error: hasher.combine(1)
-        }
+        hasher.combine(String(describing: self))
     }
 
     static func == (lhs: FeedLink, rhs: FeedLink) -> Bool {
