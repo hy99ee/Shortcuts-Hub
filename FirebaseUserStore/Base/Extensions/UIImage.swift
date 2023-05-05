@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 extension UIImage {
     /// Average color of the image, nil if it cannot be found
@@ -99,6 +100,10 @@ public struct Pixel {
             value = (UInt32(newValue) << 24) | (value & 0x00FFFFFF)
         }
     }
+
+    func toUIColor() -> UIColor {
+        UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
+    }
 }
 
 public struct RGBAImage {
@@ -143,14 +148,31 @@ public struct RGBAImage {
         return image
     }
 
-    public func replacePixelsWithTransparent() -> Self {
-        let transparentPixel = Pixel(value: 0x00000000)
+    public func replaceWhitePixelsWithCentralPixel() -> Self {
+        var lastPixel = Pixel(value: 0x00000000)
         for (index, piece) in self.pixels.enumerated() {
-            if piece.red >= 250 && piece.blue >= 250 && piece.green >= 250 {
-                self.pixels[index] = transparentPixel
+            if piece.red >= 100 && piece.blue >= 100 && piece.green >= 100 {
+                self.pixels[index] = self.pixels[pixels.count / 2]
+            } else {
+//                lastPixel = self.pixels[index]
             }
         }
 
+        return self
+    }
+}
+
+extension Color {
+    func adjust(hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, opacity: CGFloat = 1) -> Color {
+        let color = UIColor(self)
+        var currentHue: CGFloat = 0
+        var currentSaturation: CGFloat = 0
+        var currentBrigthness: CGFloat = 0
+        var currentOpacity: CGFloat = 0
+
+        if color.getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrigthness, alpha: &currentOpacity) {
+            return Color(hue: currentHue + hue, saturation: currentSaturation + saturation, brightness: currentBrigthness + brightness, opacity: currentOpacity + opacity)
+        }
         return self
     }
 }

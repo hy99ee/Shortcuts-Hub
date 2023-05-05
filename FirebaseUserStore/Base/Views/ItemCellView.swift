@@ -11,17 +11,28 @@ struct ItemCellView: View, Identifiable {
             
                 if let iconData = item.icon,
                    let imageFromData = UIImage(data: iconData),
-                   let rgbaImage = RGBAImage(image: imageFromData) {
+                   let rgbaImage = RGBAImage(image: imageFromData),
+                   let backgroudColor = makeAverageColorForImage(rgbaImage) {
                     ZStack {
+//                        Image(uiImage: rgbaImage.replaceWhitePixelsWithCentralPixel().toUIImage()!)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .clipped()
                         Rectangle()
-                            .fill(Color(uiColor: rgbaImage.replacePixelsWithTransparent().toUIImage()!.averageColor ?? .clear))
-                            .background(
-                                LinearGradient(colors: [.white, .clear],
-                                                       startPoint: .top,
-                                                       endPoint: .center)
+//                            .fill(Color(uiColor: rgbaImage.replacePixelsWithTransparent().toUIImage()!.averageColor ?? .clear))
+                            .fill(
+                                
+                                LinearGradient(
+                                    colors: [
+                                        backgroudColor.adjust(brightness: 0.1),
+                                        backgroudColor.adjust(saturation: 0.1, brightness: -0.1, opacity: 0.9)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottom
                                 )
+                            )
                             .cornerRadius(12)
-                            .opacity(0.9)
+//                            .opacity(0.9)
 
                         VStack {
                             HStack {
@@ -30,9 +41,16 @@ struct ItemCellView: View, Identifiable {
                                     .scaledToFill()
                                     .frame(width: 60, height: 60)
                                     .clipped()
-                                    .cornerRadius(8)
-                                    .padding(6)
 
+                                    .cornerRadius(8)
+                                    .padding(8)
+                                    .shadow(radius: 8)
+//                                    .blendMode(.color)
+//                                    .blur(radius: 12)
+//                                    .cornerRadius(8)
+                                
+                                
+                                
                                 Spacer()
                             }
                             
@@ -74,6 +92,7 @@ struct ItemCellView: View, Identifiable {
         )
         .foregroundColor(.white)
         .frame(height: cellStyle.rowHeight)
+        .cornerRadius(12)
     }
 
     private var systemImageByItemStatus: String? {
@@ -84,21 +103,32 @@ struct ItemCellView: View, Identifiable {
         }
     }
 
-    private func getColor(at point: CGPoint) -> UIColor {
-        let pixel = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: 4)
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-        let context = CGContext(data: pixel, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
-
-        context.translateBy(x: -point.x, y: -point.y)
-        let color = UIColor(red:   CGFloat(pixel[0]) / 255.0,
-                            green: CGFloat(pixel[1]) / 255.0,
-                            blue:  CGFloat(pixel[2]) / 255.0,
-                            alpha: CGFloat(pixel[3]) / 255.0)
-
-        pixel.deallocate()
-        return color
+    private func makeAverageColorForImage(_ image: RGBAImage) -> Color? {
+        if let image = image.replaceWhitePixelsWithCentralPixel().toUIImage(),
+           let uiColor = image.averageColor {
+            return Color(uiColor: uiColor)
+        } else {
+            return nil
+        }
     }
+//
+//    private func topColorForImage(_ image: RGBAImage) -> Color {
+//        Color(image.pixels[100].toUIColor())
+//    }
+//
+//    private func bottomColorForImage(_ image: RGBAImage) -> Color {
+//        Color(image.pixels[image.pixels.count - 100].toUIColor())
+//    }
+//
+//    private func backgroundGradient(for image: RGBAImage) -> [Color] {
+//        let avarageColor = makeAverageColorForImage(image)
+//        return [
+//            avarageColor.adjust(brightness: 0.01),
+////            avarageColor.adjust(brightness: ),
+//            avarageColor.adjust(saturation: 0.3, brightness: -0.1, opacity: 0.9),
+////            avarageColor
+//        ]
+//    }
 }
 
 struct LoaderFeedCellView: View {

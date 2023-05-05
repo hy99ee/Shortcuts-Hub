@@ -9,7 +9,7 @@ struct LibraryCollectionView: View {
     @State private var showSearch = false
     @State private var isAnimating = false
     @State private var isUpdating = false
-    @State private var cellStyle: CollectionRowStyle = .row3
+    @State private var cellStyle: CollectionRowStyle = .row2
 
     private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
     private let progress = HDotsProgress()
