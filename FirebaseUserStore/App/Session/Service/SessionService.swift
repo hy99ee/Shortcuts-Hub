@@ -22,10 +22,10 @@ final class SessionService: SessionServiceType, ObservableObject {
     static let shared = SessionService()
     @Published var state: SessionState = .loading
     @Published var userDetails = UserDetails()
-    @Published var mutation: DatabaseUserMutation?
+    @Published var mutation: DatabaseUserItemMutation?
 
-    private var remoteDatabase: RemoteDatabaseType!
-    private var localDatabase: LocalDatabaseType!
+    private var remoteDatabase: (any RemoteDatabaseType)!
+    private var localDatabase: (any LocalDatabaseType)!
     
     private var handler: AuthStateDidChangeListenerHandle?
     private var subscriptions = Set<AnyCancellable>()
@@ -53,12 +53,8 @@ final class SessionService: SessionServiceType, ObservableObject {
         return remoteDatabase.syncNewUser(credentials, for: userId)
     }
 
-    func updateDatabaseUser(with mutation: DatabaseUserMutation) -> AnyPublisher<Void, SessionServiceError> {
-        if let userId = userDetails.auth?.id {
-            return remoteDatabase.updateUserData(with: mutation, for: userId)
-        } else {
-            return localDatabase.updateUserData(with: mutation)
-        }
+    func updateDatabaseUser(with mutation: DatabaseUserItemMutation) -> AnyPublisher<Void, SessionServiceError> {
+        self.state == .loggedIn ? remoteDatabase.updateUserData(with: mutation) : localDatabase.updateUserData(with: mutation)
     }
 
     private var userDetailBinding: Binding<UserDetails> {
@@ -69,8 +65,8 @@ final class SessionService: SessionServiceType, ObservableObject {
         }
     }
 
-    private var mutationBinding: Binding<DatabaseUserMutation?> {
-        Binding<DatabaseUserMutation?> {
+    private var mutationBinding: Binding<DatabaseUserItemMutation?> {
+        Binding<DatabaseUserItemMutation?> {
             self.mutation
         } set: { newValue in
             self.mutation = newValue

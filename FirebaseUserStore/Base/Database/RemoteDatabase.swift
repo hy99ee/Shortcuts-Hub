@@ -2,11 +2,9 @@ import Combine
 import SwiftUI
 import FirebaseDatabase
 
-protocol RemoteDatabaseType {
+protocol RemoteDatabaseType: DatabaseType where Mutation == DatabaseUserItemMutation  {
     var userDetails: UserDetails { get }
-    var mutation: DatabaseUserMutation? { get }
-    
-    func updateUserData(with mutation: DatabaseUserMutation, for userId: String?) -> AnyPublisher<Void, SessionServiceError>
+
     func syncNewUser(_ credentials: RegistrationCredentials, for userId: String) -> AnyPublisher<Void, SessionServiceError>
 }
 
@@ -19,19 +17,19 @@ enum DatabaseUserKeys: String {
 
 final class RemoteDatabase: RemoteDatabaseType {
     @Binding var userDetails: UserDetails
-    @Binding var mutation: DatabaseUserMutation?
+    @Binding var mutation: DatabaseUserItemMutation?
 
-    init(userDetails: Binding<UserDetails>, mutation: Binding<DatabaseUserMutation?>) {
+    init(userDetails: Binding<UserDetails>, mutation: Binding<DatabaseUserItemMutation?>) {
         self._userDetails = userDetails
         self._mutation = mutation
     }
     
-    func updateUserData(with mutation: DatabaseUserMutation, for userId: String?) -> AnyPublisher<Void, SessionServiceError> {
+    func updateUserData(with mutation: DatabaseUserItemMutation) -> AnyPublisher<Void, SessionServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard
                     let self,
-                    let userId
+                    let userId = self.userDetails.auth?.id
                 else {
                     return promise(.failure(.errorWithAuth))
                 }

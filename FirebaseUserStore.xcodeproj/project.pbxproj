@@ -912,9 +912,9 @@
 		3BDF00442A026C7900A67F0E /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				3BDF00472A02752300A67F0E /* DatabaseType.swift */,
 				3BDF00422A026C0500A67F0E /* LocalDatabase.swift */,
 				3BDF00452A02751700A67F0E /* RemoteDatabase.swift */,
-				3BDF00472A02752300A67F0E /* DatabaseType.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";

@@ -26,10 +26,6 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var modifiedAt: Date?
 
     var tags: [String] { title.generateStringSequence() + description.generateStringSequence() }
-
-//    static func == (lhs: Self, rhs: Self) -> Bool {
-//        lhs.id == rhs.id
-//    }
 }
 
 enum SupportedIdioms: String, Codable {
