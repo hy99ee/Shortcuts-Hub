@@ -4,7 +4,7 @@ import Combine
 struct LibraryView: View {
     @StateObject var store: LibraryStore
 
-    private let searchQueryBublisher: CurrentValueSubject<String, Never>
+    private let searchQuery: CurrentValueSubject<String, Never>
     private var subscriptions = Set<AnyCancellable>()
 
     @State private var showLoader = false
@@ -13,16 +13,16 @@ struct LibraryView: View {
 
     var searchBinding: Binding<String> {
         .init(
-            get: { searchQueryBublisher.value },
-            set: { searchQueryBublisher.send($0) }
+            get: { searchQuery.value },
+            set: { searchQuery.send($0) }
         )
     }
 
     init(store: LibraryStore) {
         self._store = StateObject(wrappedValue: store)
-        self.searchQueryBublisher = CurrentValueSubject<String, Never>(store.state.searchFilter)
+        self.searchQuery = CurrentValueSubject<String, Never>(store.state.searchFilter)
 
-        let search = searchQueryBublisher
+        let search = searchQuery
             .removeDuplicates()
             .dropFirst()
             .flatMap {
@@ -38,13 +38,8 @@ struct LibraryView: View {
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .sink { store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
-
-//        search
-//            .filter { $0.isEmpty }
-//            .map { _ in }
-//            .sink { store.dispatch(.changeSearchField("")) }
-//            .store(in: &subscriptions)
     }
+
     var body: some View {
         VStack {
             if store.state.loginState == .loading {

@@ -20,7 +20,7 @@ struct UserDefault<T> {
     }
 }
 
-protocol LocalDatabaseType: DatabaseType where Mutation == DatabaseUserItemMutation {
+protocol LocalDatabaseType: DatabaseType where Mutation == UserItemsMutation {
     var savedIds: [String] { get }
 
     func updateUserData(with mutation: Mutation) -> AnyPublisher<Void, SessionServiceError>
@@ -28,16 +28,16 @@ protocol LocalDatabaseType: DatabaseType where Mutation == DatabaseUserItemMutat
 
 final class LocalDatabase: LocalDatabaseType {
     @Binding var userDetails: UserDetails
-    @Binding var mutation: DatabaseUserItemMutation?
+    @Binding var mutation: UserItemsMutation?
 
     @UserDefault("local_database_saved_ids_key", default: []) private(set) var savedIds: [String]
 
-    init(userDetails: Binding<UserDetails>, mutation: Binding<DatabaseUserItemMutation?>) {
+    init(userDetails: Binding<UserDetails>, mutation: Binding<UserItemsMutation?>) {
         self._userDetails = userDetails
         self._mutation = mutation
     }
 
-    func updateUserData(with mutation: DatabaseUserItemMutation) -> AnyPublisher<Void, SessionServiceError> {
+    func updateUserData(with mutation: UserItemsMutation) -> AnyPublisher<Void, SessionServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else {

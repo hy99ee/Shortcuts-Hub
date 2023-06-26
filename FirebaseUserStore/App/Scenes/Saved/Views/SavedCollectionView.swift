@@ -68,7 +68,7 @@ struct SavedCollectionView: View {
                                 .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 12, style: .continuous))
                                 .contextMenu {
                                     if let item = store.state.items.at(index) {
-                                        togleFavoritesButton(item: item)
+                                        toggleFavoritesButton(item: item)
                                     }
                                 }
                                 .onAppear { isAnimating = true }
@@ -113,9 +113,9 @@ struct SavedCollectionView: View {
             .async()
     }
 
-    private func togleFavoritesButton(item: Item) -> Button<Label<Text, Image>> {
+    private func toggleFavoritesButton(item: Item) -> Button<Label<Text, Image>> {
         Button(role: .destructive) {
-            store.dispatch(item.isSaved ? .removeItemFromSaved(item) : .addItemToSaved(item))
+            store.dispatch(item.isSaved ? .removeFromSaved(item: item) : .addToSaved(item: item))
         } label: {
             Label("Delete", systemImage: "trash")
         }

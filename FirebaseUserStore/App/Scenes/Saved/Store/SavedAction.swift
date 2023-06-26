@@ -12,8 +12,8 @@ enum SavedAction: Action, Hashable {
 
     case changeSearchField(_ newText: String)
 
-    case addItemToSaved(_ item: Item)
-    case removeItemFromSaved(_ item: Item)
+    case addToSaved(item: Item)
+    case removeFromSaved(item: Item)
 
     case addItem(_ item: Item)
     case removeItem(_ item: Item)

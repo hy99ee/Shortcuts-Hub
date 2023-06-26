@@ -2,7 +2,7 @@ import Combine
 import SwiftUI
 
 class GlobalSender: TransitionSender {
-    @ObservedObject var sessionService = SessionService.shared
+    @StateObject var sessionService = SessionService.shared
     let transition = PassthroughSubject<GlobalLink, Never>()
 
     let globalPackages = GlobalStoreRepository.shared
@@ -32,8 +32,7 @@ class GlobalSender: TransitionSender {
             .subscribe(transition)
             .store(in: &subscriptions)
 
-        sessionService.$mutation
-//            .removeDuplicates()
+        sessionService.$databaseMutation
             .compactMap { $0 }
             .sink {[weak self] in
                 switch $0 {
@@ -42,6 +41,19 @@ class GlobalSender: TransitionSender {
 
                 case let .remove(item):
                     self?.globalPackages.savedStore.dispatch(.removeItem(item))
+                }
+            }
+            .store(in: &subscriptions)
+
+        sessionService.$firestoreMutation
+            .compactMap { $0 }
+            .sink {[weak self] in
+                switch $0 {
+                case let .add(item):
+                    self?.globalPackages.libraryStore.dispatch(.addItem(item))
+
+                case let .remove(item):
+                    self?.globalPackages.libraryStore.dispatch(.removeItem(item))
                 }
             }
             .store(in: &subscriptions)

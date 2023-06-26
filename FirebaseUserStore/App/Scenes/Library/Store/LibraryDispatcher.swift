@@ -27,6 +27,9 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return Just(.addItem(item)).eraseToAnyPublisher()
 
     case let .removeItem(item):
+        return Just(.removeItem(item)).eraseToAnyPublisher()
+
+    case let .removeFromLibrary(item):
         return mutationRemoveItemFromDatabase(item, packages: packages)
     
     case let .changeSearchField(text):
@@ -114,12 +117,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     func mutationRemoveItemFromDatabase(_ item: Item, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.removeItem(item)
-            .flatMap { _ in
-                packages.sessionService.updateDatabaseUser(with: .remove(item: item))
-                    .mapError { _ in ItemsServiceError.userDatabaseError }
-                    .map { _ in item }
-            }
-            .map { .removeItem($0) }
+            .handleEvents(
+                receiveOutput: { _ in
+                    packages.sessionService.firestoreMutation = .remove(item: item)
+                }
+            )
+            .map { _ in .fastUpdate }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

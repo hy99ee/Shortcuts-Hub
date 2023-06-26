@@ -13,6 +13,7 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
     var title: String
     var description: String
 
+    var colorValue: Int?
     var icon: Data?
     var originalUrl: String?
     var idioms: [SupportedIdioms] = []

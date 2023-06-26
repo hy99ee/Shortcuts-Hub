@@ -6,7 +6,7 @@ struct DatabaseUser: Equatable {
     let phone: String
 }
 
-enum DatabaseUserItemMutation: Equatable {
+enum UserItemsMutation: Equatable {
     case add(item: Item)
     case remove(item: Item)
 

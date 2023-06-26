@@ -73,6 +73,7 @@ struct CreateView: View {
             userId: userId!,
             title: titleField,
             description: descriptionField,
+            colorValue: appleItem.fields.iconColor.value,
             icon: image?.pngData(),
             originalUrl: originalLink,
             createdAt: Date()

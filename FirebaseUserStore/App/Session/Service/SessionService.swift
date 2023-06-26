@@ -22,7 +22,8 @@ final class SessionService: SessionServiceType, ObservableObject {
     static let shared = SessionService()
     @Published var state: SessionState = .loading
     @Published var userDetails = UserDetails()
-    @Published var mutation: DatabaseUserItemMutation?
+    @Published var databaseMutation: UserItemsMutation?
+    @Published var firestoreMutation: UserItemsMutation?
 
     private var remoteDatabase: (any RemoteDatabaseType)!
     private var localDatabase: (any LocalDatabaseType)!
@@ -31,8 +32,10 @@ final class SessionService: SessionServiceType, ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     private init() {
-        self.remoteDatabase = RemoteDatabase(userDetails: userDetailBinding, mutation: mutationBinding)
-        self.localDatabase = LocalDatabase(userDetails: userDetailBinding, mutation: mutationBinding)
+        let databaseMutation = mutationBinding
+        let databaseUserDetail = userDetailBinding
+        self.remoteDatabase = RemoteDatabase(userDetails: databaseUserDetail, mutation: databaseMutation)
+        self.localDatabase = LocalDatabase(userDetails: databaseUserDetail, mutation: databaseMutation)
 
         setupObservations()
     }
@@ -53,7 +56,7 @@ final class SessionService: SessionServiceType, ObservableObject {
         return remoteDatabase.syncNewUser(credentials, for: userId)
     }
 
-    func updateDatabaseUser(with mutation: DatabaseUserItemMutation) -> AnyPublisher<Void, SessionServiceError> {
+    func updateDatabaseUser(with mutation: UserItemsMutation) -> AnyPublisher<Void, SessionServiceError> {
         self.state == .loggedIn ? remoteDatabase.updateUserData(with: mutation) : localDatabase.updateUserData(with: mutation)
     }
 
@@ -65,11 +68,11 @@ final class SessionService: SessionServiceType, ObservableObject {
         }
     }
 
-    private var mutationBinding: Binding<DatabaseUserItemMutation?> {
-        Binding<DatabaseUserItemMutation?> {
-            self.mutation
+    private var mutationBinding: Binding<UserItemsMutation?> {
+        Binding<UserItemsMutation?> {
+            self.databaseMutation
         } set: { newValue in
-            self.mutation = newValue
+            self.databaseMutation = newValue
         }
     }
 }

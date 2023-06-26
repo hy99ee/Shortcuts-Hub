@@ -60,7 +60,7 @@ struct LibraryCoordinator: CoordinatorType {
         case .about:
             self.path.append(link)
         case .detail:
-            self.path.append(link)
+            self.sheet = link
         case .error:
             self.alert = link
         }
@@ -70,8 +70,6 @@ struct LibraryCoordinator: CoordinatorType {
         switch link {
         case let .about(data):
             AboutView(aboutData: data)
-        case let .detail(item):
-            DetailItemCoordinator(item: item)
         default:
             EmptyView()
         }
@@ -88,6 +86,8 @@ struct LibraryCoordinator: CoordinatorType {
 
     @ViewBuilder private func sheetContent(link: LibraryLink) -> some View {
         switch link {
+        case let .detail(item):
+            DetailItemCoordinator(item: item)
         default:
             EmptyView()
         }

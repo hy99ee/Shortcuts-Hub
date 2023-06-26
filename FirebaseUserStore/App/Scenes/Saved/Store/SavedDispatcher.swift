@@ -37,10 +37,10 @@ let savedDispatcher: DispatcherType<SavedAction, SavedMutation, SavedPackages> =
     case let .click(item):
         return Just(.detail(item: item)).eraseToAnyPublisher()
 
-    case let .addItemToSaved(item):
+    case let .addToSaved(item):
         return mutationAddItemToSaved(item, packages: packages)
 
-    case let .removeItemFromSaved(item):
+    case let .removeFromSaved(item):
         return mutationRemoveItemFromSaved(item, packages: packages)
 
     case let .addItem(item):

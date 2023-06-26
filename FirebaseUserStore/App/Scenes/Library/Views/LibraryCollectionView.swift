@@ -42,7 +42,7 @@ struct LibraryCollectionView: View {
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             if let item = searchItems.at(index) {
-                                                store.dispatch(.removeItem(item))
+                                                store.dispatch(.removeFromLibrary(item: item))
                                             }
                                         } label: {
                                             Label("Delete", systemImage: "trash")
@@ -84,7 +84,7 @@ struct LibraryCollectionView: View {
                                 .contextMenu {
                                     Button(role: .destructive) {
                                         if let item = store.state.items.at(index) {
-                                            store.dispatch(.removeItem(item))
+                                            store.dispatch(.removeFromLibrary(item: item))
                                         }
                                     } label: {
                                         Label("Delete", systemImage: "trash")

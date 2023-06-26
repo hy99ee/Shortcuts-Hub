@@ -21,6 +21,11 @@ let createDispatcher: DispatcherType<CreateAction, CreateMutation, LibraryPackag
     // MARK: - Mutations
     func mutationItemUpload(item: Item, _ packages: LibraryPackages) -> AnyPublisher<CreateMutation, Never> {
         packages.itemsService.uploadNewItem(item)
+            .handleEvents(
+                receiveOutput: { _ in
+                    packages.sessionService.firestoreMutation = .add(item: item)
+                }
+            )
             .map { _ in .itemUploaded }
             .catch { _ in Just(.setError(.upload)) }
             .eraseToAnyPublisher()

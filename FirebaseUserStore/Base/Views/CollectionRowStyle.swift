@@ -1,13 +1,11 @@
 import Foundation
 
 enum CollectionRowStyle: CaseIterable {
-    case row1
     case row2
     case row3
 
     var systemImage: String {
         switch self {
-        case .row1: return "square.split.1x2"
         case .row2: return "square.split.2x2"
         case .row3: return "rectangle.split.3x3"
         }
@@ -15,7 +13,6 @@ enum CollectionRowStyle: CaseIterable {
 
     var systemImageSize: CGFloat {
         switch self {
-        case .row1: return 20
         case .row2: return 17
         case .row3: return 15
         }
@@ -23,7 +20,6 @@ enum CollectionRowStyle: CaseIterable {
 
     var rowCount: Int {
         switch self {
-        case .row1: return 1
         case .row2: return 2
         case .row3: return 3
         }
@@ -31,9 +27,8 @@ enum CollectionRowStyle: CaseIterable {
 
     var rowHeight: CGFloat {
         switch self {
-        case .row1: return 100
         case .row2: return 140
-        case .row3: return 100
+        case .row3: return 80
         }
     }
 }

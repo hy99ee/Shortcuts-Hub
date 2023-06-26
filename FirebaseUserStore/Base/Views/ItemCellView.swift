@@ -8,71 +8,52 @@ struct ItemCellView: View, Identifiable {
 
     var body: some View {
         ZStack {
-            
                 if let iconData = item.icon,
-                   let imageFromData = UIImage(data: iconData),
-                   let rgbaImage = RGBAImage(image: imageFromData),
-                   let backgroudColor = makeAverageColorForImage(rgbaImage) {
+                   let imageFromData = UIImage(data: iconData) {
                     ZStack {
-//                        Image(uiImage: rgbaImage.replaceWhitePixelsWithCentralPixel().toUIImage()!)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .clipped()
                         Rectangle()
-//                            .fill(Color(uiColor: rgbaImage.replacePixelsWithTransparent().toUIImage()!.averageColor ?? .clear))
-                            .fill(
-                                
-                                LinearGradient(
-                                    colors: [
-                                        backgroudColor.adjust(brightness: 0.1),
-                                        backgroudColor.adjust(saturation: 0.1, brightness: -0.1, opacity: 0.9)
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottom
-                                )
-                            )
+                            .fill(Color(rgb: item.colorValue ?? 0))
                             .cornerRadius(12)
-//                            .opacity(0.9)
 
-                        VStack {
+                    VStack {
+                        if cellStyle == .row3 {
+                            Image(uiImage: imageFromData)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 80, height: 80)
+                                .shadow(radius: 8)
+                                .cornerRadius(8)
+                                .shadow(radius: 8)
+                        } else {
                             HStack {
                                 Image(uiImage: imageFromData)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 60, height: 60)
-                                    .clipped()
-
-                                    .cornerRadius(8)
+                                    .shadow(radius: 8)
                                     .padding(8)
                                     .shadow(radius: 8)
-//                                    .blendMode(.color)
-//                                    .blur(radius: 12)
-//                                    .cornerRadius(8)
-                                
-                                
-                                
+
                                 Spacer()
                             }
-                            
+
                             Spacer()
-                            
-                            
+
                             Text(item.title)
                                 .font(.system(size: 20))
                         }
                     }
-                } else {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundColor(.secondary)
-                            .opacity(0.6)
-
-                        Text(item.title)
-                            .font(.title3)
-                    }
                 }
-                
-            
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .foregroundColor(.secondary)
+                        .opacity(0.6)
+
+                    Text(item.title)
+                        .font(.title3)
+                }
+            }
 
             if isFromSelf, let imageName = systemImageByItemStatus {
                 VStack {
@@ -104,31 +85,13 @@ struct ItemCellView: View, Identifiable {
     }
 
     private func makeAverageColorForImage(_ image: RGBAImage) -> Color? {
-        if let image = image.replaceWhitePixelsWithCentralPixel().toUIImage(),
+        if let image = image.toUIImage(),
            let uiColor = image.averageColor {
             return Color(uiColor: uiColor)
         } else {
             return nil
         }
     }
-//
-//    private func topColorForImage(_ image: RGBAImage) -> Color {
-//        Color(image.pixels[100].toUIColor())
-//    }
-//
-//    private func bottomColorForImage(_ image: RGBAImage) -> Color {
-//        Color(image.pixels[image.pixels.count - 100].toUIColor())
-//    }
-//
-//    private func backgroundGradient(for image: RGBAImage) -> [Color] {
-//        let avarageColor = makeAverageColorForImage(image)
-//        return [
-//            avarageColor.adjust(brightness: 0.01),
-////            avarageColor.adjust(brightness: ),
-//            avarageColor.adjust(saturation: 0.3, brightness: -0.1, opacity: 0.9),
-////            avarageColor
-//        ]
-//    }
 }
 
 struct LoaderFeedCellView: View {
@@ -149,4 +112,3 @@ struct LoaderFeedCellView: View {
         )
     }
 }
-

@@ -13,6 +13,8 @@ enum LibraryAction: Action, Hashable {
     case addItem(_ item: Item)
     case removeItem(_ item: Item)
 
+    case removeFromLibrary(item: Item)
+
     case showAboutSheet
     case showAlert(error: Error)
     case showLibraryError
