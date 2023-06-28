@@ -1,3 +1,3 @@
-import Foundation
+import SwiftUDF
 
-class DetailItemPackages: EnvironmentPackages, Unreinitable {}
+class DetailItemPackages: EnvironmentPackagesWithSessionWithSession, Unreinitable {}

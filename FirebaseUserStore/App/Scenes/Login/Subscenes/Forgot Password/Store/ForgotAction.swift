@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUDF
 
 enum ForgotAction: Action {
     case clickForgot(email: String)

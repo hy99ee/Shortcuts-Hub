@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUDF
 
 struct RegisterationState: StateType, ReinitableByNewSelf {
     var fieldsStatus: [RegistrationCredentialsField: InputTextFieldStatus] = {

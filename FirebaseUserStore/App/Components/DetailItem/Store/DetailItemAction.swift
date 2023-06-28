@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUDF
 
 enum DetailItemAction: Action, Hashable {
     case addToSaved

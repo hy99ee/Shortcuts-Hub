@@ -1,5 +1,5 @@
 import Combine
-import Foundation
+import SwiftUDF
 
 let loginReducer: ReducerType<LoginState, LoginMutation, LoginLink> = { _state, mutation in
     var state = _state

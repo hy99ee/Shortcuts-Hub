@@ -1,5 +1,5 @@
-import Foundation
+import SwiftUDF
 
-class FeedDetailSectionPackages: EnvironmentPackages, Unreinitable {
+class FeedDetailSectionPackages: EnvironmentPackagesWithSessionWithSession, Unreinitable {
     lazy var feedDetailSectionService = FeedDetailSectionService()
 }

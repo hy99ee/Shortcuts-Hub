@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 import SwiftUI
 
 let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionAction, FeedDetailSectionMutation, FeedDetailSectionPackages> = { action, packages in

@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 import SwiftUI
 
 let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> = { action, packages in

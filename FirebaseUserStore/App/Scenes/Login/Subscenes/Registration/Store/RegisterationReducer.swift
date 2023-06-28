@@ -1,5 +1,5 @@
 import Combine
-import Foundation
+import SwiftUDF
 
 let registerationReducer: ReducerType<RegisterationState, RegisterationMutation, CloseTransition> = { _state, mutation in
     var state = _state

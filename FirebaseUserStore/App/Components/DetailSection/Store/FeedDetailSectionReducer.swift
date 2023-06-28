@@ -1,5 +1,5 @@
+import SwiftUDF
 import Combine
-import Foundation
 
 let feedDetailSectionReducer: ReducerType<FeedDetailSectionState, FeedDetailSectionMutation, FeedDetailLink> = { _state, mutation in
     var state = _state

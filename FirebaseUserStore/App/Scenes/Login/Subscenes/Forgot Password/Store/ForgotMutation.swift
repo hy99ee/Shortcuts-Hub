@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 
 enum ForgotMutation: Mutation {
     case progressForgotStatus(_ status: ProgressViewStatus)

@@ -1,5 +1,5 @@
 import Combine
-import SwiftUI
+import SwiftUDF
 
 let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, mutation in
     var state = _state

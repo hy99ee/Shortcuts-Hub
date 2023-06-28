@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUDF
 
 enum RegisterationAction: Action, Hashable {
     case click(field: RegistrationCredentialsField)

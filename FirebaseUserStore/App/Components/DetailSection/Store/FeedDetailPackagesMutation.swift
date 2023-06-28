@@ -1,5 +1,4 @@
-import Foundation
-import Combine
+import SwiftUDF
 
 enum FeedDetailSectionMutation: Mutation {
     case fetchedSection(_ items: [Item])

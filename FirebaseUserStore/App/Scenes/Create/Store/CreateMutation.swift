@@ -1,5 +1,4 @@
-import Foundation
-import Combine
+import SwiftUDF
 
 enum CreateMutation: Mutation {
     case setAppleItem(_ item: AppleApiItem, linkFromUser: String)

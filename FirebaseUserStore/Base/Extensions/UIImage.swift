@@ -149,7 +149,6 @@ public struct RGBAImage {
     }
 
     public func replaceWhitePixelsWithCentralPixel() -> Self {
-        var lastPixel = Pixel(value: 0x00000000)
         for (index, piece) in self.pixels.enumerated() {
             if piece.red >= 100 && piece.blue >= 100 && piece.green >= 100 {
                 self.pixels[index] = self.pixels[pixels.count / 2]

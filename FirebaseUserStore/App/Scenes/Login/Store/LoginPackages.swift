@@ -1,6 +1,6 @@
-import Foundation
+import SwiftUDF
 
-class LoginPackages: EnvironmentPackages {
+class LoginPackages: EnvironmentPackagesWithSessionWithSession {
     private(set) var loginService = LoginService()
     
     lazy var registerStore = RegisterationStore(state: RegisterationState(), dispatcher: registerationDispatcher, reducer: registerationReducer, packages: RegisterationPackages())

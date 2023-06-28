@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUDF
 
 enum LoginAction: Action, Hashable {
     case openRegister(store: LoginStore)

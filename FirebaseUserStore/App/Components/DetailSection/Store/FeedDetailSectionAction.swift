@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUDF
 
 enum FeedDetailSectionAction: Action, Hashable {
     case initDetail

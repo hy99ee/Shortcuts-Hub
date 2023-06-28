@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 import SwiftUI
 
 let registerationDispatcher: DispatcherType<RegisterationAction, RegisterationMutation, RegisterationPackages> = { action, packages in

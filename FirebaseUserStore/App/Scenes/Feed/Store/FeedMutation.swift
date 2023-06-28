@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 
 enum FeedMutation: Mutation {
     case updateSectionsPreloaders(count: Int)

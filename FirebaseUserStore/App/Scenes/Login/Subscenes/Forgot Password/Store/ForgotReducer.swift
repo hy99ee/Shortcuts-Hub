@@ -1,5 +1,6 @@
 import Combine
-import Foundation
+import SwiftUDF
+import SwiftUI
 
 let forgotReducer: ReducerType<ForgotState, ForgotMutation, CloseTransition> = { _state, mutation in
     var state = _state

@@ -1,5 +1,5 @@
-import Foundation
+import SwiftUDF
 
-class RegisterationPackages: EnvironmentPackages, Unreinitable {
+class RegisterationPackages: EnvironmentPackagesWithSessionWithSession, Unreinitable {
     lazy var registerationService = RegistrationService()
 }

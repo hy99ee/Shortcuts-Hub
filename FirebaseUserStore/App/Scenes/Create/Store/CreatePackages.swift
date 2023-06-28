@@ -1,7 +1,7 @@
 //import Combine
 //import FirebaseAuth
 //
-//protocol CreatePackagesType: EnvironmentPackages {
+//protocol CreatePackagesType: EnvironmentPackagesWithSession {
 //    associatedtype PackageItemsService: ItemsServiceType
 //
 //    var itemsService: PackageItemsService! { get }

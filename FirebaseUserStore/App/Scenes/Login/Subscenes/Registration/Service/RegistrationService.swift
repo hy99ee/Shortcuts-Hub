@@ -1,8 +1,11 @@
 import Combine
+import SwiftUDF
 import Firebase
 import FirebaseDatabase
 
 protocol RegistrationServiceType: EnvironmentType {
+    associatedtype ServiceError: Error
+
     func register(with credentials: RegistrationCredentials) -> AnyPublisher<Void, ServiceError>
 }
 

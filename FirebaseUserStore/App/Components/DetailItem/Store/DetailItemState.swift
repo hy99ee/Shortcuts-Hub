@@ -1,5 +1,4 @@
-import SwiftUI
-import Combine
+import SwiftUDF
 
 struct DetailItemState: StateType {
     var item: Item

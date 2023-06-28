@@ -1,5 +1,6 @@
-import SwiftUI
 import Combine
+import SwiftUDF
+import SwiftUI
 
 struct DetailItemCoordinator: CoordinatorType {
     @State var alert: ErrorTransition?

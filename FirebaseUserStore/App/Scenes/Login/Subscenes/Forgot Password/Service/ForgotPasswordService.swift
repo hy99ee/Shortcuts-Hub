@@ -1,8 +1,10 @@
-import Foundation
-import Firebase
 import Combine
+import SwiftUDF
+import Firebase
 
-protocol ForgotPasswordServiceType: EnvironmentType {
+protocol ForgotPasswordServiceType: EnvironmentPackagesWithSessionWithSession, Unreinitable {
+    associatedtype ServiceError: Error
+
     func sendPasswordResetRequest(to email: String) -> AnyPublisher<Void, ServiceError>
 }
 

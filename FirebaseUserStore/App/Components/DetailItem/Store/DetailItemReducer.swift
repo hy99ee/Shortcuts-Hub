@@ -1,5 +1,5 @@
 import Combine
-import Foundation
+import SwiftUDF
 
 let feedDetailItemReducer: ReducerType<DetailItemState, DetailItemMutation, ErrorTransition> = { _state, mutation in
     var state = _state

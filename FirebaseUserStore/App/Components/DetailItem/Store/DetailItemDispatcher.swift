@@ -1,6 +1,6 @@
 import Foundation
 import Combine
-import SwiftUI
+import SwiftUDF
 
 let feedDetailItemDispatcher: DispatcherType<DetailItemAction, DetailItemMutation, DetailItemPackages> = { action, packages in
     switch action {

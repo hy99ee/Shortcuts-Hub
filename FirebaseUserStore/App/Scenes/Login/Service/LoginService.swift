@@ -1,8 +1,10 @@
 import Combine
-import Foundation
+import SwiftUDF
 import Firebase
 
 protocol LoginServiceType: EnvironmentType {
+    associatedtype ServiceError: Error
+
     func login(with credentials: LoginCredentials) -> AnyPublisher<Void, ServiceError>
 }
 

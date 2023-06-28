@@ -1,5 +1,5 @@
 import Combine
-import Foundation
+import SwiftUDF
 
 typealias LibraryStore = StateStore<LibraryState, LibraryAction, LibraryMutation, LibraryPackages, LibraryLink>
 
@@ -18,11 +18,11 @@ extension LibraryStore {
         }
     }
 
-    static let middlewareAuthCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+    static let middlewareAuthCheck: Middleware = { state, action, packages in
         if action == .showAboutSheet || action == .openLogin {
             if state.loginState == .loading {
                 return Fail(
-                    error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                    error: MiddlewareRedispatch.redispatch(
                         actions: [.userLoginState(packages.sessionService.state), action],
                         type: .excludeRedispatch
                     )
@@ -30,7 +30,7 @@ extension LibraryStore {
             }
 
             return Just(action).setFailureType(
-                to: StoreMiddlewareRepository.MiddlewareRedispatch.self
+                to: MiddlewareRedispatch.self
             ).eraseToAnyPublisher()
         }
 
@@ -41,7 +41,7 @@ extension LibraryStore {
             }
 
             return Fail(
-                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                error: MiddlewareRedispatch.redispatch(
                     actions: actions,
                     type: .excludeRedispatch
                 )
@@ -50,7 +50,7 @@ extension LibraryStore {
 
         if state.loginState != .loggedIn {
             return Fail(
-                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                error: MiddlewareRedispatch.redispatch(
                     actions: [.userLoginState(.loggedIn), action],
                     type: .excludeRedispatch
                 )
@@ -58,34 +58,34 @@ extension LibraryStore {
         }
 
         return Just(action)
-            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .setFailureType(to: MiddlewareRedispatch.self)
             .eraseToAnyPublisher()
     }
 
-    static let middlewareUpdateCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+    static let middlewareUpdateCheck: Middleware = { state, action, packages in
         if action == .initLibrary, !state.items.isEmpty {
             return Fail(
-                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                error: MiddlewareRedispatch.redispatch(
                     actions: []
                 )
             ).eraseToAnyPublisher()
         }
 
         return Just(action)
-            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .setFailureType(to: MiddlewareRedispatch.self)
             .eraseToAnyPublisher()
     }
 
-    static let middlewareSearchCheck: LibraryStore.StoreMiddlewareRepository.Middleware = { state, action, packages in
+    static let middlewareSearchCheck: Middleware = { state, action, packages in
         if action == .updateLibrary && !state.searchFilter.isEmpty {
             return Fail(
-                error: StoreMiddlewareRepository.MiddlewareRedispatch.redispatch(
+                error: MiddlewareRedispatch.redispatch(
                     actions: [.search(text: state.searchFilter)]
                 )
             ).eraseToAnyPublisher()
         }
         return Just(action)
-            .setFailureType(to: StoreMiddlewareRepository.MiddlewareRedispatch.self)
+            .setFailureType(to: MiddlewareRedispatch.self)
             .eraseToAnyPublisher()
     }
 }

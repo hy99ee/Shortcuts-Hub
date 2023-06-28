@@ -1,7 +1,8 @@
 import Combine
+import SwiftUDF
 import FirebaseAuth
 
-protocol FeedPackagesType: EnvironmentPackages {
+protocol FeedPackagesType: EnvironmentPackagesWithSessionWithSession {
     associatedtype PackageItemsService: ItemsServiceType
 
     var itemsService: PackageItemsService! { get }

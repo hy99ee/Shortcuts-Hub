@@ -1,6 +1,5 @@
 import Combine
-import SwiftUI
-import Firebase
+import SwiftUDF
 
 let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { action, packages in
     switch action {

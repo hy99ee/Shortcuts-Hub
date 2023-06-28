@@ -1,5 +1,4 @@
-import Foundation
-import Combine
+import SwiftUDF
 
 enum DetailItemMutation: Mutation {
     case itemsSavedStatusChanged(with: DetailItemStore.Operation)

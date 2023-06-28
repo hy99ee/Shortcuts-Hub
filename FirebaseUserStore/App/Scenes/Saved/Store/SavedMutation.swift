@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import SwiftUDF
 
 enum SavedMutation: Mutation {
     case updateItemsPreloaders(count: Int)

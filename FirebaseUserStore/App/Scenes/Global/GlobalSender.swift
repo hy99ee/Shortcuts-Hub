@@ -1,8 +1,9 @@
 import Combine
+import SwiftUDF
 import SwiftUI
 
 class GlobalSender: TransitionSender {
-    @StateObject var sessionService = SessionService.shared
+    @ObservedObject var sessionService = SessionService.shared
     let transition = PassthroughSubject<GlobalLink, Never>()
 
     let globalPackages = GlobalStoreRepository.shared
