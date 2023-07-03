@@ -48,10 +48,12 @@ class GlobalSender: TransitionSender {
 
         sessionService.$firestoreMutation
             .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
             .sink {[weak self] in
                 switch $0 {
                 case let .add(item):
                     self?.globalPackages.libraryStore.dispatch(.addItem(item))
+                    self?.transition.send(.library)
 
                 case let .remove(item):
                     self?.globalPackages.libraryStore.dispatch(.removeItem(item))

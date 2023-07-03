@@ -6,15 +6,16 @@ enum ItemsServiceError: Error {
     case firebaseError(_ error: Error)
     case appleError(_ error: Error)
     case userDatabaseError
+    case withDecode
 
     case invalidUserId
     case invalidSnapshot
     
     case writeNewItemFailure
     case deleteItem
+    case receiveAppleItem
 
     case unknownError
-    case mockError
 
     case none
 }
@@ -67,9 +68,15 @@ extension ItemsServiceError: LocalizedError {
                 comment: "Unexpected Error"
             )
             
-        case .mockError:
+        case .withDecode:
             return NSLocalizedString(
-                "This is message for testing receive errors messages.",
+                "Error with decoding.",
+                comment: "Mock Error"
+            )
+
+        case .receiveAppleItem:
+            return NSLocalizedString(
+                "Receive shortcut item from Apple failure.",
                 comment: "Mock Error"
             )
 

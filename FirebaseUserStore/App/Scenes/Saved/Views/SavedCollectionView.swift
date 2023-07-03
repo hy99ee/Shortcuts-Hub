@@ -26,13 +26,14 @@ struct SavedCollectionView: View {
                                 .padding(30)
                                 .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
                         } else {
-                            LazyVGrid(columns: columns, spacing: 12) {
+                            LazyVGrid(columns: columns) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
                                     ItemCellView(
                                         item: searchItems[index],
                                         cellStyle: cellStyle
                                     )
-                                    .padding(3)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 2)
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
                                     }
@@ -40,23 +41,25 @@ struct SavedCollectionView: View {
                             }
                         }
                     } else if let loadItems = store.state.loadItems {
-                        LazyVGrid(columns: columns, spacing: 12) {
+                        LazyVGrid(columns: columns) {
                             ForEach(loadItems, id: \.id) { _ in
                                 LoaderFeedCellView()
                                     .frame(height: cellStyle.rowHeight)
-                                    .padding(3)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 2)
                             }
                         }
                         .modifier(StaticPreloaderViewModifier())
                         .onAppear { isAnimating = false }
                     } else {
-                        LazyVGrid(columns: columns, spacing: 12) {
+                        LazyVGrid(columns: columns) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
                                 ItemCellView(
                                     item: store.state.items[index],
                                     cellStyle: cellStyle
                                 )
-                                .padding(3)
+                                .padding(.vertical, 3)
+                                .padding(.horizontal, 2)
                                 .opacity(isAnimating ? 1 : 0)
                                 .scaleEffect(isAnimating ? 1 : 0.9)
                                 .animation(.easeIn(duration: 0.7).delay((Double(index) + 0.5) * 0.03), value: isAnimating)

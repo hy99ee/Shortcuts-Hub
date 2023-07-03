@@ -54,6 +54,7 @@ final class GlobalStoreRepository {
         state: CreateState(),
         dispatcher: createDispatcher,
         reducer: createReducer,
-        packages: libraryPackages
+        packages: libraryPackages,
+        middlewares: [CreateStore.middlewareCheckInputFormat, CreateStore.middlewareHideKeyboard]
     )
 }

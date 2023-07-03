@@ -13,34 +13,40 @@ struct ItemCellView: View, Identifiable {
                     ZStack {
                         Rectangle()
                             .fill(Color(rgb: item.colorValue ?? 0))
-                            .cornerRadius(12)
+                            .cornerRadius(16)
 
                     VStack {
                         if cellStyle == .row3 {
                             Image(uiImage: imageFromData)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 80, height: 80)
                                 .shadow(radius: 8)
-                                .cornerRadius(8)
+                                .cornerRadius(12)
                                 .shadow(radius: 8)
                         } else {
                             HStack {
                                 Image(uiImage: imageFromData)
                                     .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 60, height: 60)
-                                    .shadow(radius: 8)
-                                    .padding(8)
-                                    .shadow(radius: 8)
+                                    .frame(width: 40, height: 40)
+                                    .cornerRadius(10)
+                                    .padding(7)
+                                    .shadow(radius: 7)
 
                                 Spacer()
                             }
 
                             Spacer()
 
-                            Text(item.title)
-                                .font(.system(size: 20))
+
+                            HStack {
+                                Text(item.title)
+                                    .lineLimit(3)
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .padding(.bottom, 9)
+                                    .padding(.horizontal)
+
+                                Spacer()
+                            }
                         }
                     }
                 }
@@ -61,16 +67,13 @@ struct ItemCellView: View, Identifiable {
                         Spacer()
                         Image(systemName: imageName)
                             .frame(width: 20, height: 20)
-                            .padding([.top, .trailing], 5)
+                            .padding(.top, cellStyle == .row3 ? 10 : 6)
+                            .padding(.trailing, cellStyle == .row3 ? 5 : 6)
                     }
                     Spacer()
                 }
             }
         }
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(.secondary, lineWidth: 2)
-        )
         .foregroundColor(.white)
         .frame(height: cellStyle.rowHeight)
         .cornerRadius(12)

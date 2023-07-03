@@ -3,6 +3,7 @@ import SwiftUDF
 struct CreateState: StateType, ReinitableByNewSelf {
     enum CreateErrorType: Error {
         case link
+        case emptyLink
         case upload
         case auth
     }

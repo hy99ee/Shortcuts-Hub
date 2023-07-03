@@ -26,8 +26,10 @@ struct CreateCoordinator: CoordinatorType {
     @State var creatingItem: Item = Item(id: UUID(), userId: "", title: "", description: "", createdAt: Date())
 
     @State var path = NavigationPath()
-    @State var sheet: CreateLink?
     @State var alert: CreateLink?
+
+    @State private var detents: Set<PresentationDetent> = [.medium]
+    @State private var detent: PresentationDetent = .medium
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -52,6 +54,8 @@ struct CreateCoordinator: CoordinatorType {
             }
             .navigationDestination(for: CreateLink.self, destination: linkDestination)
         }
+        .presentationDetents(detents, selection: $detent)
+        .presentationDragIndicator(.hidden)
     }
 
     func transitionReceiver(_ link: CreateLink) {
@@ -69,6 +73,12 @@ struct CreateCoordinator: CoordinatorType {
         switch link {
         case let .createFromAppleItem(item, link):
             CreateView(store: store, appleItem: item, originalLink: link)
+                .onAppear {
+                    setDetent(.large)
+                }
+                .onDisappear {
+                    setDetent(.medium)
+                }
         default:
             EmptyView()
         }
@@ -82,6 +92,14 @@ struct CreateCoordinator: CoordinatorType {
                   dismissButton: .default(Text("OK")))
         default:
             return Alert(title: Text(""))
+        }
+    }
+
+    private func setDetent(_ detent: PresentationDetent) {
+        detents.insert(detent)
+        self.detent = detent
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            detents = [detent]
         }
     }
 }

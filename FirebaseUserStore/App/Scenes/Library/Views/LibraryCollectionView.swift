@@ -27,14 +27,15 @@ struct LibraryCollectionView: View {
                                 .padding(30)
                                 .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
                         } else {
-                            LazyVGrid(columns: columns, spacing: 12) {
+                            LazyVGrid(columns: columns) {
                                 ForEach(0..<searchItems.count, id: \.self) { index in
                                     ItemCellView(
                                         item: searchItems[index],
                                         cellStyle: cellStyle,
                                         isFromSelf: true
                                     )
-                                    .padding(3)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 2)
                                     .onTapGesture {
                                         store.dispatch(.click(searchItems[index]))
                                     }
@@ -51,30 +52,33 @@ struct LibraryCollectionView: View {
                                 }
                                 .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                             }
-                            .animation(.spring().speed(0.8), value: store.state.searchedItems)
+//                            .animation(.spring().speed(0.8), value: store.state.searchedItems)
                         }
                     } else if let loadItems = store.state.loadItems {
-                        LazyVGrid(columns: columns, spacing: 12) {
+                        LazyVGrid(columns: columns) {
                             ForEach(loadItems, id: \.id) {
                                 LoaderFeedCellView(loaderItem: $0)
                                     .frame(height: cellStyle.rowHeight)
-                                    .padding(3)
+                                    .padding(.vertical, 3)
+                                    .padding(.horizontal, 2)
+
                             }
                         }
                         .modifier(StaticPreloaderViewModifier())
                         .onAppear { isAnimating = false }
                     } else {
-                        LazyVGrid(columns: columns, spacing: 12) {
+                        LazyVGrid(columns: columns) {
                             ForEach(0..<store.state.items.count, id: \.self) { index in
                                 ItemCellView(
                                     item: store.state.items[index],
                                     cellStyle: cellStyle,
                                     isFromSelf: true
                                 )
-                                .padding(3)
+                                .padding(.vertical, 3)
+                                .padding(.horizontal, 2)
                                 .opacity(isAnimating ? 1 : 0)
                                 .scaleEffect(isAnimating ? 1 : 0.9)
-                                .animation(.easeIn(duration: 0.7).delay((Double(index) + 0.5) * 0.03), value: isAnimating)
+//                                .animation(.easeIn(duration: 0.7).delay((Double(index) + 0.5) * 0.03), value: isAnimating)
                                 .onTapGesture {
                                     if let item = store.state.items.at(index) {
                                         store.dispatch(.click(item))

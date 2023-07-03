@@ -9,12 +9,6 @@ struct RegisterView: View {
 
     @FocusState private var focusedField: RegistrationCredentialsField?
     @State private var keyboardVisible = false
-
-    var interval: ClosedRange<Date> {
-            let start = Date()
-            let end = start.addingTimeInterval(5)
-            return start...end
-    }
     
     var body: some View {
         VStack {
@@ -25,7 +19,7 @@ struct RegisterView: View {
             }
             singUpButtonView
         }
-        .modifier(DismissingKeyboard())
+        .modifier(OnTapGestureDismissingKeyboard())
         .padding(15)
         .navigationTitle("Register")
         .onReceive(Publishers.keyboardVisible) { visible in

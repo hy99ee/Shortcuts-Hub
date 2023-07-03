@@ -9,39 +9,62 @@ struct CreateAppleLinkEnterView: View {
     var body: some View {
         VStack {
             Spacer()
-            Link(destination: URL(string: "https://apps.apple.com/us/app/shortcuts/id915249334")!) {
-                Image(systemName: "link.circle.fill")
-                    .font(.largeTitle)
-            }
-            .padding()
 
-            Spacer()
-
-            InputTextFieldView(
-                text: $link,
-                placeholder: "Enter link",
-                errorMessage: .constant("Unvalid shortcuts URL"),
-                isValid: .constant(store.state.linkField != .unvalid),
-                cleanHandler: { store.dispatch(.clickLinkField) },
-                focusHandler: { store.dispatch(.clickLinkField) }
-            )
+            HStack {
+                InputTextFieldView(
+                    text: $link,
+                    placeholder: "Enter link",
+                    errorMessage: bindingMessageForLink,
+                    isValid: bindingIsValidForLink,
+                    cleanHandler: { store.dispatch(.clickLinkField) }
+                )
+                .submitLabel(.send)
                 .frame(height: height)
                 .padding()
-                .onSubmit {
-                    store.dispatch(.linkRequest(link))
-                }
-                .submitLabel(.send)
+            }
 
             Spacer()
 
-            ButtonView(title: "Next") {
-                store.dispatch(.linkRequest(link))
-            }
-            .modifier(DismissingKeyboard())
-            .modifier(ButtonProgressViewModifier(progressStatus: store.state.buttonProgress, type: .buttonView))
-            .padding()
+            continueButton
+                .modifier(ButtonProgressViewModifier(progressStatus: store.state.buttonProgress, type: .buttonView))
+                .padding()
         }
         .background(.opacity(0.001))
-        .modifier(DismissingKeyboard())
+        .modifier(OnTapGestureDismissingKeyboard())
+    }
+
+    var continueButton: ButtonView {
+        link.isEmpty
+        ? ButtonView(title: "Paste and continue") {
+            let string = UIPasteboard.general.string ?? ""
+            link = string
+            store.dispatch(.linkRequest(string))
+        }
+        : ButtonView(title: "Continue") {
+            store.dispatch(.linkRequest(link))
+        }
+    }
+
+    private var bindingIsValidForLink: Binding<Bool> {
+        Binding(
+            get: {
+                store.state.linkField.isStateValidForField
+            }, set: { _ in
+                store.dispatch(.clickLinkField)
+            }
+        )
+    }
+
+    private var bindingMessageForLink: Binding<String?> {
+        Binding(
+            get: {
+                switch store.state.linkField {
+                case let .unvalidWithMessage(message): return message
+                case .unvalid: return "Unvalid shortcuts URL"
+                default: return nil
+                }
+            }, set: { _ in
+            }
+        )
     }
 }

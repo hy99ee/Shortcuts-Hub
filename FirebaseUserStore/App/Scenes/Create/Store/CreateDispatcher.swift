@@ -32,8 +32,7 @@ let createDispatcher: DispatcherType<CreateAction, CreateMutation, LibraryPackag
     }
 
     func mutationRequestItemFromAppleApi(link: String, _ packages: LibraryPackages) -> AnyPublisher<CreateMutation, Never> {
-        guard verifyUrl(link),
-            let userId = link.split(separator: "/").last else {
+        guard let userId = link.split(separator: "/").last else {
             return Just(.linkFieldStatus(.unvalid)).eraseToAnyPublisher()
         }
 
@@ -44,13 +43,5 @@ let createDispatcher: DispatcherType<CreateAction, CreateMutation, LibraryPackag
             .map { .setAppleItem($0, linkFromUser: link) }
             .catch { _ in Just(.setError(.upload)) }
             .eraseToAnyPublisher()
-    }
-
-    func verifyUrl(_ urlString: String) -> Bool {
-        if let url = NSURL(string: urlString) {
-            return UIApplication.shared.canOpenURL(url as URL)
-        }
-
-        return false
     }
 }

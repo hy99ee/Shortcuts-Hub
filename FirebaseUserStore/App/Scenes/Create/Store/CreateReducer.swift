@@ -12,7 +12,11 @@ let createReducer: ReducerType<CreateState, CreateMutation, CreateLink> = { _sta
         return Just(.coordinate(destination: .itemCreated)).eraseToAnyPublisher()
 
     case let .setError(error):
-        return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
+        switch error {
+        case .emptyLink: state.linkField = .unvalidWithMessage("Empty URL")
+        case .link: state.linkField = .unvalid
+        default: return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
+        }
 
     case let .linkFieldStatus(status):
         state.linkField = status

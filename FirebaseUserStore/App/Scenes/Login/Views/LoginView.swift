@@ -93,7 +93,7 @@ struct LoginView: View {
             }
         }
         .background(.opacity(0.001))
-        .modifier(DismissingKeyboard())
+        .modifier(OnTapGestureDismissingKeyboard())
         .modifier(ProcessViewModifier(process: store.state.processView))
         .padding(.horizontal, 15)
         .navigationTitle("Login")

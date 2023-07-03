@@ -41,7 +41,7 @@ final class UserItemsService: UserItemsServiceType {
                                     userId: data["userId"] as? String ?? "",
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
-                                    colorValue: data["color_value"] as? Int,
+                                    colorValue: data["color_value"] as? Int ?? 0,
                                     icon: data["icon"] as? Data ?? Data(),
                                     originalUrl: data["link"] as? String ?? "",
                                     validateByAdmin: data["validation"] as? Int ?? 0,
@@ -170,7 +170,7 @@ final class UserItemsService: UserItemsServiceType {
                                 userId: data["userId"] as? String ?? "",
                                 title: data["title"] as? String ?? "",
                                 description: data["description"] as? String ?? "",
-                                colorValue: data["color_value"] as? Int,
+                                colorValue: data["color_value"] as? Int ?? 0,
                                 icon: data["icon"] as? Data ?? Data(),
                                 originalUrl: data["link"] as? String ?? "",
                                 validateByAdmin: data["validation"] as? Int ?? 0,
@@ -201,25 +201,30 @@ final class UserItemsService: UserItemsServiceType {
                        }
 
                        guard let response = response as? HTTPURLResponse else {
-                           return promise(.failure(.unknownError))
+                           return promise(.failure(.receiveAppleItem))
                        }
 
                        if response.statusCode == 200 {
-                           guard let data = data else { return }
+                           guard let data = data else { return promise(.failure(.receiveAppleItem))}
                            DispatchQueue.main.async {
                                do {
                                    let decodedItem = try JSONDecoder().decode(AppleApiItem.self, from: data)
                                    return promise(.success(decodedItem))
                                } catch {
-                                   return promise(.failure(.unknownError))
+                                   return promise(.failure(.withDecode))
                                }
                            }
+                       } else {
+                           return promise(.failure(.receiveAppleItem))
                        }
                    }
 
                    dataTask.resume()
             }
-        }.eraseToAnyPublisher()
+        }
+        .timeout(.seconds(3), scheduler: DispatchQueue.main)
+        .retry(3)
+        .eraseToAnyPublisher()
     }
 
     func uploadNewItem(_ item: Item) -> AnyPublisher<Item, ItemsServiceError> {
@@ -232,7 +237,7 @@ final class UserItemsService: UserItemsServiceType {
                     "id": item.id.uuidString,
                     "userId": userId,
                     "title": item.title,
-                    "color_value": UIImage(data: item.icon ?? Data())?.averageColor?.rgbValue() ?? 0,
+                    "color_value": item.colorValue ?? 255,
                     "icon": item.icon ?? Data(),
                     "link": item.originalUrl ?? "",
                     "description": item.description,
