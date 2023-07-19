@@ -22,41 +22,31 @@ enum FeedDetailLink: TransitionType {
 
 struct FeedDetailSectionCoordinator: CoordinatorType {
     @Binding private var parent: FeedLink?
+    @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
-    @State var path: NavigationPath = NavigationPath()
+    @Binding var path: NavigationPath
     @State var alert: FeedDetailLink?
-    
-    @State private var isOpen = false
 
     private var store: FeedDetailSectionStore
     let stateReceiver: AnyPublisher<FeedDetailLink, Never>
 
-    init(store: FeedDetailSectionStore, parent: Binding<FeedLink?>) {
+    init(store: FeedDetailSectionStore, path: Binding<NavigationPath>, parent: Binding<FeedLink?>) {
         self.store = store
         self.stateReceiver = store.transition.eraseToAnyPublisher()
+        self._path = path
         self._parent = parent
     }
 
     var view: AnyView {
         AnyView(
             NavigationStack(path: $path) {
-                ZStack {
-                    Rectangle()
-                        .fill(.thinMaterial)
-                        .opacity(0.001)
-                        .cornerRadius(isOpen ? 0 : 40)
-                    
-                    FeedDetailSectionView(store: store)
-                        .transition(.identity)
-                        .applyClose(closeBinding: $parent, .tollbar, animation: .spring().speed(1.3))
-                }
-                .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
+                FeedDetailSectionView(store: store)
+                    .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
+                    .applyClose(closeBinding: $parent, .toollbar, animation: .spring().speed(1.3))
+                    .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
             }
                 .onAppear {
                     store.dispatch(.initDetail)
-                    withAnimation(.spring()) {
-                        isOpen = true
-                    }
                 }
                 .toolbar(.hidden, for: .tabBar)
         )

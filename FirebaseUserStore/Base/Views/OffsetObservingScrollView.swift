@@ -2,58 +2,29 @@ import Combine
 import SwiftUI
 
 struct PositionObservingView<Content: View>: View {
-    var coordinateSpace: CoordinateSpace
+    @ViewBuilder var content: () -> Content
 
-    @StateObject private var scrollViewManager = ScrollViewManager()
-
-    @Binding var offset: CGPoint
+    @Binding var offset: CGFloat
     @Binding var scale: CGFloat
 
-    @ViewBuilder var content: () -> Content
-    
+    let coordinateSpace: CoordinateSpace
+
     var body: some View {
-        content()
-            .scaleEffect(scale)
-            .background(
-                GeometryReader { geometry in
-                    Color.clear.preference(
-                        key: PreferenceKey.self,
-                        value: geometry.frame(in: coordinateSpace).origin
-                    )
-                }
-            )
-            .onPreferenceChange(PreferenceKey.self) { position in
-                scrollViewManager.currentOffset = position
-            }
-            .onReceive(scrollViewManager.$offsetAtScrollEnd) { _ in
-                withAnimation(.spring()) {
-                    offset = .zero
-                    scale = 1
-                }
-            }
-            .onReceive(scrollViewManager.$currentOffset) {
-                self.offset = $0
-            }
+        GeometryReader { geometry in
+            content()
+//                .scaleEffect(scale)
+                .preference(
+                    key: PreferenceKey.self,
+                    value: geometry.frame(in: coordinateSpace).origin
+                )
+        }
+        .onPreferenceChange(PreferenceKey.self) { position in
+            offset = position.y
+        }
     }
 }
 
 private extension PositionObservingView {
-    class ScrollViewManager: ObservableObject {
-        @Published var currentOffset: CGPoint = .zero
-        @Published var offsetAtScrollEnd: CGFloat = 0
-
-        private var cancellable: AnyCancellable?
-
-        init() {
-            cancellable = AnyCancellable($currentOffset
-                .map { $0.y }
-                .debounce(for: 0.18, scheduler: DispatchQueue.main)
-                .dropFirst()
-                .assign(to: \.offsetAtScrollEnd, on: self)
-            )
-        }
-    }
-
     struct PreferenceKey: SwiftUI.PreferenceKey {
         static var defaultValue: CGPoint { .zero }
         static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {}
@@ -61,50 +32,39 @@ private extension PositionObservingView {
 }
 
 struct OffsetObservingScrollView<Content: View>: View {
-    var axes: Axis.Set = [.vertical]
-    var showsIndicators = false
     @Binding var scale: CGFloat
     @ViewBuilder var content: () -> Content
 
-    @State var offset: CGPoint = .zero
-    @State private var lastOffsetY: CGFloat = .zero
+    @State var offset: CGFloat = 0
+    @State private var lastOffsetY: CGFloat = 0
+    @State private var scrollOffset: CGFloat = 0
 
     private let coordinateSpaceName = UUID()
 
     var body: some View {
-        ScrollView(axes, showsIndicators: showsIndicators) {
-            PositionObservingView(
-                coordinateSpace: .named(coordinateSpaceName),
-                offset: Binding(
-                    get: { offset },
-                    set: { newOffset in
-                        offset = CGPoint(
-                            x: -newOffset.x,
-                            y: -newOffset.y
-                        )
-                    }
-                ),
-                scale: $scale,
-                content: content
-            )
-        }
-        .coordinateSpace(name: coordinateSpaceName)
-        .onChange(of: offset) { newOffset in
-            if newOffset.y <= 0 {
-                let scale = newOffset.y < lastOffsetY ? scale + newOffset.y / 15_000 : scale - newOffset.y / 15_000
-                self.scale = scale > 1 ? 1 : scale
-                lastOffsetY = newOffset.y
-            } else {
-                if scale < 1 {
-                    let scale = scale + newOffset.y / 15_000
+        ZStack {
+            content()
+                .scaleEffect(scale)
+                .offset(y: scrollOffset)
+            ScrollView(.vertical, showsIndicators: false) {
+                PositionObservingView(
+                    content: { Color.clear },
+                    offset: $offset,
+                    scale: $scale,
+                    coordinateSpace: .named(coordinateSpaceName)
+                )
+            }
+            .coordinateSpace(name: coordinateSpaceName)
+            .onChange(of: offset) { newOffset in
+                print("New offset: \(offset)")
+                if newOffset > 0 && (newOffset > lastOffsetY || scale != 1) {
+                    let scale = 1 - newOffset / 1000
                     self.scale = scale > 1 ? 1 : scale
+                } else {
+                    scrollOffset = newOffset
                 }
+                lastOffsetY = newOffset
             }
         }
     }
 }
-
-
-
-
-

@@ -13,7 +13,6 @@ final class GlobalStoreRepository {
         reducer: feedReducer,
         packages: FeedPackages(),
         middlewares: [
-            FeedStore.middlewareFeedLogger,
             FeedStore.middlewareUpdateCheck
         ]
     )

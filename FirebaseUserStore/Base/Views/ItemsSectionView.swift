@@ -124,9 +124,9 @@ extension ItemsSectionView {
     @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
         if section.titleIcons.count > 1 {
             ItemsSectionView(section: section)
-        } else {
+        } else if let url = section.titleIcons.first {
             CacheAsyncImage<Image, Color, Color>(
-                url: section.titleIcons.first!,
+                url: url,
                 content: { image in
                     guard let image = image.image else { return nil }
                     return image.resizable(resizingMode: .stretch)
@@ -134,6 +134,41 @@ extension ItemsSectionView {
                 placeholder: { Color.secondary },
                 errorView: { Color.red }
             )
+        } else {
+            RoundedRectangle(cornerRadius: 20)
         }
     }
 }
+
+
+//extension ItemsSectionView {
+//    @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
+//        if section.titleIcons.count > 1 {
+//            createMultipleSectionView(section: section)
+//        } else {
+//            createSingleSectionView(section: section)
+//        }
+//    }
+//
+//    static func createMultipleSectionView(section: IdsSection) -> ItemsSectionView {
+//        if let section = cacheManager.cached[section.id] {
+//            return section
+//        } else {
+//            let view = ItemsSectionView(section: section)
+//            cacheManager.cached.updateValue(view, forKey: section.id)
+//            return view
+//        }
+//    }
+//
+//    static func createSingleSectionView(section: IdsSection) -> CacheAsyncImage<Image, Color, Color> {
+//        CacheAsyncImage<Image, Color, Color>(
+//            url: section.titleIcons.first!,
+//            content: { image in
+//                guard let image = image.image else { return nil }
+//                return image.resizable(resizingMode: .stretch)
+//            },
+//            placeholder: { Color.secondary },
+//            errorView: { Color.red }
+//        )
+//    }
+//}
