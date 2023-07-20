@@ -19,7 +19,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
                               && state.viewProgress == .stop
         state.loadItems = nil
         state.searchedItems = nil
-        state.sections = sections + sections + sections + sections
+        state.sections = sections
 
     case let .appendSections(sections):
         state.loadItems = nil

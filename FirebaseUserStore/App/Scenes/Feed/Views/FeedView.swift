@@ -18,7 +18,7 @@ struct FeedView: View {
             } else {
                 FeedCollectionView(store: store)
                     .toolbar { toolbarView }
-                    .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
+                    .environmentObject(namespaceWrapper)
             }
         }
         .onAppear { store.dispatch(.initFeed) }

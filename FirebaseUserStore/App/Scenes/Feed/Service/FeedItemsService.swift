@@ -34,18 +34,7 @@ final class FeedItemsService: ItemsServiceType {
                                     itemsIds: data["ids"] as? [String] ?? []
                                 )
                             )
-
-                            sections.append(
-                                IdsSection(
-                                    id: UUID(),
-                                    title: data["title"] as? String ?? "",
-                                    subtitle: data["subtitle"] as? String ?? "",
-                                    titleIcons: (data["title_icons"] as? [String] ?? []).compactMap { URL(string: $0) },
-                                    itemsIds: data["ids"] as? [String] ?? []
-                                )
-                            )
                         }
-
 
                     return promise(.success(sections))
                 }

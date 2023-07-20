@@ -125,7 +125,7 @@ struct CloseToolbarViewModifier: ViewModifier {
 }
 
 enum CloseButtonSite {
-    case toollbar
+    case tollbar
     case view
 }
 
@@ -138,9 +138,9 @@ extension View {
         self.modifier(OnCloseViewModifier(onClose: onClose))
     }
 
-    @ViewBuilder func applyClose(_ style: CloseButtonSite = .toollbar) -> some View {
+    @ViewBuilder func applyClose(_ style: CloseButtonSite = .tollbar) -> some View {
         switch style {
-        case .toollbar:
+        case .tollbar:
             self.modifier(NavigationCloseToolbarViewModifier())
         case .view:
             self.modifier(NavigationCloseViewModifier())
@@ -149,7 +149,7 @@ extension View {
 
     @ViewBuilder func applyClose<T>(
         closeBinding: Binding<T?>,
-        _ style: CloseButtonSite = .toollbar,
+        _ style: CloseButtonSite = .tollbar,
         animation: Animation? = nil
     ) -> some View {
         let _closeBinding = Binding<Bool>(
@@ -167,7 +167,7 @@ extension View {
         )
 
         switch style {
-        case .toollbar:
+        case .tollbar:
             self.modifier(CloseBindingToolbarViewModifier(onClose: _closeBinding))
         case .view:
             self.modifier(NavigationBindingCloseViewModifier(onClose: _closeBinding))

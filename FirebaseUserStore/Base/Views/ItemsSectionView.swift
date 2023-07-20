@@ -19,17 +19,21 @@ class OffsetCounter: ObservableObject {
 }
 
 struct ItemsSectionView: View {
+    private let sectionId: String
     @State private var icons: [CacheAsyncImage<Image, Color, Color>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
+
+    private let namespace: Namespace.ID
 
     private static let offserCounter = OffsetCounter()
 
     private var iconWidth: CGFloat = 120
     private var iconHeight: CGFloat = 180
 
-    fileprivate init(section: IdsSection) {
+    fileprivate init(section: IdsSection, namespace: Namespace.ID) {
+        self.sectionId = section.id.uuidString
         self.title = section.title
         self.subtitle = section.subtitle
         self.icons = section.titleIcons.map {
@@ -43,6 +47,7 @@ struct ItemsSectionView: View {
                 errorView: { Color.red }
             )
         }
+        self.namespace = namespace
     }
     
     var body: some View {
@@ -65,12 +70,14 @@ struct ItemsSectionView: View {
                     .foregroundColor(.gray)
                     .fontWeight(.bold)
                     .hLeading()
+                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespace)
                 
                 if let subtitle {
                     Text(subtitle)
                         .font(.title)
                         .fontWeight(.bold)
                         .hLeading()
+                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespace)
                 }
             }
             .padding(.leading, 20)
@@ -101,7 +108,9 @@ struct ItemsSectionView: View {
                     }
                 }
                 .offset(x: -localOffsetX)
+                .matchedGeometryEffect(id: "section_\(sectionId)", in: namespace)
             }
+
             .onReceive(Self.offserCounter.$offset) { offset in
                 withAnimation(.linear) {
                     localOffsetX = offset
@@ -121,9 +130,9 @@ fileprivate extension View {
 }
 
 extension ItemsSectionView {
-    @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
+    @ViewBuilder static func createSectionView(section: IdsSection, namespace: Namespace.ID) -> some View {
         if section.titleIcons.count > 1 {
-            ItemsSectionView(section: section)
+            ItemsSectionView(section: section, namespace: namespace)
         } else if let url = section.titleIcons.first {
             CacheAsyncImage<Image, Color, Color>(
                 url: url,
@@ -134,41 +143,9 @@ extension ItemsSectionView {
                 placeholder: { Color.secondary },
                 errorView: { Color.red }
             )
+            .matchedGeometryEffect(id: "section_\(section.id)", in: namespace)
         } else {
             RoundedRectangle(cornerRadius: 20)
         }
     }
 }
-
-
-//extension ItemsSectionView {
-//    @ViewBuilder static func createSectionView(section: IdsSection) -> some View {
-//        if section.titleIcons.count > 1 {
-//            createMultipleSectionView(section: section)
-//        } else {
-//            createSingleSectionView(section: section)
-//        }
-//    }
-//
-//    static func createMultipleSectionView(section: IdsSection) -> ItemsSectionView {
-//        if let section = cacheManager.cached[section.id] {
-//            return section
-//        } else {
-//            let view = ItemsSectionView(section: section)
-//            cacheManager.cached.updateValue(view, forKey: section.id)
-//            return view
-//        }
-//    }
-//
-//    static func createSingleSectionView(section: IdsSection) -> CacheAsyncImage<Image, Color, Color> {
-//        CacheAsyncImage<Image, Color, Color>(
-//            url: section.titleIcons.first!,
-//            content: { image in
-//                guard let image = image.image else { return nil }
-//                return image.resizable(resizingMode: .stretch)
-//            },
-//            placeholder: { Color.secondary },
-//            errorView: { Color.red }
-//        )
-//    }
-//}

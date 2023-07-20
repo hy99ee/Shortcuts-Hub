@@ -33,7 +33,6 @@ struct FeedCoordinator: CoordinatorType {
     @State var custom: FeedLink?
 
     @Namespace var open
-    @Namespace var transition
 
     private let store: FeedStore
     private let feedView: FeedView
@@ -56,28 +55,29 @@ struct FeedCoordinator: CoordinatorType {
 
     @ViewBuilder private var rootView: some View {
 
-            if case let custom, let custom {
-                if case let FeedLink.section(section) = custom {
-                    FeedDetailSectionCoordinator(
-                        store: store.packages.makeFeedSectionDetailStore(section),
-                        path: $path,
-                        parent: self.$custom
-                    )
-//                    .matchedGeometryEffect(id: section.id, in: open)
-                    .environmentObject(NamespaceWrapper(open))
-//                    .animationAdapted(animationDuration: 0.7)
-//                    .transition(.asymmetric(insertion: .scale(scale: 0.95), removal: .scale))
-                    .transition(.scale)
-                }
-            } else {
+            NavigationStack(path: $path) {
+                ZStack {
                 feedView
                     .environmentObject(NamespaceWrapper(open))
                     .padding([.horizontal], custom == nil ? 24 : 0)
                     .disabled(custom != nil)
                     .navigationDestination(for: FeedLink.self, destination: linkDestination)
+                
+                
+                if case let custom, let custom {
+                    if case let FeedLink.section(section) = custom {
+                        FeedDetailSectionCoordinator(
+                            store: store.packages.makeFeedSectionDetailStore(section),
+                            path: $path,
+                            parent: self.$custom
+                        )
+                        .environmentObject(NamespaceWrapper(open))
+                        .animationAdapted(animationDuration: 0.7)
+                        .transition(.identity)
+                    }
+                }
             }
-
-
+        }
     }
 
     func transitionReceiver(_ link: FeedLink) {
@@ -85,8 +85,8 @@ struct FeedCoordinator: CoordinatorType {
         case .section:
             withAnimation(.spring().speed(1.3)) {
                 custom = link
-            }
-
+            } 
+            
         case .error:
             self.alert = link
         }

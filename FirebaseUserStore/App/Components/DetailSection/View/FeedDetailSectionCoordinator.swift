@@ -40,10 +40,13 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
     var view: AnyView {
         AnyView(
             NavigationStack(path: $path) {
-                FeedDetailSectionView(store: store)
-                    .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
-                    .applyClose(closeBinding: $parent, .toollbar, animation: .spring().speed(1.3))
-                    .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
+                ZStack {
+                    FeedDetailSectionView(store: store)
+                        .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
+                        .transition(.identity)
+                        .applyClose(closeBinding: $parent, .tollbar, animation: .spring().speed(1.3))
+                }
+                .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
             }
                 .onAppear {
                     store.dispatch(.initDetail)

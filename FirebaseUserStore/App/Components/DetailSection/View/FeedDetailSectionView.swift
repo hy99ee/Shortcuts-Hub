@@ -2,32 +2,25 @@ import SwiftUI
 
 struct FeedDetailSectionView: View {
     @StateObject var store: FeedDetailSectionStore
+
     @State private var detailScale: CGFloat = 1
+    @State private var offset: CGFloat = .zero
+    @State private var animation = true
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     var body: some View {
         OffsetObservingScrollView(scale: $detailScale) {
             VStack {
-//                ItemsSectionView.createSectionView(section: store.state.idsSection)
-//                    .frame(height: 480)
-//                    .ignoresSafeArea()
-//
-//                detailContent(items: store.state.itemsFromSection)
-//                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
-                List {
-                    Text("csadasda")
-                    Text("csadasdqwdqwa")
-                    Text("csadasda")
-                    Text("csadasdqwdqwa")
-                    Text("csadasda")
-                    Text("csadasdqwdqwa")
-                }
-//                .zIndex(2)
+                ItemsSectionView.createSectionView(section: store.state.idsSection, namespace: namespaceWrapper.namespace)
+                    .frame(height: 480)
+                    .ignoresSafeArea()
+
+                detailContent(items: store.state.itemsFromSection)
+                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             }
             .cornerRadius(150 - detailScale * 140)
         }
-        .matchedGeometryEffect(id: store.state.idsSection.id, in: namespaceWrapper.namespace, isSource: false)
         .padding(.vertical)
         .edgesIgnoringSafeArea(.horizontal)
         .onChange(of: detailScale) {
