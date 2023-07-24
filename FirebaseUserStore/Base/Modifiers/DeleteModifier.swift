@@ -61,7 +61,7 @@ struct Delete: ViewModifier {
                         }
                     }
             )
-            .animation(.interactiveSpring(), value: animation)
+            .animation(.spring(), value: animation)
     }
     
     private func delete() {

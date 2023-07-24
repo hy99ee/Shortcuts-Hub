@@ -5,7 +5,7 @@ struct FeedCollectionView: View {
     @StateObject var store: FeedStore
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
-    @State private var isAnimating = false
+    @State private var offset: CGFloat = 0
     @State private var isUpdating = false
     @State private var clickedSectionIdScale: UUID?
     @State private var clickedSectionIdOpacity: UUID?
@@ -22,36 +22,36 @@ struct FeedCollectionView: View {
                 ForEach(store.state.sections) { section in
                     ItemsSectionView.createSectionView(section: section, namespace: namespaceWrapper.namespace)
                         .frame(height: 480)
+                        .gesture(
+                            TapGesture()
+                                .onEnded { _ in
+                                    withAnimation(.spring().speed(1.6)) {
+                                        clickedSectionIdScale = section.id
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                        clickedSectionIdOpacity = section.id
+                                        store.dispatch(.click(section))
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        clickedSectionIdOpacity = nil
+                                        clickedSectionIdScale = nil
+                                    }
+                                }
+
+                        )
                         .cornerRadius(9)
                         .padding(.vertical)
+                        .offset(y: section.id == clickedSectionIdScale ? 15 : 0)
                         .scaleEffect(section.id == clickedSectionIdScale ? 0.95 : 1)
                         .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
-                        .onTapGesture {
-                            withAnimation(.easeIn(duration: 0.15)) {
-                                clickedSectionIdScale = section.id
-
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                                clickedSectionIdOpacity = section.id
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                                store.dispatch(.click(section))
-
-                                withAnimation(.spring().speed(2)) {
-                                    clickedSectionIdScale = nil
-                                }
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                clickedSectionIdOpacity = nil
-                            }
-                        }
-
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                 }
             } else {
                 progress
             }
         }
+        .offset(y: offset)
         .animationAdapted(animationDuration: 0.5)
         .navigationBarItems(trailing: toolbarView)
         .refreshable {

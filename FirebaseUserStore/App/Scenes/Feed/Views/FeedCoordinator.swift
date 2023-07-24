@@ -54,15 +54,19 @@ struct FeedCoordinator: CoordinatorType {
     }
 
     @ViewBuilder private var rootView: some View {
-
-            NavigationStack(path: $path) {
-                ZStack {
+        NavigationStack(path: $path) {
+            ZStack {
                 feedView
                     .environmentObject(NamespaceWrapper(open))
-                    .padding([.horizontal], custom == nil ? 24 : 0)
-                    .disabled(custom != nil)
+                    .padding([.horizontal], custom == nil ? 24 : 14)
                     .navigationDestination(for: FeedLink.self, destination: linkDestination)
-                
+
+                if custom != nil {
+                    BlurView(style: .systemThickMaterial)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                }
+
                 
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
@@ -72,8 +76,13 @@ struct FeedCoordinator: CoordinatorType {
                             parent: self.$custom
                         )
                         .environmentObject(NamespaceWrapper(open))
-                        .animationAdapted(animationDuration: 0.7)
-                        .transition(.identity)
+                        .background {
+//                            Color.white
+//                                .opacity(0.9)
+//                                .blur(radius: 100)
+                        }
+                        .transition(.asymmetric(insertion: .identity, removal: .identity))
+//                        .transition(.asymmetric(insertion: .scale(scale: 0.95, anchor: .top).animation(.spring().speed(0.8)), removal: .identity))
                     }
                 }
             }
@@ -83,7 +92,7 @@ struct FeedCoordinator: CoordinatorType {
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.spring().speed(1.3)) {
+            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.8, blendDuration: 0.6)) {
                 custom = link
             } 
             

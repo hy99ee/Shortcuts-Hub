@@ -174,6 +174,7 @@
 		3BDAAEBF29C2535A0064F7D0 /* SavedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB129C2535A0064F7D0 /* SavedDispatcher.swift */; };
 		3BDAAEC029C2535A0064F7D0 /* SavedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB229C2535A0064F7D0 /* SavedAction.swift */; };
 		3BDAAEC129C2535A0064F7D0 /* SavedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDAAEB329C2535A0064F7D0 /* SavedState.swift */; };
+		3BDD50D02A6AE6F400A2D39B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDD50CF2A6AE6F400A2D39B /* BlurView.swift */; };
 		3BDF00432A026C0500A67F0E /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00422A026C0500A67F0E /* LocalDatabase.swift */; };
 		3BDF00462A02751700A67F0E /* RemoteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00452A02751700A67F0E /* RemoteDatabase.swift */; };
 		3BDF00482A02752300A67F0E /* DatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00472A02752300A67F0E /* DatabaseType.swift */; };
@@ -336,6 +337,7 @@
 		3BDAAEB129C2535A0064F7D0 /* SavedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedDispatcher.swift; sourceTree = "<group>"; };
 		3BDAAEB229C2535A0064F7D0 /* SavedAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedAction.swift; sourceTree = "<group>"; };
 		3BDAAEB329C2535A0064F7D0 /* SavedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedState.swift; sourceTree = "<group>"; };
+		3BDD50CF2A6AE6F400A2D39B /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		3BDF00422A026C0500A67F0E /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		3BDF00452A02751700A67F0E /* RemoteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatabase.swift; sourceTree = "<group>"; };
 		3BDF00472A02752300A67F0E /* DatabaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseType.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				3B433E5E29CB062C007C8A26 /* ItemsSectionView.swift */,
 				3B433E6C29DC3CA2007C8A26 /* OffsetObservingScrollView.swift */,
 				3B13791A29F135BE00D25F55 /* ItemListView.swift */,
+				3BDD50CF2A6AE6F400A2D39B /* BlurView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1189,6 +1192,7 @@
 				3BDAAEBC29C2535A0064F7D0 /* SavedMutation.swift in Sources */,
 				3BD76EEF2899AF6C001D64E2 /* ForgotPasswordService.swift in Sources */,
 				3B0976B329BDE24E007665BB /* RegistrationCredentials.swift in Sources */,
+				3BDD50D02A6AE6F400A2D39B /* BlurView.swift in Sources */,
 				3BE6E7E52A38AD6100B45353 /* ShortcutsColor.swift in Sources */,
 				3B13797629F7C04C00D25F55 /* DetailItemReducer.swift in Sources */,
 				3BDAAEB729C2535A0064F7D0 /* MockSavedService.swift in Sources */,

@@ -57,7 +57,7 @@ struct OffsetObservingScrollView<Content: View>: View {
             .coordinateSpace(name: coordinateSpaceName)
             .onChange(of: offset) { newOffset in
                 if newOffset > 0 && (newOffset > lastOffsetY || scale != 1) {
-                    let scale = 1 - newOffset / 1000
+                    let scale = 1 - newOffset / 500
                     self.scale = scale > 1 ? 1 : scale
                 } else {
                     scrollOffset = newOffset

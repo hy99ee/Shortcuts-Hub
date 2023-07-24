@@ -19,7 +19,7 @@ class OffsetCounter: ObservableObject {
 }
 
 struct ItemsSectionView: View {
-    private let sectionId: String
+    let sectionId: String
     @State private var icons: [CacheAsyncImage<Image, Color, Color>]
     @State private var title: String
     @State private var subtitle: String?
@@ -70,14 +70,14 @@ struct ItemsSectionView: View {
                     .foregroundColor(.gray)
                     .fontWeight(.bold)
                     .hLeading()
-                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespace)
+                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespace, properties: .position)
                 
                 if let subtitle {
                     Text(subtitle)
                         .font(.title)
                         .fontWeight(.bold)
                         .hLeading()
-                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespace)
+                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespace, properties: .position)
                 }
             }
             .padding(.leading, 20)
@@ -92,6 +92,7 @@ struct ItemsSectionView: View {
                                 .cornerRadius(5)
                         }
                     }
+                    .matchedGeometryEffect(id: "section_\(sectionId)", in: namespace)
 
                     HStack(spacing: 6) {
                         Rectangle()
@@ -105,10 +106,10 @@ struct ItemsSectionView: View {
                                     .cornerRadius(5)
                             }
                         }
+                        .matchedGeometryEffect(id: "section_reversed_\(sectionId)", in: namespace)
                     }
                 }
                 .offset(x: -localOffsetX)
-                .matchedGeometryEffect(id: "section_\(sectionId)", in: namespace)
             }
 
             .onReceive(Self.offserCounter.$offset) { offset in
@@ -118,6 +119,12 @@ struct ItemsSectionView: View {
             }
             .disabled(true)
         }
+    }
+}
+
+extension ItemsSectionView: Equatable {
+    static func == (lhs: ItemsSectionView, rhs: ItemsSectionView) -> Bool {
+        lhs.sectionId == rhs.sectionId
     }
 }
 
@@ -133,6 +140,7 @@ extension ItemsSectionView {
     @ViewBuilder static func createSectionView(section: IdsSection, namespace: Namespace.ID) -> some View {
         if section.titleIcons.count > 1 {
             ItemsSectionView(section: section, namespace: namespace)
+                .equatable()
         } else if let url = section.titleIcons.first {
             CacheAsyncImage<Image, Color, Color>(
                 url: url,
@@ -143,7 +151,8 @@ extension ItemsSectionView {
                 placeholder: { Color.secondary },
                 errorView: { Color.red }
             )
-            .matchedGeometryEffect(id: "section_\(section.id)", in: namespace)
+            .equatable()
+            .matchedGeometryEffect(id: "section_image_\(section.id)", in: namespace, properties: .position)
         } else {
             RoundedRectangle(cornerRadius: 20)
         }

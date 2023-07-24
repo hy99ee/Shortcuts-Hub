@@ -5,7 +5,9 @@ struct FeedDetailSectionView: View {
 
     @State private var detailScale: CGFloat = 1
     @State private var offset: CGFloat = .zero
-    @State private var animation = true
+
+    @State private var isShowDetailSection = false
+    @State private var isShowDetailContent = false
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
@@ -14,17 +16,34 @@ struct FeedDetailSectionView: View {
             VStack {
                 ItemsSectionView.createSectionView(section: store.state.idsSection, namespace: namespaceWrapper.namespace)
                     .frame(height: 480)
+                    .scaleEffect(isShowDetailSection ? 1 : 0.9)
+                    .zIndex(3)
                     .ignoresSafeArea()
 
                 detailContent(items: store.state.itemsFromSection)
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
+                    .opacity(isShowDetailContent ? 1 : 0.3)
+                    .offset(y: isShowDetailContent ? 0 : -100)
             }
-            .cornerRadius(150 - detailScale * 140)
+            .cornerRadius(abs(150 - detailScale * 150))
         }
         .padding(.vertical)
         .edgesIgnoringSafeArea(.horizontal)
         .onChange(of: detailScale) {
-            if $0 < 0.9 { store.dispatch(.close) }
+            if $0 <= 0.85 { store.dispatch(.close) }
+        }
+        .onAppear {
+            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.6, blendDuration: 0.75)) {
+                isShowDetailSection = true
+            }
+            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.55, blendDuration: 0.7).delay(0.3)) {
+                isShowDetailContent = true
+            }
+        }
+        .closeToolbar {
+            withAnimation {
+                detailScale = 0.85
+            }
         }
     }
 

@@ -63,6 +63,12 @@ struct CacheAsyncImage<I, P, E>: View where I: View,
     }
 }
 
+extension CacheAsyncImage: Equatable {
+    static func == (lhs: CacheAsyncImage<I, P, E>, rhs: CacheAsyncImage<I, P, E>) -> Bool {
+        lhs.url == rhs.url
+    }
+}
+
 fileprivate class ImageCache{
     static private var cache: [URL: Image] = [:]
     static subscript(url: URL) -> Image?{

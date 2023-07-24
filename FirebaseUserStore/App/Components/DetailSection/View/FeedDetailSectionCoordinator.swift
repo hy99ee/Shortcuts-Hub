@@ -27,7 +27,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
     @Binding var path: NavigationPath
     @State var alert: FeedDetailLink?
 
-    private var store: FeedDetailSectionStore
+    private var store: FeedDetailSectionStore!
     let stateReceiver: AnyPublisher<FeedDetailLink, Never>
 
     init(store: FeedDetailSectionStore, path: Binding<NavigationPath>, parent: Binding<FeedLink?>) {
@@ -39,15 +39,13 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
 
     var view: AnyView {
         AnyView(
-            NavigationStack(path: $path) {
-                ZStack {
-                    FeedDetailSectionView(store: store)
-                        .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
-                        .transition(.identity)
-                        .applyClose(closeBinding: $parent, .tollbar, animation: .spring().speed(1.3))
+                NavigationStack(path: $path) {
+                    ZStack {
+                        FeedDetailSectionView(store: store)
+                            .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
+                    }
+                    .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
                 }
-                .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
-            }
                 .onAppear {
                     store.dispatch(.initDetail)
                 }
@@ -62,6 +60,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         case .error:
             alert = link
         case .close:
+//            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.7)) {
             withAnimation(.spring()) {
                 parent = nil
             }
