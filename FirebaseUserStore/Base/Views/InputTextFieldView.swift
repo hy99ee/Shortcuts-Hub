@@ -121,7 +121,7 @@ struct InputTextFieldView: View {
                 }
             )
             .onTapGesture {
-                withAnimation(.easeIn(duration: 10)) {
+                withAnimation(.easeIn(duration: 1)) {
                     isValid = true
                 }
             }

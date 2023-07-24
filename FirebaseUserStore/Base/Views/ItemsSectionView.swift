@@ -20,24 +20,28 @@ class OffsetCounter: ObservableObject {
 
 struct ItemsSectionView: View {
     let sectionId: String
-    @State private var icons: [CacheAsyncImage<Image, Color, Color>]
+    @State private var icons: [EquatableView<CacheAsyncImage<Image, Color, Color>>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
 
-    private let namespace: Namespace.ID
+    @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     private static let offserCounter = OffsetCounter()
 
     private var iconWidth: CGFloat = 120
     private var iconHeight: CGFloat = 180
 
-    fileprivate init(section: IdsSection, namespace: Namespace.ID) {
+    init(section: IdsSection) {
         self.sectionId = section.id.uuidString
-        self.title = section.title
-        self.subtitle = section.subtitle
+        self.title = section.title.first != nil ? (String(section.title.prefix(1) + section.title.dropFirst())) : ""
+        self.subtitle = section.subtitle != nil
+        ? section.subtitle!.first != nil
+            ? (String(section.subtitle!.prefix(1) + section.subtitle!.dropFirst()))
+            : nil
+        : nil
         self.icons = section.titleIcons.map {
-            CacheAsyncImage(
+            CacheAsyncImage<Image, Color, Color>(
                 url: $0,
                 content: { image in
                     guard let image = image.image else { return nil }
@@ -46,8 +50,8 @@ struct ItemsSectionView: View {
                 placeholder: { Color.secondary },
                 errorView: { Color.red }
             )
+            .equatable()
         }
-        self.namespace = namespace
     }
     
     var body: some View {
@@ -58,7 +62,8 @@ struct ItemsSectionView: View {
                 .onTapGesture { }
         } else {
             sectionView
-                .background(.gray.opacity(0.3))
+                .frame(height: 460)
+                .matchedGeometryEffect(id: "section_view_\(sectionId)", in: namespaceWrapper.namespace)
         }
     }
 
@@ -70,54 +75,70 @@ struct ItemsSectionView: View {
                     .foregroundColor(.gray)
                     .fontWeight(.bold)
                     .hLeading()
-                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespace, properties: .position)
+                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespaceWrapper.namespace)
                 
                 if let subtitle {
                     Text(subtitle)
                         .font(.title)
                         .fontWeight(.bold)
                         .hLeading()
-                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespace, properties: .position)
+                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespaceWrapper.namespace)
                 }
             }
             .padding(.leading, 20)
             .padding(.top, 14)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 6.0) {
-                    LazyHStack(spacing: 6.0) {
-                        ForEach(0..<icons.count, id: \.self) { index in
-                            icons[index]
-                                .frame(width: iconWidth, height: iconHeight)
-                                .cornerRadius(5)
-                        }
-                    }
-                    .matchedGeometryEffect(id: "section_\(sectionId)", in: namespace)
 
-                    HStack(spacing: 6) {
-                        Rectangle()
-                            .fill(.clear)
-                            .frame(width: 50)
-                        
+            if icons.count > 1 {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 6.0) {
                         LazyHStack(spacing: 6.0) {
-                            ForEach(1...icons.count, id: \.self) { index in
-                                icons[icons.count - index]
+                            ForEach(0..<icons.count, id: \.self) { index in
+                                icons[index]
                                     .frame(width: iconWidth, height: iconHeight)
                                     .cornerRadius(5)
                             }
                         }
-                        .matchedGeometryEffect(id: "section_reversed_\(sectionId)", in: namespace)
+                        .matchedGeometryEffect(id: "section_\(sectionId)", in: namespaceWrapper.namespace)
+
+                        HStack(spacing: 6) {
+                            Rectangle()
+                                .fill(.clear)
+                                .frame(width: 50)
+
+                            LazyHStack(spacing: 6.0) {
+                                ForEach(1...icons.count, id: \.self) { index in
+                                    icons[icons.count - index]
+                                        .frame(width: iconWidth, height: iconHeight)
+                                        .cornerRadius(5)
+                                }
+                            }
+                            .matchedGeometryEffect(id: "section_reversed_\(sectionId)", in: namespaceWrapper.namespace)
+                        }
+                    }
+                    .offset(x: -localOffsetX)
+                }
+                .onReceive(Self.offserCounter.$offset) { offset in
+                    withAnimation(.linear) {
+                        localOffsetX = offset
                     }
                 }
-                .offset(x: -localOffsetX)
+                .disabled(true)
+                .matchedGeometryEffect(id: "section_scroll_\(sectionId)", in: namespaceWrapper.namespace)
+            } else if icons.count == 1 {
+                icons.first
+                    .padding(.vertical)
+                    .matchedGeometryEffect(id: "section_image_\(sectionId)", in: namespaceWrapper.namespace)
+            } else {
+                RoundedRectangle(cornerRadius: 20)
+                    .matchedGeometryEffect(id: "section_error_\(sectionId)", in: namespaceWrapper.namespace)
             }
-
-            .onReceive(Self.offserCounter.$offset) { offset in
-                withAnimation(.linear) {
-                    localOffsetX = offset
-                }
+        }
+        .background {
+            ZStack {
+                BlurView(style: .systemThinMaterial)
+                Color.gray.opacity(0.3)
             }
-            .disabled(true)
+            .matchedGeometryEffect(id: "section_background_\(sectionId)", in: namespaceWrapper.namespace)
         }
     }
 }
@@ -133,28 +154,5 @@ fileprivate extension View {
     func hLeading() -> some View {
         self
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-extension ItemsSectionView {
-    @ViewBuilder static func createSectionView(section: IdsSection, namespace: Namespace.ID) -> some View {
-        if section.titleIcons.count > 1 {
-            ItemsSectionView(section: section, namespace: namespace)
-                .equatable()
-        } else if let url = section.titleIcons.first {
-            CacheAsyncImage<Image, Color, Color>(
-                url: url,
-                content: { image in
-                    guard let image = image.image else { return nil }
-                    return image.resizable(resizingMode: .stretch)
-                },
-                placeholder: { Color.secondary },
-                errorView: { Color.red }
-            )
-            .equatable()
-            .matchedGeometryEffect(id: "section_image_\(section.id)", in: namespace, properties: .position)
-        } else {
-            RoundedRectangle(cornerRadius: 20)
-        }
     }
 }

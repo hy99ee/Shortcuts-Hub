@@ -54,18 +54,17 @@ struct FeedCoordinator: CoordinatorType {
     }
 
     @ViewBuilder private var rootView: some View {
-        NavigationStack(path: $path) {
+        NavigationStack {
             ZStack {
                 feedView
                     .environmentObject(NamespaceWrapper(open))
                     .padding([.horizontal], custom == nil ? 24 : 14)
-                    .navigationDestination(for: FeedLink.self, destination: linkDestination)
 
-                if custom != nil {
-                    BlurView(style: .systemThickMaterial)
-                        .ignoresSafeArea()
-                        .transition(.opacity)
-                }
+//                if custom != nil {
+//                    BlurView(style: .systemThickMaterial)
+//                        .ignoresSafeArea()
+//                        .transition(.opacity)
+//                }
 
                 
                 if case let custom, let custom {
@@ -76,13 +75,8 @@ struct FeedCoordinator: CoordinatorType {
                             parent: self.$custom
                         )
                         .environmentObject(NamespaceWrapper(open))
-                        .background {
-//                            Color.white
-//                                .opacity(0.9)
-//                                .blur(radius: 100)
-                        }
                         .transition(.asymmetric(insertion: .identity, removal: .identity))
-//                        .transition(.asymmetric(insertion: .scale(scale: 0.95, anchor: .top).animation(.spring().speed(0.8)), removal: .identity))
+                        .zIndex(5)
                     }
                 }
             }
@@ -92,21 +86,13 @@ struct FeedCoordinator: CoordinatorType {
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.8, blendDuration: 0.6)) {
+            withAnimation(.spring()) {
+//            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.75, blendDuration: 0.75)) {
                 custom = link
             } 
             
         case .error:
             self.alert = link
-        }
-    }
-
-    @ViewBuilder private func linkDestination(link: FeedLink) -> some View {
-        switch link {
-        case let .section(section):
-            Text(section.title)
-        default:
-            EmptyView()
         }
     }
 

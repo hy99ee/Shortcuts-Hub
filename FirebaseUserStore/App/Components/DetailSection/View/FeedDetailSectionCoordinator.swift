@@ -39,13 +39,11 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
 
     var view: AnyView {
         AnyView(
-                NavigationStack(path: $path) {
-                    ZStack {
-                        FeedDetailSectionView(store: store)
-                            .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
-                    }
+            NavigationStack(path: $path) {
+                FeedDetailSectionView(store: store)
+                    .environmentObject(NamespaceWrapper(namespaceWrapper.namespace))
                     .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
-                }
+            }
                 .onAppear {
                     store.dispatch(.initDetail)
                 }
@@ -60,7 +58,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         case .error:
             alert = link
         case .close:
-//            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.7)) {
+//            withAnimation(.interactiveSpring(response: 0.33, dampingFraction: 0.7, blendDuration: 0.6).speed(0.8)) {
             withAnimation(.spring()) {
                 parent = nil
             }

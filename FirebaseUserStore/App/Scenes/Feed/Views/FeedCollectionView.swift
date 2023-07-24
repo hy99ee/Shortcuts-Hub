@@ -10,6 +10,8 @@ struct FeedCollectionView: View {
     @State private var clickedSectionIdScale: UUID?
     @State private var clickedSectionIdOpacity: UUID?
 
+    @State private var zIndexMax: Double = 100
+
     private let progress = HDotsProgress()
 
     var body: some View {
@@ -20,17 +22,25 @@ struct FeedCollectionView: View {
         ScrollView(showsIndicators: false) {
             if store.state.sections.count > 0 {
                 ForEach(store.state.sections) { section in
-                    ItemsSectionView.createSectionView(section: section, namespace: namespaceWrapper.namespace)
-                        .frame(height: 480)
+                    ItemsSectionView(section: section)
+                        .equatable()
+                        .environmentObject(namespaceWrapper)
+                    //                        .frame(height: 460)
+                        .onAppear {
+                            zIndexMax -= 1
+                        }
                         .gesture(
                             TapGesture()
                                 .onEnded { _ in
-                                    withAnimation(.spring().speed(1.6)) {
+                                    withAnimation(.spring().speed(1.5)) {
                                         clickedSectionIdScale = section.id
                                     }
 
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                        clickedSectionIdOpacity = section.id
+                                        withAnimation {
+                                            clickedSectionIdOpacity = section.id
+                                        }
+
                                         store.dispatch(.click(section))
                                     }
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -42,6 +52,7 @@ struct FeedCollectionView: View {
                         )
                         .cornerRadius(9)
                         .padding(.vertical)
+                        .zIndex(zIndexMax)
                         .offset(y: section.id == clickedSectionIdScale ? 15 : 0)
                         .scaleEffect(section.id == clickedSectionIdScale ? 0.95 : 1)
                         .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)

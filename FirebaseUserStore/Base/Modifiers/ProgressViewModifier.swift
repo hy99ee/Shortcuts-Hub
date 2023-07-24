@@ -10,7 +10,10 @@ struct ProgressViewModifier: ViewModifier {
             .overlay {
                 if progressStatus == .start {
                     ZStack {
-                        HDotsProgress()
+                        VStack {
+                            HDotsProgress()
+                            Spacer()
+                        }
                     }
                 }
             }

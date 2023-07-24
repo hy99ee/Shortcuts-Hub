@@ -14,35 +14,46 @@ struct FeedDetailSectionView: View {
     var body: some View {
         OffsetObservingScrollView(scale: $detailScale) {
             VStack {
-                ItemsSectionView.createSectionView(section: store.state.idsSection, namespace: namespaceWrapper.namespace)
-                    .frame(height: 480)
+                ItemsSectionView(section: store.state.idsSection)
+                    .equatable()
+                    .environmentObject(namespaceWrapper)
+//                    .frame(height: 460)
                     .scaleEffect(isShowDetailSection ? 1 : 0.9)
                     .zIndex(3)
                     .ignoresSafeArea()
 
-                detailContent(items: store.state.itemsFromSection)
-                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
-                    .opacity(isShowDetailContent ? 1 : 0.3)
-                    .offset(y: isShowDetailContent ? 0 : -100)
+                VStack {
+                    detailContent(items: store.state.itemsFromSection)
+                        .opacity(isShowDetailContent ? 1 : 0)
+                        .offset(y: isShowDetailContent ? 0 : -100)
+                }
+                .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
             }
             .cornerRadius(abs(150 - detailScale * 150))
         }
         .padding(.vertical)
         .edgesIgnoringSafeArea(.horizontal)
         .onChange(of: detailScale) {
-            if $0 <= 0.85 { store.dispatch(.close) }
+            if $0 < 0.85 { store.dispatch(.close) }
         }
         .onAppear {
-            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.6, blendDuration: 0.75)) {
+            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.6, blendDuration: 0.75)) {
                 isShowDetailSection = true
             }
-            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.55, blendDuration: 0.7).delay(0.3)) {
-                isShowDetailContent = true
+        }
+        .onChange(of: store.state.viewProgress) {
+            if $0 == .stop {
+                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.55, blendDuration: 0.7).delay(0.3)) {
+                    isShowDetailContent = true
+                }
             }
         }
         .closeToolbar {
-            withAnimation {
+            withAnimation(.spring().speed(1.2)) {
                 detailScale = 0.85
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                store.dispatch(.close)
             }
         }
     }
