@@ -8,6 +8,7 @@ struct FeedCollectionView: View {
     @State private var offset: CGFloat = 0
     @State private var isUpdating = false
     @State private var clickedSectionIdScale: UUID?
+    @State private var previousClickedSectionId: UUID?
     @State private var clickedSectionIdOpacity: UUID?
 
     @State private var zIndexMax: Double = 100
@@ -25,19 +26,17 @@ struct FeedCollectionView: View {
                     ItemsSectionView(section: section)
                         .equatable()
                         .environmentObject(namespaceWrapper)
-                    //                        .frame(height: 460)
-                        .onAppear {
-                            zIndexMax -= 1
-                        }
                         .gesture(
                             TapGesture()
                                 .onEnded { _ in
                                     withAnimation(.spring().speed(1.5)) {
                                         clickedSectionIdScale = section.id
+                                        previousClickedSectionId = section.id
+
                                     }
 
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                        withAnimation {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                                             clickedSectionIdOpacity = section.id
                                         }
 
@@ -52,11 +51,12 @@ struct FeedCollectionView: View {
                         )
                         .cornerRadius(9)
                         .padding(.vertical)
-                        .zIndex(zIndexMax)
                         .offset(y: section.id == clickedSectionIdScale ? 15 : 0)
                         .scaleEffect(section.id == clickedSectionIdScale ? 0.95 : 1)
                         .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
+                        .zIndex(section.id == previousClickedSectionId ? 100 : 0)
+                        .matchedGeometryEffect(id: "section_\(section.id)", in: namespaceWrapper.namespace, properties: .position, isSource: previousClickedSectionId == section.id)
                 }
             } else {
                 progress

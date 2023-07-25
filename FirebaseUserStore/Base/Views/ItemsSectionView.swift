@@ -55,16 +55,19 @@ struct ItemsSectionView: View {
     }
     
     var body: some View {
-        if icons.count <= 0 {
-            Image(systemName: "exclamationmark.triangle")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .onTapGesture { }
-        } else {
-            sectionView
-                .frame(height: 460)
-                .matchedGeometryEffect(id: "section_view_\(sectionId)", in: namespaceWrapper.namespace)
-        }
+//        VStack {
+            if icons.count <= 0 {
+                Image(systemName: "exclamationmark.triangle")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .onTapGesture { }
+            } else {
+                sectionView
+                    .frame(height: 460)
+
+            }
+//        }
+//        .matchedGeometryEffect(id: "section_view_\(sectionId)", in: namespaceWrapper.namespace)
     }
 
     private var sectionView: some View {
@@ -75,14 +78,12 @@ struct ItemsSectionView: View {
                     .foregroundColor(.gray)
                     .fontWeight(.bold)
                     .hLeading()
-                    .matchedGeometryEffect(id: "title_\(sectionId)", in: namespaceWrapper.namespace)
                 
                 if let subtitle {
                     Text(subtitle)
                         .font(.title)
                         .fontWeight(.bold)
                         .hLeading()
-                        .matchedGeometryEffect(id: "subtitle_\(sectionId)", in: namespaceWrapper.namespace)
                 }
             }
             .padding(.leading, 20)
@@ -98,7 +99,6 @@ struct ItemsSectionView: View {
                                     .cornerRadius(5)
                             }
                         }
-                        .matchedGeometryEffect(id: "section_\(sectionId)", in: namespaceWrapper.namespace)
 
                         HStack(spacing: 6) {
                             Rectangle()
@@ -112,7 +112,6 @@ struct ItemsSectionView: View {
                                         .cornerRadius(5)
                                 }
                             }
-                            .matchedGeometryEffect(id: "section_reversed_\(sectionId)", in: namespaceWrapper.namespace)
                         }
                     }
                     .offset(x: -localOffsetX)
@@ -123,7 +122,6 @@ struct ItemsSectionView: View {
                     }
                 }
                 .disabled(true)
-                .matchedGeometryEffect(id: "section_scroll_\(sectionId)", in: namespaceWrapper.namespace)
             } else if icons.count == 1 {
                 icons.first
                     .padding(.vertical)
@@ -138,7 +136,6 @@ struct ItemsSectionView: View {
                 BlurView(style: .systemThinMaterial)
                 Color.gray.opacity(0.3)
             }
-            .matchedGeometryEffect(id: "section_background_\(sectionId)", in: namespaceWrapper.namespace)
         }
     }
 }

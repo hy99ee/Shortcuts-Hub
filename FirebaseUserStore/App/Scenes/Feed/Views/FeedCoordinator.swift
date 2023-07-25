@@ -32,15 +32,15 @@ struct FeedCoordinator: CoordinatorType {
     @State var alert: FeedLink?
     @State var custom: FeedLink?
 
+    @State private var selectedSectionId: UUID?
+
     @Namespace var open
 
     private let store: FeedStore
-    private let feedView: FeedView
     let stateReceiver: AnyPublisher<FeedLink, Never>
 
     init(store: FeedStore) {
         self.store = store
-        self.feedView = FeedView(store: store)
         self.stateReceiver = store.transition.eraseToAnyPublisher()
     }
     
@@ -56,15 +56,15 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var rootView: some View {
         NavigationStack {
             ZStack {
-                feedView
+                FeedView(store: store)
                     .environmentObject(NamespaceWrapper(open))
                     .padding([.horizontal], custom == nil ? 24 : 14)
 
-//                if custom != nil {
-//                    BlurView(style: .systemThickMaterial)
-//                        .ignoresSafeArea()
-//                        .transition(.opacity)
-//                }
+                if custom != nil {
+                    BlurView(style: .systemThickMaterial)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                }
 
                 
                 if case let custom, let custom {
@@ -76,7 +76,6 @@ struct FeedCoordinator: CoordinatorType {
                         )
                         .environmentObject(NamespaceWrapper(open))
                         .transition(.asymmetric(insertion: .identity, removal: .identity))
-                        .zIndex(5)
                     }
                 }
             }

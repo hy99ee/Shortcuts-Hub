@@ -45,8 +45,11 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
                     .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
             }
                 .onAppear {
-                    store.dispatch(.initDetail)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        store.dispatch(.initDetail)
+                    }
                 }
+                .toolbar(.hidden, for: .navigationBar)
                 .toolbar(.hidden, for: .tabBar)
         )
     }
