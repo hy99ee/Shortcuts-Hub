@@ -21,13 +21,13 @@ enum FeedDetailLink: TransitionType {
 }
 
 struct FeedDetailSectionCoordinator: CoordinatorType {
+    @ObservedObject private var store: FeedDetailSectionStore
     @Binding private var parent: FeedLink?
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     @Binding var path: NavigationPath
     @State var alert: FeedDetailLink?
 
-    private var store: FeedDetailSectionStore!
     let stateReceiver: AnyPublisher<FeedDetailLink, Never>
 
     init(store: FeedDetailSectionStore, path: Binding<NavigationPath>, parent: Binding<FeedLink?>) {

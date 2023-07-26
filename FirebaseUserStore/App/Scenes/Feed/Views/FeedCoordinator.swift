@@ -28,6 +28,8 @@ class NamespaceWrapper: ObservableObject {
 }
 
 struct FeedCoordinator: CoordinatorType {
+    @ObservedObject private var store: FeedStore
+
     @State var path = NavigationPath()
     @State var alert: FeedLink?
     @State var custom: FeedLink?
@@ -36,7 +38,6 @@ struct FeedCoordinator: CoordinatorType {
 
     @Namespace var open
 
-    private let store: FeedStore
     let stateReceiver: AnyPublisher<FeedLink, Never>
 
     init(store: FeedStore) {
@@ -58,8 +59,7 @@ struct FeedCoordinator: CoordinatorType {
             ZStack {
                 FeedView(store: store)
                     .environmentObject(NamespaceWrapper(open))
-                    .padding([.horizontal], custom == nil ? 24 : 14)
-//                    .opacity(custom == nil ? 1 : 0.9)
+                    .padding([.horizontal], 24)
 
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
@@ -79,7 +79,7 @@ struct FeedCoordinator: CoordinatorType {
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.easeInOut.speed(1.3)) {
+            withAnimation(.easeOut.speed(1.2)) {
                 custom = link
             } 
 
@@ -98,4 +98,12 @@ struct FeedCoordinator: CoordinatorType {
             return Alert(title: Text(""))
         }
     }
+}
+
+extension FeedCoordinator: Equatable {
+    static func == (lhs: FeedCoordinator, rhs: FeedCoordinator) -> Bool {
+        lhs.store.state == rhs.store.state
+    }
+
+
 }

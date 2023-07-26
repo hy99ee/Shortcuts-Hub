@@ -8,7 +8,7 @@ class OffsetCounter: ObservableObject {
         self.offset = 50
     }
     lazy var timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
-        self.offset += 5
+        self.offset += 2.5
     }
 
     init(max maximumTime: CGFloat = 20) {
@@ -65,7 +65,8 @@ struct ItemsSectionView: View {
         VStack {
             if isDetail {
                 backgroundView
-                    .padding(-10)
+                    .padding(.vertical, navigationHeader == 0 ? -30 : -10)
+                    .padding(.horizontal, navigationHeader == 0 ? -10 : 0)
                     .transition(.move(edge: .bottom))
                     .frame(minHeight: navigationHeader, maxHeight: navigationHeader)
                     .scaleEffect(navigationHeader == 0 ? 0.95 : 1)
@@ -85,6 +86,7 @@ struct ItemsSectionView: View {
                     .frame(height: 460)
             }
         }
+        .cornerRadius(navigationHeader == 0 && isDetail ? 30 : 0)
     }
 
     private var sectionView: some View {
@@ -113,11 +115,12 @@ struct ItemsSectionView: View {
                         LazyHStack(spacing: 6.0) {
                             ForEach(0..<icons.count, id: \.self) { index in
                                 icons[index]
+                                    .content
+                                    .equatable()
                                     .frame(width: iconWidth, height: iconHeight)
                                     .cornerRadius(5)
                             }
                         }
-                        .matchedGeometryEffect(id: "section_scroll_\(sectionId)", in: namespaceWrapper.namespace)
 
                         HStack(spacing: 6) {
                             Rectangle()
@@ -127,11 +130,12 @@ struct ItemsSectionView: View {
                             LazyHStack(spacing: 6.0) {
                                 ForEach(1...icons.count, id: \.self) { index in
                                     icons[icons.count - index]
+                                        .content
+                                        .equatable()
                                         .frame(width: iconWidth, height: iconHeight)
                                         .cornerRadius(5)
                                 }
                             }
-                            .matchedGeometryEffect(id: "section_scroll_reversed_\(sectionId)", in: namespaceWrapper.namespace)
                         }
                     }
                     .offset(x: -localOffsetX)
@@ -165,11 +169,25 @@ struct ItemsSectionView: View {
     }
 }
 
+extension ItemsSectionView: Identifiable {
+    var id: String {
+        sectionId
+    }
+}
+
 extension ItemsSectionView: Equatable {
     static func == (lhs: ItemsSectionView, rhs: ItemsSectionView) -> Bool {
         lhs.sectionId == rhs.sectionId
     }
 }
+
+extension ItemsSectionView: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(sectionId)
+    }
+}
+
+
 
 fileprivate extension View {
     // MARK: Horizontal Leading

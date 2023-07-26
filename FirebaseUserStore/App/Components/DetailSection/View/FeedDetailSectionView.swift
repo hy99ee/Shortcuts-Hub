@@ -16,7 +16,7 @@ struct FeedDetailSectionView: View {
                 ItemsSectionView(section: store.state.idsSection, isDetail: true)
                     .equatable()
                     .environmentObject(namespaceWrapper)
-//                    .scaleEffect(isShowDetailSection ? 1 : 0.96)
+                    .scaleEffect(isShowDetailSection ? 1 : 0.96)
                     .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace)
 
                 detailContent(items: store.state.itemsFromSection)
@@ -28,7 +28,7 @@ struct FeedDetailSectionView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .onChange(of: detailScale) {
-            if $0 < 0.85 { store.dispatch(.close) }
+            if $0 < 0.87 { store.dispatch(.close) }
         }
         .onAppear {
             withAnimation(.easeIn) {
@@ -37,7 +37,7 @@ struct FeedDetailSectionView: View {
         }
         .applyClose {
             withAnimation(.easeInOut(duration: 0.3)) {
-                detailScale = 0.85
+                detailScale = 0.87
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 store.dispatch(.close)

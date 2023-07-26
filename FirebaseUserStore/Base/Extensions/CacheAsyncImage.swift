@@ -48,24 +48,40 @@ struct CacheAsyncImage<I, P, E>: View where I: View,
         }
     }
 
-    private func cacheAndRender(phase: AsyncImagePhase) -> AnyView {
+    @ViewBuilder private func cacheAndRender(phase: AsyncImagePhase) -> some View {
         switch phase {
         case .empty:
-            return AnyView(placeholder())
+            placeholder()
         case .success(let image):
-            ImageCache[url] = image
-            return AnyView(content(phase))
+            successCacheAndRender(image: image)
         case .failure:
-            return AnyView(errorView())
+            errorView()
         @unknown default:
-            return AnyView(placeholder())
+            placeholder()
         }
+    }
+
+    private func successCacheAndRender(image: Image) -> some View {
+        ImageCache[url] = image
+        return content(.success(image))
+    }
+}
+
+extension CacheAsyncImage: Identifiable {
+    var id: URL {
+        url
     }
 }
 
 extension CacheAsyncImage: Equatable {
     static func == (lhs: CacheAsyncImage<I, P, E>, rhs: CacheAsyncImage<I, P, E>) -> Bool {
         lhs.url == rhs.url
+    }
+}
+
+extension CacheAsyncImage: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
     }
 }
 
