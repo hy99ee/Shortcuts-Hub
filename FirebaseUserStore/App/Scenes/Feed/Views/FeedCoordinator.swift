@@ -32,7 +32,7 @@ struct FeedCoordinator: CoordinatorType {
     @State var alert: FeedLink?
     @State var custom: FeedLink?
 
-    @State private var selectedSectionId: UUID?
+    @State private var isShowBlur = false
 
     @Namespace var open
 
@@ -59,14 +59,8 @@ struct FeedCoordinator: CoordinatorType {
                 FeedView(store: store)
                     .environmentObject(NamespaceWrapper(open))
                     .padding([.horizontal], custom == nil ? 24 : 14)
+//                    .opacity(custom == nil ? 1 : 0.9)
 
-                if custom != nil {
-                    BlurView(style: .systemThickMaterial)
-                        .ignoresSafeArea()
-                        .transition(.opacity)
-                }
-
-                
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
                         FeedDetailSectionCoordinator(
@@ -75,7 +69,7 @@ struct FeedCoordinator: CoordinatorType {
                             parent: self.$custom
                         )
                         .environmentObject(NamespaceWrapper(open))
-                        .transition(.asymmetric(insertion: .identity, removal: .identity))
+                        .transition(.identity.animation(.easeIn))
                     }
                 }
             }
@@ -85,11 +79,10 @@ struct FeedCoordinator: CoordinatorType {
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-            withAnimation(.spring()) {
-//            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.75, blendDuration: 0.75)) {
+            withAnimation(.easeInOut.speed(1.3)) {
                 custom = link
             } 
-            
+
         case .error:
             self.alert = link
         }

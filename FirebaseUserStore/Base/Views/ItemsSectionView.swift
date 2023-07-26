@@ -18,21 +18,27 @@ class OffsetCounter: ObservableObject {
     }
 }
 
+let topSafeArea = UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0
+
 struct ItemsSectionView: View {
-    let sectionId: String
     @State private var icons: [EquatableView<CacheAsyncImage<Image, Color, Color>>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
 
+    @State private var navigationHeader: CGFloat = 0
+
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
+
+    @State private var isDetail: Bool
+    private let sectionId: String
 
     private static let offserCounter = OffsetCounter()
 
     private var iconWidth: CGFloat = 120
     private var iconHeight: CGFloat = 180
 
-    init(section: IdsSection) {
+    init(section: IdsSection, isDetail: Bool = false) {
         self.sectionId = section.id.uuidString
         self.title = section.title.first != nil ? (String(section.title.prefix(1) + section.title.dropFirst())) : ""
         self.subtitle = section.subtitle != nil
@@ -52,10 +58,23 @@ struct ItemsSectionView: View {
             )
             .equatable()
         }
+        self.isDetail = isDetail
     }
     
     var body: some View {
-//        VStack {
+        VStack {
+            if isDetail {
+                backgroundView
+                    .padding(-10)
+                    .transition(.move(edge: .bottom))
+                    .frame(minHeight: navigationHeader, maxHeight: navigationHeader)
+                    .scaleEffect(navigationHeader == 0 ? 0.95 : 1)
+                    .onAppear {
+                        withAnimation(.easeOut) {
+                            navigationHeader = topSafeArea
+                        }
+                    }
+            }
             if icons.count <= 0 {
                 Image(systemName: "exclamationmark.triangle")
                     .resizable()
@@ -64,10 +83,8 @@ struct ItemsSectionView: View {
             } else {
                 sectionView
                     .frame(height: 460)
-
             }
-//        }
-//        .matchedGeometryEffect(id: "section_view_\(sectionId)", in: namespaceWrapper.namespace)
+        }
     }
 
     private var sectionView: some View {
@@ -88,6 +105,7 @@ struct ItemsSectionView: View {
             }
             .padding(.leading, 20)
             .padding(.top, 14)
+
 
             if icons.count > 1 {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -132,10 +150,14 @@ struct ItemsSectionView: View {
             }
         }
         .background {
-            ZStack {
-                BlurView(style: .systemThinMaterial)
-                Color.gray.opacity(0.3)
-            }
+            backgroundView
+        }
+    }
+
+    var backgroundView: some View {
+        ZStack {
+            BlurView(style: .systemThinMaterial)
+            Color.gray.opacity(0.3)
         }
     }
 }

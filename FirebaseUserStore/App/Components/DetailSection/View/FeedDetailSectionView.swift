@@ -4,51 +4,50 @@ struct FeedDetailSectionView: View {
     @StateObject var store: FeedDetailSectionStore
 
     @State private var detailScale: CGFloat = 1
-    @State private var offset: CGFloat = .zero
 
     @State private var isShowDetailSection = false
-    @State private var isShowDetailContent = true
+    @State private var isShowDetailContent = false
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     var body: some View {
         OffsetObservingScrollView(scale: $detailScale) {
             VStack {
-                ItemsSectionView(section: store.state.idsSection)
+                ItemsSectionView(section: store.state.idsSection, isDetail: true)
                     .equatable()
                     .environmentObject(namespaceWrapper)
-                    .scaleEffect(isShowDetailSection ? 1 : 0.95)
+                    .scaleEffect(isShowDetailSection ? 1 : 0.96)
                     .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
 
                 detailContent(items: store.state.itemsFromSection)
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
+                    .zIndex(-1)
             }
-            .cornerRadius(abs(150 - detailScale * 150))
+            .cornerRadius(abs(170 - detailScale * 170))
+
         }
-        .padding(.vertical)
-        .edgesIgnoringSafeArea(.horizontal)
+        .edgesIgnoringSafeArea(.all)
         .onChange(of: detailScale) {
             if $0 < 0.85 { store.dispatch(.close) }
         }
         .onAppear {
-//            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.55, blendDuration: 0.75)) {
-            withAnimation(.spring().speed(1.3)) {
+            withAnimation(.easeIn) {
                 isShowDetailSection = true
             }
         }
-//        .onChange(of: store.state.viewProgress) {
-//            if $0 == .stop {
-//                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.55, blendDuration: 0.7).delay(0.3)) {
-//                    isShowDetailContent = true
-//                }
-//            }
-//        }
         .applyClose {
-            withAnimation(.spring().speed(1.2)) {
+            withAnimation(.easeInOut(duration: 0.3)) {
                 detailScale = 0.85
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.20) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 store.dispatch(.close)
+            }
+        }
+        .background {
+            if isShowDetailSection {
+                BlurView(style: .systemThickMaterial)
+                    .ignoresSafeArea()
+                    .transition(.opacity.animation(.easeIn(duration: 0.4)))
             }
         }
         .zIndex(1000)

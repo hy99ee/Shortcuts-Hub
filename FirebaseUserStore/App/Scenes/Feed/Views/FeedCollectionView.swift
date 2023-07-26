@@ -29,30 +29,36 @@ struct FeedCollectionView: View {
                         .gesture(
                             TapGesture()
                                 .onEnded { _ in
-                                    withAnimation(.spring().speed(1.5)) {
+                                    withAnimation(.easeIn(duration: 0.18)) {
                                         clickedSectionIdScale = section.id
                                         previousClickedSectionId = section.id
-
                                     }
 
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                        withAnimation(.easeIn(duration: 0.15)) {
+                                            clickedSectionIdScale = nil
+                                        }
+                                    }
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) {
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                                        withAnimation(.easeIn(duration: 0.1)) {
                                             clickedSectionIdOpacity = section.id
                                         }
 
                                         store.dispatch(.click(section))
                                     }
+
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         clickedSectionIdOpacity = nil
                                         clickedSectionIdScale = nil
                                     }
                                 }
-
                         )
                         .cornerRadius(9)
                         .padding(.vertical)
-                        .offset(y: section.id == clickedSectionIdScale ? 15 : 0)
-                        .scaleEffect(section.id == clickedSectionIdScale ? 0.95 : 1)
+                        .offset(y: section.id == clickedSectionIdScale ? 13 : 0)
+                        .scaleEffect(section.id == clickedSectionIdScale ? 0.96 : 1)
                         .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         .zIndex(section.id == previousClickedSectionId ? 100 : 0)
