@@ -42,13 +42,14 @@ struct OffsetObservingScrollView<Content: View>: View {
     private let coordinateSpaceName = UUID()
 
     var body: some View {
-        ZStack {
-            content()
-                .scaleEffect(scale)
-                .offset(y: scrollOffset)
+
             ScrollView(.vertical, showsIndicators: false) {
                 PositionObservingView(
-                    content: { Color.clear },
+                    content: {
+                        content()
+                            .scaleEffect(scale)
+//                            .offset(y: scrollOffset)
+                    },
                     offset: $offset,
                     scale: $scale,
                     coordinateSpace: .named(coordinateSpaceName)
@@ -64,6 +65,6 @@ struct OffsetObservingScrollView<Content: View>: View {
                 }
                 lastOffsetY = newOffset
             }
-        }
+
     }
 }

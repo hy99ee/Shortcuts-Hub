@@ -70,7 +70,7 @@ struct ItemsSectionView: View {
                     .frame(minHeight: navigationHeader, maxHeight: navigationHeader)
                     .scaleEffect(navigationHeader == 0 ? 0.95 : 1)
                     .onAppear {
-                        withAnimation(.easeOut) {
+                        withAnimation(.easeOut(duration: 0.45)) {
                             navigationHeader = topSafeArea
                         }
                     }
@@ -117,6 +117,7 @@ struct ItemsSectionView: View {
                                     .cornerRadius(5)
                             }
                         }
+                        .matchedGeometryEffect(id: "section_scroll_\(sectionId)", in: namespaceWrapper.namespace)
 
                         HStack(spacing: 6) {
                             Rectangle()
@@ -130,6 +131,7 @@ struct ItemsSectionView: View {
                                         .cornerRadius(5)
                                 }
                             }
+                            .matchedGeometryEffect(id: "section_scroll_reversed_\(sectionId)", in: namespaceWrapper.namespace)
                         }
                     }
                     .offset(x: -localOffsetX)
@@ -140,6 +142,7 @@ struct ItemsSectionView: View {
                     }
                 }
                 .disabled(true)
+
             } else if icons.count == 1 {
                 icons.first
                     .padding(.vertical)

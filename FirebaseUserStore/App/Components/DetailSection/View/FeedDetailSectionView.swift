@@ -16,8 +16,8 @@ struct FeedDetailSectionView: View {
                 ItemsSectionView(section: store.state.idsSection, isDetail: true)
                     .equatable()
                     .environmentObject(namespaceWrapper)
-                    .scaleEffect(isShowDetailSection ? 1 : 0.96)
-                    .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
+//                    .scaleEffect(isShowDetailSection ? 1 : 0.96)
+                    .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace)
 
                 detailContent(items: store.state.itemsFromSection)
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
@@ -47,7 +47,7 @@ struct FeedDetailSectionView: View {
             if isShowDetailSection {
                 BlurView(style: .systemThickMaterial)
                     .ignoresSafeArea()
-                    .transition(.opacity.animation(.easeIn(duration: 0.4)))
+                    .transition(.opacity.animation(.easeIn(duration: 0.3)))
             }
         }
         .zIndex(1000)
