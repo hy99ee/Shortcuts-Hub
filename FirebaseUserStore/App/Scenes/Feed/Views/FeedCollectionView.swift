@@ -23,44 +23,43 @@ struct FeedCollectionView: View {
         ScrollView(showsIndicators: false) {
             if store.state.sections.count > 0 {
                 ForEach(store.state.sections) { section in
-                        ItemsSectionView(section: section)
-                            .equatable()
-                            .environmentObject(namespaceWrapper)
-                            .onTapGesture {
-                                withAnimation(.easeIn(duration: 0.2)) {
-                                    clickedSectionIdScale = section.id
-                                    previousClickedSectionId = section.id
-                                }
+                    ItemsSectionView(section: section)
+                        .equatable()
+                        .environmentObject(namespaceWrapper)
+                        .onTapGesture {
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                clickedSectionIdScale = section.id
+                                previousClickedSectionId = section.id
+                            }
 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    withAnimation(.easeIn(duration: 0.15)) {
-                                        clickedSectionIdScale = nil
-                                    }
-                                }
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) {
-//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                                        withAnimation(.easeIn(duration: 0.01)) {
-//                                        clickedSectionIdOpacity = section.id
-                                    }
-
-                                    store.dispatch(.click(section))
-                                }
-
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    clickedSectionIdOpacity = nil
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                withAnimation(.easeIn(duration: 0.15)) {
                                     clickedSectionIdScale = nil
                                 }
-
                             }
-                            .cornerRadius(9)
-                            .padding(.vertical)
-                            .offset(y: section.id == clickedSectionIdScale ? 13 : 0)
-                            .scaleEffect(section.id == clickedSectionIdScale ? 0.96 : 1)
-                            .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
-                            .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-                            .zIndex(section.id == previousClickedSectionId ? 100 : 0)
-                            .matchedGeometryEffect(id: "section_\(section.id)", in: namespaceWrapper.namespace, isSource: previousClickedSectionId == section.id)
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) {
+                                withAnimation(.easeIn(duration: 0.01)) {
+                                    clickedSectionIdOpacity = section.id
+                                }
+
+                                store.dispatch(.click(section))
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                clickedSectionIdOpacity = nil
+                                clickedSectionIdScale = nil
+                            }
+
+                        }
+                        .cornerRadius(9)
+                        .padding(.vertical)
+                        .offset(y: section.id == clickedSectionIdScale ? 13 : 0)
+                        .scaleEffect(section.id == clickedSectionIdScale ? 0.96 : 1)
+                        .opacity(section.id == clickedSectionIdOpacity ? 0 : 1)
+                        .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
+                        .zIndex(section.id == previousClickedSectionId ? 100 : 0)
+                        .matchedGeometryEffect(id: "section_\(section.id)", in: namespaceWrapper.namespace, properties: .position, isSource: previousClickedSectionId == section.id)
                 }
             } else {
                 progress

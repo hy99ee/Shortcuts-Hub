@@ -150,10 +150,8 @@ struct ItemsSectionView: View {
             } else if icons.count == 1 {
                 icons.first
                     .padding(.vertical)
-                    .matchedGeometryEffect(id: "section_image_\(sectionId)", in: namespaceWrapper.namespace)
             } else {
                 RoundedRectangle(cornerRadius: 20)
-                    .matchedGeometryEffect(id: "section_error_\(sectionId)", in: namespaceWrapper.namespace)
             }
         }
         .background {

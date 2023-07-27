@@ -69,11 +69,14 @@ struct FeedCoordinator: CoordinatorType {
                             parent: self.$custom
                         )
                         .environmentObject(NamespaceWrapper(open))
-                        .transition(.identity.animation(.easeIn))
+                        .transition(.identity)
+                        .zIndex(100)
+//                        .animation(.linear, value: self.custom)
                     }
                 }
             }
         }
+        .toolbar(.hidden, for: .navigationBar)
     }
 
     func transitionReceiver(_ link: FeedLink) {
