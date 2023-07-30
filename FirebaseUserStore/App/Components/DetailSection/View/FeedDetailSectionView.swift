@@ -4,7 +4,7 @@ struct FeedDetailSectionView: View {
     @StateObject var store: FeedDetailSectionStore
 
     @State private var detailScale: CGFloat = 1
-    @State var detailOffset: CGFloat = 0
+    @State var detailOffset: CGPoint = .init()
 
     @State private var isShowDetailSection = false
     @State private var isShowDetailContent = false
@@ -12,7 +12,7 @@ struct FeedDetailSectionView: View {
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     var body: some View {
-        OffsetObservingScrollView(scale: $detailScale, offset: $detailOffset) {
+        OffsetObservingScrollView(offset: $detailOffset, scale: $detailScale) {
             VStack {
                 ItemsSectionView(section: store.state.idsSection, isDetail: true)
                     .equatable()
@@ -21,13 +21,7 @@ struct FeedDetailSectionView: View {
                     .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
 
                 detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
-                detailContent(items: store.state.itemsFromSection)
+                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
 
             }
             .cornerRadius(abs(170 - detailScale * 170))

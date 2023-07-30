@@ -4,7 +4,7 @@ struct IdsSection: Identifiable, Equatable {
     let id: UUID
 
     let title: String
-    let subtitle: String?
+    let subtitle: String
     var titleIcons: [URL]
 
     var itemsIds: [String]

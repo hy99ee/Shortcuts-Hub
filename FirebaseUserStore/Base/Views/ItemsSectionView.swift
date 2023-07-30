@@ -41,11 +41,7 @@ struct ItemsSectionView: View {
     init(section: IdsSection, isDetail: Bool = false) {
         self.sectionId = section.id.uuidString
         self.title = section.title.first != nil ? (String(section.title.prefix(1) + section.title.dropFirst())) : ""
-        self.subtitle = section.subtitle != nil
-        ? section.subtitle!.first != nil
-            ? (String(section.subtitle!.prefix(1) + section.subtitle!.dropFirst()))
-            : nil
-        : nil
+        self.subtitle = section.subtitle.first != nil ? (String(section.subtitle.prefix(1) + section.subtitle.dropFirst())) : ""
         self.icons = section.titleIcons.map {
             CacheAsyncImage<Image, Color, Color>(
                 url: $0,
@@ -187,7 +183,7 @@ extension ItemsSectionView: Hashable {
 
 
 
-fileprivate extension View {
+extension View {
     // MARK: Horizontal Leading
     func hLeading() -> some View {
         self

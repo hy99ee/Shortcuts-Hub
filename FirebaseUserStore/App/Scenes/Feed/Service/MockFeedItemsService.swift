@@ -9,7 +9,7 @@ final class MockFeedItemsService: ItemsServiceType {
     func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool = false) -> AnyPublisher<[OutputType], ItemsServiceError> {
         Deferred {
             Future { promise in
-                let items = query.data.isEmpty ? mockItems : mockItems.filter { $0.title.contains(query.data) }
+                let items = query.data.isEmpty ? Item.mockItems : Item.mockItems.filter { $0.title.contains(query.data) }
                 return promise(.success(items))
             }
         }
@@ -20,7 +20,7 @@ final class MockFeedItemsService: ItemsServiceType {
     func fetchQuery() -> AnyPublisher<MockFetchedResponce, ItemsServiceError> {
         Deferred {
             Future { promise in
-                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: String()), count: mockItems.count )))
+                return promise(.success(MockFetchedResponce(query: MockFetchedResponce.MockQuery(data: String()), count: Item.mockItems.count )))
             }
         }
         .delay(for: .seconds(3), scheduler: DispatchQueue.main)

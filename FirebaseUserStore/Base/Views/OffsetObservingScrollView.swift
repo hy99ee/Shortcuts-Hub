@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PositionObservingView<Content: View>: View {
     @ViewBuilder var content: () -> Content
-    @Binding var offset: CGFloat
+    @Binding var offset: CGPoint
 
     let coordinateSpace: CoordinateSpace
 
@@ -18,7 +18,7 @@ struct PositionObservingView<Content: View>: View {
                         )
                 }
                 .onPreferenceChange(PreferenceKey.self) { position in
-                    offset = position.y
+                    offset = position
                 }
             }
     }
@@ -32,17 +32,16 @@ private extension PositionObservingView {
 }
 
 struct OffsetObservingScrollView<Content: View>: View {
+    @Binding var offset: CGPoint
     @Binding var scale: CGFloat
-    @Binding var offset: CGFloat
     @ViewBuilder var content: () -> Content
 
-    @State private var lastOffsetY: CGFloat = 0
-    @State private var scrollOffset: CGFloat = 0
+    @State private var lastOffset: CGPoint = .init()
 
     private let coordinateSpaceName = UUID()
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(showsIndicators: false) {
             PositionObservingView(
                 content: {
                     content()
@@ -54,14 +53,11 @@ struct OffsetObservingScrollView<Content: View>: View {
         }
         .coordinateSpace(name: coordinateSpaceName)
         .onChange(of: offset) { newOffset in
-            if newOffset > 0 && (newOffset > lastOffsetY || scale != 1) {
-                let scale = 1 - newOffset / 500
+            if newOffset.y > 0 && (newOffset.y > lastOffset.y || scale != 1) {
+                let scale = 1 - newOffset.y / 500
                 self.scale = scale > 1 ? 1 : scale
-            } else {
-                scrollOffset = newOffset
             }
-
-            lastOffsetY = newOffset
+            lastOffset = newOffset
         }
     }
 }
