@@ -5,20 +5,20 @@ import SwiftUI
 struct FeedState: StateType, ReinitableByNewSelf {
     var loadItems: [LoaderItem]? {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
     var sections: [IdsSection] = [] {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
 
     var searchedItems: [Item]?
     var searchFilter = ""
 
-    var showEmptyView = false
-    var showErrorView = false
+    var isShowEmptyView = false
+    var isShowErrorView = false
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

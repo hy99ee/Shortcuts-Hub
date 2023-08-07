@@ -15,7 +15,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         }
 
     case let .updateItems(items):
-        state.showEmptyView = items.isEmpty
+        state.isShowEmptyView = items.isEmpty
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
         state.loadItems = nil
@@ -54,7 +54,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .addItem(item):
         state.items.insert(item, at: 0)
-        state.showEmptyView = false
+        state.isShowEmptyView = false
 
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
@@ -62,7 +62,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .removeItem(item):
         state.items.removeAll { $0 == item }
-        if state.items.isEmpty { state.showEmptyView = true }
+        if state.items.isEmpty { state.isShowEmptyView = true }
 
         if state.searchedItems != nil {
             state.searchedItems!.removeAll { $0 == item }
@@ -81,6 +81,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.viewProgress = status
         state.processView = .define(with: state.viewProgress, state.buttonProgress)
 
+    case let .progressItem(item, status):
+        state.removingItem = status == .stop ? nil : item
+
     case let .progressButton(status):
         state.buttonProgress = status
         state.processView = .define(with: state.viewProgress, state.buttonProgress)
@@ -97,12 +100,12 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     func emptyData() {
         state.loadItems = []
         state.items = []
-        state.showEmptyView = true
+        state.isShowEmptyView = true
     }
 
     func errorData() {
         state.loadItems = []
         state.items = []
-        state.showErrorView = true
+        state.isShowErrorView = true
     }
 }

@@ -76,6 +76,7 @@ struct ItemCellView: View, Identifiable {
         }
         .foregroundColor(.white)
         .frame(height: cellStyle.rowHeight)
+        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 16, style: .continuous))
         .cornerRadius(12)
     }
 

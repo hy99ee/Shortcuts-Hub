@@ -49,7 +49,7 @@ final class SessionService: SessionServiceType, ObservableObject {
     }
 
     func syncNewUserWithDatabase(_ credentials: RegistrationCredentials) -> AnyPublisher<Void, SessionServiceError> {
-        guard let userId = userDetails.auth?.id else {
+        guard let userId = userDetails.auth?.id ?? Auth.auth().currentUser?.uid else {
             return Fail(error: SessionServiceError.errorWithAuth).eraseToAnyPublisher()
         }
     
@@ -110,7 +110,7 @@ private extension SessionService {
                             }
                             let savedIds = value[DatabaseUserKeys.savedIds.rawValue] as? [String] ?? [String]()
 
-                            DispatchQueue.main.async {
+//                            DispatchQueue.main.async {
                                 self.state = .loggedIn
                                 self.userDetails = UserDetails(
                                     value: DatabaseUser(
@@ -124,7 +124,7 @@ private extension SessionService {
                                     ),
                                     savedIds: savedIds
                                 )
-                            }
+//                            }
                         }
                 } else {
                     self.state = .loggedOut

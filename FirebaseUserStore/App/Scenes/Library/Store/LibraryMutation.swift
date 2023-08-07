@@ -29,5 +29,6 @@ enum LibraryMutation: Mutation {
 
     case showAbout(_ data: AboutViewData)
     case progressButton(status: ProgressViewStatus)
+    case progressItem(item: Item, status: ProgressViewStatus)
     case progressView(status: ProgressViewStatus)
 }

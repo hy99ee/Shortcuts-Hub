@@ -15,12 +15,11 @@ struct Item: ItemType, Codable, Equatable, Identifiable, Hashable {
 
     var colorValue: Int?
     var icon: Data?
-    var originalUrl: String?
     var idioms: [SupportedIdioms] = []
 
-    var isSaved: Bool {
-        SessionService.shared.userDetails.savedIds.contains(id.uuidString)
-    }
+    var originalUrl: String?
+
+    var isSaved: Bool { SessionService.shared.userDetails.savedIds.contains(id.uuidString) }
     var validateByAdmin: Int = ItemValidateStatus.undefined.rawValue
 
     var createdAt: Date

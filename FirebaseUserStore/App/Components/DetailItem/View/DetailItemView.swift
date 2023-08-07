@@ -22,12 +22,10 @@ struct ItemDetailView: View {
                                     .frame(width: 130, height: 130)
                                     .cornerRadius(16)
 //                                    .padding()
-
                             VStack {
                                 HStack {
                                     VStack(alignment: .leading) {
                                         Text(store.state.item.title)
-//                                        Text("Tasdaaaaaaaa")
                                             .font(
                                                 .system(
                                                     store.state.item.title.count < 13
@@ -51,18 +49,18 @@ struct ItemDetailView: View {
                                 Spacer()
 
                                 HStack {
-                                    Link(destination: URL(string: "https://console.developers.google.com")!) {
-                                        Text("Get")
-                                            .bold()
-                                            .foregroundColor(.white)
-                                            .background(.blue)
-                                            .frame(minWidth: 80, minHeight: 35)
 
-                                    }
-                                    .foregroundColor(.white)
-                                    .background(.blue)
-                                    .frame(minWidth: 80, minHeight: 35)
-                                    .cornerRadius(16)
+
+//                                    Button {
+//                                        shortcutsApiManager.call(.run(name: store.state.item.title))
+//                                    } label: {
+//                                        Text("Run")
+//                                            .bold()
+//                                            .foregroundColor(.white)
+//                                            .frame(minWidth: 80, minHeight: 35)
+//                                            .background(.blue)
+//                                            .cornerRadius(16)
+//                                    }
 
                                     Spacer()
 
@@ -86,6 +84,29 @@ struct ItemDetailView: View {
                 .onAppear {
                     if let iconData = store.state.item.icon, let image = UIImage(data: iconData) {
                         self.image = Image(uiImage: image)
+                    }
+                }
+
+                VStack {
+                    Spacer()
+
+                    if let link = store.state.item.originalUrl, !link.isEmpty {
+                        Link(destination: URL(string: link)!) {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "plus.circle.fill")
+                                Text("Add Shortcut")
+                                    .bold()
+                                Spacer()
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(.blue)
+                            .cornerRadius(10)
+                        }
+                        .padding()
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 30)
                     }
                 }
             }

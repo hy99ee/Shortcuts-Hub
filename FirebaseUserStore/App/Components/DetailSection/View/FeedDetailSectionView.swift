@@ -18,13 +18,13 @@ struct FeedDetailSectionView: View {
                     .equatable()
                     .environmentObject(namespaceWrapper)
                     .scaleEffect(isShowDetailSection ? 1 : 0.96)
-                    .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
 
                 detailContent(items: store.state.itemsFromSection)
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
 
             }
             .cornerRadius(abs(170 - detailScale * 170))
+            .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
         }
         .edgesIgnoringSafeArea(.all)
         .onChange(of: detailScale) {

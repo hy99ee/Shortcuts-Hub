@@ -15,7 +15,7 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
         }
 
     case let .updateItems(items):
-        state.showEmptyView = items.isEmpty
+        state.isShowEmptyView = items.isEmpty
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
         state.loadItems = nil
@@ -41,7 +41,7 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
 
     case let .addItem(item):
         state.items.insert(item, at: 0)
-        state.showEmptyView = false
+        state.isShowEmptyView = false
 
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
@@ -49,7 +49,7 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
 
     case let .removeItem(item):
         state.items.removeAll { $0 == item }
-        if state.items.isEmpty { state.showEmptyView = true }
+        if state.items.isEmpty { state.isShowEmptyView = true }
 
         if state.searchedItems != nil {
             state.searchedItems!.removeAll { $0 == item }
@@ -82,12 +82,12 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
     func emptyData() {
         state.loadItems = []
         state.items = []
-        state.showEmptyView = true
+        state.isShowEmptyView = true
     }
 
     func errorData() {
         state.loadItems = []
         state.items = []
-        state.showErrorView = true
+        state.isShowErrorView = true
     }
 }

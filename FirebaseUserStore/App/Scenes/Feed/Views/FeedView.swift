@@ -11,9 +11,9 @@ struct FeedView: View {
 
     var body: some View {
         VStack {
-            if store.state.showEmptyView {
+            if store.state.isShowEmptyView {
                 emptyView.toolbar { emptyToolbarView }
-            } else if store.state.showErrorView {
+            } else if store.state.isShowErrorView {
                 updateableErrorView.toolbar { errorToolbarView }
             } else {
                 FeedCollectionView(store: store)

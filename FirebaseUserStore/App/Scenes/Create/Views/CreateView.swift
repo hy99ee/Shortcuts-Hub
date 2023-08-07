@@ -23,7 +23,7 @@ struct CreateView: View {
                 .cornerRadius(15)
 
             TextField("Enter description", text: $descriptionField)
-            .padding()
+                .padding()
 
             ButtonView(title: "Create") {
                 guard image != nil else { return }

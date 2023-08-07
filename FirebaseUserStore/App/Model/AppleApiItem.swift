@@ -54,8 +54,7 @@ struct Name: Codable {
     let type, value: String
 }
 
-struct PluginFields: Codable {
-}
+struct PluginFields: Codable {}
 
 extension AppleApiItem: Equatable {
     static func == (lhs: AppleApiItem, rhs: AppleApiItem) -> Bool {

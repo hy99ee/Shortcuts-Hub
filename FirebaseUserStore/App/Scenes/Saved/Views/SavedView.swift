@@ -39,15 +39,16 @@ struct SavedView: View {
             .sink { store.dispatch(.search(text: $0)) }
             .store(in: &subscriptions)
     }
+
     var body: some View {
         VStack {
-            if let showEmpty = store.state.showEmptyView, showEmpty {
-                emptyView
-            } else if let showError = store.state.showErrorView, showError {
-                updateableErrorView
-            } else if store.state.showErrorView == nil, store.state.showEmptyView == nil {
+            if store.state.isShowErrorView && store.state.isShowEmptyView == nil {
                 Text("")
                     .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
+            } else if store.state.isShowEmptyView ?? false {
+                emptyView
+            } else if store.state.isShowErrorView {
+                updateableErrorView
             } else {
                 SavedCollectionView(store: store, searchBinding: searchBinding)
             }

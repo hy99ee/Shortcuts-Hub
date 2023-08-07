@@ -35,7 +35,7 @@ final class FeedDetailSectionService: FeedDetailSectionServiceType {
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
                                     icon: data["icon"] as? Data ?? Data(),
-                                    originalUrl: data["link"] as? String ?? "",
+                                    originalUrl: data["original_link"] as? String ?? "",
                                     validateByAdmin: data["validation"] as? Int ?? 0,
                                     createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                                     

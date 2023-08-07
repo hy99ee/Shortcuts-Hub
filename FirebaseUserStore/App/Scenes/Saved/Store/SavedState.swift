@@ -5,12 +5,12 @@ import SwiftUI
 struct SavedState: StateType, ReinitableByNewSelf {
     var loadItems: [LoaderItem]? {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
     var items: [Item] = [] {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
 
@@ -21,8 +21,8 @@ struct SavedState: StateType, ReinitableByNewSelf {
 
     var searchFilter = ""
 
-    var showEmptyView: Bool?
-    var showErrorView: Bool?
+    var isShowEmptyView: Bool?
+    var isShowErrorView = false
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

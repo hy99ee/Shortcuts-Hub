@@ -58,7 +58,7 @@ extension ItemsServiceType {
                                     title: data["title"] as? String ?? "",
                                     description: data["description"] as? String ?? "",
                                     icon: data["icon"] as? Data ?? Data(),
-                                    originalUrl: data["link"] as? String ?? "",
+                                    originalUrl: data["original_link"] as? String ?? "",
                                     createdAt: Date()
                                 )
                             )

@@ -6,6 +6,8 @@ struct CreateAppleLinkEnterView: View {
     @State private var link = ""
     @State private var height: CGFloat = 0
 
+    @State private var pasteboard: String?
+
     var body: some View {
         VStack {
             Spacer()
@@ -16,7 +18,8 @@ struct CreateAppleLinkEnterView: View {
                     placeholder: "Enter link",
                     errorMessage: bindingMessageForLink,
                     isValid: bindingIsValidForLink,
-                    cleanHandler: { store.dispatch(.clickLinkField) }
+                    cleanHandler: { store.dispatch(.clickLinkField) },
+                    focusHandler: { self.pasteboard = nil }
                 )
                 .submitLabel(.send)
                 .frame(height: height)
@@ -31,17 +34,24 @@ struct CreateAppleLinkEnterView: View {
         }
         .background(.opacity(0.001))
         .modifier(OnTapGestureDismissingKeyboard())
+        .onAppear {
+            pasteboard = UIPasteboard.general.string
+        }
     }
 
-    var continueButton: ButtonView {
-        link.isEmpty
-        ? ButtonView(title: "Paste and continue") {
-            let string = UIPasteboard.general.string ?? ""
-            link = string
-            store.dispatch(.linkRequest(string))
-        }
-        : ButtonView(title: "Continue") {
-            store.dispatch(.linkRequest(link))
+    @ViewBuilder var continueButton: some View {
+        if let pasteboard, !pasteboard.isEmpty {
+            ButtonView(title: "Paste and continue") {
+                let string = UIPasteboard.general.string ?? ""
+                link = string
+                store.dispatch(.linkRequest(string))
+            }
+        } else {
+            let binding = Binding<Bool> { link.isEmpty } set: { _ in }
+
+            ButtonView(title: "Continue", disabled: binding) {
+                store.dispatch(.linkRequest(link))
+            }
         }
     }
 

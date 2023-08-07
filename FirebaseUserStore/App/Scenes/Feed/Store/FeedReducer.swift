@@ -14,7 +14,7 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         }
 
     case let .updateSections(sections):
-        state.showEmptyView = sections.isEmpty
+        state.isShowEmptyView = sections.isEmpty
                               && state.searchFilter.isEmpty
                               && state.viewProgress == .stop
         state.loadItems = nil
@@ -61,12 +61,12 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
     func emptyData() {
         state.loadItems = []
         state.sections = []
-        state.showEmptyView = true
+        state.isShowEmptyView = true
     }
 
     func errorData() {
         state.loadItems = []
         state.sections = []
-        state.showErrorView = true
+        state.isShowErrorView = true
     }
 }

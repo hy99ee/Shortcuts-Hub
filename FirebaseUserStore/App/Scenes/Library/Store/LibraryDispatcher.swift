@@ -32,7 +32,8 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case let .removeFromLibrary(item):
         return mutationRemoveItemFromDatabase(item, packages: packages)
-    
+            .withStatus(start: .progressItem(item: item, status: .start), finish: .progressItem(item: item, status: .stop))
+
     case let .changeSearchField(text):
         return Just(.setSearchFilter(text)).eraseToAnyPublisher()
 
@@ -118,6 +119,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     func mutationRemoveItemFromDatabase(_ item: Item, packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {
         packages.itemsService.removeItem(item)
+            .delay(for: .milliseconds(250), scheduler: DispatchQueue.main)
             .handleEvents(
                 receiveOutput: { _ in
                     packages.sessionService.firestoreMutation = .remove(item: item)

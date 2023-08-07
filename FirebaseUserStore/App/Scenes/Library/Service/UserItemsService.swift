@@ -43,7 +43,7 @@ final class UserItemsService: UserItemsServiceType {
                                     description: data["description"] as? String ?? "",
                                     colorValue: data["color_value"] as? Int ?? 0,
                                     icon: data["icon"] as? Data ?? Data(),
-                                    originalUrl: data["link"] as? String ?? "",
+                                    originalUrl: data["original_link"] as? String ?? "",
                                     validateByAdmin: data["validation"] as? Int ?? 0,
                                     createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                                     
@@ -172,7 +172,7 @@ final class UserItemsService: UserItemsServiceType {
                                 description: data["description"] as? String ?? "",
                                 colorValue: data["color_value"] as? Int ?? 0,
                                 icon: data["icon"] as? Data ?? Data(),
-                                originalUrl: data["link"] as? String ?? "",
+                                originalUrl: data["original_link"] as? String ?? "",
                                 validateByAdmin: data["validation"] as? Int ?? 0,
                                 createdAt: Date(timeIntervalSince1970: TimeInterval(bitPattern: (data["createdAt"] as? UInt64 ?? 0)))
                             )
@@ -239,7 +239,7 @@ final class UserItemsService: UserItemsServiceType {
                     "title": item.title,
                     "color_value": item.colorValue ?? 255,
                     "icon": item.icon ?? Data(),
-                    "link": item.originalUrl ?? "",
+                    "original_link": item.originalUrl ?? "",
                     "description": item.description,
                     "createdAt": item.createdAt.timeIntervalSince1970.bitPattern,
                     "modifiedAt": item.modifiedAt?.description ?? "",

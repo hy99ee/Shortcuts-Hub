@@ -4,24 +4,34 @@ import SwiftUDF
 struct LibraryState: StateType, ReinitableByNewSelf {
     var loadItems: [LoaderItem]? {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
     var items: [Item] = [] {
         didSet {
-            showErrorView = false
+            isShowErrorView = false
         }
     }
 
-    var searchedItems: [Item]?
+    var searchedItems: [Item]? {
+        didSet {
+            if searchedItems == nil {
+                isShowEmptySearchView = nil
+            } else {
+                isShowEmptySearchView = searchedItems!.count < 1
+            }
+        }
+    }
     var lastAdded: Item?
+    var removingItem: Item?
 
     var loginState: SessionState = .loading
 
     var searchFilter = ""
 
-    var showEmptyView = false
-    var showErrorView = false
+    var isShowEmptySearchView: Bool?
+    var isShowEmptyView: Bool?
+    var isShowErrorView = false
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

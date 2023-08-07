@@ -120,7 +120,7 @@ final class FeedItemsService: ItemsServiceType {
                                 description: data["description"] as? String ?? "",
                                 colorValue: data["color_value"] as? Int ?? 0,
                                 icon: data["icon"] as? Data ?? Data(),
-                                originalUrl: data["link"] as? String ?? "",
+                                originalUrl: data["original_link"] as? String ?? "",
                                 validateByAdmin: data["validation"] as? Int ?? 0,
                                 createdAt: Date()
                             )
