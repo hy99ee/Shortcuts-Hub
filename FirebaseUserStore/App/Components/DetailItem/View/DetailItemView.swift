@@ -8,20 +8,12 @@ struct ItemDetailView: View {
 
     var body: some View {
             ZStack {
-//                LinearGradient(stops: [(store.state.item.colorValue ?? .max), Color.clear], startPoint: .topLeading, endPoint: .bottomTrailing).opacity(0.3)
-//                Color(rgb: store.state.item.colorValue ?? 9999999)
-
-
-//                LinearGradient(colors: [ShortcutsColor.darkOrange.color, Color(uiColor: .darkGray)], startPoint: .top, endPoint: .bottom)
-//                    .ignoresSafeArea()
-
                 ScrollView(showsIndicators: false) {
                     VStack {
                         HStack {
                             imageView
                                     .frame(width: 130, height: 130)
                                     .cornerRadius(16)
-//                                    .padding()
                             VStack {
                                 HStack {
                                     VStack(alignment: .leading) {
@@ -49,19 +41,6 @@ struct ItemDetailView: View {
                                 Spacer()
 
                                 HStack {
-
-
-//                                    Button {
-//                                        shortcutsApiManager.call(.run(name: store.state.item.title))
-//                                    } label: {
-//                                        Text("Run")
-//                                            .bold()
-//                                            .foregroundColor(.white)
-//                                            .frame(minWidth: 80, minHeight: 35)
-//                                            .background(.blue)
-//                                            .cornerRadius(16)
-//                                    }
-
                                     Spacer()
 
                                     if store.state.item.userId != store.packages.sessionService.userDetails.auth?.id {

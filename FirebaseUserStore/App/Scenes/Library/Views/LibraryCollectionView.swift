@@ -6,9 +6,6 @@ struct LibraryCollectionView: View {
 
     @Binding var searchBinding: String
 
-    @State private var showSearch = false
-    @State private var isShowItems = false
-    @State private var isShowLoadingItems = false
     @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row2
 
@@ -18,7 +15,7 @@ struct LibraryCollectionView: View {
     var body: some View {
         verticalGrid
     }
-    
+
     private var verticalGrid: some View {
         NavigationView {
                 ScrollView(showsIndicators: false) {
@@ -45,7 +42,7 @@ struct LibraryCollectionView: View {
                             }
                             .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                         }
-                        .animation(.easeIn(duration: 0.3), value: store.state.searchedItems)
+                        .animation(.interactiveSpring().speed(0.75), value: store.state.searchedItems)
                     } else if let loadItems = store.state.loadItems {
                         LazyVGrid(columns: columns) {
                             ForEach(loadItems, id: \.id) {
@@ -53,14 +50,9 @@ struct LibraryCollectionView: View {
                                     .frame(height: cellStyle.rowHeight)
                                     .padding(.vertical, 3)
                                     .padding(.horizontal, 2)
-                                    .opacity(isShowLoadingItems ? 1 : 0.5)
-                                    .scaleEffect(isShowLoadingItems ? 1 : 0.8)
-                                    .animation(.easeIn(duration: 0.4), value: isShowLoadingItems)
                             }
                         }
                         .modifier(StaticPreloaderViewModifier())
-                        .onAppear { isShowLoadingItems = true }
-                        .onDisappear { isShowLoadingItems = false }
                     } else {
                         LazyVGrid(columns: columns) {
                             ForEach(store.state.items) { item in
@@ -74,17 +66,13 @@ struct LibraryCollectionView: View {
                                         ZStack {
                                             Color.red.opacity(0.5)
                                             ProgressView()
-                                                .foregroundColor(.white)
-//                                            HDotsProgress()
+                                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                         }
                                         .cornerRadius(14)
                                     }
                                 }
                                 .padding(.vertical, 3)
                                 .padding(.horizontal, 2)
-                                .opacity(isShowItems ? 1 : 0.5)
-                                .scaleEffect(isShowItems ? 1 : 0.8)
-                                .animation(.easeIn(duration: 0.4), value: isShowItems)
                                 .onTapGesture { store.dispatch(.click(item)) }
                                 .contextMenu {
                                     Button(role: .destructive) {
@@ -96,19 +84,12 @@ struct LibraryCollectionView: View {
                             }
                         }
                         .onAppear {
-                            isShowItems = true
-                            showSearch = false
-                            if store.state.items.count >= ItemsServiceQueryLimit
-//                                        && index >= store.state.items.count - 1
-                                && !isUpdating {
+                            if store.state.items.count >= ItemsServiceQueryLimit && !isUpdating {
                                 isUpdating = true
-                                Task {
-                                    await asyncNext()
-                                }
+                                Task { await asyncNext() }
                             }
                         }
-                        .onDisappear { isShowItems = false }
-                        .animation(.easeIn(duration: 0.3), value: store.state.items)
+                        .animation(.interactiveSpring().speed(0.75), value: store.state.items)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
                     }
                 }
@@ -116,16 +97,12 @@ struct LibraryCollectionView: View {
                 .navigationBarItems(trailing: toolbarView)
                 .searchable(text: $searchBinding)
                 .disableAutocorrection(true)
-                .onSubmit(of: .search) {
-                    store.dispatch(.search(text: searchBinding))
-                }
+                .onSubmit(of: .search) { store.dispatch(.search(text: searchBinding)) }
                 .padding([.trailing, .leading], 12)
-                .refreshable {
-                    await asyncUpdate()
-                }
+                .refreshable { await asyncUpdate() }
         }
     }
-    
+
     private var toolbarView: some View {
         HStack {
             Button {
@@ -133,22 +110,12 @@ struct LibraryCollectionView: View {
             } label: {
                 Image(systemName: "person")
             }
-
-            if store.state.loginState == .loggedIn && !(store.state.isShowEmptyView ?? false) && !store.state.isShowErrorView {
-                Button {
-                    withAnimation(.easeIn(duration: 0.6)) {
-                        cellStyle = cellStyle.next()
-                    }
-                } label: {
-                    Image(systemName: cellStyle.systemImage)
-                }
-            }
         }
     }
 
     private func asyncUpdate() async -> Void {
         searchBinding.isEmpty ? store.dispatch(.updateLibrary) : store.dispatch(.search(text: searchBinding))
-        
+
         try? await self.store.objectWillChange
             .filter { self.store.state.viewProgress == .stop }
             .handleEvents(receiveOutput: { _ in isUpdating = false })
