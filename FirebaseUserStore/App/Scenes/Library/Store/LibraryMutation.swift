@@ -16,8 +16,6 @@ enum LibraryMutation: Mutation {
     case addItem(_ item: Item)
     case removeItem(_ item: Item)
 
-    case empty
-
     case changeUserLoginState(_ state: SessionState)
     case openLogin
 

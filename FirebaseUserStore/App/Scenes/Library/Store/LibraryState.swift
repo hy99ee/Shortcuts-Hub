@@ -2,24 +2,29 @@ import Combine
 import SwiftUDF
 
 struct LibraryState: StateType, ReinitableByNewSelf {
-    var loadItems: [LoaderItem]? {
-        didSet {
-            isShowErrorView = false
-        }
-    }
     var items: [Item] = [] {
         didSet {
+            isShowEmptyView = items.isEmpty
+
             isShowErrorView = false
+            isShowEmptySearchView = false
+        }
+    }
+
+    var preloadItems: [LoaderItem]? {
+        didSet {
+            isShowErrorView = false
+            isShowEmptyView = false
+            isShowEmptySearchView = false
         }
     }
 
     var searchedItems: [Item]? {
         didSet {
-            if searchedItems == nil {
-                isShowEmptySearchView = nil
-            } else {
-                isShowEmptySearchView = searchedItems!.count < 1
-            }
+            isShowEmptySearchView = searchedItems?.isEmpty ?? false
+
+            isShowEmptyView = false
+            isShowErrorView = false
         }
     }
     var lastAdded: Item?
@@ -31,6 +36,7 @@ struct LibraryState: StateType, ReinitableByNewSelf {
 
     var isShowEmptySearchView: Bool?
     var isShowEmptyView: Bool?
+
     var isShowErrorView = false
 
     var viewProgress: ProgressViewStatus = .stop

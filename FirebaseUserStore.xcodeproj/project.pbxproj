@@ -45,7 +45,7 @@
 		3B1379A229F813B500D25F55 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1379A129F813B500D25F55 /* FirebaseStorage */; };
 		3B1379A429F813B500D25F55 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 3B1379A329F813B500D25F55 /* FirebaseStorageCombine-Community */; };
 		3B18B5BD2A45DCA100977D61 /* ShortcutsApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18B5BC2A45DCA100977D61 /* ShortcutsApiManager.swift */; };
-		3B18B5C32A49D30400977D61 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18B5C22A49D30400977D61 /* Store.swift */; };
+		3B18B5C32A49D30400977D61 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B18B5C22A49D30400977D61 /* Extensions.swift */; };
 		3B1F669628FC0C6C009225A4 /* FeedDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */; };
 		3B1F669728FC0C6C009225A4 /* FeedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669128FC0C6C009225A4 /* FeedState.swift */; };
 		3B1F669828FC0C6C009225A4 /* FeedMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1F669228FC0C6C009225A4 /* FeedMutation.swift */; };
@@ -209,7 +209,7 @@
 		3B13796B29F7C04C00D25F55 /* DetailItemReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemReducer.swift; sourceTree = "<group>"; };
 		3B13796C29F7C04C00D25F55 /* DetailItemAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailItemAction.swift; sourceTree = "<group>"; };
 		3B18B5BC2A45DCA100977D61 /* ShortcutsApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsApiManager.swift; sourceTree = "<group>"; };
-		3B18B5C22A49D30400977D61 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		3B18B5C22A49D30400977D61 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3B1F669028FC0C6C009225A4 /* FeedDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedDispatcher.swift; sourceTree = "<group>"; };
 		3B1F669128FC0C6C009225A4 /* FeedState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedState.swift; sourceTree = "<group>"; };
 		3B1F669228FC0C6C009225A4 /* FeedMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedMutation.swift; sourceTree = "<group>"; };
@@ -451,7 +451,7 @@
 		3B18B5C12A49D2EC00977D61 /* SwiftUDF */ = {
 			isa = PBXGroup;
 			children = (
-				3B18B5C22A49D30400977D61 /* Store.swift */,
+				3B18B5C22A49D30400977D61 /* Extensions.swift */,
 			);
 			path = SwiftUDF;
 			sourceTree = "<group>";
@@ -1092,7 +1092,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */,
-				3B18B5C32A49D30400977D61 /* Store.swift in Sources */,
+				3B18B5C32A49D30400977D61 /* Extensions.swift in Sources */,
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
 				3B433E7129DF2E6F007C8A26 /* TimerModifier.swift in Sources */,
 				3B5CA9212992609D00E16151 /* LibraryStore.swift in Sources */,

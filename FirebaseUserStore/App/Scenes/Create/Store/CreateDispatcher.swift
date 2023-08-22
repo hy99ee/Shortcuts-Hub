@@ -37,9 +37,7 @@ let createDispatcher: DispatcherType<CreateAction, CreateMutation, LibraryPackag
         }
 
         return Just(String(userId))
-            .flatMap {
-                packages.itemsService.requestItemFromAppleApi(appleId: $0)
-            }
+            .flatMap { packages.itemsService.requestItemFromAppleApi(appleId: $0) }
             .map { .setAppleItem($0, linkFromUser: link) }
             .catch { _ in Just(.setError(.upload)) }
             .eraseToAnyPublisher()

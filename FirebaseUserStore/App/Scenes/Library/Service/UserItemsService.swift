@@ -184,47 +184,63 @@ final class UserItemsService: UserItemsServiceType {
         }.eraseToAnyPublisher()
     }
 
+    var request: URLRequest?
     func requestItemFromAppleApi(appleId id: String) -> AnyPublisher<AppleApiItem, ItemsServiceError> {
-        Deferred {
-            Future {[weak self] promise in
-                guard let self else { return promise(.failure(.invalidUserId)) }
-                
-                guard let url = URL(string: self.appleApiPath + id) else {
-                    fatalError("Missing URL")
-                }
-
-                   let urlRequest = URLRequest(url: url)
-
-                   let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-                       if let error = error {
-                           return promise(.failure(.appleError(error)))
-                       }
-
-                       guard let response = response as? HTTPURLResponse else {
-                           return promise(.failure(.receiveAppleItem))
-                       }
-
-                       if response.statusCode == 200 {
-                           guard let data = data else { return promise(.failure(.receiveAppleItem))}
-                           DispatchQueue.main.async {
-                               do {
-                                   let decodedItem = try JSONDecoder().decode(AppleApiItem.self, from: data)
-                                   return promise(.success(decodedItem))
-                               } catch {
-                                   return promise(.failure(.withDecode))
-                               }
-                           }
-                       } else {
-                           return promise(.failure(.receiveAppleItem))
-                       }
-                   }
-
-                   dataTask.resume()
+        self.request = URLRequest(url: URL(string: self.appleApiPath + id)!)
+        return URLSession.shared.dataTaskPublisher(for: self.request!)
+            .timeout(.seconds(3), scheduler: DispatchQueue.main) {
+                URLError(.timedOut)
             }
-        }
-        .timeout(.seconds(3), scheduler: DispatchQueue.main)
-        .retry(3)
-        .eraseToAnyPublisher()
+            .tryMap { element -> Data in
+                guard let httpResponse = element.response as? HTTPURLResponse,
+                      httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return element.data
+            }
+            .decode(type: AppleApiItem.self, decoder: JSONDecoder())
+            .mapError {
+                switch $0 {
+                case is DecodingError: return .withDecode
+                case URLError.badServerResponse: return .receiveAppleItem
+                case URLError.timedOut: return .receiveAppleItem
+                default: return .unknownError
+                }
+            }
+            .retry(3)
+            .print("+++++++")
+            .eraseToAnyPublisher()
+
+//                   let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+//                       if let error = error {
+//                           return promise(.failure(.appleError(error)))
+//                       }
+//
+//                       guard let response = response as? HTTPURLResponse else {
+//                           return promise(.failure(.receiveAppleItem))
+//                       }
+//
+//                       if response.statusCode == 200 {
+//                           guard let data = data else { return promise(.failure(.receiveAppleItem))}
+//                           DispatchQueue.main.async {
+//                               do {
+//                                   let decodedItem = try JSONDecoder().decode(AppleApiItem.self, from: data)
+//                                   return promise(.success(decodedItem))
+//                               } catch {
+//                                   return promise(.failure(.withDecode))
+//                               }
+//                           }
+//                       } else {
+//                           return promise(.failure(.receiveAppleItem))
+//                       }
+//                   }
+
+//                   dataTask.resume()
+//            }
+//        }
+//        .timeout(.seconds(1), scheduler: DispatchQueue.main)
+//        .retry(3)
+//        .eraseToAnyPublisher()
     }
 
     func uploadNewItem(_ item: Item) -> AnyPublisher<Item, ItemsServiceError> {

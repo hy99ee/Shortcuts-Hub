@@ -41,27 +41,8 @@ struct LibraryView: View {
     }
 
     var body: some View {
-        VStack {
-            if store.state.isShowErrorView,
-               store.state.isShowEmptyView == nil,
-               store.state.isShowEmptySearchView == nil {
-                Text("Fucl")
-                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
-            } else if store.state.loginState == .loading {
-                unknownUserView.toolbar { toolbarView }
-            } else if store.state.loginState == .loggedOut {
-                unloginUserView.toolbar { toolbarView }
-            } else if store.state.isShowEmptyView ?? false {
-                emptyView.toolbar { toolbarView }
-            } else if store.state.isShowEmptySearchView ?? false {
-                emptyView.toolbar { toolbarView }
-            } else if store.state.isShowErrorView {
-                updateableErrorView.toolbar { toolbarView }
-            } else {
-                LibraryCollectionView(store: store, searchBinding: searchBinding)
-            }
-        }
-        .onAppear { store.dispatch(.initLibrary) }
+        LibraryCollectionView(store: store, searchBinding: searchBinding)
+            .onAppear { store.dispatch(.initLibrary) }
     }
 
     private var updateableErrorView: some View {

@@ -7,23 +7,19 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     switch mutation {
     case let .updateItemsPreloaders(count):
-        state.loadItems = []
-        state.items = []
+        state.preloadItems = []
 
         for index in 0..<count {
-            state.loadItems!.append(LoaderItem(id: index))
+            state.preloadItems!.append(LoaderItem(id: index))
         }
 
     case let .updateItems(items):
-        state.isShowEmptyView = items.isEmpty
-                              && state.searchFilter.isEmpty
-                              && state.viewProgress == .stop
-        state.loadItems = nil
+        state.preloadItems = nil
         state.searchedItems = nil
         state.items = items
 
     case let .appendItems(items):
-        state.loadItems = nil
+        state.preloadItems = nil
         state.searchedItems = nil
         state.items += items
 
@@ -36,13 +32,8 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     case let .setSearchFilter(text):
         state.searchFilter = text
 
-        if text.isEmpty {
-            state.searchedItems = nil
-        }
+        if text.isEmpty { state.searchedItems = nil }
 
-    case .empty:
-        emptyData()
-    
     case .openLogin:
         return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
 
@@ -54,7 +45,6 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .addItem(item):
         state.items.insert(item, at: 0)
-        state.isShowEmptyView = false
 
         if state.searchedItems != nil, item.tags.contains(state.searchFilter) {
             state.searchedItems!.insert(item, at: 0)
@@ -62,7 +52,6 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     case let .removeItem(item):
         state.items.removeAll { $0 == item }
-        if state.items.isEmpty { state.isShowEmptyView = true }
 
         if state.searchedItems != nil {
             state.searchedItems!.removeAll { $0 == item }
@@ -96,15 +85,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
     }
 
     return Just(.state(state)).eraseToAnyPublisher()
-    
-    func emptyData() {
-        state.loadItems = []
-        state.items = []
-        state.isShowEmptyView = true
-    }
 
     func errorData() {
-        state.loadItems = []
+        state.preloadItems = []
         state.items = []
         state.isShowErrorView = true
     }
