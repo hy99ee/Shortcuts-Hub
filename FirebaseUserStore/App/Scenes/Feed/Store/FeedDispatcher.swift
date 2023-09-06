@@ -64,7 +64,7 @@ let feedDispatcher: DispatcherType<FeedAction, FeedMutation, FeedPackages> = { a
 //            .eraseToAnyPublisher()
 //    }
     func mutationShowAlert(with error: Error) -> AnyPublisher<FeedMutation, Never> {
-        Just(FeedMutation.errorAlert(error: error))
+        Just(.errorAlert(error: error))
             .eraseToAnyPublisher()
     }
 }

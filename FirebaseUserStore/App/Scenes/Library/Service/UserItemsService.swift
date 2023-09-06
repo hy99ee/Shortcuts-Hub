@@ -208,39 +208,7 @@ final class UserItemsService: UserItemsServiceType {
                 }
             }
             .retry(3)
-            .print("+++++++")
             .eraseToAnyPublisher()
-
-//                   let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-//                       if let error = error {
-//                           return promise(.failure(.appleError(error)))
-//                       }
-//
-//                       guard let response = response as? HTTPURLResponse else {
-//                           return promise(.failure(.receiveAppleItem))
-//                       }
-//
-//                       if response.statusCode == 200 {
-//                           guard let data = data else { return promise(.failure(.receiveAppleItem))}
-//                           DispatchQueue.main.async {
-//                               do {
-//                                   let decodedItem = try JSONDecoder().decode(AppleApiItem.self, from: data)
-//                                   return promise(.success(decodedItem))
-//                               } catch {
-//                                   return promise(.failure(.withDecode))
-//                               }
-//                           }
-//                       } else {
-//                           return promise(.failure(.receiveAppleItem))
-//                       }
-//                   }
-
-//                   dataTask.resume()
-//            }
-//        }
-//        .timeout(.seconds(1), scheduler: DispatchQueue.main)
-//        .retry(3)
-//        .eraseToAnyPublisher()
     }
 
     func uploadNewItem(_ item: Item) -> AnyPublisher<Item, ItemsServiceError> {

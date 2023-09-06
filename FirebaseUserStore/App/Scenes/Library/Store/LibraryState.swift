@@ -1,34 +1,15 @@
+import Foundation
 import Combine
 import SwiftUDF
 
+
 struct LibraryState: StateType, ReinitableByNewSelf {
-    var items: [Item] = [] {
-        didSet {
-            isShowEmptyView = items.isEmpty
+    var items: [Item] = []
+    var preloadItems: [LoaderItem]?
+    var searchedItems: [Item]?
 
-            isShowErrorView = false
-            isShowEmptySearchView = false
-        }
-    }
-
-    var preloadItems: [LoaderItem]? {
-        didSet {
-            isShowErrorView = false
-            isShowEmptyView = false
-            isShowEmptySearchView = false
-        }
-    }
-
-    var searchedItems: [Item]? {
-        didSet {
-            isShowEmptySearchView = searchedItems?.isEmpty ?? false
-
-            isShowEmptyView = false
-            isShowErrorView = false
-        }
-    }
     var lastAdded: Item?
-    var removingItem: Item?
+    var itemsRemovingQueue: [UUID] = []
 
     var loginState: SessionState = .loading
 
@@ -37,7 +18,7 @@ struct LibraryState: StateType, ReinitableByNewSelf {
     var isShowEmptySearchView: Bool?
     var isShowEmptyView: Bool?
 
-    var isShowErrorView = false
+    var isShowErrorView: Bool?
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

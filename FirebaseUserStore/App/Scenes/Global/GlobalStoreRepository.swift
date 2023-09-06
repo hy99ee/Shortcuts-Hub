@@ -45,7 +45,8 @@ final class GlobalStoreRepository {
         middlewares: [
             LibraryStore.middlewareUpdateCheck,
             LibraryStore.middlewareAuthCheck,
-            LibraryStore.middlewareSearchCheck
+            LibraryStore.middlewareSearchCheck,
+            LibraryStore.middlewareDeletedNotOpen
         ]
     )
 

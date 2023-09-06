@@ -9,90 +9,135 @@ struct LibraryCollectionView: View {
     @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row2
 
+    @State private var errorLibraryDelay = false
+
     @State private var contentType: FeedContent = .loading
+    @State private var isShowSearchable = false
+
+    private let appearAnimationOffset: CGFloat = 50
 
     private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
     private let progress = HDotsProgress()
 
     var body: some View {
         NavigationView {
-                ScrollView(showsIndicators: false) {
-                    switch contentType {
-                    case .content(let type):
-                        switch type {
-                        case .default(let status):
-                            switch status {
-                            case .loaded(let items): itemsView(items).transition(.opacity)
-                            case .preload(let preload): loadedItemsView(preload).transition(.opacity)
-                            case .none: EmptyView()
-                            }
-
-                        case .search(let status):
-                            switch status {
-                            case .loaded(let items): searchedItemsView(items).transition(.opacity)
-                            case .preload(let preload): loadedItemsView(preload).transition(.opacity)
-                            case .none: EmptyView()
-                            }
-
-                        }
-                    case .empty(let type):
-                        switch type {
-                        case .default: Text("Empty")
-                        case .search: Text("Empty search")
-                        }
-                    case .loading:
-                        HDotsProgress()
-                    }
+            ScrollView(showsIndicators: false) {
+                if isShowSearchable {
+                    scrollContent
+                        .searchable(text: $searchBinding, placement: .navigationBarDrawer(displayMode: .automatic))
+                        .disableAutocorrection(true)
+                        .onSubmit(of: .search) { store.dispatch(.search(text: searchBinding)) }
+                        .transition(.opacity)
+                } else {
+                    scrollContent
+                        .transition(.opacity)
                 }
-                .navigationTitle("Library")
-                .navigationBarItems(trailing: toolbarView)
-                .searchable(text: $searchBinding)
-                .disableAutocorrection(true)
-                .onSubmit(of: .search) { store.dispatch(.search(text: searchBinding)) }
-                .padding([.trailing, .leading], 12)
-                .refreshable { await asyncUpdate() }
-        }
-        .onChange(of: store.state) { newState in
-            if let searchedItems = newState.searchedItems {
-                withAnimation(.spring().speed(0.75)) {
-                    self.contentType = .content(type: .search(status: .loaded(items: searchedItems)))
-                }
-            } else if let loadedItems = newState.preloadItems {
-                withAnimation(.spring().speed(0.75)) {
-                    self.contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
-                }
-            } else {
-                withAnimation(.spring().speed(0.75)) {
-                    self.contentType = .content(type: .default(status: .loaded(items: store.state.items)))
+            }
+            .frame(maxWidth: .infinity)
+            .animation(.spring().speed(0.9), value: contentType)
+            .navigationTitle("Library")
+            .navigationBarItems(trailing: toolbarView)
+            .padding([.trailing, .leading], 12)
+            .refreshable { await asyncUpdate() }
+            .onChange(of: store.state) { newState in
+                if newState.isShowErrorView ?? false {
+                    contentType = .error(type: .default(status: nil))
+                    isShowSearchable = false
+                } else if newState.isShowEmptyView ?? false {
+                    contentType = .empty(type: .default(status: nil))
+                    isShowSearchable = false
+                } else if newState.isShowEmptySearchView ?? false {
+                    contentType = .empty(type: .search(status: nil))
+                    isShowSearchable = true
+                } else if let searchedItems = newState.searchedItems {
+                    contentType = .content(type: .search(status: .loaded(items: searchedItems)))
+                    isShowSearchable = true
+                } else if let loadedItems = newState.preloadItems {
+                    contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
+                    isShowSearchable = true
+                } else {
+                    contentType = .content(type: .default(status: .loaded(items: store.state.items)))
+                    isShowSearchable = true
                 }
             }
         }
     }
 
-    private func searchedItemsView(_ searchedItems: [Item]) -> some View {
-        LazyVGrid(columns: columns) {
-            ForEach(0..<searchedItems.count, id: \.self) { index in
-                ItemCellView(
-                    item: searchedItems[index],
-                    cellStyle: cellStyle,
-                    isFromSelf: true
-                )
-                .padding(.vertical, 3)
-                .padding(.horizontal, 2)
-                .onTapGesture { store.dispatch(.click(searchedItems[index])) }
-                .contextMenu {
-                    Button(role: .destructive) {
-                        if let item = searchedItems.at(index) {
-                            store.dispatch(.removeFromLibrary(item: item))
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
+    @ViewBuilder private var scrollContent: some View {
+        switch contentType {
+        case .content(let type):
+            switch type {
+            case .`default`(let status):
+                switch status {
+                case .loaded(let items):
+                    itemsView(items)
+                        .transition(.asymmetric(insertion: .opacity, removal: .identity))
+                        .frame(maxWidth: .infinity)
+                case .preload(let preload):
+                    loadedItemsView(preload)
+                        .transition(.asymmetric(insertion: .opacity, removal: .identity))
+                        .frame(maxWidth: .infinity)
+                case .none:
+                    Text("")
+                }
+
+            case .search(let status):
+                switch status {
+                case .loaded(let items):
+                    searchedItemsView(items)
+                        .transition(.asymmetric(insertion: .opacity, removal: .identity))
+                        .frame(maxWidth: .infinity)
+                case .preload(let preload):
+                    loadedItemsView(preload)
+                        .transition(.asymmetric(insertion: .opacity, removal: .identity))
+                        .frame(maxWidth: .infinity)
+                case .none:
+                    Text("")
                 }
             }
+
+        case .empty(let type):
+            switch type {
+            case .`default`:
+                CollectionViewEmpty(errorMessage: "Empty")
+                    .transition(
+                        .asymmetric(
+                            insertion: .opacity.combined(with: .offset(y: appearAnimationOffset)),
+                            removal: .opacity.combined(with: .offset(y: appearAnimationOffset))
+                        )
+                    )
+                    .frame(maxWidth: .infinity, idealHeight: 500)
+            case .search:
+                CollectionViewEmpty(errorMessage: "Empty search")
+                    .transition(
+                        .asymmetric(
+                            insertion: .opacity.combined(with: .offset(y: appearAnimationOffset)),
+                            removal: .opacity.combined(with: .offset(y: appearAnimationOffset))
+                        )
+                    )
+                    .frame(maxWidth: .infinity, idealHeight: 500)
+            }
+
+        case .error(type: _):
+            updateableErrorView
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: appearAnimationOffset)),
+                        removal: .opacity.combined(with: .offset(y: appearAnimationOffset))
+                    )
+                )
+                .frame(maxWidth: .infinity)
+
+        case .loading:
+            HDotsProgress()
+                .transition(
+                    .asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: appearAnimationOffset)),
+                        removal: .opacity
+                    )
+                )
+                .frame(maxWidth: .infinity)
         }
-        .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-        .animation(.interactiveSpring().speed(0.75), value: store.state.searchedItems)
     }
 
     private func loadedItemsView(_ loadedItems: [LoaderItem]) -> some View {
@@ -105,7 +150,7 @@ struct LibraryCollectionView: View {
             }
         }
         .modifier(StaticPreloaderViewModifier())
-        .animation(.interactiveSpring().speed(0.75), value: store.state.searchedItems)
+        .animation(.interactiveSpring().speed(0.8), value: store.state.searchedItems)
     }
 
     private func itemsView(_ items: [Item]) -> some View {
@@ -117,11 +162,10 @@ struct LibraryCollectionView: View {
                     isFromSelf: true
                 )
                 .overlay {
-                    if item == store.state.removingItem {
+                    if store.state.itemsRemovingQueue.contains(item.id) {
                         ZStack {
                             Color.red.opacity(0.5)
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .modifier(StaticPreloaderViewModifier())
                         }
                         .cornerRadius(14)
                     }
@@ -136,16 +180,73 @@ struct LibraryCollectionView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
+                .onAppear {
+                    if store.state.items.count >= ItemsServiceQueryLimit && !isUpdating {
+                        isUpdating = true
+                        Task { await asyncNext() }
+                    }
+                }
             }
         }
-        .onAppear {
-            if store.state.items.count >= ItemsServiceQueryLimit && !isUpdating {
-                isUpdating = true
-                Task { await asyncNext() }
+
+        .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
+        .animation(.interactiveSpring().speed(0.8), value: store.state.items)
+    }
+
+    private func searchedItemsView(_ searchedItems: [Item]) -> some View {
+        LazyVGrid(columns: columns) {
+            ForEach(searchedItems) { item in
+                ItemCellView(
+                    item: item,
+                    cellStyle: cellStyle,
+                    isFromSelf: true
+                )
+                .overlay {
+                    if store.state.itemsRemovingQueue.contains(item.id) {
+                        ZStack {
+                            Color.red.opacity(0.4)
+                                .modifier(StaticPreloaderViewModifier())
+                        }
+                        .cornerRadius(14)
+                    }
+                }
+                .padding(.vertical, 3)
+                .padding(.horizontal, 2)
+                .onTapGesture { store.dispatch(.click(item)) }
+                .contextMenu {
+                    Button(role: .destructive) {
+                            store.dispatch(.removeFromLibrary(item: item))
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-        .animation(.interactiveSpring().speed(0.75), value: store.state.items)
+        .animation(.interactiveSpring().speed(0.75), value: store.state.searchedItems)
+    }
+
+    private var updateableErrorView: some View {
+        VStack {
+            Spacer()
+            Text("Error").monospacedDigit().bold().foregroundColor(.red)
+            ImageView(systemName: "arrow.triangle.2.circlepath") {
+                withAnimation {
+                    errorLibraryDelay = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        errorLibraryDelay = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            store.dispatch(.updateLibrary)
+                        }
+                    }
+                }
+            }
+            .modifier(ButtonProgressViewModifier(progressStatus: store.state.viewProgress, type: .clearView))
+            .disabled(errorLibraryDelay)
+            .padding()
+
+            Spacer()
+        }
     }
 
     private var toolbarView: some View {
@@ -178,5 +279,23 @@ struct LibraryCollectionView: View {
             .handleEvents(receiveOutput: { _ in isUpdating = false })
             .eraseToAnyPublisher()
             .async()
+    }
+}
+
+struct CollectionViewEmpty: View {
+    let errorMessage: String
+
+    var body: some View {
+        VStack {
+            Spacer()
+            Image("EmptyIcon")
+                .resizable()
+                .frame(width: 100, height: 100)
+                .padding()
+
+            Text(errorMessage)
+                .font(.system(size: 20, weight: .semibold, design: .monospaced))
+            Spacer()
+        }
     }
 }

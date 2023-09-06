@@ -88,4 +88,18 @@ extension LibraryStore {
             .setFailureType(to: MiddlewareRedispatch.self)
             .eraseToAnyPublisher()
     }
+
+    static let middlewareDeletedNotOpen: Middleware = { state, action, packages in
+        if case .click(let item) = action,
+            state.itemsRemovingQueue.contains(item.id) {
+            return Fail(
+                error: MiddlewareRedispatch.redispatch(
+                    actions: []
+                )
+            ).eraseToAnyPublisher()
+        }
+        return Just(action)
+            .setFailureType(to: MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
+    }
 }

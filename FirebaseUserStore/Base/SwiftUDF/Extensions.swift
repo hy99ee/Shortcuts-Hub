@@ -15,11 +15,12 @@ enum FeedContent: Equatable {
             case loaded(items: [Item])
         }
 
-        case `default`(status: ContentStatus? = nil)
-        case search(status: ContentStatus? = nil)
+        case `default`(status: ContentStatus?)
+        case search(status: ContentStatus?)
     }
     case content(type: ContentType)
     case empty(type: ContentType)
+    case error(type: ContentType)
     case loading
 }
 

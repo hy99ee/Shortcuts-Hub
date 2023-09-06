@@ -20,7 +20,6 @@ struct ItemCellView: View, Identifiable {
                             Image(uiImage: imageFromData)
                                 .resizable()
                                 .scaledToFill()
-                                .shadow(radius: 8)
                                 .cornerRadius(12)
                                 .shadow(radius: 8)
                         } else {

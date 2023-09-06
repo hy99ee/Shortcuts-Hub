@@ -18,8 +18,6 @@ class OffsetCounter: ObservableObject {
     }
 }
 
-let topSafeArea = UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0
-
 struct ItemsSectionView: View {
     @State private var icons: [EquatableView<CacheAsyncImage<Image, Color, Color>>]
     @State private var title: String
@@ -68,7 +66,7 @@ struct ItemsSectionView: View {
                     .scaleEffect(navigationHeader == 0 ? 0.95 : 1)
                     .onAppear {
                         withAnimation(.easeOut(duration: 0.45)) {
-                            navigationHeader = topSafeArea
+                            navigationHeader = Utilities.shared.safeAreaInsets?.top ?? 0
                         }
                     }
             }

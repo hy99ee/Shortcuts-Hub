@@ -139,7 +139,6 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
         return fetchFromDocs
             .map { LibraryMutation.searchItems($0) }
             .catch { Just(LibraryMutation.errorAlert(error: $0)) }
-            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     func mutationShowAboutSheet(packages: LibraryPackages) -> AnyPublisher<LibraryMutation, Never> {

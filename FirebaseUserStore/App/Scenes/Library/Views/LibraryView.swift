@@ -7,10 +7,6 @@ struct LibraryView: View {
     private let searchQuery: CurrentValueSubject<String, Never>
     private var subscriptions = Set<AnyCancellable>()
 
-    @State private var showLoader = false
-    @State private var isRefresh = false
-    @State private var errorLibraryDelay = false
-
     var searchBinding: Binding<String> {
         .init(
             get: { searchQuery.value },
@@ -41,39 +37,14 @@ struct LibraryView: View {
     }
 
     var body: some View {
-        LibraryCollectionView(store: store, searchBinding: searchBinding)
-            .onAppear { store.dispatch(.initLibrary) }
-    }
-
-    private var updateableErrorView: some View {
-        VStack {
-            Spacer()
-            Text("Error").monospacedDigit().bold().foregroundColor(.red)
-            ImageView(systemName: "arrow.triangle.2.circlepath") {
-                withAnimation {
-                    errorLibraryDelay = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        errorLibraryDelay = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            store.dispatch(.updateLibrary)
-                        }
-                    }
-                }
-            }
-            .modifier(ButtonProgressViewModifier(progressStatus: store.state.viewProgress, type: .clearView))
-            .disabled(errorLibraryDelay)
-            .padding()
-            
-            Spacer()
+        if store.state.loginState == .loggedOut {
+            unloginUserView.toolbar { toolbarView }
+        } else if store.state.loginState == .loading {
+            unknownUserView.toolbar { toolbarView }
+        } else {
+            LibraryCollectionView(store: store, searchBinding: searchBinding)
+                .onAppear { store.dispatch(.initLibrary) }
         }
-    }
-
-    private var emptyView: some View {
-        Text("Empty").bold()
-    }
-
-    private var emptySearchView: some View {
-        Text("Empty search").bold()
     }
 
     private var unloginUserView: some View {
