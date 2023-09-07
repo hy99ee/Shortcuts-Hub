@@ -4,7 +4,11 @@ import Combine
 struct LibraryView: View {
     @StateObject var store: LibraryStore
 
+    @State private var contentType: CollectionContent = .loading
+    @State private var isShowSearchable = false
+
     private let searchQuery: CurrentValueSubject<String, Never>
+
     private var subscriptions = Set<AnyCancellable>()
 
     var searchBinding: Binding<String> {
@@ -42,8 +46,34 @@ struct LibraryView: View {
         } else if store.state.loginState == .loading {
             unknownUserView.toolbar { toolbarView }
         } else {
-            LibraryCollectionView(store: store, searchBinding: searchBinding)
-                .onAppear { store.dispatch(.initLibrary) }
+            CollectionView(
+                store: store,
+                contentType: $contentType,
+                searchBinding: searchBinding,
+                isShowSearchable: $isShowSearchable
+            )
+            .onAppear { store.dispatch(.initLibrary) }
+            .onChange(of: store.state) { newState in
+                if newState.isShowErrorView ?? false {
+                    contentType = .error(type: .default(status: nil))
+                    isShowSearchable = false
+                } else if newState.isShowEmptyView ?? false {
+                    contentType = .empty(type: .default(status: nil))
+                    isShowSearchable = false
+                } else if newState.isShowEmptySearchView ?? false {
+                    contentType = .empty(type: .search(status: nil))
+                    isShowSearchable = true
+                } else if let searchedItems = newState.searchedItems {
+                    contentType = .content(type: .search(status: .loaded(items: searchedItems)))
+                    isShowSearchable = true
+                } else if let loadedItems = newState.preloadItems {
+                    contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
+                    isShowSearchable = true
+                } else {
+                    contentType = .content(type: .default(status: .loaded(items: store.state.items)))
+                    isShowSearchable = true
+                }
+            }
         }
     }
 

@@ -1,7 +1,58 @@
+import Foundation
 import Combine
 import SwiftUDF
 
 typealias LibraryStore = StateStore<LibraryState, LibraryAction, LibraryMutation, LibraryPackages, LibraryLink>
+
+extension LibraryStore: CollectionDelegate {
+    var navigationTitle: String { "Library" }
+
+    var items: [Item] {
+        state.items
+    }
+
+    var preloadItems: [LoaderItem]? {
+        state.preloadItems
+    }
+
+    var searchedItems: [Item]? {
+        state.searchedItems
+    }
+
+    var viewProgress: ProgressViewStatus {
+        state.viewProgress
+    }
+
+    var toolbarItems: [ToolbarCollectionItem] {
+        [
+            ToolbarCollectionItem(iconName: "person") { self.dispatch(.showAboutSheet) }
+        ]
+    }
+
+    func update() {
+        self.dispatch(.updateLibrary)
+    }
+
+    func search(_ text: String) {
+        self.dispatch(.search(text: text))
+    }
+
+    func click(_ item: Item) {
+        self.dispatch(.click(item))
+    }
+
+    func remove(_ item: Item) {
+        self.dispatch(.removeFromLibrary(item: item))
+    }
+
+    func next() {
+        self.dispatch(.next)
+    }
+
+    func isItemRemoving(_ item: Item) -> Bool {
+        state.itemsRemovingQueue.contains(item.id)
+    }
+}
 
 extension LibraryStore {
     func updatedSessionStatus(_ state: SessionState) {

@@ -7,7 +7,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .initLibrary, .updateLibrary:
         return mutationFetchItems(packages: packages)
-            .merge(with: Just(.setSearchFilter("")))
+//            .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .search(text):
@@ -18,7 +18,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case .next:
         return mutationNextItems(packages: packages)
-            .merge(with: Just(LibraryMutation.setSearchFilter("")))
+//            .merge(with: Just(LibraryMutation.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .click(item):

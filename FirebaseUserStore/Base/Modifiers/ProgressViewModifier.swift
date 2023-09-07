@@ -65,25 +65,33 @@ struct AnimationProgressViewModifier: ViewModifier {
 struct ButtonProgressViewModifier: ViewModifier {
     enum ModifierType {
         case clearView
+        case backgroundView
         case buttonView
     }
     
     private let progressStatus: ProgressViewStatus
+    private let type: ModifierType
     private let backgroundColor: Color
     private let progressViewColor: Color
     private let scale: CGFloat
 
     init(progressStatus: ProgressViewStatus, type: ModifierType) {
         self.progressStatus = progressStatus
+        self.type = type
 
         switch type {
         case .buttonView:
             self.backgroundColor = .blue
             self.progressViewColor = .white
             self.scale = 1.2
+
+        case .backgroundView:
+            self.backgroundColor = Color(UIColor.systemBackground)
+            self.progressViewColor = Color(UIColor.label)
+            self.scale = 1.5
         
         case .clearView:
-            self.backgroundColor = Color(UIColor.systemBackground)
+            self.backgroundColor = Color(UIColor.red)
             self.progressViewColor = .blue
             self.scale = 1.1
         }
@@ -92,15 +100,28 @@ struct ButtonProgressViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         if progressStatus != .stop {
-            content.overlay {
-                ZStack {
-                    Color(.clear).background(backgroundColor)
-                    
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
-                        .scaleEffect(scale)
+            switch type {
+            case .backgroundView:
+                content.overlay {
+                    ZStack {
+                        Color(.clear).background(backgroundColor)
+
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
+                            .scaleEffect(scale)
+                    }
                 }
-            }.mask(content)
+            default:
+                content.overlay {
+                    ZStack {
+                        Color(.clear).background(backgroundColor)
+
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: progressViewColor))
+                            .scaleEffect(scale)
+                    }
+                }.mask(content)
+            }
         } else {
             content
         }

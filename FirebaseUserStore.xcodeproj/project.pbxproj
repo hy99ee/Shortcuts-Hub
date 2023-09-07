@@ -107,7 +107,7 @@
 		3B5CA9292992609D00E16151 /* LibraryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA8F32992609D00E16151 /* LibraryCoordinator.swift */; };
 		3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA8F42992609D00E16151 /* LibraryMutation.swift */; };
 		3B5CA92B2992609D00E16151 /* LibraryPackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA8F52992609D00E16151 /* LibraryPackages.swift */; };
-		3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA9432992693100E16151 /* LibraryCollectionView.swift */; };
+		3B5CA9442992693100E16151 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA9432992693100E16151 /* CollectionView.swift */; };
 		3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */; };
 		3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */; };
 		3B6B2AED2930C91900784F04 /* ForgotPasswordServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */; };
@@ -143,6 +143,10 @@
 		3B9B07E629BF2BBF00CCEC10 /* AppleApiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9B07E529BF2BBF00CCEC10 /* AppleApiItem.swift */; };
 		3B9B07EB29BF5B2E00CCEC10 /* DissmissingKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9B07EA29BF5B2E00CCEC10 /* DissmissingKeyboard.swift */; };
 		3BA96D712AA7CD0400C0C403 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BA96D702AA7CD0400C0C403 /* Media.xcassets */; };
+		3BA96D742AA8B87200C0C403 /* CollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA96D732AA8B87200C0C403 /* CollectionDelegate.swift */; };
+		3BA96D762AA8BB1800C0C403 /* CollectionContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA96D752AA8BB1800C0C403 /* CollectionContent.swift */; };
+		3BA96D7A2AA8BB5C00C0C403 /* CollectionEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA96D792AA8BB5C00C0C403 /* CollectionEmptyView.swift */; };
+		3BA96D7C2AA8BC3F00C0C403 /* CollectionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA96D7B2AA8BC3F00C0C403 /* CollectionErrorView.swift */; };
 		3BAB792E29C1DA76003A0634 /* DatabaseUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAB792D29C1DA76003A0634 /* DatabaseUser.swift */; };
 		3BAF49952A00F57400A28E3B /* CreateableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAF49942A00F57400A28E3B /* CreateableItem.swift */; };
 		3BB5DC262A045075008CF7C6 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5DC252A045075008CF7C6 /* UIImage.swift */; };
@@ -271,7 +275,7 @@
 		3B5CA8F32992609D00E16151 /* LibraryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCoordinator.swift; sourceTree = "<group>"; };
 		3B5CA8F42992609D00E16151 /* LibraryMutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryMutation.swift; sourceTree = "<group>"; };
 		3B5CA8F52992609D00E16151 /* LibraryPackages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryPackages.swift; sourceTree = "<group>"; };
-		3B5CA9432992693100E16151 /* LibraryCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionView.swift; sourceTree = "<group>"; };
+		3B5CA9432992693100E16151 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		3B5CA9472993A1B100E16151 /* CollectionRowStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRowStyle.swift; sourceTree = "<group>"; };
 		3B5EDCFB294C6E110010C378 /* DeleteModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteModifier.swift; sourceTree = "<group>"; };
 		3B6B2AEC2930C91900784F04 /* ForgotPasswordServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceError.swift; sourceTree = "<group>"; };
@@ -308,6 +312,10 @@
 		3B9B07E529BF2BBF00CCEC10 /* AppleApiItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleApiItem.swift; sourceTree = "<group>"; };
 		3B9B07EA29BF5B2E00CCEC10 /* DissmissingKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissmissingKeyboard.swift; sourceTree = "<group>"; };
 		3BA96D702AA7CD0400C0C403 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		3BA96D732AA8B87200C0C403 /* CollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDelegate.swift; sourceTree = "<group>"; };
+		3BA96D752AA8BB1800C0C403 /* CollectionContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionContent.swift; sourceTree = "<group>"; };
+		3BA96D792AA8BB5C00C0C403 /* CollectionEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionEmptyView.swift; sourceTree = "<group>"; };
+		3BA96D7B2AA8BC3F00C0C403 /* CollectionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionErrorView.swift; sourceTree = "<group>"; };
 		3BAB792D29C1DA76003A0634 /* DatabaseUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUser.swift; sourceTree = "<group>"; };
 		3BAF49942A00F57400A28E3B /* CreateableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateableItem.swift; sourceTree = "<group>"; };
 		3BB5DC252A045075008CF7C6 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -422,6 +430,7 @@
 		3B13795E29F7C04C00D25F55 /* DetailItem */ = {
 			isa = PBXGroup;
 			children = (
+				3BA96D722AA8B85A00C0C403 /* CollectionView */,
 				3B13795F29F7C04C00D25F55 /* View */,
 				3B13796529F7C04C00D25F55 /* Store */,
 			);
@@ -615,7 +624,6 @@
 			children = (
 				3B5CA8F32992609D00E16151 /* LibraryCoordinator.swift */,
 				3B5CA8E82992609D00E16151 /* LibraryView.swift */,
-				3B5CA9432992693100E16151 /* LibraryCollectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -708,6 +716,34 @@
 				3B27A56729A613D600CF9A5F /* Create */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		3BA96D722AA8B85A00C0C403 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				3BA96D782AA8BB4000C0C403 /* view */,
+				3BA96D772AA8BB3700C0C403 /* model */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		3BA96D772AA8BB3700C0C403 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				3BA96D752AA8BB1800C0C403 /* CollectionContent.swift */,
+				3BA96D732AA8B87200C0C403 /* CollectionDelegate.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		3BA96D782AA8BB4000C0C403 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				3B5CA9432992693100E16151 /* CollectionView.swift */,
+				3BA96D792AA8BB5C00C0C403 /* CollectionEmptyView.swift */,
+				3BA96D7B2AA8BC3F00C0C403 /* CollectionErrorView.swift */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		3BAB792C29C1DA6B003A0634 /* Model */ = {
@@ -1095,6 +1131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BA96D7A2AA8BB5C00C0C403 /* CollectionEmptyView.swift in Sources */,
 				3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */,
 				3B18B5C32A49D30400977D61 /* Extensions.swift in Sources */,
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
@@ -1127,6 +1164,7 @@
 				3BDF00432A026C0500A67F0E /* LocalDatabase.swift in Sources */,
 				3B7AE4C6296C4577002A9948 /* LoginCoordinator.swift in Sources */,
 				3BDAAEB629C2535A0064F7D0 /* SavedItemsService.swift in Sources */,
+				3BA96D742AA8B87200C0C403 /* CollectionDelegate.swift in Sources */,
 				3B45AC05292BC862002531D8 /* LoginDispatcher.swift in Sources */,
 				3BDAAEBA29C2535A0064F7D0 /* SavedCoordinator.swift in Sources */,
 				3B87854A2983EBDB00F49DB2 /* Warning.swift in Sources */,
@@ -1180,6 +1218,7 @@
 				3B4C44A729019E5500CDC700 /* FeedReducer.swift in Sources */,
 				3B433E9C29E6CD88007C8A26 /* FeedDetailSectionService.swift in Sources */,
 				3B433E5F29CB062C007C8A26 /* ItemsSectionView.swift in Sources */,
+				3BA96D7C2AA8BC3F00C0C403 /* CollectionErrorView.swift in Sources */,
 				3B1F669B28FC0C6C009225A4 /* FeedAction.swift in Sources */,
 				3B13796D29F7C04C00D25F55 /* DetailItemCoordinator.swift in Sources */,
 				3B703D522967366500F43A45 /* ForgotPackages.swift in Sources */,
@@ -1201,7 +1240,7 @@
 				3B13797629F7C04C00D25F55 /* DetailItemReducer.swift in Sources */,
 				3BDAAEB729C2535A0064F7D0 /* MockSavedService.swift in Sources */,
 				3B5CA92B2992609D00E16151 /* LibraryPackages.swift in Sources */,
-				3B5CA9442992693100E16151 /* LibraryCollectionView.swift in Sources */,
+				3B5CA9442992693100E16151 /* CollectionView.swift in Sources */,
 				3BB7861B294886D400012DB0 /* Progress.swift in Sources */,
 				3B7A4B552954525E000AF26A /* MockFeedItemsService.swift in Sources */,
 				3B27A57E29A613D600CF9A5F /* CreateMutation.swift in Sources */,
@@ -1219,6 +1258,7 @@
 				3B5EDCFC294C6E110010C378 /* DeleteModifier.swift in Sources */,
 				3B433E6D29DC3CA2007C8A26 /* OffsetObservingScrollView.swift in Sources */,
 				3B45AC03292BC658002531D8 /* RegistrationServiceError.swift in Sources */,
+				3BA96D762AA8BB1800C0C403 /* CollectionContent.swift in Sources */,
 				3B433EA429E6CD88007C8A26 /* FeedDetailSectionState.swift in Sources */,
 				3B5CA92A2992609D00E16151 /* LibraryMutation.swift in Sources */,
 				3BD76EF02899AF6C001D64E2 /* ForgotPasswordView.swift in Sources */,
