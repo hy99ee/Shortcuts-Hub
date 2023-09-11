@@ -1,22 +1,22 @@
 import Firebase
 
-protocol FetchedResponceType {
+protocol FetchedResponseType {
     associatedtype DataType
     var query: DataType { get }
     var count: Int { get }
 }
 
-struct FetchedSectionResponce: FetchedResponceType {
+struct FetchedSectionResponce: FetchedResponseType {
     let query: [Query]
     let count: Int
 }
 
-struct FetchedResponce: FetchedResponceType {
+struct FetchedResponse: FetchedResponseType {
     let query: Query
     let count: Int
 }
 
-struct MockFetchedResponce: FetchedResponceType {
+struct MockFetchedResponce: FetchedResponseType {
     struct MockQuery {
         let data: String
     }

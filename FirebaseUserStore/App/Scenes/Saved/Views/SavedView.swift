@@ -4,12 +4,11 @@ import Combine
 struct SavedView: View {
     @StateObject var store: SavedStore
 
+    @State private var contentType: CollectionContent = .loading
+    @State private var isShowSearchable = false
+
     private let searchQueryBublisher: CurrentValueSubject<String, Never>
     private var subscriptions = Set<AnyCancellable>()
-
-    @State private var showLoader = false
-    @State private var isRefresh = false
-    @State private var errorSavedDelay = false
 
     var searchBinding: Binding<String> {
         .init(
@@ -41,65 +40,33 @@ struct SavedView: View {
     }
 
     var body: some View {
-        VStack {
-            if store.state.isShowErrorView && store.state.isShowEmptyView == nil {
-                Text("")
-                    .modifier(ProgressViewModifier(progressStatus: store.state.viewProgress, backgroundOpacity: 0))
-            } else if store.state.isShowEmptyView ?? false {
-                emptyView
-            } else if store.state.isShowErrorView {
-                updateableErrorView
-            } else {
-                SavedCollectionView(store: store, searchBinding: searchBinding)
-            }
-        }
+        CollectionView(
+            store: store,
+            contentType: $contentType,
+            searchBinding: searchBinding,
+            isShowSearchable: $isShowSearchable
+        )
         .onAppear { store.dispatch(.initSaved) }
-    }
-
-    private var updateableErrorView: some View {
-        VStack {
-            Spacer()
-            Text("Error").monospacedDigit().bold().foregroundColor(.red)
-            ImageView(systemName: "arrow.triangle.2.circlepath") {
-                withAnimation {
-                    errorSavedDelay = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        errorSavedDelay = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            store.dispatch(.updateSaved)
-                        }
-                    }
-                }
+        .onChange(of: store.state) { newState in
+            if newState.isShowErrorView ?? false {
+                contentType = .error(type: .default(status: nil))
+                isShowSearchable = false
+            } else if newState.isShowEmptyView ?? false {
+                contentType = .empty(type: .default(status: nil))
+                isShowSearchable = false
+            } else if newState.isShowEmptySearchView ?? false {
+                contentType = .empty(type: .search(status: nil))
+                isShowSearchable = true
+            } else if let searchedItems = newState.searchedItems {
+                contentType = .content(type: .search(status: .loaded(items: searchedItems)))
+                isShowSearchable = true
+            } else if let loadedItems = newState.loadingItems {
+                contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
+                isShowSearchable = true
+            } else {
+                contentType = .content(type: .default(status: .loaded(items: store.state.items)))
+                isShowSearchable = true
             }
-            .modifier(ButtonProgressViewModifier(progressStatus: store.state.viewProgress, type: .clearView))
-            .disabled(errorSavedDelay)
-            .padding()
-            
-            Spacer()
-        }
-    }
-
-    private var emptyView: some View {
-//        VStack {
-//            Spacer()
-            Text("Empty").bold()
-//            Spacer()
-//        }
-    }
-
-    private var unloginUserView: some View {
-        VStack {
-            Spacer()
-            Text("Unlogin").bold()
-            Spacer()
-        }
-    }
-
-    private var loadingView: some View {
-        VStack {
-//            Spacer()
-            HDotsProgress()
-//            Spacer()
         }
     }
 }

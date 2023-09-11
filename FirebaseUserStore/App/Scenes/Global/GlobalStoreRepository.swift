@@ -31,7 +31,9 @@ final class GlobalStoreRepository {
         packages: SavedPackages(),
         middlewares: [
             SavedStore.middlewareUpdateCheck,
-            SavedStore.middlewareLocalItems
+            SavedStore.middlewareLocalItems,
+            SavedStore.middlewareSearchCheck,
+            SavedStore.middlewareDeletedNotOpen
         ]
     )
 

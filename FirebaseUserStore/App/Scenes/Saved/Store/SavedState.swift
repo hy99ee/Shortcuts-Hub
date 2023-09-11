@@ -2,27 +2,23 @@ import Combine
 import SwiftUDF
 import SwiftUI
 
+//typealias SavedState = CollectionState
 struct SavedState: StateType, ReinitableByNewSelf {
-    var loadItems: [LoaderItem]? {
-        didSet {
-            isShowErrorView = false
-        }
-    }
-    var items: [Item] = [] {
-        didSet {
-            isShowErrorView = false
-        }
-    }
-
+    var items: [Item] = []
+    var loadingItems: [LoaderItem]?
     var searchedItems: [Item]?
+
     var lastAdded: Item?
+    var itemsRemovingQueue: [UUID] = []
 
     var loginState: SessionState = .loading
 
     var searchFilter = ""
 
+    var isShowEmptySearchView: Bool?
     var isShowEmptyView: Bool?
-    var isShowErrorView = false
+
+    var isShowErrorView: Bool?
 
     var viewProgress: ProgressViewStatus = .stop
     var buttonProgress: ProgressViewStatus = .stop

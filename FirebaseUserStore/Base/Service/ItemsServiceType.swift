@@ -4,19 +4,19 @@ import FirebaseFirestore
 
 protocol ItemsServiceType {
     associatedtype ServiceError: Error
-    associatedtype ResponceType: FetchedResponceType
+    associatedtype ResponseType: FetchedResponseType
     associatedtype OutputType: Identifiable
 
-    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool) -> AnyPublisher<[OutputType], ItemsServiceError>
+    func fetchItemsFromQuery(_ query: ResponseType.DataType, isPaginatable: Bool) -> AnyPublisher<[OutputType], ItemsServiceError>
 
-    func fetchQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
-    func searchQuery(_ text: String) -> AnyPublisher<ResponceType, ItemsServiceError>
-    func nextQuery() -> AnyPublisher<ResponceType, ItemsServiceError>
+    func fetchQuery() -> AnyPublisher<ResponseType, ItemsServiceError>
+    func searchQuery(_ text: String) -> AnyPublisher<ResponseType, ItemsServiceError>
+    func nextQuery() -> AnyPublisher<ResponseType, ItemsServiceError>
 
     func fetchItem(_ id: UUID) -> AnyPublisher<Item, ItemsServiceError>
 }
 
-var ItemsServiceQueryLimit: Int { 30 }
+let ItemsServiceQueryLimit = 30
 
 struct ItemsServiceCursor {
     let snapshot: QueryDocumentSnapshot?
@@ -33,7 +33,7 @@ struct ItemsServiceCursor {
 
 
 extension ItemsServiceType {
-    func nextQuery() -> AnyPublisher<ResponceType, ItemsServiceError> {
+    func nextQuery() -> AnyPublisher<ResponseType, ItemsServiceError> {
         fetchQuery()
     }
 

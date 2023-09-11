@@ -5,12 +5,14 @@ import FirebaseFirestoreSwift
 
 final class UserItemsService: UserItemsServiceType {
     typealias ServiceError = ItemsServiceError
-    typealias ResponceType = FetchedResponce
+    typealias ResponseType = FetchedResponse
 
     let db = Firestore.firestore()
     static let collectionName = "Items"
     private(set) var itemsServiceCursor: ItemsServiceCursor?
     private let appleApiPath = "https://www.icloud.com/shortcuts/api/records/"
+
+    var detainedRequests: [LibraryDetainedRequest : DispatchTime] = .init()
 
     let userId: String?
 
@@ -68,7 +70,7 @@ final class UserItemsService: UserItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchQuery() -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future { promise in
                 Task { [weak self] in
@@ -93,7 +95,7 @@ final class UserItemsService: UserItemsServiceType {
                                 )
                             )
                         }
-                        return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
+                        return promise(.success(FetchedResponse(query: query, count: Int(truncating: snapshot.count))))
                     }
                 }
             }
@@ -101,7 +103,7 @@ final class UserItemsService: UserItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -113,13 +115,13 @@ final class UserItemsService: UserItemsServiceType {
                     .whereField("userId", isEqualTo: userId)
                     .whereField("tags", arrayContains: text)
 
-                return promise(.success(FetchedResponce(query: query, count: 0)))
+                return promise(.success(FetchedResponse(query: query, count: 0)))
             }
         }
         .eraseToAnyPublisher()
     }
 
-    func nextQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func nextQuery() -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -138,7 +140,7 @@ final class UserItemsService: UserItemsServiceType {
 
                 countQuery.getAggregation(source: .server) { snapshot, error in
                     guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
-                    return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
+                    return promise(.success(FetchedResponse(query: query, count: Int(truncating: snapshot.count))))
                 }
                 
             }

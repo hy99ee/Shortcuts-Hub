@@ -4,7 +4,7 @@ import FirebaseFirestore
 
 final class FeedItemsService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
-    typealias ResponceType = FetchedResponce
+    typealias ResponseType = FetchedResponse
     
     private let db = Firestore.firestore()
     private static let collectionItemsName = "Items"
@@ -44,7 +44,7 @@ final class FeedItemsService: ItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func fetchItemsFromSection(_ sections: IdsSection) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchItemsFromSection(_ sections: IdsSection) -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future { promise in
                 Task { [weak self] in
@@ -54,14 +54,14 @@ final class FeedItemsService: ItemsServiceType {
                     let query = collection
                         .whereField("id", in: sections.itemsIds)
 
-                    return promise(.success(FetchedResponce(query: query, count: 0)))
+                    return promise(.success(FetchedResponse(query: query, count: 0)))
                 }
             }
         }
         .eraseToAnyPublisher()
     }
     
-    func fetchQuery() -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchQuery() -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future { promise in
                 Task { [weak self] in
@@ -72,7 +72,7 @@ final class FeedItemsService: ItemsServiceType {
 
                     countQuery.getAggregation(source: .server) { snapshot, error in
                         guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
-                        return promise(.success(FetchedResponce(query: collection, count: Int(truncating: snapshot.count))))
+                        return promise(.success(FetchedResponse(query: collection, count: Int(truncating: snapshot.count))))
                     }
                 }
             }
@@ -80,7 +80,7 @@ final class FeedItemsService: ItemsServiceType {
         .eraseToAnyPublisher()
     }
 
-    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func searchQuery(_ text: String) -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -89,7 +89,7 @@ final class FeedItemsService: ItemsServiceType {
                     .whereField("title", isGreaterThanOrEqualTo: text)
                     .order(by: "title")
 
-                return promise(.success(FetchedResponce(query: query, count: 0)))
+                return promise(.success(FetchedResponse(query: query, count: 0)))
             }
         }
         .eraseToAnyPublisher()

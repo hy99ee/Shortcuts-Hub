@@ -2,10 +2,9 @@ import Foundation
 import Combine
 import SwiftUDF
 
-
 struct LibraryState: StateType, ReinitableByNewSelf {
     var items: [Item] = []
-    var preloadItems: [LoaderItem]?
+    var loadingItems: [LoaderItem]?
     var searchedItems: [Item]?
 
     var lastAdded: Item?

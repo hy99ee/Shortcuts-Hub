@@ -15,7 +15,7 @@ protocol CollectionDelegate: ObservableObject {
     var navigationTitle: String { get }
 
     var items: [Item] { get }
-    var preloadItems: [LoaderItem]? { get }
+    var loadingItems: [LoaderItem]? { get }
     var searchedItems: [Item]? { get }
 
     var viewProgress: ProgressViewStatus { get }
@@ -28,4 +28,7 @@ protocol CollectionDelegate: ObservableObject {
     func click(_ item: Item)
     func remove(_ item: Item)
     func isItemRemoving(_ item: Item) -> Bool
+}
+extension CollectionDelegate {
+    var toolbarItems: [ToolbarCollectionItem] { [] }
 }

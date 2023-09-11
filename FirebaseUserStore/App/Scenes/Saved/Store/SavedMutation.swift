@@ -15,8 +15,6 @@ enum SavedMutation: Mutation {
 
     case detail(item: Item)
 
-    case empty
-
     case errorAlert(error: Error)
     case errorSaved
 

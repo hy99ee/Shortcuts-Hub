@@ -8,7 +8,7 @@ protocol FeedDetailSectionServiceType: EnvironmentType {
 
 final class FeedDetailSectionService: FeedDetailSectionServiceType {
     typealias ServiceError = ItemsServiceError
-    typealias ResponceType = FetchedResponce
+    typealias ResponceType = FetchedResponse
 
     let db = Firestore.firestore()
     static let collectionName = "Items"
@@ -52,7 +52,7 @@ final class FeedDetailSectionService: FeedDetailSectionServiceType {
         .eraseToAnyPublisher()
     }
 
-    func fetchQuery(from section: IdsSection) -> AnyPublisher<FetchedResponce, ItemsServiceError> {
+    func fetchQuery(from section: IdsSection) -> AnyPublisher<FetchedResponse, ItemsServiceError> {
         Deferred {
             Future {[weak self] promise in
                 guard let self else { return promise(.failure(.unknownError))}
@@ -71,7 +71,7 @@ final class FeedDetailSectionService: FeedDetailSectionServiceType {
 
                 countQuery.getAggregation(source: .server) { snapshot, error in
                     guard let snapshot else { return promise(.failure( error != nil ? ServiceError.firebaseError(error!) : ServiceError.unknownError)) }
-                    return promise(.success(FetchedResponce(query: query, count: Int(truncating: snapshot.count))))
+                    return promise(.success(FetchedResponse(query: query, count: Int(truncating: snapshot.count))))
                 }
                 
             }

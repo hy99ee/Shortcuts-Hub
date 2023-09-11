@@ -7,9 +7,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
     switch mutation {
     case let .updateItemsPreloaders(count):
-        state.preloadItems = []
+        state.loadingItems = []
         for index in 0..<count {
-            state.preloadItems!.append(LoaderItem(id: index))
+            state.loadingItems!.append(LoaderItem(id: index))
         }
         configureFlags(by: .loaders)
 
@@ -17,11 +17,11 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.items = items
         configureFlags(by: .items)
 
-        state.preloadItems = nil
+        state.loadingItems = nil
         state.searchedItems = nil
 
     case let .appendItems(items):
-        state.preloadItems = nil
+        state.loadingItems = nil
         state.searchedItems = nil
         state.items += items
         configureFlags(by: .items)
@@ -80,7 +80,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         return Just(.coordinate(destination: .error(error))).eraseToAnyPublisher()
 
     case .errorLibrary:
-        state.preloadItems = []
+        state.loadingItems = []
         state.items = []
 
         configureFlags(by: .error)
@@ -118,6 +118,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         case search
         case error
     }
+
     func configureFlags(by target: StateMutationTarget) {
         switch target {
         case .items:
@@ -125,7 +126,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
             state.isShowErrorView = false
             state.isShowEmptySearchView = false
         case .loaders:
-            state.isShowErrorView = state.preloadItems?.isEmpty
+            state.isShowErrorView = state.loadingItems?.isEmpty
             state.isShowEmptyView = false
             state.isShowEmptySearchView = false
         case .search:

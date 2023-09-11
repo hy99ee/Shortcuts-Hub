@@ -66,8 +66,8 @@ struct LibraryView: View {
                 } else if let searchedItems = newState.searchedItems {
                     contentType = .content(type: .search(status: .loaded(items: searchedItems)))
                     isShowSearchable = true
-                } else if let loadedItems = newState.preloadItems {
-                    contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
+                } else if let loadingItems = newState.loadingItems {
+                    contentType = .content(type: .default(status: .preload(loaders: loadingItems)))
                     isShowSearchable = true
                 } else {
                     contentType = .content(type: .default(status: .loaded(items: store.state.items)))

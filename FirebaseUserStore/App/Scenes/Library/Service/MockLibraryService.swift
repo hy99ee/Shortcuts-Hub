@@ -6,7 +6,7 @@ final class MockLibraryService: ItemsServiceType {
     typealias ServiceError = ItemsServiceError
     typealias OutputType = Item
 
-    func fetchItemsFromQuery(_ query: ResponceType.DataType, isPaginatable: Bool) -> AnyPublisher<[OutputType], ItemsServiceError> {
+    func fetchItemsFromQuery(_ query: ResponseType.DataType, isPaginatable: Bool) -> AnyPublisher<[OutputType], ItemsServiceError> {
         Deferred {
             Future { promise in
                 let items = query.data.isEmpty ? Item.mockItems : Item.mockItems.filter { $0.title.contains(query.data) }

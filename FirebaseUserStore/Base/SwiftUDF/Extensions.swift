@@ -7,3 +7,8 @@ protocol EnvironmentPackagesWithSessionWithSession: EnvironmentPackages {
 extension EnvironmentPackagesWithSessionWithSession {
     var sessionService: SessionService { SessionService.shared }
 }
+
+
+extension Array where Element: Action {
+    typealias stopFlow = [Element]
+}

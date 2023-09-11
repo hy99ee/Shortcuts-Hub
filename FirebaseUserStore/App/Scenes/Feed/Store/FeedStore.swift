@@ -14,7 +14,7 @@ extension FeedStore {
         if action == .initFeed, !state.sections.isEmpty {
             return Fail(
                 error: MiddlewareRedispatch.redispatch(
-                    actions: []
+                    actions: .stopFlow()
                 )
             ).eraseToAnyPublisher()
         }

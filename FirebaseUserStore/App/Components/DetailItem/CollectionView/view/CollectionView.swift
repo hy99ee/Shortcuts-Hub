@@ -1,20 +1,18 @@
 import SwiftUI
 import Combine
 
-struct CollectionView<T: CollectionDelegate>: View {
-    @StateObject var store: T
+struct CollectionView: View {
+    let store: any CollectionDelegate
 
     @Binding var contentType: CollectionContent
     @Binding var searchBinding: String
     @Binding var isShowSearchable: Bool
 
-    @State private var isUpdating = false
     @State private var cellStyle: CollectionRowStyle = .row2
 
     private let appearAnimationOffset: CGFloat = 50
 
     private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
-    private let progress = HDotsProgress()
 
     var body: some View {
         NavigationView {
@@ -139,7 +137,7 @@ struct CollectionView<T: CollectionDelegate>: View {
             }
         }
         .modifier(StaticPreloaderViewModifier())
-        .animation(.spring(), value: store.preloadItems)
+        .animation(.spring(), value: store.loadingItems)
     }
 
     private func itemsView(_ items: [Item]) -> some View {
