@@ -8,13 +8,13 @@ extension CreateStore {
         if case let .linkRequest(link) = action {
             if link.isEmpty {
                 return Fail(
-                    error: MiddlewareRedispatch.redispatch(
+                    error: .redispatch(
                         actions: [.showError(.emptyLink)]
                     )
                 ).eraseToAnyPublisher()
             } else if !verifyUrl(link) {
                 return Fail(
-                    error: MiddlewareRedispatch.redispatch(
+                    error: .redispatch(
                         actions: [.showError(.link)]
                     )
                 ).eraseToAnyPublisher()

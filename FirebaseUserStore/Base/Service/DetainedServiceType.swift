@@ -7,7 +7,6 @@ protocol RequestWithRepeatDelay: Hashable {
 protocol DetainedServiceType: AnyObject {
     associatedtype DetainedRequestType: RequestWithRepeatDelay
     var detainedRequests: [DetainedRequestType : DispatchTime] { get set }
-    func isTimeTo(request: DetainedRequestType) -> Bool
 }
 
 extension DetainedServiceType {

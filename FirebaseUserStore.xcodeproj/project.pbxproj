@@ -142,6 +142,10 @@
 		3B84D6F12AAB7AAC00EC5EF6 /* DetainedServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B84D6F02AAB7AAC00EC5EF6 /* DetainedServiceType.swift */; };
 		3B87854A2983EBDB00F49DB2 /* Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8785492983EBDB00F49DB2 /* Swift.swift */; };
 		3B8FC7002AADC272007A8C85 /* SwiftUDF in Frameworks */ = {isa = PBXBuildFile; productRef = 3B8FC6FF2AADC272007A8C85 /* SwiftUDF */; };
+		3B8FC7022AB055B6007A8C85 /* SavedStore+CollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FC7012AB055B6007A8C85 /* SavedStore+CollectionDelegate.swift */; };
+		3B8FC7052AB056FA007A8C85 /* LibraryStore+CollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FC7042AB056FA007A8C85 /* LibraryStore+CollectionDelegate.swift */; };
+		3B8FC7082AB05719007A8C85 /* LibraryStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FC7072AB05719007A8C85 /* LibraryStore+Middleware.swift */; };
+		3B8FC70A2AB05754007A8C85 /* SavedStore+Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8FC7092AB05754007A8C85 /* SavedStore+Middleware.swift */; };
 		3B9B07E629BF2BBF00CCEC10 /* AppleApiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9B07E529BF2BBF00CCEC10 /* AppleApiItem.swift */; };
 		3B9B07EB29BF5B2E00CCEC10 /* DissmissingKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9B07EA29BF5B2E00CCEC10 /* DissmissingKeyboard.swift */; };
 		3BA96D712AA7CD0400C0C403 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BA96D702AA7CD0400C0C403 /* Media.xcassets */; };
@@ -310,6 +314,10 @@
 		3B843EE7297E8AD600436E3A /* RoundedRectProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRectProgressView.swift; sourceTree = "<group>"; };
 		3B84D6F02AAB7AAC00EC5EF6 /* DetainedServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetainedServiceType.swift; sourceTree = "<group>"; };
 		3B8785492983EBDB00F49DB2 /* Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift.swift; sourceTree = "<group>"; };
+		3B8FC7012AB055B6007A8C85 /* SavedStore+CollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedStore+CollectionDelegate.swift"; sourceTree = "<group>"; };
+		3B8FC7042AB056FA007A8C85 /* LibraryStore+CollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryStore+CollectionDelegate.swift"; sourceTree = "<group>"; };
+		3B8FC7072AB05719007A8C85 /* LibraryStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryStore+Middleware.swift"; sourceTree = "<group>"; };
+		3B8FC7092AB05754007A8C85 /* SavedStore+Middleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedStore+Middleware.swift"; sourceTree = "<group>"; };
 		3B9B07E529BF2BBF00CCEC10 /* AppleApiItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleApiItem.swift; sourceTree = "<group>"; };
 		3B9B07EA29BF5B2E00CCEC10 /* DissmissingKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissmissingKeyboard.swift; sourceTree = "<group>"; };
 		3BA96D702AA7CD0400C0C403 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -421,6 +429,7 @@
 		3B13795C29F7BB2A00D25F55 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3BA96D722AA8B85A00C0C403 /* CollectionView */,
 				3B13795E29F7C04C00D25F55 /* DetailItem */,
 				3B433E8929E6CD88007C8A26 /* DetailSection */,
 			);
@@ -430,7 +439,6 @@
 		3B13795E29F7C04C00D25F55 /* DetailItem */ = {
 			isa = PBXGroup;
 			children = (
-				3BA96D722AA8B85A00C0C403 /* CollectionView */,
 				3B13795F29F7C04C00D25F55 /* View */,
 				3B13796529F7C04C00D25F55 /* Store */,
 			);
@@ -631,7 +639,7 @@
 		3B5CA8EA2992609D00E16151 /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				3B5CA8EB2992609D00E16151 /* LibraryStore.swift */,
+				3B8FC7062AB05703007A8C85 /* Store */,
 				3B5CA8ED2992609D00E16151 /* LibraryDispatcher.swift */,
 				3B5CA8EE2992609D00E16151 /* LibraryReducer.swift */,
 				3B5CA8EF2992609D00E16151 /* LibraryState.swift */,
@@ -711,6 +719,26 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3B8FC7032AB05643007A8C85 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B8FC7012AB055B6007A8C85 /* SavedStore+CollectionDelegate.swift */,
+				3BDAAEAD29C2535A0064F7D0 /* SavedStore.swift */,
+				3B8FC7092AB05754007A8C85 /* SavedStore+Middleware.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		3B8FC7062AB05703007A8C85 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				3B5CA8EB2992609D00E16151 /* LibraryStore.swift */,
+				3B8FC7042AB056FA007A8C85 /* LibraryStore+CollectionDelegate.swift */,
+				3B8FC7072AB05719007A8C85 /* LibraryStore+Middleware.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		3B9B07E729BF2C1600CCEC10 /* Scenes */ = {
@@ -953,7 +981,7 @@
 		3BDAAEAC29C2535A0064F7D0 /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				3BDAAEAD29C2535A0064F7D0 /* SavedStore.swift */,
+				3B8FC7032AB05643007A8C85 /* Store */,
 				3BDAAEAE29C2535A0064F7D0 /* SavedMutation.swift */,
 				3BDAAEAF29C2535A0064F7D0 /* SavedReducer.swift */,
 				3BDAAEB029C2535A0064F7D0 /* SavedPackages.swift */,
@@ -1143,6 +1171,7 @@
 				3B5CA9482993A1B100E16151 /* CollectionRowStyle.swift in Sources */,
 				3B18B5C32A49D30400977D61 /* Extensions.swift in Sources */,
 				3B2F78A22937880A0035BAAF /* FeedPackages.swift in Sources */,
+				3B8FC7052AB056FA007A8C85 /* LibraryStore+CollectionDelegate.swift in Sources */,
 				3B433E7129DF2E6F007C8A26 /* TimerModifier.swift in Sources */,
 				3B5CA9212992609D00E16151 /* LibraryStore.swift in Sources */,
 				3B07BB942940D3090088B38B /* GlobalStoreRepository.swift in Sources */,
@@ -1165,6 +1194,7 @@
 				3B703D552967366500F43A45 /* ForgotState.swift in Sources */,
 				3B00F002293F678C0056B5C9 /* LaoderItem.swift in Sources */,
 				3BE6E7E72A38B06100B45353 /* Color.swift in Sources */,
+				3B8FC70A2AB05754007A8C85 /* SavedStore+Middleware.swift in Sources */,
 				3BD76EFA28A1ABD2001D64E2 /* Item.swift in Sources */,
 				3B433EA229E6CD88007C8A26 /* FeedDetailSectionReducer.swift in Sources */,
 				3B45AC10292BC8F6002531D8 /* LoginReducer.swift in Sources */,
@@ -1183,6 +1213,7 @@
 				3BD76EF42899AF6C001D64E2 /* SessionService.swift in Sources */,
 				3BDAAEB929C2535A0064F7D0 /* SavedView.swift in Sources */,
 				3B0976B529BDE2AD007665BB /* LoginCredentials.swift in Sources */,
+				3B8FC7022AB055B6007A8C85 /* SavedStore+CollectionDelegate.swift in Sources */,
 				3B5CA9152992609D00E16151 /* AboutView.swift in Sources */,
 				3B0E36BE293E2B8C009A7DCE /* ButtonView.swift in Sources */,
 				3B27A57C29A613D600CF9A5F /* CreateReducer.swift in Sources */,
@@ -1260,6 +1291,7 @@
 				3BC0A334292FEFAA008B348D /* LoginServiceError.swift in Sources */,
 				3B0AA8B428D9C95F00CEEFA4 /* ItemsServiceType.swift in Sources */,
 				3B13797229F7C04C00D25F55 /* DetailItemPackages.swift in Sources */,
+				3B8FC7082AB05719007A8C85 /* LibraryStore+Middleware.swift in Sources */,
 				3BD76EF52899AF6C001D64E2 /* NavigationCloseViewModifier.swift in Sources */,
 				3B703D542967366500F43A45 /* ForgotStore.swift in Sources */,
 				3BD76EF32899AF6C001D64E2 /* LoginView.swift in Sources */,

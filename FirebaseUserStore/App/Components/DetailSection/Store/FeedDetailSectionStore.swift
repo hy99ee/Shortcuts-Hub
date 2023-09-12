@@ -8,7 +8,7 @@ extension FeedDetailSectionStore {
     static let middlewareFetch: Middleware = { state, action, packages in
         if action == .initDetail {
             return Fail(
-                error: MiddlewareRedispatch.redispatch(
+                error: .redispatch(
                     actions: [.updateFeedWithSection(state.idsSection)]
                 )
             ).eraseToAnyPublisher()

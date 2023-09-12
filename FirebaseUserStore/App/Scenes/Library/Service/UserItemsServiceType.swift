@@ -14,7 +14,7 @@ enum LibraryDetainedRequest: RequestWithRepeatDelay {
     var repeatDelaySeconds: Double {
         switch self {
         case .initLibrary:
-            return 10
+            return 13
         case .updateLibrary:
             return 5
         }

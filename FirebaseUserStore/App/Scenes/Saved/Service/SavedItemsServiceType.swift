@@ -9,7 +9,7 @@ enum SavedDetainedRequest: RequestWithRepeatDelay {
     var repeatDelaySeconds: Double {
         switch self {
         case .initSaved:
-            return 10
+            return 13
         case .updateSaved:
             return 5
         }
