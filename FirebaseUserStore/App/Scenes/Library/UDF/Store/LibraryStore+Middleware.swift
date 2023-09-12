@@ -3,7 +3,7 @@ import Combine
 //MARK: Middleware
 extension LibraryStore {
     static let middlewareAuthCheck: Middleware = { state, action, packages in
-        if action == .showAboutSheet || action == .openLogin {
+        guard action != .showAboutSheet && action != .openLogin else {
             if state.loginState == .loading {
                 return Fail(
                     error: .redispatch(
@@ -18,21 +18,7 @@ extension LibraryStore {
                 .eraseToAnyPublisher()
         }
 
-        guard packages.sessionService.state == .loggedIn else {
-            var actions: [LibraryAction] = [.userLoginState(.loggedOut)]
-            if action != .initLibrary {
-                actions.append(.openLogin)
-            }
-
-            return Fail(
-                error: .redispatch(
-                    actions: actions,
-                    type: .excludeRedispatch
-                )
-            ).eraseToAnyPublisher()
-        }
-
-        if state.loginState != .loggedIn {
+        guard state.loginState == .loggedIn else {
             return Fail(
                 error: .redispatch(
                     actions: [.userLoginState(.loggedIn), action],
@@ -70,6 +56,22 @@ extension LibraryStore {
             .eraseToAnyPublisher()
     }
 
+    static let middlewareInitClean: Middleware = { state, action, packages in
+        if action == .initLibrary && state.searchFilter.isEmpty {
+            return Fail(
+                error: .redispatch(
+                    actions: [
+                        
+                        action
+                    ]
+                )
+            ).eraseToAnyPublisher()
+        }
+        return Just(action)
+            .setFailureType(to: MiddlewareRedispatch.self)
+            .eraseToAnyPublisher()
+    }
+
     static let middlewareSearchCheck: Middleware = { state, action, packages in
         if action == .updateLibrary && !state.searchFilter.isEmpty {
             return Fail(
@@ -95,21 +97,5 @@ extension LibraryStore {
         return Just(action)
             .setFailureType(to: MiddlewareRedispatch.self)
             .eraseToAnyPublisher()
-    }
-}
-
-extension LibraryStore {
-    func updatedSessionStatus(_ state: SessionState) {
-        switch state {
-        case .loggedIn:
-            self.reinit()
-            self.dispatch(.updateLibrary)
-
-        case .loggedOut:
-            self.reinit()
-
-        case .loading:
-            break
-        }
     }
 }

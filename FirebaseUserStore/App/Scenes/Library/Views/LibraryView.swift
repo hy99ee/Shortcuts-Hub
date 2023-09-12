@@ -68,21 +68,41 @@ struct LibraryView: View {
                     isShowSearchable = true
                 } else if let loadingItems = newState.loadingItems {
                     contentType = .content(type: .default(status: .preload(loaders: loadingItems)))
-                    isShowSearchable = true
-                } else {
+                    isShowSearchable = !loadingItems.isEmpty
+                } else if !store.state.items.isEmpty {
                     contentType = .content(type: .default(status: .loaded(items: store.state.items)))
                     isShowSearchable = true
+                } else {
+                    contentType = .loading
+                    isShowSearchable = false
                 }
             }
         }
     }
 
     private var unloginUserView: some View {
-        Text("Unlogin").bold()
+        Text("Unlogin")
+            .bold()
+            .onAppear() {
+                if store.packages.sessionService.state != store.state.loginState {
+                    store.dispatch(.userLoginState(store.packages.sessionService.state))
+                }
+            }
+            .onChange(of: store.packages.sessionService.state) { newValue in
+                store.dispatch(.userLoginState(newValue))
+            }
     }
 
     private var unknownUserView: some View {
         Text("")
+            .onAppear() {
+                if store.packages.sessionService.state != store.state.loginState {
+                    store.dispatch(.userLoginState(store.packages.sessionService.state))
+                }
+            }
+            .onChange(of: store.packages.sessionService.state) { newValue in
+                store.dispatch(.userLoginState(newValue))
+            }
     }
 
     private var toolbarView: some View {

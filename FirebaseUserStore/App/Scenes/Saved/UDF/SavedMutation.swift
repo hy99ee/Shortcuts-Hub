@@ -5,7 +5,6 @@ enum SavedMutation: Mutation {
     case updateItemsPreloaders(count: Int)
     case updateItems(_ items: [Item])
     case appendItems(_ items: [Item])
-    case fastUpdate
 
     case searchItems(_ items: [Item])
     case setSearchFilter(_ text: String)
@@ -20,4 +19,6 @@ enum SavedMutation: Mutation {
 
     case progressButton(status: ProgressViewStatus)
     case progressView(status: ProgressViewStatus)
+
+    case `break`
 }

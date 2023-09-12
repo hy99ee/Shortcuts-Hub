@@ -26,9 +26,6 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         state.items += items
         configureFlags(by: .items)
 
-    case .fastUpdate:
-        configureFlags(by: .items)
-
     case let .searchItems(items):
         if state.searchFilter.isEmpty {
             state.searchedItems = nil
@@ -43,11 +40,7 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
 
         if text.isEmpty {
             state.searchedItems = nil
-            configureFlags(by: .items)
-        } else {
-            configureFlags(by: .search)
         }
-
 
     case .openLogin:
         return Just(.coordinate(destination: .login)).eraseToAnyPublisher()
@@ -107,6 +100,9 @@ let libraryReducer: ReducerType<LibraryState, LibraryMutation, LibraryLink> = { 
         break
 
     case .hasDeletedUser:
+        break
+
+    case .break:
         break
     }
 

@@ -56,11 +56,7 @@ struct FeedCoordinator: CoordinatorType {
 
     @ViewBuilder private var rootView: some View {
         NavigationStack {
-            ZStack {
-                FeedView(store: store)
-                    .environmentObject(NamespaceWrapper(open))
-                    .padding([.horizontal], 24)
-
+//            ZStack {
                 if case let custom, let custom {
                     if case let FeedLink.section(section) = custom {
                         FeedDetailSectionCoordinator(
@@ -73,8 +69,12 @@ struct FeedCoordinator: CoordinatorType {
                         .zIndex(100)
 //                        .animation(.linear, value: self.custom)
                     }
+                } else {
+                    FeedView(store: store)
+                        .environmentObject(NamespaceWrapper(open))
+                        .padding([.horizontal], 24)
                 }
-            }
+//            }
         }
         .toolbar(.hidden, for: .navigationBar)
     }

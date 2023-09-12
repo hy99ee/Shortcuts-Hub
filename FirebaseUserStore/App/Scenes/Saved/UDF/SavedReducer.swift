@@ -26,9 +26,6 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
         state.items += items
         configureFlags(by: .items)
 
-    case .fastUpdate:
-        configureFlags(by: .items)
-
     case let .searchItems(items):
         if state.searchFilter.isEmpty {
             state.searchedItems = nil
@@ -43,9 +40,6 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
 
         if text.isEmpty {
             state.searchedItems = nil
-            configureFlags(by: .items)
-        } else {
-            configureFlags(by: .search)
         }
 
     case let .addItem(item):
@@ -86,6 +80,9 @@ let savedReducer: ReducerType<SavedState, SavedMutation, SavedLink> = { _state, 
     case let .progressButton(status):
         state.buttonProgress = status
         state.processView = .define(with: state.viewProgress, state.buttonProgress)
+
+    case .break:
+        break
     }
 
     return Just(.state(state)).eraseToAnyPublisher()

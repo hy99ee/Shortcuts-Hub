@@ -9,8 +9,6 @@ enum LibraryMutation: Mutation {
     case searchItems(_ items: [Item])
     case setSearchFilter(_ text: String)
 
-    case fastUpdate
-
     case detail(item: Item)
 
     case addItem(_ item: Item)
@@ -29,4 +27,6 @@ enum LibraryMutation: Mutation {
     case progressButton(status: ProgressViewStatus)
     case progressItem(item: Item, status: ProgressViewStatus)
     case progressView(status: ProgressViewStatus)
+
+    case `break`
 }

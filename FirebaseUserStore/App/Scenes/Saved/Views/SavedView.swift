@@ -60,12 +60,15 @@ struct SavedView: View {
             } else if let searchedItems = newState.searchedItems {
                 contentType = .content(type: .search(status: .loaded(items: searchedItems)))
                 isShowSearchable = true
-            } else if let loadedItems = newState.loadingItems {
-                contentType = .content(type: .default(status: .preload(loaders: loadedItems)))
-                isShowSearchable = true
-            } else {
+            } else if let loadingItems = newState.loadingItems {
+                contentType = .content(type: .default(status: .preload(loaders: loadingItems)))
+                isShowSearchable = !loadingItems.isEmpty
+            } else if !store.state.items.isEmpty {
                 contentType = .content(type: .default(status: .loaded(items: store.state.items)))
                 isShowSearchable = true
+            } else {
+                contentType = .loading
+                isShowSearchable = false
             }
         }
     }

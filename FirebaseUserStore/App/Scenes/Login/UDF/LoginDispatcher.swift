@@ -27,7 +27,7 @@ let loginDispatcher: DispatcherType<LoginAction, LoginMutation, LoginPackages> =
     // MARK: - Mutations
     func mutationLogin(_ user: LoginCredentials, packages: LoginPackages) -> AnyPublisher<LoginMutation, Never> {
         packages.loginService.login(with: user)
-            .delay(for: .seconds(5), scheduler: DispatchQueue.main)
+            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
             .map { LoginMutation.login(user: user) }
             .catch { Just(LoginMutation.setErrorMessage($0)) }
             .eraseToAnyPublisher()

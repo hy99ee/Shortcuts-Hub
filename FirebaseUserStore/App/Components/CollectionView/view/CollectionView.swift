@@ -15,7 +15,7 @@ struct CollectionView: View {
     private var columns: [GridItem] { Array(repeating: GridItem(.flexible()), count: cellStyle.rowCount) }
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             ScrollView(showsIndicators: false) {
                 if isShowSearchable {
                     scrollContent
@@ -33,7 +33,7 @@ struct CollectionView: View {
             .navigationBarItems(trailing: toolbarView)
             .padding([.trailing, .leading], 12)
             .refreshable { await asyncUpdate() }
-        }
+//        }
         .animation(.spring(), value: contentType)
     }
 

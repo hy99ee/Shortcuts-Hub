@@ -7,7 +7,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
     switch action {
     case .initLibrary, .updateLibrary:
         return mutationFetchItems(packages: packages)
-//            .merge(with: Just(.setSearchFilter("")))
+            .merge(with: Just(.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .search(text):
@@ -18,7 +18,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
 
     case .next:
         return mutationNextItems(packages: packages)
-//            .merge(with: Just(LibraryMutation.setSearchFilter("")))
+            .merge(with: Just(LibraryMutation.setSearchFilter("")))
             .eraseToAnyPublisher()
 
     case let .click(item):
@@ -82,12 +82,12 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
             fetchDocs
                 .map { (date, docs) in
                     let timeSpent = Date.now.timeIntervalSinceReferenceDate - date.timeIntervalSinceReferenceDate
-                    if timeSpent < 1 { return .fastUpdate }
+                    if timeSpent < 1 { return .break }
 
                     if docs.count > 0 {
                         return .updateItemsPreloaders(count: docs.count)
                     } else {
-                        return .fastUpdate
+                        return .break
                     }
                 }
                 .catch { Just(.errorAlert(error: $0)) }
@@ -125,7 +125,7 @@ let libraryDispatcher: DispatcherType<LibraryAction, LibraryMutation, LibraryPac
                     packages.sessionService.firestoreMutation = .remove(item: item)
                 }
             )
-            .map { _ in .fastUpdate }
+            .map { _ in .break }
             .catch { Just(.errorAlert(error: $0)) }
             .eraseToAnyPublisher()
     }

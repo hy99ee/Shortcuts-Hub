@@ -26,9 +26,6 @@ let feedReducer: ReducerType<FeedState, FeedMutation, FeedLink> = { _state, muta
         state.searchedItems = nil
         state.sections += sections
 
-    case .fastUpdate:
-        break
-
     case let .searchItems(items):
         state.searchedItems = !state.searchFilter.isEmpty ? items : nil
 

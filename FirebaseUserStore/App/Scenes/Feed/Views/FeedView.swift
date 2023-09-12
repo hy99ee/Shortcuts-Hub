@@ -51,14 +51,6 @@ struct FeedView: View {
         Text("Empty").bold()
     }
 
-    private var unloginUserView: some View {
-        Text("Unlogin").bold()
-    }
-
-    private var unknownUserView: some View {
-        Text("")
-    }
-
     private var emptyToolbarView: some View {
         HStack {
 

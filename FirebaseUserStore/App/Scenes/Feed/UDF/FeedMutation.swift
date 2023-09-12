@@ -9,8 +9,6 @@ enum FeedMutation: Mutation {
     case searchItems(_ items: [Item])
     case setSearchFilter(_ text: String)
 
-    case fastUpdate
-
     case detail(section: IdsSection)
 
     case empty

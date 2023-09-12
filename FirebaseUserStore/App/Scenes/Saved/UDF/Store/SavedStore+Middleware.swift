@@ -2,20 +2,6 @@ import Combine
 
 //MARK: Middleware
 extension SavedStore {
-    func updatedSessionStatus(_ state: SessionState) {
-        switch state {
-        case .loggedIn:
-            self.reinit()
-            self.dispatch(.updateSaved)
-
-        case .loggedOut:
-            self.reinit()
-
-        case .loading:
-            break
-        }
-    }
-
     static let middlewareUpdateCheck: Middleware = { state, action, packages in
         // Is need update when view onAppear
         if (action == .initSaved || action == .initLocalSaved),

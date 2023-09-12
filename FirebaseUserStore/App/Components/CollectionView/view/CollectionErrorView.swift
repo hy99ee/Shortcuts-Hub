@@ -17,7 +17,6 @@ struct CollectionErrorView: View {
                 .foregroundColor(Color(UIColor.label))
                 .frame(width: 70, height: 70)
                 .scaleEffect(errorLibraryDelay ? 0.9 : 1)
-                .modifier(ButtonProgressViewModifier(progressStatus: status, type: .backgroundView))
                 .disabled(errorLibraryDelay)
                 .padding()
                 .onTapGesture {
@@ -35,9 +34,9 @@ struct CollectionErrorView: View {
 
             Text(message)
                 .font(.system(size: 23, weight: .bold, design: .monospaced))
-                .opacity(status == .start ? 0 : 1)
 
             Spacer()
         }
+        .modifier(AnimationProgressViewModifier(progressStatus: status))
     }
 }
