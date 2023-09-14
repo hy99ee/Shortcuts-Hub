@@ -3,6 +3,9 @@ import Combine
 
 struct FeedView: View {
     @StateObject var store: FeedStore
+    @Binding var clickedSection: IdsSection?
+    @Binding var scrollToSection: IdsSection?
+
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     @State private var showLoader = false
@@ -16,9 +19,13 @@ struct FeedView: View {
             } else if store.state.isShowErrorView {
                 updateableErrorView.toolbar { errorToolbarView }
             } else {
-                FeedCollectionView(store: store)
-                    .toolbar { toolbarView }
-                    .environmentObject(namespaceWrapper)
+                FeedCollectionView(
+                    store: store,
+                    clickedSection: $clickedSection,
+                    scrollToSection: $scrollToSection
+                )
+                .environmentObject(namespaceWrapper)
+                .toolbar { toolbarView }
             }
         }
         .onAppear { store.dispatch(.initFeed) }

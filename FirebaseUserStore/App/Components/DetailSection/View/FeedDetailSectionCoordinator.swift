@@ -22,7 +22,7 @@ enum FeedDetailLink: TransitionType {
 
 struct FeedDetailSectionCoordinator: CoordinatorType {
     @ObservedObject private var store: FeedDetailSectionStore
-    @Binding private var parent: FeedLink?
+    @Binding private var parent: IdsSection?
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
     @Binding var path: NavigationPath
@@ -30,7 +30,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
 
     let stateReceiver: AnyPublisher<FeedDetailLink, Never>
 
-    init(store: FeedDetailSectionStore, path: Binding<NavigationPath>, parent: Binding<FeedLink?>) {
+    init(store: FeedDetailSectionStore, path: Binding<NavigationPath>, parent: Binding<IdsSection?>) {
         self.store = store
         self.stateReceiver = store.transition.eraseToAnyPublisher()
         self._path = path
@@ -61,7 +61,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         case .error:
             alert = link
         case .close:
-            withAnimation(.interactiveSpring(response: 0.33, dampingFraction: 0.6, blendDuration: 0.6).speed(0.85)) {
+            withAnimation(.interactiveSpring(response: 0.33, dampingFraction: 0.6, blendDuration: 0.6).speed(0.9)) {
                 parent = nil
             }
         }

@@ -7,7 +7,6 @@ struct FeedDetailSectionView: View {
     @State var detailOffset: CGPoint = .init()
 
     @State private var isShowDetailSection = false
-    @State private var isShowDetailContent = false
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
@@ -24,22 +23,22 @@ struct FeedDetailSectionView: View {
 
             }
             .cornerRadius(abs(170 - detailScale * 170))
-            .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace, properties: .position)
+            .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace)
         }
         .edgesIgnoringSafeArea(.all)
         .onChange(of: detailScale) {
             if $0 < 0.87 { store.dispatch(.close) }
         }
         .onAppear {
-            withAnimation(.easeIn) {
+            withAnimation(.spring()) {
                 isShowDetailSection = true
             }
         }
         .applyClose {
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.easeInOut(duration: 0.16)) {
                 detailScale = 0.87
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 store.dispatch(.close)
             }
         }
