@@ -37,8 +37,6 @@ struct FeedCoordinator: CoordinatorType {
     @State private var clickedSection: IdsSection?
     @State private var previousClickedSection: IdsSection?
 
-//    @State private var isShowBlur = false
-
     @Namespace var open
 
     let stateReceiver: AnyPublisher<FeedLink, Never>
@@ -59,51 +57,41 @@ struct FeedCoordinator: CoordinatorType {
 
     @ViewBuilder private var rootView: some View {
         NavigationStack {
-            if clickedSection != nil {
-                FeedDetailSectionCoordinator(
-                    store: store.packages.makeFeedSectionDetailStore(clickedSection!),
-                    path: $path,
-                    parent: $clickedSection
-                )
-                .environmentObject(NamespaceWrapper(open))
-                .animation(.spring(), value: clickedSection)
-                .transition(.identity)
-//                .matchedGeometryEffect(id: "section_\(clickedSection!.id)", in: open, isSource: false)
-            } else {
+            ZStack {
+                if clickedSection == nil {
+                    FeedView(
+                        store: store,
+                        clickedSection: $clickedSection,
+                        previousClickedSection: $previousClickedSection
+                    )
+                    .transition(.scale(scale: 1.15).animation(.spring().speed(2)))
+                    .environmentObject(NamespaceWrapper(open))
+                    .padding([.horizontal], 24)
+                }
 
-//            if clickedSection == nil {
-                FeedView(
-                    store: store,
-                    clickedSection: $clickedSection,
-                    scrollToSection: $previousClickedSection
-                )
-                .animation(.spring(), value: clickedSection)
-                .transition(.identity)
-                .environmentObject(NamespaceWrapper(open))
-                .padding([.horizontal], 24)
+                if clickedSection != nil {
+                    FeedDetailSectionCoordinator(
+                        store: store.packages.makeFeedSectionDetailStore(clickedSection!),
+                        path: $path,
+                        parent: $clickedSection
+
+                    )
+                    .environmentObject(NamespaceWrapper(open))
+                    .transition(.identity.animation(.spring().speed(2)))
+                }
             }
+
         }
-        .onChange(of: clickedSection) { newValue in
-            if newValue != nil {
-//                withAnimation(.spring()) {
-                    previousClickedSection = newValue
-//                }
-            }
-        }
-        .toolbar(.hidden, for: .navigationBar)
     }
 
     func transitionReceiver(_ link: FeedLink) {
         switch link {
         case .section:
-//            withAnimation(.easeOut.speed(1.2)) {
-
             if case let FeedLink.section(section) = link {
                 withAnimation(.spring()) {
                     clickedSection = section
                 }
             }
-//            } 
 
         case .error:
             self.alert = link

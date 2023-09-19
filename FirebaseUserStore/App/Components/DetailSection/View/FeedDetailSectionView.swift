@@ -6,6 +6,8 @@ struct FeedDetailSectionView: View {
     @State private var detailScale: CGFloat = 1
     @State var detailOffset: CGPoint = .init()
 
+    @State private var closeOffset: CGFloat = 0
+
     @State private var isShowDetailSection = false
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
@@ -25,6 +27,7 @@ struct FeedDetailSectionView: View {
             .cornerRadius(abs(170 - detailScale * 170))
             .matchedGeometryEffect(id: "section_\(store.state.idsSection.id)", in: namespaceWrapper.namespace)
         }
+        .offset(y: closeOffset)
         .edgesIgnoringSafeArea(.all)
         .onChange(of: detailScale) {
             if $0 < 0.87 { store.dispatch(.close) }
@@ -35,10 +38,11 @@ struct FeedDetailSectionView: View {
             }
         }
         .applyClose {
-            withAnimation(.easeInOut(duration: 0.16)) {
+            withAnimation(.easeInOut(duration: 0.25)) {
                 detailScale = 0.87
+                closeOffset = 70
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.21) {
                 store.dispatch(.close)
             }
         }
@@ -50,7 +54,6 @@ struct FeedDetailSectionView: View {
                     .transition(.opacity.animation(.linear(duration: 0.4)))
             }
         }
-        .zIndex(1000)
     }
 
     @ViewBuilder private func detailContent(items: [Item]) -> some View {

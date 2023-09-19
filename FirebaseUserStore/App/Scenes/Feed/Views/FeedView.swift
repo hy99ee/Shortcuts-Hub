@@ -4,7 +4,7 @@ import Combine
 struct FeedView: View {
     @StateObject var store: FeedStore
     @Binding var clickedSection: IdsSection?
-    @Binding var scrollToSection: IdsSection?
+    @Binding var previousClickedSection: IdsSection?
 
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
@@ -22,7 +22,7 @@ struct FeedView: View {
                 FeedCollectionView(
                     store: store,
                     clickedSection: $clickedSection,
-                    scrollToSection: $scrollToSection
+                    previousClickedSection: $previousClickedSection
                 )
                 .environmentObject(namespaceWrapper)
                 .toolbar { toolbarView }

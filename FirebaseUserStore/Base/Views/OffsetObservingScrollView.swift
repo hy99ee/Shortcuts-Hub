@@ -2,10 +2,10 @@ import Combine
 import SwiftUI
 
 struct PositionObservingView<Content: View>: View {
-    @ViewBuilder var content: () -> Content
     @Binding var offset: CGPoint
-
     let coordinateSpace: CoordinateSpace
+
+    @ViewBuilder var content: () -> Content
 
     var body: some View {
         content()
@@ -43,13 +43,9 @@ struct OffsetObservingScrollView<Content: View>: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             PositionObservingView(
-                content: {
-                    content()
-                        .scaleEffect(scale, anchor: .top)
-                },
                 offset: $offset,
                 coordinateSpace: .named(coordinateSpaceName)
-            )
+            ) { content().scaleEffect(scale, anchor: .top) }
         }
         .coordinateSpace(name: coordinateSpaceName)
         .onChange(of: offset) { newOffset in

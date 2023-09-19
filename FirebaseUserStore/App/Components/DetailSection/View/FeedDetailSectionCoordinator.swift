@@ -61,7 +61,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         case .error:
             alert = link
         case .close:
-            withAnimation(.interactiveSpring(response: 0.33, dampingFraction: 0.6, blendDuration: 0.6).speed(0.9)) {
+            withAnimation(.pumping.speed(0.9)) {
                 parent = nil
             }
         }
