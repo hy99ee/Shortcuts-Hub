@@ -96,7 +96,7 @@ struct FeedCollectionView: View {
                         .cornerRadius(9)
                         .padding(.vertical)
                         .modifier(AnimationProgressViewModifier(progressStatus: store.state.viewProgress))
-                        .zIndex(section.id == previousClickedSection?.id ? 100 : 0)
+//                        .zIndex(section.id == previousClickedSection?.id ? 100 : 0)
                         .matchedGeometryEffect(id: "section_\(section.id)", in: namespaceWrapper.namespace)
                         .id(section.id)
                         .offset(y: section.id == clickedSectionIdScale ? 20 : 0)
