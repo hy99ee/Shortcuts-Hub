@@ -58,9 +58,11 @@ struct FeedCoordinator: CoordinatorType {
     @ViewBuilder private var rootView: some View {
         NavigationStack {
             ZStack {
-                Color.white
-                    .onTapGesture {}
-                    .ignoresSafeArea()
+                if clickedSection == nil {
+                    Color(UIColor.systemBackground)
+                        .transition( .asymmetric(insertion: .identity, removal: .opacity).animation(.spring().speed(2)))
+                        .ignoresSafeArea()
+                }
 
                 if clickedSection == nil {
                     FeedView(
@@ -79,12 +81,9 @@ struct FeedCoordinator: CoordinatorType {
                         store: store.packages.makeFeedSectionDetailStore(clickedSection!),
                         path: $path,
                         parent: $clickedSection
-
                     )
                     .environmentObject(NamespaceWrapper(open))
-                    .transition(.identity.combined(with: .offset(y: -20)).animation(.spring()))
-//                    .transition(.scale(scale: 0.8, anchor: .top).combined(with: .offset(y: -20)))
-//                    .transition(.identity.animation(.spring()))
+                    .transition(.offset(y: -20).animation(.spring()))
                 }
             }
 
