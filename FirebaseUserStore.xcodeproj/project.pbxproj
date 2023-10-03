@@ -188,9 +188,12 @@
 		3BDF00432A026C0500A67F0E /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00422A026C0500A67F0E /* LocalDatabase.swift */; };
 		3BDF00462A02751700A67F0E /* RemoteDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00452A02751700A67F0E /* RemoteDatabase.swift */; };
 		3BDF00482A02752300A67F0E /* DatabaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDF00472A02752300A67F0E /* DatabaseType.swift */; };
+		3BE37C7B2ACC64C800B5C40B /* CollectionShortcutAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE37C7A2ACC64C800B5C40B /* CollectionShortcutAddButton.swift */; };
+		3BE37C7D2ACC64D700B5C40B /* ShortcutAddButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE37C7C2ACC64D700B5C40B /* ShortcutAddButtonType.swift */; };
 		3BE4C1D8298592AE000B43BD /* FeedItemsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE4C1D7298592AE000B43BD /* FeedItemsService.swift */; };
 		3BE57E4B294241A4004B4423 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4A294241A4004B4423 /* ImageView.swift */; };
 		3BE57E4D2943362E004B4423 /* ItemCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE57E4C2943362E004B4423 /* ItemCellView.swift */; };
+		3BE67E762ACC1418007C9677 /* DetailShortcutAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE67E752ACC1418007C9677 /* DetailShortcutAddButton.swift */; };
 		3BE6E7E52A38AD6100B45353 /* ShortcutsColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE6E7E42A38AD6100B45353 /* ShortcutsColor.swift */; };
 		3BE6E7E72A38B06100B45353 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE6E7E62A38B06100B45353 /* Color.swift */; };
 		3BFA9FA4288734CA00A7FF2C /* FirebaseUserStoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BFA9FA3288734CA00A7FF2C /* FirebaseUserStoreApp.swift */; };
@@ -361,9 +364,12 @@
 		3BDF00422A026C0500A67F0E /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
 		3BDF00452A02751700A67F0E /* RemoteDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDatabase.swift; sourceTree = "<group>"; };
 		3BDF00472A02752300A67F0E /* DatabaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseType.swift; sourceTree = "<group>"; };
+		3BE37C7A2ACC64C800B5C40B /* CollectionShortcutAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionShortcutAddButton.swift; sourceTree = "<group>"; };
+		3BE37C7C2ACC64D700B5C40B /* ShortcutAddButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutAddButtonType.swift; sourceTree = "<group>"; };
 		3BE4C1D7298592AE000B43BD /* FeedItemsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsService.swift; sourceTree = "<group>"; };
 		3BE57E4A294241A4004B4423 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		3BE57E4C2943362E004B4423 /* ItemCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellView.swift; sourceTree = "<group>"; };
+		3BE67E752ACC1418007C9677 /* DetailShortcutAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailShortcutAddButton.swift; sourceTree = "<group>"; };
 		3BE6E7E42A38AD6100B45353 /* ShortcutsColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsColor.swift; sourceTree = "<group>"; };
 		3BE6E7E62A38B06100B45353 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		3BFA9FA0288734CA00A7FF2C /* FirebaseUserStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseUserStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,6 +415,7 @@
 		3B0E36BB293E2B57009A7DCE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3BE37C792ACC647600B5C40B /* AddButton */,
 				3BE57E4C2943362E004B4423 /* ItemCellView.swift */,
 				3B0E36BD293E2B8C009A7DCE /* ButtonView.swift */,
 				3B0E36BF293E2BA6009A7DCE /* InputPasswordView.swift */,
@@ -1015,6 +1022,16 @@
 			path = Feed;
 			sourceTree = "<group>";
 		};
+		3BE37C792ACC647600B5C40B /* AddButton */ = {
+			isa = PBXGroup;
+			children = (
+				3BE67E752ACC1418007C9677 /* DetailShortcutAddButton.swift */,
+				3BE37C7A2ACC64C800B5C40B /* CollectionShortcutAddButton.swift */,
+				3BE37C7C2ACC64D700B5C40B /* ShortcutAddButtonType.swift */,
+			);
+			path = AddButton;
+			sourceTree = "<group>";
+		};
 		3BE4C1E02985DC8D000B43BD /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1233,6 +1250,7 @@
 				3B38A8C9297AD592008BD6E2 /* KeyboardModifier.swift in Sources */,
 				3BD76EEA2899AF6C001D64E2 /* FeedView.swift in Sources */,
 				3B5CA9292992609D00E16151 /* LibraryCoordinator.swift in Sources */,
+				3BE37C7D2ACC64D700B5C40B /* ShortcutAddButtonType.swift in Sources */,
 				3B13797729F7C04C00D25F55 /* DetailItemAction.swift in Sources */,
 				3BDAAEBD29C2535A0064F7D0 /* SavedReducer.swift in Sources */,
 				3B7AE4D9296C6085002A9948 /* RegisterationReducer.swift in Sources */,
@@ -1243,6 +1261,7 @@
 				3B77954F2926C5E300A70A9A /* ProgressStatusPublisher.swift in Sources */,
 				3B433EA129E6CD88007C8A26 /* FeedDetailSectionAction.swift in Sources */,
 				3BD76EED2899AF6C001D64E2 /* RegisterView.swift in Sources */,
+				3BE37C7B2ACC64C800B5C40B /* CollectionShortcutAddButton.swift in Sources */,
 				3B5CA9232992609D00E16151 /* LibraryDispatcher.swift in Sources */,
 				3BDF00462A02751700A67F0E /* RemoteDatabase.swift in Sources */,
 				3B84D6F12AAB7AAC00EC5EF6 /* DetainedServiceType.swift in Sources */,
@@ -1331,6 +1350,7 @@
 				3B45AC0A292BC8AC002531D8 /* LoginAction.swift in Sources */,
 				3B18B5BD2A45DCA100977D61 /* ShortcutsApiManager.swift in Sources */,
 				3B9B07E629BF2BBF00CCEC10 /* AppleApiItem.swift in Sources */,
+				3BE67E762ACC1418007C9677 /* DetailShortcutAddButton.swift in Sources */,
 				3B13791B29F135BE00D25F55 /* ItemListView.swift in Sources */,
 				3BDAAEBE29C2535A0064F7D0 /* SavedPackages.swift in Sources */,
 				3B8120B529F9391700D834E4 /* ImageKitImage.swift in Sources */,

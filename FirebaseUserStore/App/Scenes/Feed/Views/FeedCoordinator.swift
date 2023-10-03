@@ -70,7 +70,7 @@ struct FeedCoordinator: CoordinatorType {
                         clickedSection: $clickedSection,
                         previousClickedSection: $previousClickedSection
                     )
-                    .transition(.scale(scale: 1.1).animation(.spring()))
+                    .transition(.scale(scale: 1.1).animation(.spring().speed(2)))
                     .environmentObject(NamespaceWrapper(open))
                     .padding([.horizontal], 24)
                     .animationAdapted(animationDuration: 1)
@@ -83,7 +83,7 @@ struct FeedCoordinator: CoordinatorType {
                         parent: $clickedSection
                     )
                     .environmentObject(NamespaceWrapper(open))
-                    .transition(.offset(y: -20).animation(.spring()))
+                    .transition(.offset(y: -10).animation(.spring().speed(2)))
                 }
             }
 
@@ -94,7 +94,7 @@ struct FeedCoordinator: CoordinatorType {
         switch link {
         case .section:
             if case let FeedLink.section(section) = link {
-                withAnimation(.spring()) {
+                withAnimation(.spring().speed(1.2)) {
                     clickedSection = section
                 }
             }

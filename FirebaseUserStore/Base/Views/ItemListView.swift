@@ -20,15 +20,9 @@ struct ItemListView: View, Identifiable {
                         errorView: { Color.red }
                     )
                     .frame(width: 80, height: 80)
-//                    .padding(.bottom, 10)
                     .cornerRadius(9)
                     .padding(4)
                 }
-//                if item.iconUrl != nil {
-//                    imageView
-//                        .frame(width: 100, height: 100)
-//                        .cornerRadius(15)
-//                }
 
                 VStack {
                     VStack {
@@ -46,38 +40,30 @@ struct ItemListView: View, Identifiable {
                                 .foregroundColor(.secondary)
                             Spacer()
                         }
-                        
-                        Spacer()
 
+                        Spacer()
                     }
                     .padding(.vertical, 12)
-                    
-                    Divider()
-                }
-            }
-            .padding([.horizontal], 8)
 
-            
+
+                }
+                if let linkString = item.originalUrl,
+                   !linkString.isEmpty,
+                   let link = URL(string: linkString) {
+//                    HStack(alignment: .center) {
+                        CollectionShortcutAddButton(link: link)
+//                            .padding()
+//                    }
+
+                }
+
+            }
+            .padding(.horizontal, 8)
         }
-//        .padding([.bottom, .leading])
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 4)
-//                .stroke(.secondary, lineWidth: 2)
-//        )
         .padding(8)
+
+        Divider()
+            .padding(.horizontal, 8)
         
     }
-
-//    @ViewBuilder private var imageView: some View {
-//        if image != nil {
-//            image!.resizable()
-//        } else {
-//            ZStack {
-//                Rectangle()
-//                    .foregroundColor(.secondary.opacity(0.3))
-//
-//                HDotsProgress()
-//            }
-//        }
-//    }
 }

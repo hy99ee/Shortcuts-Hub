@@ -21,7 +21,7 @@ enum FeedDetailLink: TransitionType {
 }
 
 struct FeedDetailSectionCoordinator: CoordinatorType {
-    @ObservedObject private var store: FeedDetailSectionStore
+    private let store: FeedDetailSectionStore
     @Binding private var parent: IdsSection?
     @EnvironmentObject var namespaceWrapper: NamespaceWrapper
 
@@ -61,8 +61,9 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         case .error:
             alert = link
         case .close:
-            withAnimation(.pumping.speed(0.9)) {
+            withAnimation(.pumping) {
                 parent = nil
+                store.reinit()
             }
         }
     }

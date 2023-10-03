@@ -69,27 +69,14 @@ struct ItemDetailView: View {
                 VStack {
                     Spacer()
 
-                    if let link = store.state.item.originalUrl, !link.isEmpty {
-                        Link(destination: URL(string: link)!) {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "plus.circle.fill")
-                                Text("Add Shortcut")
-                                    .bold()
-                                Spacer()
-                            }
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(.blue)
-                            .cornerRadius(10)
-                        }
-                        .padding()
-                        .padding(.horizontal, 10)
-                        .padding(.bottom, 30)
+                    if let linkString = store.state.item.originalUrl,
+                        !linkString.isEmpty,
+                        let link = URL(string: linkString) {
+                        DetailShortcutAddButton(link: link)
+                            .padding(.horizontal)
                     }
                 }
             }
-            .edgesIgnoringSafeArea(.bottom)
     }
     
     
@@ -121,13 +108,14 @@ struct ItemDetailView: View {
 
 struct ItemDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemDetailView(store: DetailItemStore(
-            state: DetailItemState(item: Item.mockItems.randomElement()!),
-            dispatcher: feedDetailItemDispatcher,
-            reducer: feedDetailItemReducer,
-            packages: DetailItemPackages(),
-            middlewares: [DetailItemStore.middlewareOperation]
+        ItemDetailView(store:
+                        DetailItemStore(
+                            state: DetailItemState(item: Item.mockItems.randomElement()!),
+                            dispatcher: feedDetailItemDispatcher,
+                            reducer: feedDetailItemReducer,
+                            packages: DetailItemPackages(),
+                            middlewares: [DetailItemStore.middlewareOperation]
+                        )
         )
-)
     }
 }
