@@ -40,3 +40,25 @@ let feedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionActi
     }
 }
 
+
+let mockFeedFeedDetailSectionSectionDispatcher: DispatcherType<FeedDetailSectionAction, FeedDetailSectionMutation, FeedDetailSectionPackages> = { action, packages in
+    switch action {
+    case .initDetail:
+        return Just(.fetchedSection([Item.mockItems.first!, Item.mockItems.last!])).eraseToAnyPublisher()
+
+    case let .updateFeedWithSection(section):
+        return Just(.fetchedSection([Item.mockItems.first!, Item.mockItems.last!]))
+            .merge(with: Just(.progressViewStatus(status: .stop)))
+            .eraseToAnyPublisher()
+
+
+    case let .replaceItem(item, index):
+        return Just(.replaceItemInSection(item, by: index)).eraseToAnyPublisher()
+
+    case let .open(item):
+        return Just(.openItemFromSection(item)).eraseToAnyPublisher()
+
+    case .close:
+        return Just(.close).eraseToAnyPublisher()
+    }
+}

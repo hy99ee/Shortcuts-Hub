@@ -45,7 +45,7 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
                     .navigationDestination(for: FeedDetailLink.self, destination: linkDestination)
             }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                         store.dispatch(.initDetail)
                     }
                 }
@@ -75,5 +75,20 @@ struct FeedDetailSectionCoordinator: CoordinatorType {
         default:
             EmptyView()
         }
+    }
+}
+
+struct FeedDetailSectionCoordinator_Preview: PreviewProvider {
+    @Namespace static var open
+    private static var store = _FeedPackages().makeFeedSectionDetailStore(IdsSection.mockSections.first!)
+
+    static var previews: some View {
+        FeedDetailSectionCoordinator(
+            store: store,
+            path: .constant(NavigationPath()),
+            parent: .constant(nil)
+        )
+        .environmentObject(NamespaceWrapper(FeedDetailSectionView_Preview.open))
+
     }
 }

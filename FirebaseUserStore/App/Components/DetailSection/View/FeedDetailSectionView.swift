@@ -72,3 +72,13 @@ struct FeedDetailSectionView: View {
         }
     }
 }
+
+struct FeedDetailSectionView_Preview: PreviewProvider {
+    @Namespace static var open
+    private static var store = _FeedPackages().makeFeedSectionDetailStore(IdsSection.mockSections.first!)
+
+    static var previews: some View {
+        FeedDetailSectionView(store: store)
+            .environmentObject(NamespaceWrapper(FeedDetailSectionView_Preview.open))
+    }
+}

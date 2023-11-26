@@ -7,13 +7,13 @@ extension CreateStore {
     static let middlewareCheckInputFormat: Middleware = { state, action, packages in
         if case let .linkRequest(link) = action {
             if link.isEmpty {
-                return Fail(
+                return Redispatch(
                     error: .redispatch(
                         actions: [.showError(.emptyLink)]
                     )
                 ).eraseToAnyPublisher()
             } else if !verifyUrl(link) {
-                return Fail(
+                return Redispatch(
                     error: .redispatch(
                         actions: [.showError(.link)]
                     )

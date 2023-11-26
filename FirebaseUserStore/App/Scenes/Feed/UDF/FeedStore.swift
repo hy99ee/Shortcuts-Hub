@@ -12,7 +12,7 @@ extension FeedStore {
 
     static let middlewareUpdateCheck: Middleware = { state, action, packages in
         if action == .initFeed, !state.sections.isEmpty {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )

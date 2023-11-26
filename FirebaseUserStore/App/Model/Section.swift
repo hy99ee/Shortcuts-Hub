@@ -5,7 +5,7 @@ struct IdsSection: Identifiable, Equatable {
 
     let title: String
     let subtitle: String
-    var titleIcons: [URL]
+    var titleIcons: [Data]
 
     var itemsIds: [String]
 }
@@ -13,4 +13,21 @@ struct IdsSection: Identifiable, Equatable {
 struct ItemsSection: Identifiable {
     let id: UUID
     let items: [Item]
+}
+
+extension IdsSection {
+    static var mockSections: [IdsSection] = [
+        IdsSection(
+            id: UUID(),
+            title: "Title",
+            subtitle: "Subtitle",
+            titleIcons: [],
+            itemsIds: [
+                Item.mockItems[0].id.uuidString,
+                Item.mockItems[1].id.uuidString,
+                Item.mockItems[2].id.uuidString,
+                Item.mockItems[3].id.uuidString
+            ]
+        )
+    ]
 }

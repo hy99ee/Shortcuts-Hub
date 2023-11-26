@@ -1,11 +1,12 @@
 import Combine
+import SwiftUDF
 
 //MARK: Middleware
 extension LibraryStore {
     static let middlewareAuthCheck: Middleware = { state, action, packages in
         guard action != .showAboutSheet && action != .openLogin else {
             if state.loginState == .loading {
-                return Fail(
+                return Redispatch(
                     error: .redispatch(
                         actions: [.userLoginState(packages.sessionService.state), action],
                         type: .excludeRedispatch
@@ -19,7 +20,7 @@ extension LibraryStore {
         }
 
         guard state.loginState == .loggedIn else {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.userLoginState(.loggedIn), action],
                     type: .excludeRedispatch
@@ -35,7 +36,7 @@ extension LibraryStore {
     static let middlewareUpdateCheck: Middleware = { state, action, packages in
         if action == .initLibrary,
            !packages.itemsService.isTimeTo(request: .initLibrary) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )
@@ -44,7 +45,7 @@ extension LibraryStore {
 
         if action == .updateLibrary,
            !packages.itemsService.isTimeTo(request: .updateLibrary) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )
@@ -58,7 +59,7 @@ extension LibraryStore {
 
     static let middlewareInitClean: Middleware = { state, action, packages in
         if action == .initLibrary && state.searchFilter.isEmpty {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [
                         
@@ -74,7 +75,7 @@ extension LibraryStore {
 
     static let middlewareSearchCheck: Middleware = { state, action, packages in
         if action == .updateLibrary && !state.searchFilter.isEmpty {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.search(text: state.searchFilter)]
                 )
@@ -88,7 +89,7 @@ extension LibraryStore {
     static let middlewareDeletedNotOpen: Middleware = { state, action, packages in
         if case .click(let item) = action,
             state.itemsRemovingQueue.contains(item.id) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )

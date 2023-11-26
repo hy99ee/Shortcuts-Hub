@@ -14,41 +14,9 @@ struct ItemDetailView: View {
                             imageView
                                     .frame(width: 130, height: 130)
                                     .cornerRadius(16)
-                            VStack {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(store.state.item.title)
-                                            .font(
-                                                .system(
-                                                    store.state.item.title.count < 13
-                                                    ? .title
-                                                    : store.state.item.title.count > 18
-                                                      ? .title3
-                                                      : .title2
-                                                )
-                                            )
-                                            .bold()
 
-                                        Text(store.state.item.description)
-                                            .font(.system(.headline))
-                                            .foregroundColor(.secondary)
-                                    }
-
-                                    Spacer()
-                                }
-                                .padding(.bottom, 6)
-
-                                Spacer()
-
-                                HStack {
-                                    Spacer()
-
-                                    if store.state.item.userId != store.packages.sessionService.userDetails.auth?.id {
-                                        toggleFavoritesButton
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 8)
+                            titleView
+                                .padding(.horizontal, 8)
 
                             Spacer()
                         }
@@ -78,7 +46,42 @@ struct ItemDetailView: View {
                 }
             }
     }
-    
+
+    private var titleView: some View {
+        VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(store.state.item.title)
+                        .font(
+                            .system(
+                                store.state.item.title.count < 13
+                                ? .title
+                                : store.state.item.title.count > 18
+                                  ? .title3
+                                  : .title2
+                            )
+                        )
+                        .bold()
+
+                    Text(store.state.item.description)
+                        .font(.system(.headline))
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+            }
+            .padding(.bottom, 6)
+
+            Spacer()
+
+            HStack {
+                if store.state.item.userId != store.packages.sessionService.userDetails.auth?.id {
+                    toggleFavoritesButton
+                    Spacer()
+                }
+            }
+        }
+    }
     
     @ViewBuilder private var imageView: some View {
         if image != nil {

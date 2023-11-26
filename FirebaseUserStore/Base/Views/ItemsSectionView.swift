@@ -19,7 +19,7 @@ class OffsetCounter: ObservableObject {
 }
 
 struct ItemsSectionView: View {
-    @State private var icons: [EquatableView<CacheAsyncImage<Image, Color, Color>>]
+    @State private var icons: [EquatableView<Image>]
     @State private var title: String
     @State private var subtitle: String?
     @State private var localOffsetX: CGFloat = Self.offserCounter.offset
@@ -33,24 +33,15 @@ struct ItemsSectionView: View {
 
     private static let offserCounter = OffsetCounter()
 
-    private var iconWidth: CGFloat = 120
-    private var iconHeight: CGFloat = 180
+    private var iconWidth: CGFloat = 100
+    private var iconHeight: CGFloat = 100
 
     init(section: IdsSection, isDetail: Bool = false) {
         self.sectionId = section.id.uuidString
         self.title = section.title.first != nil ? (String(section.title.prefix(1) + section.title.dropFirst())) : ""
         self.subtitle = section.subtitle.first != nil ? (String(section.subtitle.prefix(1) + section.subtitle.dropFirst())) : ""
         self.icons = section.titleIcons.map {
-            CacheAsyncImage<Image, Color, Color>(
-                url: $0,
-                content: { image in
-                    guard let image = image.image else { return nil }
-                    return image.resizable(resizingMode: .stretch)
-                },
-                placeholder: { Color.secondary },
-                errorView: { Color.red }
-            )
-            .equatable()
+            Image(uiImage: .init(data: $0) ?? .init()).equatable()
         }
         self.isDetail = isDetail
     }
@@ -70,17 +61,10 @@ struct ItemsSectionView: View {
                         }
                     }
             }
-            if icons.count <= 0 {
-                Image(systemName: "exclamationmark.triangle")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .onTapGesture { }
-            } else {
-                sectionView
-                    .frame(height: 460)
-            }
+            sectionView
         }
         .cornerRadius(navigationHeader == 0 && isDetail ? 30 : 0)
+        .frame(height: 320)
     }
 
     private var sectionView: some View {
@@ -112,7 +96,7 @@ struct ItemsSectionView: View {
                                     .content
                                     .equatable()
                                     .frame(width: iconWidth, height: iconHeight)
-                                    .cornerRadius(5)
+                                    .cornerRadius(10)
                             }
                         }
 
@@ -144,6 +128,8 @@ struct ItemsSectionView: View {
             } else if icons.count == 1 {
                 icons.first
                     .padding(.vertical)
+            } else if icons.count == 0 {
+                Color.secondary
             } else {
                 RoundedRectangle(cornerRadius: 20)
             }

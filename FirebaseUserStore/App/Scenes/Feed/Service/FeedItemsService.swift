@@ -30,7 +30,7 @@ final class FeedItemsService: ItemsServiceType {
                                     id: UUID(uuidString: (data["id"] as? String ?? "")) ?? UUID(),
                                     title: data["title"] as? String ?? "",
                                     subtitle: data["subtitle"] as? String ?? "",
-                                    titleIcons: (data["title_icons"] as? [String] ?? []).compactMap { URL(string: $0) },
+                                    titleIcons: (data["title_icons"] as? [Data] ?? []),
                                     itemsIds: data["ids"] as? [String] ?? []
                                 )
                             )

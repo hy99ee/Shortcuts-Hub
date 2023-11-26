@@ -120,6 +120,20 @@ extension FeedCoordinator: Equatable {
     static func == (lhs: FeedCoordinator, rhs: FeedCoordinator) -> Bool {
         lhs.store.state == rhs.store.state
     }
+}
 
+struct FeedCoordinator_Preview: PreviewProvider {
+    @Namespace static var open
+    private static var store = _FeedPackages().makeFeedSectionDetailStore(IdsSection.mockSections.first!)
 
+    static var previews: some View {
+        FeedCoordinator(
+            store: FeedStore(
+                state: FeedState(),
+                dispatcher: feedDispatcher,
+                reducer: feedReducer,
+                packages: FeedPackages()
+            )
+        )
+    }
 }

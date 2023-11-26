@@ -2,11 +2,7 @@ import Combine
 import SwiftUDF
 import SwiftUI
 
-struct FeedDetailSectionState: StateType {    
-    init(section: IdsSection) {
-        idsSection = section
-    }
-    
+struct FeedDetailSectionState: StateType {
     let idsSection: IdsSection
     var itemsFromSection: [Item] = []
 

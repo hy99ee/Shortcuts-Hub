@@ -88,11 +88,7 @@ extension CacheAsyncImage: Hashable {
 fileprivate class ImageCache{
     static private var cache: [URL: Image] = [:]
     static subscript(url: URL) -> Image?{
-        get {
-            ImageCache.cache[url]
-        }
-        set {
-            ImageCache.cache[url] = newValue
-        }
+        get { ImageCache.cache[url] }
+        set { ImageCache.cache[url] = newValue }
     }
 }

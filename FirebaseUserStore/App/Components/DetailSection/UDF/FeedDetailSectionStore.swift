@@ -7,7 +7,7 @@ typealias FeedDetailSectionStore = StateStore<FeedDetailSectionState, FeedDetail
 extension FeedDetailSectionStore {
     static let middlewareFetch: Middleware = { state, action, packages in
         if action == .initDetail {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.updateFeedWithSection(state.idsSection)]
                 )

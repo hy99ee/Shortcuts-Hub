@@ -14,13 +14,13 @@ extension DetailItemStore {
 extension DetailItemStore {
     static let middlewareOperation: Middleware = { state, action, packages in
         if action == .addToSaved {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.itemByOperation(item: state.item, operation: .saved)]
                 )
             ).eraseToAnyPublisher()
         } else if action == .removeFromSaved {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.itemByOperation(item: state.item, operation: .unsaved)]
                 )

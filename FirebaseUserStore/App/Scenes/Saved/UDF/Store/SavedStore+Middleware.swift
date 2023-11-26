@@ -1,4 +1,5 @@
 import Combine
+import SwiftUDF
 
 //MARK: Middleware
 extension SavedStore {
@@ -6,7 +7,7 @@ extension SavedStore {
         // Is need update when view onAppear
         if (action == .initSaved || action == .initLocalSaved),
            !packages.itemsService.isTimeTo(request: .initSaved) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )
@@ -16,7 +17,7 @@ extension SavedStore {
         // Is need update when view onRefresh
         if (action == .updateSaved || action == .updateLocalSaved),
            !packages.itemsService.isTimeTo(request: .updateSaved) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )
@@ -37,21 +38,21 @@ extension SavedStore {
 
         switch action {
         case .initSaved:
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.initLocalSaved]
                 )
             ).eraseToAnyPublisher()
 
         case .updateSaved:
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.updateLocalSaved]
                 )
             ).eraseToAnyPublisher()
 
         case let .search(text: text):
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.search(text: text)]
                 )
@@ -67,7 +68,7 @@ extension SavedStore {
     static let middlewareSearchCheck: Middleware = { state, action, packages in
         if (action == .updateSaved || action == .updateLocalSaved)
             && !state.searchFilter.isEmpty {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: [.search(text: state.searchFilter)]
                 )
@@ -81,7 +82,7 @@ extension SavedStore {
     static let middlewareDeletedNotOpen: Middleware = { state, action, packages in
         if case .click(let item) = action,
             state.itemsRemovingQueue.contains(item.id) {
-            return Fail(
+            return Redispatch(
                 error: .redispatch(
                     actions: .stopFlow()
                 )

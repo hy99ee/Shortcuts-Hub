@@ -8,9 +8,9 @@ struct CollectionShortcutAddButton: ShortcutAddButtonType {
             Text("Get")
                 .bold()
             .padding(5)
-            .frame(width: 60)
+            .frame(width: 80)
             .foregroundColor(.blue)
-            .background(Color(UIColor.quaternaryLabel))
+            .background(Color(UIColor.placeholderText.withAlphaComponent(0.15)))
             .cornerRadius(15)
 
         }
